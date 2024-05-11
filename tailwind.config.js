@@ -1,4 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
+const colors = require('tailwindcss/colors')
 
 module.exports = {
     presets: [
@@ -8,6 +9,14 @@ module.exports = {
         extend: {
             fontFamily: {
                 sans: ['Inter var', ...defaultTheme.fontFamily.sans],
+            },
+            colors: {
+                primary: colors.sky,
+                secondary: colors.gray,
+                positive: colors.emerald,
+                negative: colors.red,
+                warning: colors.amber,
+                info: colors.blue
             },
         },
     },
@@ -31,9 +40,11 @@ module.exports = {
         './vendor/wireui/wireui/src/View/**/*.php',
         './vendor/wireui/wireui/src/WireUi/**/*.php',
         './vendor/wireui/wireui/src/resources/**/*.blade.php',
+        './node_modules/flowbite/**/*.js',
     ],
     plugins: [
         require('@tailwindcss/forms'),
         require('@tailwindcss/typography'),
+        require('flowbite/plugin'),
     ],
 }

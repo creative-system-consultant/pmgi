@@ -1,78 +1,43 @@
-@section('title', 'Sign in to your account')
-
-<div>
-    <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <a href="{{ route('home') }}">
-            <x-logo class="w-auto h-16 mx-auto text-indigo-600" />
+<div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen pt:mt-0 bg-dots">
+    <div class="mb-8">
+        <a href="{{ route('home') }}" class="flex items-center justify-center">
+            <x-logo class="h-24" />
         </a>
-
-        <h2 class="mt-6 text-3xl font-extrabold text-center text-gray-900 leading-9">
-            Sign in to your account
-        </h2>
-        @if (Route::has('register'))
-            <p class="mt-2 text-sm text-center text-gray-600 leading-5 max-w">
-                Or
-                <a href="{{ route('register') }}" class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150">
-                    create a new account
-                </a>
-            </p>
-        @endif
+        <div class="flex flex-col items-center justify-center ">
+            <h1 class="mb-2 text-4xl font-extrabold leading-none tracking-tight text-gray-900 ">Performance Monitoring Guidelines</h1>
+            <h1 class="text-4xl font-extrabold text-gray-900 "><span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">PMG-i</span> </h1>
+        </div>
     </div>
 
-    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div class="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
-            <form wire:submit.prevent="authenticate">
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700 leading-5">
-                        Email address
-                    </label>
-
-                    <div class="mt-1 rounded-md shadow-sm">
-                        <input wire:model.lazy="email" id="email" name="email" type="email" required autofocus class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5 @error('email') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror" />
-                    </div>
-
-                    @error('email')
-                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="mt-6">
-                    <label for="password" class="block text-sm font-medium text-gray-700 leading-5">
-                        Password
-                    </label>
-
-                    <div class="mt-1 rounded-md shadow-sm">
-                        <input wire:model.lazy="password" id="password" type="password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5 @error('password') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror" />
-                    </div>
-
-                    @error('password')
-                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="flex items-center justify-between mt-6">
-                    <div class="flex items-center">
-                        <input wire:model.lazy="remember" id="remember" type="checkbox" class="form-checkbox w-4 h-4 text-indigo-600 transition duration-150 ease-in-out" />
-                        <label for="remember" class="block ml-2 text-sm text-gray-900 leading-5">
-                            Remember
-                        </label>
-                    </div>
-
-                    <div class="text-sm leading-5">
-                        <a href="{{ route('password.request') }}" class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150">
-                            Forgot your password?
-                        </a>
-                    </div>
-                </div>
-
-                <div class="mt-6">
-                    <span class="block w-full rounded-md shadow-sm">
-                        <button type="submit" class="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:ring-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
-                            Sign in
-                        </button>
-                    </span>
-                </div>
-            </form>
+    <!-- Card -->
+    <div class="w-full max-w-sm p-6 space-y-8 bg-white rounded-lg shadow-xl sm:p-8 ">
+        <div class="flex justify-center">
+            <h2 class="text-2xl font-bold text-gray-900 ">
+                Sign in
+            </h2>
         </div>
+        <form class="mt-8 space-y-6" wire:submit.prevent="authenticate">
+            <div>
+                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Your email</label>
+                <input wire:model="email" type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 @error('email') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror" placeholder="name@company.com" required>
+
+                @error('email')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+            <div>
+                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 ">Your password</label>
+                <input wire:model="password" type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 @error('password') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror" required>
+
+                @error('password')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+            <div class="flex justify-center">
+                <button type="submit" class="w-full px-5 py-3 text-base text-center text-white rounded-lg font-xs bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto">
+                    Login
+                </button>
+            </div>
+        </form>
     </div>
 </div>
