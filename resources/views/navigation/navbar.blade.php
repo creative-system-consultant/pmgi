@@ -10,7 +10,10 @@
                 <div class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1">
                     <ul class="flex flex-col mt-4 space-x-6 text-sm font-medium lg:flex-row xl:space-x-8 lg:mt-0">
                         <li>
-                            <a href="#" class="block rounded text-primary-700" aria-current="page">Dashboard</a>
+                            <a href="/" class="block rounded text-primary-700" aria-current="page">Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="#" class="block text-gray-700 hover:text-primary-700">Maklumat Warga Kerja</a>
                         </li>
                         <li>
                             <button id="prestasiDropdownLink" data-dropdown-toggle="prestasiDropdown" class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-primary-700 md:p-0 md:w-auto ">Prestasi
@@ -23,16 +26,13 @@
                                         <a href="#" class="block px-4 py-2 hover:bg-gray-100 ">Prestasi Bulanan</a>
                                     </li>
                                     <li>
-                                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 ">Prestasi Kumulatif</a>
+                                        <a href="{{ route('prestasi.kumulatif') }}" class="block px-4 py-2 hover:bg-gray-100 ">Prestasi Kumulatif</a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
                         <li>
                             <a href="#" class="block text-gray-700 hover:text-primary-700">Laporan</a>
-                        </li>
-                        <li>
-                            <a href="#" class="block text-gray-700 hover:text-primary-700">Maklumat Warga Kerja</a>
                         </li>
                         <li>
                             <a href="#" class="block text-gray-700 hover:text-primary-700">Tetapan</a>
@@ -167,7 +167,6 @@
         </div>
     </nav>
     <nav class="bg-white">
-
         <ul id="toggleMobileMenu" class="flex-col hidden w-full pt-16 mt-0 text-sm font-medium lg:hidden">
             <li class="block border-b ">
                 <a href="#" class="block px-4 py-3 text-gray-900 lg:py-0 lg:hover:underline lg:px-0" aria-current="page">Home</a>
