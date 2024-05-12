@@ -531,7 +531,7 @@
                                 <span class="text-xl font-bold leading-none text-gray-900 sm:text-2xl ">Bilangan Membayar</span>
                             </div>
                         </div>
-                        <div id="main-chart"></div>
+                        <div id="bil-bayar-chart"></div>
                     </div>
                     <!-- Bar chart -->
                     <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 ">
@@ -540,7 +540,7 @@
                                 <span class="text-2xl font-bold leading-none text-gray-900 sm:text-2xl ">Patut Kutip vs Dapat Kutip</span>
                             </div>
                         </div>
-                        <div class="w-full" id="sales-by-category"></div>
+                        <div class="w-full" id="pk-dk-chart"></div>
                     </div>
                     <!-- pie chart -->
                     <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 ">
@@ -549,7 +549,8 @@
                                 <span class="text-2xl font-bold leading-none text-gray-900 sm:text-2xl ">Lawatan</span>
                             </div>
                         </div>
-                        <div id="traffic-by-device"></div>
+                        <div id="lawatan-chart"></div>
+                        {{-- <div id="traffic-by-device"></div> --}}
                     </div>
                 </div>
 
@@ -871,7 +872,7 @@
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
                                                     31
                                                 </td>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">
                                                     50
                                                 </td>
                                             </tr>
@@ -906,7 +907,7 @@
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
                                                     39
                                                 </td>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
                                                     50
                                                 </td>
                                             </tr>
@@ -941,7 +942,7 @@
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
                                                     289,000.00
                                                 </td>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
                                                     285,000.00
                                                 </td>
                                             </tr>

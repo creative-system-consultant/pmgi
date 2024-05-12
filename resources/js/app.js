@@ -3,8 +3,8 @@ import 'flowbite';
 // import './dark-mode';
 import ApexCharts from 'apexcharts'
 
-// contoh
-const getMainChartOptions = () => {
+//chart
+const getBilMembayarChartOptions = () => {
 	let mainChartColors = {}
 
 	if (document.documentElement.classList.contains('dark')) {
@@ -61,13 +61,13 @@ const getMainChartOptions = () => {
 		},
 		series: [
 			{
-				name: 'Revenue',
-				data: [6356, 6218, 6156, 6526, 6356, 6256, 6056],
+				name: 'Bil. Seliaan',
+				data: [600, 559, 432, 561, 680, 554, 324],
 				color: '#1A56DB'
 			},
 			{
-				name: 'Revenue (previous period)',
-				data: [6556, 6725, 6424, 6356, 6586, 6756, 6616],
+				name: 'Bil. Membayar',
+				data: [300, 279, 216, 280, 340, 290, 300],
 				color: '#FDBA8C'
 			}
 		],
@@ -80,7 +80,7 @@ const getMainChartOptions = () => {
 			}
 		},
 		xaxis: {
-			categories: ['01 Feb', '02 Feb', '03 Feb', '04 Feb', '05 Feb', '06 Feb', '07 Feb'],
+			categories: ['Jul 18', 'Aug 18', 'Sep 18', 'Oct 18', 'Nov 18', 'Dec 18', 'Jan 19'],
 			labels: {
 				style: {
 					colors: [mainChartColors.labelColor],
@@ -112,7 +112,7 @@ const getMainChartOptions = () => {
 					fontWeight: 500,
 				},
 				formatter: function (value) {
-					return '$' + value;
+					return value;
 				}
 			},
 		},
@@ -142,146 +142,46 @@ const getMainChartOptions = () => {
 	};
 }
 
-if (document.getElementById('main-chart')) {
-	const chart = new ApexCharts(document.getElementById('main-chart'), getMainChartOptions());
+if (document.getElementById('bil-bayar-chart')) {
+	const chart = new ApexCharts(document.getElementById('bil-bayar-chart'), getBilMembayarChartOptions());
 	chart.render();
 
 	// init again when toggling dark mode
 	document.addEventListener('dark-mode', function () {
-		chart.updateOptions(getMainChartOptions());
+		chart.updateOptions(getBilMembayarChartOptions());
 	});
 }
 
-if (document.getElementById('new-products-chart')) {
+if (document.getElementById('pk-dk-chart')) {
 	const options = {
 		colors: ['#1A56DB', '#FDBA8C'],
 		series: [
 			{
-				name: 'Quantity',
+				name: 'Patut Kutip',
 				color: '#1A56DB',
 				data: [
-					{ x: '01 Feb', y: 170 },
-					{ x: '02 Feb', y: 180 },
-					{ x: '03 Feb', y: 164 },
-					{ x: '04 Feb', y: 145 },
-					{ x: '05 Feb', y: 194 },
-					{ x: '06 Feb', y: 170 },
-					{ x: '07 Feb', y: 155 },
-				]
-			}
-		],
-		chart: {
-			type: 'bar',
-			height: '140px',
-			fontFamily: 'Inter, sans-serif',
-			foreColor: '#4B5563',
-			toolbar: {
-				show: false
-			}
-		},
-		plotOptions: {
-			bar: {
-				columnWidth: '90%',
-				borderRadius: 3
-			}
-		},
-		tooltip: {
-			shared : false,
-			intersect: false,
-			style: {
-				fontSize: '14px',
-				fontFamily: 'Inter, sans-serif'
-			},
-		},
-		states: {
-			hover: {
-				filter: {
-					type: 'darken',
-					value: 1
-				}
-			}
-		},
-		stroke: {
-			show: true,
-			width: 5,
-			colors: ['transparent']
-		},
-		grid: {
-			show: false
-		},
-		dataLabels: {
-			enabled: false
-		},
-		legend: {
-			show: false
-		},
-		xaxis: {
-			floating: false,
-			labels: {
-				show: false
-			},
-			axisBorder: {
-				show: false
-			},
-			axisTicks: {
-				show: false
-			},
-		},
-		yaxis: {
-			show: false
-		},
-		fill: {
-			opacity: 1
-		}
-	};
-
-	const chart = new ApexCharts(document.getElementById('new-products-chart'), options);
-	chart.render();
-}
-
-if (document.getElementById('sales-by-category')) {
-	const options = {
-		colors: ['#1A56DB', '#FDBA8C'],
-		series: [
-			{
-				name: 'Desktop PC',
-				color: '#1A56DB',
-				data: [
-					{ x: '01 Feb', y: 170 },
-					{ x: '02 Feb', y: 180 },
-					{ x: '03 Feb', y: 164 },
-					{ x: '04 Feb', y: 145 },
-					{ x: '05 Feb', y: 194 },
-					{ x: '06 Feb', y: 170 },
-					{ x: '07 Feb', y: 155 },
+					{ x: 'Jul 18', y: 170 },
+					{ x: 'Aug 18', y: 180 },
+					{ x: 'Sep 18', y: 164 },
+					{ x: 'Oct 18', y: 145 },
+					{ x: 'Nov 18', y: 194 },
+					{ x: 'Dec 18', y: 170 },
+					{ x: 'Jan 19', y: 155 },
 				]
 			},
 			{
-				name: 'Phones',
+				name: 'Dapat Kutip',
 				color: '#FDBA8C',
 				data: [
-					{ x: '01 Feb', y: 120 },
-					{ x: '02 Feb', y: 294 },
-					{ x: '03 Feb', y: 167 },
-					{ x: '04 Feb', y: 179 },
-					{ x: '05 Feb', y: 245 },
-					{ x: '06 Feb', y: 182 },
-					{ x: '07 Feb', y: 143 }
+					{ x: 'Jul 18', y: 120 },
+					{ x: 'Aug 18', y: 294 },
+					{ x: 'Sep 18', y: 167 },
+					{ x: 'Oct 18', y: 179 },
+					{ x: 'Nov 18', y: 245 },
+					{ x: 'Dec 18', y: 182 },
+					{ x: 'Jan 19', y: 143 }
 				]
 			},
-			{
-				name: 'Gaming/Console',
-				color: '#17B0BD',
-				data: [
-					{ x: '01 Feb', y: 220 },
-					{ x: '02 Feb', y: 194 },
-					{ x: '03 Feb', y: 217 },
-					{ x: '04 Feb', y: 279 },
-					{ x: '05 Feb', y: 215 },
-					{ x: '06 Feb', y: 263 },
-					{ x: '07 Feb', y: 183 }
-				]
-			}
 		],
 		chart: {
 			type: 'bar',
@@ -323,15 +223,25 @@ if (document.getElementById('sales-by-category')) {
 			show: false
 		},
 		dataLabels: {
-			enabled: false
+			enabled: false,
 		},
 		legend: {
-			show: false
+			show: true,
+            fontSize: '14px',
+            fontWeight: 500,
+			fontFamily: 'Inter, sans-serif',
+            horizontalAlign: 'center',
+            itemMargin: {
+				horizontal: 10,
+			},
+            markers: {
+                radius: 10
+            }
 		},
 		xaxis: {
 			floating: false,
 			labels: {
-				show: false
+				show: true
 			},
 			axisBorder: {
 				show: false
@@ -348,258 +258,158 @@ if (document.getElementById('sales-by-category')) {
 		}
 	};
 
-	const chart = new ApexCharts(document.getElementById('sales-by-category'), options);
+	const chart = new ApexCharts(document.getElementById('pk-dk-chart'), options);
 	chart.render();
 }
 
-const getVisitorsChartOptions = () => {
-	let visitorsChartColors = {}
+const getLawatanChartOptions = () => {
+    let mainChartColors = {};
 
-	if (document.documentElement.classList.contains('dark')) {
-		visitorsChartColors = {
-			fillGradientShade: 'dark',
-			fillGradientShadeIntensity: 0.45,
-		};
-	} else {
-		visitorsChartColors = {
-			fillGradientShade: 'light',
-			fillGradientShadeIntensity: 1,
-		}
-	}
+    if (document.documentElement.classList.contains('dark')) {
+        mainChartColors = {
+            borderColor: '#374151',
+            labelColor: '#9CA3AF',
+            opacityFrom: 0,
+            opacityTo: 0.15,
+        };
+    } else {
+        mainChartColors = {
+            borderColor: '#F3F4F6',
+            labelColor: '#6B7280',
+            opacityFrom: 0.45,
+            opacityTo: 0,
+        }
+    }
 
-	return {
-		series: [{
-			name: 'Visitors',
-			data: [500, 590, 600, 520, 610, 550, 600]
-		}],
-		labels: ['01 Feb', '02 Feb', '03 Feb', '04 Feb', '05 Feb', '06 Feb', '07 Feb'],
-		chart: {
-			type: 'area',
-			height: '305px',
-			fontFamily: 'Inter, sans-serif',
-			sparkline: {
-				enabled: true
-			},
-			toolbar: {
-				show: false
-			}
-		},
-		fill: {
-			type: 'gradient',
-			gradient: {
-				shade: visitorsChartColors.fillGradientShade,
-				shadeIntensity: visitorsChartColors.fillGradientShadeIntensity
-			},
-		},
-		plotOptions: {
-			area: {
-				fillTo: 'end'
-			}
-		},
-		theme: {
-			monochrome: {
-				enabled: true,
-				color: '#1A56DB',
-			}
-		},
-		tooltip: {
-			style: {
-				fontSize: '14px',
-				fontFamily: 'Inter, sans-serif'
-			},
-		},
-	}
-}
-
-
-const getSignupsChartOptions = () => {
-	let signupsChartColors = {}
-
-	if (document.documentElement.classList.contains('dark')) {
-		signupsChartColors = {
-			backgroundBarColors: ['#374151', '#374151', '#374151', '#374151', '#374151', '#374151', '#374151']
-		};
-	} else {
-		signupsChartColors = {
-			backgroundBarColors: ['#E5E7EB', '#E5E7EB', '#E5E7EB', '#E5E7EB', '#E5E7EB', '#E5E7EB', '#E5E7EB']
-		};
-	}
-
-	return {
-		series: [{
-			name: 'Users',
-			data: [1334, 2435, 1753, 1328, 1155, 1632, 1336]
-		}],
-		labels: ['01 Feb', '02 Feb', '03 Feb', '04 Feb', '05 Feb', '06 Feb', '07 Feb'],
-		chart: {
-			type: 'bar',
-			height: '140px',
-			foreColor: '#4B5563',
-			fontFamily: 'Inter, sans-serif',
-			toolbar: {
-				show: false
-			}
-		},
-		theme: {
-			monochrome: {
-				enabled: true,
-				color: '#1A56DB'
-			}
-		},
-		plotOptions: {
+    return {
+        chart: {
+            height: 420,
+            type: 'line', // Default to line; specific series will override
+            fontFamily: 'Inter, sans-serif',
+            foreColor: mainChartColors.labelColor,
+            toolbar: {
+                show: false
+            }
+        },
+        stroke: {
+            width: [0, 4] // Specify stroke width for column and line series respectively
+        },
+        dataLabels: {
+            enabled: true,
+            enabledOnSeries: [0] // Enable data labels only for the line series (index 1)
+        },
+        plotOptions: {
 			bar: {
-				columnWidth: '25%',
-				borderRadius: 3,
-				colors: {
-					backgroundBarColors: signupsChartColors.backgroundBarColors,
-					backgroundBarRadius: 3
-				},
-			},
-			dataLabels: {
-				hideOverflowingLabels: false
+				columnWidth: '90%',
+				borderRadius: 3
 			}
 		},
-		xaxis: {
-			floating: false,
-			labels: {
-				show: false
-			},
-			axisBorder: {
-				show: false
-			},
-			axisTicks: {
-				show: false
-			},
-		},
-		tooltip: {
-			shared: true,
-			intersect: false,
-			style: {
-				fontSize: '14px',
-				fontFamily: 'Inter, sans-serif'
-			}
-		},
-		states: {
-			hover: {
-				filter: {
-					type: 'darken',
-					value: 0.8
-				}
-			}
-		},
-		fill: {
-			opacity: 1
-		},
-		yaxis: {
-			show: false
-		},
-		grid: {
-			show: false
-		},
-		dataLabels: {
-			enabled: false
-		},
-		legend: {
-			show: false
-		},
-	};
-}
-
-if (document.getElementById('week-signups-chart')) {
-	const chart = new ApexCharts(document.getElementById('week-signups-chart'), getSignupsChartOptions());
-	chart.render();
-
-	// init again when toggling dark mode
-	document.addEventListener('dark-mode', function () {
-		chart.updateOptions(getSignupsChartOptions());
-	});
-}
-
-const getTrafficChannelsChartOptions = () => {
-
-	let trafficChannelsChartColors = {}
-
-	if (document.documentElement.classList.contains('dark')) {
-		trafficChannelsChartColors = {
-			strokeColor: '#1f2937'
-		};
-	} else {
-		trafficChannelsChartColors = {
-			strokeColor: '#ffffff'
-		}
-	}
-
-	return {
-		series: [70, 5, 25],
-		labels: ['Desktop', 'Tablet', 'Phone'],
-		colors: ['#16BDCA', '#FDBA8C', '#1A56DB'],
-		chart: {
-			type: 'donut',
-			height: 400,
-			fontFamily: 'Inter, sans-serif',
-			toolbar: {
-				show: false
-			},
-		},
-		responsive: [{
-			breakpoint: 430,
-			options: {
-                chart: {
-                    height: 300
+        tooltip: {
+            style: {
+                fontSize: '14px',
+                fontFamily: 'Inter, sans-serif',
+            },
+        },
+        grid: {
+            show: true,
+            borderColor: mainChartColors.borderColor,
+            strokeDashArray: 1,
+            padding: {
+                left: 0,
+                bottom: 15
+            }
+        },
+        series: [
+            {
+                name: 'Bil. Lawatan',
+                type: 'column', // Column chart type
+                data: [600, 559, 432, 561, 680, 554, 324], // Example data
+                color: '#1A56DB'
+            },
+            {
+                name: '% Lawat',
+                type: 'line', // Line chart type
+                data: [68.3, 65.9, 60.4, 72.2, 61.8, 65.2, 62.1], // Example data
+                color: '#FDBA8C'
+            }
+        ],
+        markers: {
+            size: 5,
+            strokeColors: '#ffffff',
+            hover: {
+                size: undefined,
+                sizeOffset: 3
+            }
+        },
+        xaxis: {
+            categories: ['Jul 18', 'Aug 18', 'Sep 18', 'Oct 18', 'Nov 18', 'Dec 18', 'Jan 19'],
+            labels: {
+                style: {
+                    colors: [mainChartColors.labelColor],
+                    fontSize: '11px',
+                    fontWeight: 500,
+                },
+            },
+            axisBorder: {
+                color: mainChartColors.borderColor,
+            },
+            axisTicks: {
+                color: mainChartColors.borderColor,
+            },
+            crosshairs: {
+                show: true,
+                position: 'back',
+                stroke: {
+                    color: mainChartColors.borderColor,
+                    width: 1,
+                    dashArray: 10,
+                },
+            },
+        },
+        yaxis: {
+            labels: {
+                style: {
+                    colors: [mainChartColors.labelColor],
+                    fontSize: '14px',
+                    fontWeight: 500,
+                },
+                formatter: function (value) {
+                    return value;
                 }
-			}
-		}],
-		stroke: {
-			colors: [trafficChannelsChartColors.strokeColor]
-		},
-		states: {
-			hover: {
-				filter: {
-					type: 'darken',
-					value: 0.9
-				}
-			}
-		},
-		tooltip: {
-			shared: true,
-			followCursor: false,
-			fillSeriesColor: false,
-			inverseOrder: true,
-			style: {
-				fontSize: '14px',
-				fontFamily: 'Inter, sans-serif'
-			},
-			x: {
-				show: true,
-				formatter: function (_, { seriesIndex, w }) {
-					const label = w.config.labels[seriesIndex];
-					return label
-				}
-			},
-			y: {
-				formatter: function (value) {
-					return value + '%';
-				}
-			}
-		},
-		grid: {
-			show: false
-		},
-		dataLabels: {
-			enabled: false
-		},
-		legend: {
-			show: false
-		},
-	};
-}
+            },
+        },
+        legend: {
+            fontSize: '14px',
+            fontWeight: 500,
+            fontFamily: 'Inter, sans-serif',
+            labels: {
+                colors: [mainChartColors.labelColor]
+            },
+            itemMargin: {
+                horizontal: 10
+            }
+        },
+        responsive: [
+            {
+                breakpoint: 1024,
+                options: {
+                    xaxis: {
+                        labels: {
+                            show: false
+                        }
+                    }
+                }
+            }
+        ]
+    };
+};
 
-if (document.getElementById('traffic-by-device')) {
-	const chart = new ApexCharts(document.getElementById('traffic-by-device'), getTrafficChannelsChartOptions());
-	chart.render();
+if (document.getElementById('lawatan-chart')) {
+    const chart = new ApexCharts(document.getElementById('lawatan-chart'), getLawatanChartOptions());
+    chart.render();
 
-	// init again when toggling dark mode
-	document.addEventListener('dark-mode', function () {
-		chart.updateOptions(getTrafficChannelsChartOptions());
-	});
+    // Re-initialize when toggling dark mode
+    document.addEventListener('dark-mode', function () {
+        chart.updateOptions(getLawatanChartOptions());
+    });
 }
