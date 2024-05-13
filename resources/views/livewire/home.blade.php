@@ -526,7 +526,7 @@
             <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-1 sm:p-6 ">
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex-shrink-0">
-                        <span class="text-xl font-bold leading-none text-gray-900 sm:text-2xl ">Bilangan Membayar</span>
+                        <span class="text-xl font-bold leading-none text-gray-900 sm:text-2xl ">Bil. Seliaan vs Bil. Membayar</span>
                     </div>
                 </div>
                 <div id="bil-bayar-chart"></div>

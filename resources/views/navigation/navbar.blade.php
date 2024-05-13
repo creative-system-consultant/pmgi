@@ -10,23 +10,32 @@
                 <div class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1">
                     <ul class="flex flex-col mt-4 space-x-6 text-sm font-medium lg:flex-row xl:space-x-8 lg:mt-0">
                         <li>
-                            <a href="/" class="block rounded text-primary-700" aria-current="page">Dashboard</a>
+                            <a href="/"
+                                class="block rounded  {{ Route::currentRouteName() === 'home' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}"
+                                aria-current="page"
+                            >Dashboard</a>
                         </li>
                         <li>
                             <a href="#" class="block text-gray-700 hover:text-primary-700">Maklumat Warga Kerja</a>
                         </li>
                         <li>
-                            <button id="prestasiDropdownLink" data-dropdown-toggle="prestasiDropdown" class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-primary-700 md:p-0 md:w-auto ">Prestasi
+                            <button
+                                id="prestasiDropdownLink"
+                                data-dropdown-toggle="prestasiDropdown"
+                                class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium  border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-primary-700 md:p-0 md:w-auto
+                                {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'prestasi') ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}"
+                            >
+                                Prestasi
                                 <x-icon name="chevron-down" class="w-4 h-4 ml-1" />
                             </button>
 
                             <div id="prestasiDropdown" class="z-20 hidden font-normal bg-white divide-y divide-gray-100 rounded shadow w-44 " style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(769px, 52px);" data-popper-placement="bottom">
                                 <ul class="py-1 text-sm text-gray-700 " aria-labelledby="dropdownLargeButton">
                                     <li>
-                                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 ">Prestasi Bulanan</a>
+                                        <a href="{{ route('prestasi.bulanan') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'prestasi.bulanan' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Prestasi Bulanan</a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('prestasi.kumulatif') }}" class="block px-4 py-2 hover:bg-gray-100 ">Prestasi Kumulatif</a>
+                                        <a href="{{ route('prestasi.kumulatif') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'prestasi.kumulatif' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Prestasi Kumulatif</a>
                                     </li>
                                 </ul>
                             </div>
