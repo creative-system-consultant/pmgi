@@ -8,6 +8,7 @@ use App\Livewire\Auth\Passwords\Email;
 use App\Livewire\Auth\Passwords\Reset;
 use App\Livewire\Auth\Verify;
 use App\Livewire\Home;
+use App\Livewire\Module\MaklumatWargaKerja;
 use App\Livewire\Module\Prestasi\Bulanan;
 use App\Livewire\Module\Prestasi\Kumulatif;
 use Illuminate\Support\Facades\Route;
@@ -59,6 +60,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', LogoutController::class)
         ->name('logout');
+
+    // makulmat warga kerja
+    Route::get('/maklumat-warga-kerja', MaklumatWargaKerja::class)->name('maklumat-warga-kerja');
 
     // prestasi
     Route::get('/prestasi/bulanan', Bulanan::class)->name('prestasi.bulanan');

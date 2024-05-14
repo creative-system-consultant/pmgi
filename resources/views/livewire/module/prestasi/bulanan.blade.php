@@ -69,7 +69,7 @@
                     <span class="text-base font-normal text-gray-500 ">Ringkasan Prestasi Bulanan Pegawai </span>
                     <div class="p-6 mt-4 border rounded-lg shadow bg-primary-100 border-primary-200 dark:bg-gray-800 dark:border-gray-700">
                         <div class="flex justify-between">
-                            <div class="grid grid-cols-3 gap-x-4 gap-y-2">
+                            <div class="grid w-[70%] grid-cols-3 gap-x-4 gap-y-2">
                                 <div>
                                     <label for="negeri" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Negeri</label>
                                     <input type="text" id="negeri" class="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500">
@@ -125,7 +125,7 @@
                                     <tr class="bg-gray-200">
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase bg-gray-200 headcol">NAMA PEGAWAI</th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase bg-gray-200 headcol">GELARAN</th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase whitespace-nowrap bg-gray-200 headcol">TARAF JAWATAN</th>
+                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase bg-gray-200 whitespace-nowrap headcol">TARAF JAWATAN</th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border border-black border-dashed whitespace-nowrap">PATUT KUTIP<br>(RM)</th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border border-black border-dashed whitespace-nowrap">DAPAT KUTIP<br>(RM)</th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border border-black border-dashed whitespace-nowrap">%</th>
@@ -209,7 +209,7 @@
                                         </th>
                                     </tr>
                                     <tr class="bg-gray-200 border-black border-y">
-                                        <th scope="col" colspan="3" class="p-2 text-sm font-normal tracking-tight text-left text-gray-800 headcol bg-gray-200 whitespace-nowrap">BENTONG TOTAL</th>
+                                        <th scope="col" colspan="3" class="p-2 text-sm font-normal tracking-tight text-left text-gray-800 bg-gray-200 headcol whitespace-nowrap">BENTONG TOTAL</th>
                                         <th scope="col" class="p-2 text-sm font-normal tracking-tight text-center text-gray-800 border-black border-dashed border-x whitespace-nowrap">75,042.95</th>
                                         <th scope="col" class="p-2 text-sm font-normal tracking-tight text-center text-gray-800 border-black border-dashed border-x whitespace-nowrap">63,132.60</th>
                                         <th scope="col" class="p-2 text-sm font-normal tracking-tight text-center text-gray-800 border-black border-dashed border-x whitespace-nowrap">84.13%</th>

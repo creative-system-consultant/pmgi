@@ -16,7 +16,7 @@
                             >Dashboard</a>
                         </li>
                         <li>
-                            <a href="#" class="block text-gray-700 hover:text-primary-700">Maklumat Warga Kerja</a>
+                            <a href="{{ route('maklumat-warga-kerja') }}" class="block {{ Route::currentRouteName() === 'maklumat-warga-kerja' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Maklumat Warga Kerja</a>
                         </li>
                         <li>
                             <button

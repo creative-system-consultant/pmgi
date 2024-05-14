@@ -44,7 +44,7 @@
             <div class="flex flex-col mt-6">
                 <div class="overflow-x-auto">
                     <div class="inline-block min-w-full align-middle">
-                        <div class="overflow-hidden">
+                        <div class="overflow-hidden pl-1">
                             <table class="min-w-full divide-y divide-gray-200 ">
                                 <thead class="bg-gray-50 ">
                                     <tr class="bg-gray-200">
@@ -60,7 +60,7 @@
                                 <tbody class="bg-white ">
                                     {{-- kriteria 1 --}}
                                     <tr class="bg-gray-100">
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-l-2 border-black border-dashed border-y">
+                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border border-black border-dashed border-y">
                                             KRITERIA 1
                                         </th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-l border-black border-dashed">
@@ -89,7 +89,7 @@
                                         </th>
                                     </tr>
                                     <tr>
-                                        <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 border-l-2 border-black border-dashed border-y whitespace-nowrap">
+                                        <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 border-l border-black border-dashed border-y whitespace-nowrap">
                                             KUTIPAN TANPA KONTRAK I (Minimum 80%)
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
@@ -133,7 +133,7 @@
                                     </tr>
                                     {{-- kriteria 2 --}}
                                     <tr class="bg-gray-100">
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-l-2 border-black border-dashed border-y">
+                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-l border-black border-dashed border-y">
                                             KRITERIA 2
                                         </th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-l border-black border-dashed">
@@ -162,7 +162,7 @@
                                         </th>
                                     </tr>
                                     <tr>
-                                        <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 border-l-2 border-black border-dashed border-y whitespace-nowrap">
+                                        <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 border-l border-black border-dashed border-y whitespace-nowrap">
                                             BILANGAN MEMBAYAR (Minimum 80%)
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
@@ -206,7 +206,7 @@
                                     </tr>
                                     {{-- kriteria 3 --}}
                                     <tr class="bg-gray-100">
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-l-2 border-black border-dashed border-y">
+                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-l border-black border-dashed border-y">
                                             KRITERIA 3
                                         </th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-l border-black border-dashed">
@@ -235,7 +235,7 @@
                                         </th>
                                     </tr>
                                     <tr>
-                                        <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 border-l-2 border-black border-dashed border-y whitespace-nowrap">
+                                        <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 border-l border-black border-dashed border-y whitespace-nowrap">
                                             LAWATAN SELIAAN (Minimum 80%)
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
@@ -279,7 +279,7 @@
                                     </tr>
                                     {{-- kriteria 4 --}}
                                     <tr class="bg-gray-100">
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-l-2 border-black border-dashed border-y">
+                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-l border-black border-dashed border-y">
                                             KRITERIA 4
                                         </th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-l border-black border-dashed">
@@ -308,7 +308,7 @@
                                         </th>
                                     </tr>
                                     <tr>
-                                        <td rowspan="3" class="p-2 text-sm font-normal text-center text-gray-900 border-l-2 border-black border-dashed border-y whitespace-nowrap">
+                                        <td rowspan="3" class="p-2 text-sm font-normal text-center text-gray-900 border-l border-black border-dashed border-y whitespace-nowrap">
                                             PRESTASI NPF (KAWALAN) (Minimum 50%)
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
@@ -366,7 +366,7 @@
                                     </tr>
                                     {{-- kriteria 5 --}}
                                     <tr class="bg-gray-100">
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-l-2 border-black border-dashed border-y">
+                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-l border-black border-dashed border-y">
                                             KRITERIA 5
                                         </th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-l border-black border-dashed">
@@ -395,7 +395,7 @@
                                         </th>
                                     </tr>
                                     <tr>
-                                        <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 border-l-2 border-black border-dashed border-y whitespace-nowrap">
+                                        <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 border-l border-black border-dashed border-y whitespace-nowrap">
                                             PRESTASI NPF PEMULIHAN (Minimum 5%)
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">

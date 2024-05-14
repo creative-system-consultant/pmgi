@@ -92,19 +92,19 @@
                                             BULAN
                                         </th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
-                                            STATUS PMG-I
+                                            STATUS<br>PMG-I
                                         </th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
                                             KEPUTUSAN
                                         </th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-l border-black border-dashed ">
-                                            BIL. SELIAAN
+                                            BIL.<br>SELIAAN
                                         </th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
-                                            BIL MEMBAYAR
+                                            BIL<br>MEMBAYAR
                                         </th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-r border-black border-dashed ">
-                                            % MEMBAYAR
+                                            %<br>MEMBAYAR
                                         </th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
                                             PK (RM)
@@ -122,16 +122,16 @@
                                             RM
                                         </th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
-                                            BIL LAWATAN
+                                            BIL<br>LAWATAN
                                         </th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-r border-black border-dashed ">
-                                            % LAWAT
+                                            %<br>LAWAT
                                         </th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
-                                            OS - RM (% NPF) ≥ 2015
+                                            OS - RM (% NPF)<br>≥ 2015
                                         </th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-r border-black border-dashed ">
-                                            BEZA SASARAN NPF ≥2015 @ ≤25%
+                                            BEZA SASARAN NPF<br>≥2015 @ ≤25%
                                         </th>
                                     </tr>
                                 </thead>
@@ -144,7 +144,7 @@
                                             YES
                                         </td>
                                         <td class="p-2 text-sm font-semibold text-center text-gray-900 whitespace-nowrap ">
-                                            <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI TEMPOH</span>
+                                            <div class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI<br>TEMPOH</div>
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap ">
                                             589
@@ -191,7 +191,7 @@
                                             YES
                                         </td>
                                         <td class="p-2 text-sm font-semibold text-center text-gray-900 whitespace-nowrap ">
-                                            <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI TEMPOH</span>
+                                            <div class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI<br>TEMPOH</div>
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap ">
                                             589
@@ -238,7 +238,7 @@
                                             YES
                                         </td>
                                         <td class="p-2 text-sm font-semibold text-center text-gray-900 whitespace-nowrap ">
-                                            <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI TEMPOH</span>
+                                            <div class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI<br>TEMPOH</div>
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap ">
                                             589
@@ -285,7 +285,7 @@
                                             YES
                                         </td>
                                         <td class="p-2 text-sm font-semibold text-center text-gray-900 whitespace-nowrap ">
-                                            <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI TEMPOH</span>
+                                            <div class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI<br>TEMPOH</div>
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap ">
                                             589
@@ -332,7 +332,7 @@
                                             YES
                                         </td>
                                         <td class="p-2 text-sm font-semibold text-center text-gray-900 whitespace-nowrap ">
-                                            <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI TEMPOH</span>
+                                            <div class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI<br>TEMPOH</div>
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap ">
                                             589
@@ -379,7 +379,7 @@
                                             YES
                                         </td>
                                         <td class="p-2 text-sm font-semibold text-center text-gray-900 whitespace-nowrap ">
-                                            <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI TEMPOH</span>
+                                            <div class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI<br>TEMPOH</div>
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap ">
                                             589
@@ -426,7 +426,7 @@
                                             YES
                                         </td>
                                         <td class="p-2 text-sm font-semibold text-center text-gray-900 whitespace-nowrap ">
-                                            <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI TEMPOH</span>
+                                            <div class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI<br>TEMPOH</div>
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap ">
                                             589
@@ -473,7 +473,7 @@
                                             YES
                                         </td>
                                         <td class="p-2 text-sm font-semibold text-center text-gray-900 whitespace-nowrap ">
-                                            <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI TEMPOH</span>
+                                            <div class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI<br>TEMPOH</div>
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap ">
                                             589
