@@ -67,7 +67,7 @@
                     </table>
                 </div>
             </div>
-            <div class="grid grid-cols-6 gap-y-10 gap-x-20">
+            <div class="grid grid-cols-6 gap-y-10 gap-x-14">
                 {{-- maklumat warga kerja --}}
                 <div class="col-span-3">
                     <div class="mb-4">
@@ -120,6 +120,8 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="grid grid-cols-7 mt-8 gap-y-10 gap-x-14">
                 {{-- maklumat sesi penilaian --}}
                 <div class="col-span-2">
                     <div class="mb-4">
@@ -139,23 +141,23 @@
                     </div>
                 </div>
                 {{-- dihadiri oleh --}}
-                <div  class="col-span-4">
+                <div  class="col-span-5">
                     <div class="mb-4">
                         <div class="flex items-center justify-center border-4 border-gray-700 rounded-md bg-gradient-to-r from-emerald-500 to-emerald-900">
                             <h3 class="font-bold text-white text-s">DIHADIRI OLEH</h3>
                         </div>
                     </div>
                     <div class="">
-                        <div class="grid grid-cols-6 gap-4">
-                            <p class="flex items-center font-semibold">Nama Penilai (PYM)</p>
+                        <div class="grid grid-cols-7 gap-4">
+                            <p class="flex items-center col-span-2 font-semibold">Nama Penilai (PYM)</p>
                             <input type="text" id="small-input" class="block w-full col-span-2 p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 ">
                             <p class="flex items-center font-semibold">No Pekerja</p>
                             <input type="text" id="small-input" class="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 ">
-                            <button class="inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 ">
+                            <button class="inline-flex items-center justify-center px-3 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 ">
                                 Cari
                                 <x-icon name="search" class="w-4 h-4 ms-2"/>
                             </button>
-                            <p class="flex items-center font-semibold">Nama Pemudah Cara (PMC)</p>
+                            <p class="flex items-center col-span-2 font-semibold">Nama Pemudah Cara (PMC)</p>
                             <input type="text" id="small-input" class="block w-full col-span-2 p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 ">
                             <p class="flex items-center font-semibold">No Pekerja</p>
                             <input type="text" id="small-input" class="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 ">
