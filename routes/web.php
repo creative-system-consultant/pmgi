@@ -10,6 +10,7 @@ use App\Livewire\Auth\Verify;
 use App\Livewire\Home;
 use App\Livewire\Module\MaklumatWargaKerja;
 use App\Livewire\Module\PegawaiDinilai;
+use App\Livewire\Module\PegawaiMenilai;
 use App\Livewire\Module\Prestasi\Bulanan;
 use App\Livewire\Module\Prestasi\Kumulatif;
 use Illuminate\Support\Facades\Route;
@@ -65,8 +66,11 @@ Route::middleware('auth')->group(function () {
     // maklumat warga kerja
     Route::get('/maklumat-warga-kerja', MaklumatWargaKerja::class)->name('maklumat-warga-kerja');
 
-    // maklumat warga kerja
+    // PYD
     Route::get('/pegawai-dinilai', PegawaiDinilai::class)->name('pegawai-dinilai');
+
+    // PYM
+    Route::get('/pegawai-menilai', PegawaiMenilai::class)->name('pegawai-menilai');
 
     // prestasi
     Route::get('/prestasi/bulanan', Bulanan::class)->name('prestasi.bulanan');
