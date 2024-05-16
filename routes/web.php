@@ -8,10 +8,13 @@ use App\Livewire\Auth\Passwords\Email;
 use App\Livewire\Auth\Passwords\Reset;
 use App\Livewire\Auth\Verify;
 use App\Livewire\Home;
+use App\Livewire\HomeJtt;
 use App\Livewire\Module\MaklumatWargaKerja;
+use App\Livewire\Module\MesyuaratJtt;
 use App\Livewire\Module\PegawaiDinilai;
 use App\Livewire\Module\PegawaiMenilai;
 use App\Livewire\Module\PegawaiPemudahCara;
+use App\Livewire\Module\Perakuan;
 use App\Livewire\Module\Prestasi\Bulanan;
 use App\Livewire\Module\Prestasi\Kumulatif;
 use Illuminate\Support\Facades\Route;
@@ -49,17 +52,18 @@ Route::get('password/reset/{token}', Reset::class)
 
 Route::middleware('auth')->group(function () {
     Route::get('/', Home::class)->name('home');
+    Route::get('/dashboard-jtt', HomeJtt::class)->name('dashboard-jtt');
 
-    Route::get('email/verify', Verify::class)
-        ->middleware('throttle:6,1')
-        ->name('verification.notice');
+    // Route::get('email/verify', Verify::class)
+    //     ->middleware('throttle:6,1')
+    //     ->name('verification.notice');
 
-    Route::get('password/confirm', Confirm::class)
-        ->name('password.confirm');
+    // Route::get('password/confirm', Confirm::class)
+    //     ->name('password.confirm');
 
-    Route::get('email/verify/{id}/{hash}', EmailVerificationController::class)
-        ->middleware('signed')
-        ->name('verification.verify');
+    // Route::get('email/verify/{id}/{hash}', EmailVerificationController::class)
+    //     ->middleware('signed')
+    //     ->name('verification.verify');
 
     Route::post('logout', LogoutController::class)
         ->name('logout');
@@ -75,6 +79,12 @@ Route::middleware('auth')->group(function () {
 
     // PMC
     Route::get('/pegawai-pemudah-cara', PegawaiPemudahCara::class)->name('pegawai-pemudah-cara');
+
+    // perakuan
+    Route::get('/perakuan', Perakuan::class)->name('perakuan');
+
+    // mesyuarat JTT
+    Route::get('/mesyuarat-jtt', MesyuaratJtt::class)->name('mesyuarat-jtt');
 
     // prestasi
     Route::get('/prestasi/bulanan', Bulanan::class)->name('prestasi.bulanan');

@@ -11,7 +11,7 @@
                     <ul class="flex flex-col mt-4 space-x-6 text-sm font-medium lg:flex-row xl:space-x-8 lg:mt-0">
                         <li>
                             <a href="/"
-                                class="block rounded  {{ Route::currentRouteName() === 'home' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}"
+                                class="block rounded  {{ Route::currentRouteName() === 'home' || Route::currentRouteName() === 'dashboard-jtt' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}"
                                 aria-current="page"
                             >Dashboard</a>
                         </li>

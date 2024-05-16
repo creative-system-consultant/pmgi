@@ -13,11 +13,11 @@
                     <div class="mb-2">
                         <label for="punca" class="block mb-2 font-medium text-gray-900 text-md dark:text-white">Adakah sesi ini telah dilaksanakan dengan adil dan saksama bagi kedua-dua belah pihak?</label>
                         <div class="flex">
-                            <div class="flex items-center px-20 mr-4 border border-gray-200 rounded ps-4 dark:border-gray-700">
+                            <div class="flex items-center mr-4 border border-gray-200 rounded ps-4" style="padding-left: 2rem;padding-right: 2rem;">
                                 <input id="pmc1" type="radio" value="1" name="bordered-radio" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500">
                                 <label for="pmc1" class="w-full py-4 text-sm font-medium text-gray-900 ms-2 ">YA</label>
                             </div>
-                            <div class="flex items-center px-20 border border-gray-200 rounded ps-4 dark:border-gray-700">
+                            <div class="flex items-center mr-4 border border-gray-200 rounded ps-4" style="padding-left: 2rem;padding-right: 2rem;">
                                 <input checked id="pmc2" type="radio" value="2" name="bordered-radio" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500">
                                 <label for="pmc2" class="w-full py-4 text-sm font-medium text-gray-900 ms-2 ">TIDAK</label>
                             </div>
@@ -33,11 +33,11 @@
                     <div class="mb-2">
                         <label for="punca" class="block mb-2 font-medium text-gray-900 text-md dark:text-white">PYD memahami dengan jelas prestasi semasa dan bersetuju dengan pelan tindakan yang perlu dilaksanakan?</label>
                         <div class="flex">
-                            <div class="flex items-center px-20 mr-4 border border-gray-200 rounded ps-4 dark:border-gray-700">
+                            <div class="flex items-center mr-4 border border-gray-200 rounded ps-4" style="padding-left: 2rem;padding-right: 2rem;">
                                 <input id="bordered-radio-1" type="radio" value="" name="bordered-radio" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500">
                                 <label for="bordered-radio-1" class="w-full py-4 text-sm font-medium text-gray-900 ms-2 ">YA</label>
                             </div>
-                            <div class="flex items-center px-20 border border-gray-200 rounded ps-4 dark:border-gray-700">
+                            <div class="flex items-center mr-4 border border-gray-200 rounded ps-4" style="padding-left: 2rem;padding-right: 2rem;">
                                 <input checked id="bordered-radio-2" type="radio" value="" name="bordered-radio" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500">
                                 <label for="bordered-radio-2" class="w-full py-4 text-sm font-medium text-gray-900 ms-2 ">TIDAK</label>
                             </div>
@@ -54,11 +54,11 @@
                     <div class="mb-2">
                         <label for="punca" class="block mb-2 font-medium text-gray-900 text-md dark:text-white">Adakah penangguhan perlu dilakukan untuk PYD tersebut?</label>
                         <div class="flex">
-                            <div class="flex items-center px-20 mr-4 border border-gray-200 rounded ps-4 dark:border-gray-700">
+                            <div class="flex items-center mr-4 border border-gray-200 rounded ps-4" style="padding-left: 2rem;padding-right: 2rem;">
                                 <input id="bordered-radio-1" type="radio" value="" name="bordered-radio" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500">
                                 <label for="bordered-radio-1" class="w-full py-4 text-sm font-medium text-gray-900 ms-2 ">YA</label>
                             </div>
-                            <div class="flex items-center px-20 border border-gray-200 rounded ps-4 dark:border-gray-700">
+                            <div class="flex items-center mr-4 border border-gray-200 rounded ps-4" style="padding-left: 2rem;padding-right: 2rem;">
                                 <input checked id="bordered-radio-2" type="radio" value="" name="bordered-radio" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500">
                                 <label for="bordered-radio-2" class="w-full py-4 text-sm font-medium text-gray-900 ms-2 ">TIDAK</label>
                             </div>
