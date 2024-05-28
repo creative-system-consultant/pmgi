@@ -11,37 +11,56 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $table="FMS_USERS";
+    protected $guarded = [];
+    public $timestamps = false;
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $primaryKey = 'userid';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    public function bankOfficer()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasOne(BankOfficer::class, 'officer_id', 'userid');
+    }
+
+    protected function getBankOfficer()
+    {
+        return $this->bankOfficer()->first();
+    }
+
+    public function staffNo()
+    {
+        return optional($this->getBankOfficer())->staffno;
+    }
+
+    public function branchCode()
+    {
+        return optional($this->getBankOfficer())->branch_code;
+    }
+
+    public function branchName()
+    {
+        return optional(optional($this->getBankOfficer())->branch)->branch_name;
+    }
+
+    public function branchType()
+    {
+        return optional(optional($this->getBankOfficer())->branch)->branch_type;
+    }
+
+    public function stateCode()
+    {
+        return optional(optional($this->getBankOfficer())->branch)->state_code;
+    }
+
+    public function stateName()
+    {
+        return optional(optional(optional($this->getBankOfficer())->branch)->bnmState)->description;
+    }
+
+    public function position()
+    {
+        return optional($this->getBankOfficer())->officer_position;
     }
 }

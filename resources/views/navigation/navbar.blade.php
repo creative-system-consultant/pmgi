@@ -163,7 +163,10 @@
                     </ul>
                     <ul class="py-1 font-light text-gray-500 " aria-labelledby="dropdown">
                         <li>
-                            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 ">Sign out</a>
+                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="block px-4 py-2 text-sm hover:bg-gray-100 " role="menuitem" tabindex="-1" id="user-menu-item-1">Sign out</a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
                         </li>
                     </ul>
                 </div>

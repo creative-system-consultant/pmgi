@@ -13,14 +13,14 @@
                     Saya <span class="font-semibold underline">WAN MOHAMAD RIDZUAN BIN WAN JAAPAR</span> No. Kad Pengenalan <span class="font-semibold underline">910506-11-5087</span> , Nombor Pekerja <span class="font-semibold underline">4227</span> daripada Cawangan telah ditetapkan dan dipersetujui oleh saya di dalam Borang Prestasi (PMG-i) ini dalam masa dua (2) bulan mulai - <span class="font-semibold underline">AUG 2024</span> sehingga <span class="font-semibold underline">SEP 2024</span> . Jika saya masih gagal meningkatkan prestasi dan / atau mencapai sasaran seperti yang dinyatakan di dalam Borang Pemantauan Prestasi (PMG-i) ini, maka saya bersetuju bahawa saya boleh dikenakan tindakan tatatertib mengikut Manual Prosedur Pentadbiran dan Sumber Manusia, TEKUN Nasional (Etika Kerja - Kod Tatakelakuan termasuk dibuang kerja).
                 </p>
                 {{-- PYD --}}
-                <div class="p-6 my-4 bg-green-100 border border-green-400 rounded-lg shadow">
+                {{-- <div class="p-6 my-4 bg-green-100 border border-green-400 rounded-lg shadow">
                     <div class="flex">
                         <div class="mx-auto">
                             <p class="mb-4 font-semibold text-center">Sila masukkan nombor Kad Pengenalan<br>tuan / puan untuk pengesahan :</p>
                             <input type="text" id="small-input" class="block w-full p-2 font-semibold text-center text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 ">
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 {{-- PYM --}}
                 {{-- <div class="p-6 my-4 border rounded-lg shadow bg-amber-100" style="--tw-border-opacity: 1;border-color: rgb(251 191 36 / var(--tw-border-opacity));">
                     <div class="flex">
@@ -31,7 +31,7 @@
                     </div>
                 </div> --}}
                 {{-- PMC --}}
-                {{-- <div class="mt-4 mb-8">
+                <div class="mt-4 mb-8">
                     <div class="mb-2">
                         <label for="punca" class="block mb-2 font-semibold text-gray-900 text-md dark:text-white">Sila pilih keputusan penilaian PMC :</label>
                         <div class="flex">
@@ -61,7 +61,7 @@
                             <input type="text" id="small-input" class="block w-full p-2 font-semibold text-center text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 ">
                         </div>
                     </div>
-                </div> --}}
+                </div>
 
                 <div class="flex justify-center">
                     <button type="submit" class="inline-flex items-center py-2.5 px-4 font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800">

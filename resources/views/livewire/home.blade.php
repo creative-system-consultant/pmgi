@@ -8,11 +8,11 @@
                     <h3 class="mb-2 text-xl font-bold text-gray-900 ">Ringkasan</h3>
                     <span class="text-base font-normal text-gray-500 ">Ini adalah ringkasan status PMG-i anda</span>
                     <div class="grid grid-cols-2 mt-4 text-xs text-gray-700 gap-x-8 gap-y-0">
-                        <h3>NAMA</h3> <P>WAN MOHAMAD RIDZUAN BIN WAN JAAPAR</P>
-                        <h3>NO PEKERJA</h3> <P>4227</P>
-                        <h3>JAWATAN</h3> <P>PEMBANTU PEGAWAI</P>
-                        <h3>NEGERI</h3> <P>SELANGOR</P>
-                        <h3>CAWANGAN</h3> <P>SHAH ALAM</P>
+                        <h3>NAMA</h3> <P>{{ auth()->user()->username }}</P>
+                        <h3>NO PEKERJA</h3> <P>{{ auth()->user()->staffNo() }}</P>
+                        <h3>JAWATAN</h3> <P>{{ auth()->user()->position() }}</P>
+                        <h3>NEGERI</h3> <P>{{ auth()->user()->stateName() }}</P>
+                        <h3>CAWANGAN</h3> <P>{{ auth()->user()->branchName() }}</P>
                         <h3>TARIKH LANTIKAN</h3> <P>15 JULAI 2019</P>
                         <h3>TEMPOH KHIDMAT DI CAWANGAN SEMASA</h3> <P>4 TAHUN 9 BULAN 1 HARI</P>
                     </div>
@@ -185,7 +185,7 @@
                                     </tr>
                                     <tr class="bg-gray-50">
                                         <td class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                            JUL-18
+                                            AUG-18
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
                                             YES
@@ -232,7 +232,7 @@
                                     </tr>
                                     <tr>
                                         <td class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                            JUL-18
+                                            SEP-18
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
                                             YES
@@ -279,7 +279,7 @@
                                     </tr>
                                     <tr class="bg-gray-50">
                                         <td class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                            JUL-18
+                                            OCT-18
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
                                             YES
@@ -326,7 +326,7 @@
                                     </tr>
                                     <tr>
                                         <td class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                            JUL-18
+                                            NOV-18
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
                                             YES
@@ -373,7 +373,7 @@
                                     </tr>
                                     <tr class="bg-gray-50">
                                         <td class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                            JUL-18
+                                            DEC-18
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
                                             YES
@@ -420,7 +420,7 @@
                                     </tr>
                                     <tr>
                                         <td class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                            JUL-18
+                                            JAN-19
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
                                             YES
@@ -467,7 +467,7 @@
                                     </tr>
                                     <tr class="bg-gray-50">
                                         <td class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                            JUL-18
+                                            FEB-19
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
                                             YES

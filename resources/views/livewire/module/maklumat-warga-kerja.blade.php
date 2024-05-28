@@ -131,10 +131,18 @@
                     </div>
                     <div class="">
                         <div class="grid grid-cols-3 gap-4">
-                            <p class="flex items-center font-semibold">Tarikh</p>
-                            <input type="text" id="small-input" class="block w-full col-span-2 p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 ">
-                            <p class="flex items-center font-semibold">Masa</p>
-                            <input type="text" id="small-input" class="block w-full col-span-2 p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 ">
+                            <p class="flex items-center font-semibold">Tarikh / Masa</p>
+                            <div class="flex col-span-2">
+                                <input type="text" id="small-input" class="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 ">
+                                <span class="flex items-center mx-2 font-bold">/</span>
+                                <input type="text" id="small-input" class="block w-full col-span-2 p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 ">
+                            </div>
+                            <p class="flex items-center font-semibold">Jenis</p>
+                            <select id="small" class="flex-1 block col-span-2 p-2 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
+                                {{-- <option selected>Sila Pilh</option> --}}
+                                <option value="1" selected>Fizikal</option>
+                                <option value="2">Dalam Talian</option>
+                            </select>
                             <p class="flex items-center font-semibold">Tempat</p>
                             <input type="text" id="small-input" class="block w-full col-span-2 p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 ">
                         </div>

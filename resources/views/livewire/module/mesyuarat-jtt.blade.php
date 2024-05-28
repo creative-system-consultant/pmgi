@@ -37,40 +37,55 @@
             </div>
             <!-- content -->
             <div class="flex flex-col mt-8">
-                <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex ">
-                    <li class="w-full focus-within:z-10">
-                        <a
-                            href="#"
-                            class="inline-block w-full p-4 font-semibold text-red-600 border text-md bg-amber-100 border-amber-200 rounded-s-lg focus:ring-" aria-current="page"
-                            style="--tw-ring-opacity: 1;--tw-ring-color: rgb(252 211 77 / var(--tw-ring-opacity)); outline: 2px solid transparent;outline-offset: 2px;--tw-border-opacity: 1; border-color: rgb(253 230 138 / var(--tw-border-opacity));"
-                        >
-                            PENILAIAN
-                        </a>
-                    </li>
-                    <li class="w-full focus-within:z-10">
-                        <a
-                            href="#"
-                            class="inline-block w-full p-4 font-semibold bg-white border border-amber-200 rounded-e-lg text-md hover:text-amber-700 hover:bg-amber-50 focus:ring-4"
-                            style="--tw-ring-opacity: 1;--tw-ring-color: rgb(252 211 77 / var(--tw-ring-opacity)); outline: 2px solid transparent;outline-offset: 2px;--tw-border-opacity: 1; border-color: rgb(253 230 138 / var(--tw-border-opacity));"
-                        >
-                            STATUS SEMASA
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            {{-- tab content --}}
-            <div class="w-1/2 mx-auto mt-8">
-                <h3 class="text-lg font-medium text-center text-gray-900">Keputusan :</h3>
-                <select id="small" class="block w-1/2 p-2 mx-auto text-center text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
-                    <option selected>Sila Pilh</option>
-                    <option value="1">Diberi Tempoh</option>
-                </select>
-                <div class="flex items-center justify-center mt-2">
-                    <input type="text" id="negeri" class="block p-1 text-center text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500" style=" width: 10%;">
-                    <label for="negeri" class="block ml-4 font-medium text-gray-900 dark:text-white">Bulan</label>
+                <h3 class="mb-2 text-xl font-bold text-gray-900 ">Rekod PMGi </h3>
+                <div class="mt-4 mb-4">
+                    <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 ">
+                        <li class="me-2">
+                            <a href="#" class="inline-block px-4 py-3 text-white rounded-lg bg-primary-600 active" aria-current="page">PMGi 1</a>
+                        </li>
+                        <li class="me-2">
+                            <a href="#" class="inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-gray-100 ">PMGi 2</a>
+                        </li>
+                        <li class="me-2">
+                            <a href="#" class="inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-gray-100 ">PMGi 3</a>
+                        </li>
+                        <li class="me-2">
+                            <a href="#" class="inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-gray-100 ">Timbang Tara 1</a>
+                        </li>
+                        <li class="me-2">
+                            <a href="#" class="inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-gray-100 ">Timbang Tara 2</a>
+                        </li>
+                    </ul>
                 </div>
-                <h3 class="mt-6 text-lg font-medium text-center text-gray-900">Ulasan :</h3>
-                <textarea id="pelan" rows="3" class="block p-2.5 w-full text-md text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"></textarea>
+                <div class="items-center">
+                    <div class="mb-4 lg:mb-0">
+                        <div class="p-6 bg-gray-100 border border-gray-200 rounded-lg shadow">
+                            <div class="grid w-1/2 grid-cols-2 gap-2 mx-auto">
+                                <p class="flex items-center font-semibold">Tarikh</p>
+                                <input type="text" id="small-input" class="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 ">
+                                <p class="flex items-center font-semibold">Pegawai Yang Menilai</p>
+                                <input type="text" id="small-input" class="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 ">
+                                <p class="flex items-center font-semibold">Status</p>
+                                <input type="text" id="small-input" class="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 ">
+                                <p class="flex items-center font-semibold">Keputusan</p>
+                                <input type="text" id="small-input" class="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 ">
+                            </div>
+                        </div>
+                        <div class="w-1/2 mx-auto mt-8">
+                            <h3 class="text-lg font-medium text-center text-gray-900">Keputusan :</h3>
+                            <select id="small" class="block w-1/2 p-2 mx-auto text-center text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
+                                <option selected>Sila Pilh</option>
+                                <option value="1">Diberi Tempoh</option>
+                            </select>
+                            <div class="flex items-center justify-center mt-2">
+                                <input type="text" id="negeri" class="block p-1 text-center text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500" style=" width: 10%;">
+                                <label for="negeri" class="block ml-4 font-medium text-gray-900 dark:text-white">Bulan</label>
+                            </div>
+                            <h3 class="mt-6 text-lg font-medium text-center text-gray-900">Ulasan :</h3>
+                            <textarea id="pelan" rows="3" class="block p-2.5 w-full text-md text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"></textarea>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="flex justify-center mt-4">
                 <button type="submit" class="inline-flex items-center py-2.5 px-4 font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
