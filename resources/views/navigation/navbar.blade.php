@@ -19,6 +19,11 @@
                             <a href="{{ route('maklumat-warga-kerja') }}" class="block {{ Route::currentRouteName() === 'maklumat-warga-kerja' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Maklumat Warga Kerja</a>
                         </li>
                         <li>
+                            <a href="{{ route('rekod-pmgi') }}" class="block {{ Route::currentRouteName() === 'rekod-pmgi' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">
+                                Rekod PMGi
+                            </a>
+                        </li>
+                        <li>
                             <button
                                 id="prestasiDropdownLink"
                                 data-dropdown-toggle="prestasiDropdown"

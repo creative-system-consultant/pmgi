@@ -5,9 +5,10 @@
             <div class="items-center">
                 <div class="mb-4 lg:mb-0">
                     <h3 class="mb-2 text-xl font-bold text-gray-900 ">Prestasi Kumulatif</h3>
-                    <span class="text-base font-normal text-gray-500 ">Prestasi Warga Kerja (Kumulatif) Mengikut Bulan</span>
+                    @if($search)
+                        <span class="text-base font-normal text-gray-500 ">Prestasi Warga Kerja (Kumulatif) Mengikut Bulan</span>
                         <div class="p-6 mt-4 border rounded-lg shadow bg-primary-100 border-primary-200 dark:bg-gray-800 dark:border-gray-700">
-                            <div class="grid grid-cols-6 gap-x-4 gap-y-2">
+                            <div class="grid grid-cols-7 gap-x-4 gap-y-2">
                                 <div>
                                     <label for="negeri" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Negeri</label>
                                     <input type="text" id="negeri" class="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500">
@@ -25,8 +26,12 @@
                                     <input type="text" id="no-pekerja" class="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500">
                                 </div>
                                 <div>
-                                    <label for="bulan" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Bulan</label>
-                                    <input type="text" id="bulan" class="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500">
+                                    <label for="dari" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Dari</label>
+                                    <input type="text" id="dari" class="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500">
+                                </div>
+                                <div>
+                                    <label for="hingga" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Hingga</label>
+                                    <input type="text" id="hingga" class="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500">
                                 </div>
                             </div>
                             <div class="flex justify-end">
@@ -38,13 +43,14 @@
                                 </div>
                             </div>
                         </div>
+                    @endif
                 </div>
             </div>
             <!-- Table -->
             <div class="flex flex-col mt-6">
                 <div class="overflow-x-auto">
                     <div class="inline-block min-w-full align-middle">
-                        <div class="overflow-hidden pl-1">
+                        <div class="pl-1 overflow-hidden">
                             <table class="min-w-full divide-y divide-gray-200 ">
                                 <thead class="bg-gray-50 ">
                                     <tr class="bg-gray-200">

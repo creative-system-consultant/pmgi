@@ -13,8 +13,8 @@
                         <h3>JAWATAN</h3> <P>{{ auth()->user()->position() }}</P>
                         <h3>NEGERI</h3> <P>{{ auth()->user()->stateName() }}</P>
                         <h3>CAWANGAN</h3> <P>{{ auth()->user()->branchName() }}</P>
-                        <h3>TARIKH LANTIKAN</h3> <P>15 JULAI 2019</P>
-                        <h3>TEMPOH KHIDMAT DI CAWANGAN SEMASA</h3> <P>4 TAHUN 9 BULAN 1 HARI</P>
+                        {{-- <h3>TARIKH LANTIKAN</h3> <P>15 JULAI 2019</P>
+                        <h3>TEMPOH KHIDMAT DI CAWANGAN SEMASA</h3> <P>4 TAHUN 9 BULAN 1 HARI</P> --}}
                     </div>
                 </div>
                 <div class="items-center">

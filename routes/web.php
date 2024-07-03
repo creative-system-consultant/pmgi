@@ -17,6 +17,7 @@ use App\Livewire\Module\PegawaiPemudahCara;
 use App\Livewire\Module\Perakuan;
 use App\Livewire\Module\Prestasi\Bulanan;
 use App\Livewire\Module\Prestasi\Kumulatif;
+use App\Livewire\Module\RekodPmgi;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -85,6 +86,9 @@ Route::middleware('auth')->group(function () {
 
     // mesyuarat JTT
     Route::get('/mesyuarat-jtt', MesyuaratJtt::class)->name('mesyuarat-jtt');
+
+    // rekod PMGi (individu)
+    Route::get('/rekod-pmgi', RekodPmgi::class)->name('rekod-pmgi');
 
     // prestasi
     Route::get('/prestasi/bulanan', Bulanan::class)->name('prestasi.bulanan');

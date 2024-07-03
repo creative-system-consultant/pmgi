@@ -49,12 +49,6 @@
                         <li class="me-2">
                             <a href="#" class="inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-gray-100 ">PMGi 3</a>
                         </li>
-                        <li class="me-2">
-                            <a href="#" class="inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-gray-100 ">Timbang Tara 1</a>
-                        </li>
-                        <li class="me-2">
-                            <a href="#" class="inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-gray-100 ">Timbang Tara 2</a>
-                        </li>
                     </ul>
                 </div>
                 <div class="items-center">
@@ -73,14 +67,19 @@
                         </div>
                         <div class="w-1/2 mx-auto mt-8">
                             <h3 class="text-lg font-medium text-center text-gray-900">Keputusan :</h3>
-                            <select id="small" class="block w-1/2 p-2 mx-auto text-center text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
-                                <option selected>Sila Pilh</option>
+                            <select id="small" wire:model.live="result" class="block w-1/2 p-2 mx-auto text-center text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
+                                <option selected>Sila Pilih</option>
                                 <option value="1">Diberi Tempoh</option>
+                                <option value="2">Domestic Inquiry (DI)</option>
                             </select>
-                            <div class="flex items-center justify-center mt-2">
-                                <input type="text" id="negeri" class="block p-1 text-center text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500" style=" width: 10%;">
-                                <label for="negeri" class="block ml-4 font-medium text-gray-900 dark:text-white">Bulan</label>
-                            </div>
+
+                            @if($result == 1)
+                                <div class="flex items-center justify-center mt-2">
+                                    <input type="text" id="negeri" class="block p-1 text-center text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500" style=" width: 10%;">
+                                    <label for="negeri" class="block ml-4 font-medium text-gray-900 dark:text-white">Bulan</label>
+                                </div>
+                            @endif
+
                             <h3 class="mt-6 text-lg font-medium text-center text-gray-900">Ulasan :</h3>
                             <textarea id="pelan" rows="3" class="block p-2.5 w-full text-md text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"></textarea>
                         </div>

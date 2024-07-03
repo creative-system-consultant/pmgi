@@ -41,6 +41,8 @@
     </head>
 
     <body>
+        <x-dialog />
+
         @yield('body')
     </body>
 </html>

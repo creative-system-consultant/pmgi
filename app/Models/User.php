@@ -29,6 +29,11 @@ class User extends Authenticatable
         return $this->bankOfficer()->first();
     }
 
+    public function icNo()
+    {
+        return optional($this->getBankOfficer())->nokp;
+    }
+
     public function staffNo()
     {
         return optional($this->getBankOfficer())->staffno;
