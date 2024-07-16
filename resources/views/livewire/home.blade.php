@@ -64,459 +64,145 @@
             </div>
             <!-- Table -->
             <div class="flex flex-col mt-6">
-                <div class="overflow-x-auto">
-                    <div class="inline-block min-w-full align-middle">
-                        <div class="overflow-hidden">
-                            <table class="min-w-full divide-y divide-gray-200 ">
-                                <thead class="bg-gray-50 ">
-                                    <tr class="bg-gray-200">
-                                        <th class="bg-white" colspan="3"></th>
-                                        <th scope="col" colspan="3" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x ">
-                                            BILANGAN
-                                        </th>
-                                        <th scope="col" colspan="3" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x ">
-                                            KUTIPAN TANPA KONTRAK-I
-                                        </th>
-                                        <th scope="col" colspan="2" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x ">
-                                            KUTIPAN KONTRAK-I
-                                        </th>
-                                        <th scope="col" colspan="2" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x ">
-                                            LAWATAN
-                                        </th>
-                                        <th scope="col" colspan="2" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x ">
-                                            PRESTASI NPF
-                                        </th>
-                                    </tr>
-                                    <tr class="bg-gray-100">
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
-                                            BULAN
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
-                                            STATUS<br>PMG-I
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
-                                            KEPUTUSAN
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-l border-black border-dashed ">
-                                            BIL.<br>SELIAAN
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
-                                            BIL<br>MEMBAYAR
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-r border-black border-dashed ">
-                                            %<br>MEMBAYAR
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
-                                            PK (RM)
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
-                                            DK (RM)
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-r border-black border-dashed ">
-                                            % DK
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
-                                            BIL
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-r border-black border-dashed ">
-                                            RM
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
-                                            BIL<br>LAWATAN
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-r border-black border-dashed ">
-                                            %<br>LAWAT
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
-                                            OS - RM (% NPF)<br>≥ 2015
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-r border-black border-dashed ">
-                                            BEZA SASARAN NPF<br>≥2015 @ ≤25%
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white ">
-                                    <tr>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                            JUL-18
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            YES
-                                        </td>
-                                        <td class="p-2 text-sm font-semibold text-center text-gray-900 whitespace-nowrap ">
-                                            <div class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI<br>TEMPOH</div>
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap ">
-                                            589
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            313
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            53.1%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            127,027.49
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            111,293.48
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            87.61%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            -
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            -
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            402
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            68.3%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            37.08
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            12.08
-                                        </td>
-                                    </tr>
-                                    <tr class="bg-gray-50">
-                                        <td class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                            AUG-18
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            YES
-                                        </td>
-                                        <td class="p-2 text-sm font-semibold text-center text-gray-900 whitespace-nowrap ">
-                                            <div class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI<br>TEMPOH</div>
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap ">
-                                            589
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            313
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            53.1%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            127,027.49
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            111,293.48
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            87.61%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            -
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            -
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            402
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            68.3%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            37.08
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            12.08
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                            SEP-18
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            YES
-                                        </td>
-                                        <td class="p-2 text-sm font-semibold text-center text-gray-900 whitespace-nowrap ">
-                                            <div class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI<br>TEMPOH</div>
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap ">
-                                            589
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            313
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            53.1%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            127,027.49
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            111,293.48
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            87.61%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            -
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            -
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            402
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            68.3%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            37.08
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            12.08
-                                        </td>
-                                    </tr>
-                                    <tr class="bg-gray-50">
-                                        <td class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                            OCT-18
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            YES
-                                        </td>
-                                        <td class="p-2 text-sm font-semibold text-center text-gray-900 whitespace-nowrap ">
-                                            <div class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI<br>TEMPOH</div>
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap ">
-                                            589
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            313
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            53.1%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            127,027.49
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            111,293.48
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            87.61%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            -
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            -
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            402
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            68.3%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            37.08
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            12.08
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                            NOV-18
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            YES
-                                        </td>
-                                        <td class="p-2 text-sm font-semibold text-center text-gray-900 whitespace-nowrap ">
-                                            <div class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI<br>TEMPOH</div>
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap ">
-                                            589
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            313
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            53.1%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            127,027.49
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            111,293.48
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            87.61%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            -
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            -
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            402
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            68.3%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            37.08
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            12.08
-                                        </td>
-                                    </tr>
-                                    <tr class="bg-gray-50">
-                                        <td class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                            DEC-18
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            YES
-                                        </td>
-                                        <td class="p-2 text-sm font-semibold text-center text-gray-900 whitespace-nowrap ">
-                                            <div class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI<br>TEMPOH</div>
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap ">
-                                            589
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            313
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            53.1%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            127,027.49
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            111,293.48
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            87.61%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            -
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            -
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            402
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            68.3%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            37.08
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            12.08
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                            JAN-19
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            YES
-                                        </td>
-                                        <td class="p-2 text-sm font-semibold text-center text-gray-900 whitespace-nowrap ">
-                                            <div class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI<br>TEMPOH</div>
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap ">
-                                            589
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            313
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            53.1%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            127,027.49
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            111,293.48
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            87.61%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            -
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            -
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            402
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            68.3%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            37.08
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            12.08
-                                        </td>
-                                    </tr>
-                                    <tr class="bg-gray-50">
-                                        <td class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                            FEB-19
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            YES
-                                        </td>
-                                        <td class="p-2 text-sm font-semibold text-center text-gray-900 whitespace-nowrap ">
-                                            <div class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI<br>TEMPOH</div>
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap ">
-                                            589
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            313
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            53.1%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            127,027.49
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            111,293.48
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            87.61%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            -
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            -
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            402
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            68.3%
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            37.08
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            12.08
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                @if($officerDatas->isNotEmpty())
+                    <div class="overflow-x-auto">
+                        <div class="inline-block min-w-full align-middle">
+                            <div class="overflow-hidden">
+                                <table class="min-w-full divide-y divide-gray-200 ">
+                                    <thead class="bg-gray-50 ">
+                                        <tr class="bg-gray-200">
+                                            <th class="bg-white" colspan="3"></th>
+                                            <th scope="col" colspan="3" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x ">
+                                                BILANGAN
+                                            </th>
+                                            <th scope="col" colspan="3" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x ">
+                                                KUTIPAN TANPA KONTRAK-I
+                                            </th>
+                                            <th scope="col" colspan="2" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x ">
+                                                KUTIPAN KONTRAK-I
+                                            </th>
+                                            <th scope="col" colspan="2" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x ">
+                                                LAWATAN
+                                            </th>
+                                            <th scope="col" colspan="2" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x ">
+                                                PRESTASI NPF
+                                            </th>
+                                        </tr>
+                                        <tr class="bg-gray-100">
+                                            <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
+                                                BULAN
+                                            </th>
+                                            <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
+                                                STATUS<br>PMG-I
+                                            </th>
+                                            <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
+                                                KEPUTUSAN
+                                            </th>
+                                            <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-l border-black border-dashed ">
+                                                BIL.<br>SELIAAN
+                                            </th>
+                                            <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
+                                                BIL<br>MEMBAYAR
+                                            </th>
+                                            <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-r border-black border-dashed ">
+                                                %<br>MEMBAYAR
+                                            </th>
+                                            <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
+                                                PK (RM)
+                                            </th>
+                                            <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
+                                                DK (RM)
+                                            </th>
+                                            <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-r border-black border-dashed ">
+                                                % DK
+                                            </th>
+                                            <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
+                                                BIL
+                                            </th>
+                                            <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-r border-black border-dashed ">
+                                                RM
+                                            </th>
+                                            <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
+                                                BIL<br>LAWATAN
+                                            </th>
+                                            <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-r border-black border-dashed ">
+                                                %<br>LAWAT
+                                            </th>
+                                            <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
+                                                OS - RM (% NPF)<br>≥ 2015
+                                            </th>
+                                            <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-r border-black border-dashed ">
+                                                BEZA SASARAN NPF<br>≥2015 @ ≤25%
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white ">
+                                        @foreach ($officerDatas as $index => $officerData)
+                                            <tr class="{{ $index % 2 != 0 ? 'bg-gray-50' : '' }}">
+                                                <td class="p-2 text-xs font-normal text-center text-gray-900 uppercase whitespace-nowrap">
+                                                    {{ $officerData->report_date }}
+                                                </td>
+                                                <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap ">
+                                                    @isset($pmgiLevels[$officerData->pmgi_level])
+                                                        <p class="font-bold text-red-600">{{ $pmgiLevels[$officerData->pmgi_level] }}</p>
+                                                    @else
+                                                        PENDING
+                                                    @endisset
+                                                </td>
+                                                <td class="p-2 text-xs font-semibold text-center text-gray-900 whitespace-nowrap ">
+                                                    @isset($pmgiResults[$officerData->pmgi_level][$officerData->pmgi_result])
+                                                        <div class="{{ $pmgiResults[$officerData->pmgi_level][$officerData->pmgi_result]['class'] }} text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100">
+                                                            {!! $pmgiResults[$officerData->pmgi_level][$officerData->pmgi_result]['text'] !!}
+                                                        </div>
+                                                    @elseif(in_array($officerData->pmgi_level, ['PM1', 'PM2']))
+                                                        <div class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100">DIBERI<br>TEMPOH</div>
+                                                    @endisset
+                                                </td>
+                                                <td class="p-2 text-xs font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap ">
+                                                    {{ number_format($officerData->bil_selia) }}
+                                                </td>
+                                                <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap ">
+                                                    {{ number_format($officerData->bil_dapat_kutip) }}
+                                                </td>
+                                                <td class="p-2 text-xs font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
+                                                    {{ number_format(($officerData->bil_dapat_kutip / $officerData->bil_selia) * 100, 2) }}%
+                                                </td>
+                                                <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap ">
+                                                    {{ number_format($officerData->rm_patut_kutip, 2) }}
+                                                </td>
+                                                <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap ">
+                                                    {{ number_format($officerData->rm_dapat_kutip, 2) }}
+                                                </td>
+                                                <td class="p-2 text-xs font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
+                                                    {{ number_format($officerData->rm_dapat_kutip_pts, 2) }}%
+                                                </td>
+                                                <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap ">
+                                                    -
+                                                </td>
+                                                <td class="p-2 text-xs font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
+                                                    -
+                                                </td>
+                                                <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap ">
+                                                    {{ number_format($officerData->bil_lawat) }}
+                                                </td>
+                                                <td class="p-2 text-xs font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
+                                                    {{ number_format($officerData->bil_lawat_pts) }}%
+                                                </td>
+                                                <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap ">
+                                                    -
+                                                </td>
+                                                <td class="p-2 text-xs font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
+                                                    -
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
+
             </div>
         </div>
 
@@ -529,7 +215,11 @@
                         <span class="text-xl font-bold leading-none text-gray-900 sm:text-2xl ">Bil. Seliaan vs Bil. Membayar</span>
                     </div>
                 </div>
-                <div id="bil-bayar-chart"></div>
+                @if($officerDatas->isNotEmpty())
+                    <div id="bil-bayar-chart"></div>
+                @else
+                    <img src="{{ asset('image/illustrations/no-data.svg') }}" alt="astronaut image">
+                @endif
             </div>
             <!-- Bar chart -->
             <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 ">
@@ -538,7 +228,11 @@
                         <span class="text-2xl font-bold leading-none text-gray-900 sm:text-2xl ">Patut Kutip vs Dapat Kutip</span>
                     </div>
                 </div>
-                <div class="w-full" id="pk-dk-chart"></div>
+                @if($officerDatas->isNotEmpty())
+                    <div class="w-full" id="pk-dk-chart"></div>
+                @else
+                    <img src="{{ asset('image/illustrations/no-data.svg') }}" alt="astronaut image">
+                @endif
             </div>
             <!-- pie chart -->
             <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 ">
@@ -547,7 +241,11 @@
                         <span class="text-2xl font-bold leading-none text-gray-900 sm:text-2xl ">Lawatan</span>
                     </div>
                 </div>
-                <div id="lawatan-chart"></div>
+                @if($officerDatas->isNotEmpty())
+                    <div id="lawatan-chart"></div>
+                @else
+                    <img src="{{ asset('image/illustrations/no-data.svg') }}" alt="astronaut image">
+                @endif
             </div>
         </div>
 
@@ -951,4 +649,9 @@
             </div>
         </div>
     </div>
+
+    <script>
+        window.chartData = @json($officerDatas);
+    </script>
+
 </main>
