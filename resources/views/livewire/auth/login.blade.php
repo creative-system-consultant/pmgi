@@ -27,7 +27,7 @@
             </div>
             <div>
                 <label for="password" class="block mb-2 text-sm font-medium text-gray-900 ">Your Password</label>
-                <input wire:model="password" type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 @error('password') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror" required>
+                <input wire:model="password" type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 @error('password') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror" @if($isProduction) required @endif>
 
                 @error('password')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>

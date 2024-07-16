@@ -19,10 +19,18 @@ class Login extends Component
     /** @var bool */
     public $remember = false;
 
-    protected $rules = [
-        'userId' => ['required'],
-        'password' => ['required'],
-    ];
+    protected function rules()
+    {
+        $rules = [
+            'userId' => ['required'],
+        ];
+
+        if (app()->environment('production')) {
+            $rules['password'] = ['required'];
+        }
+
+        return $rules;
+    }
 
     public function authenticate()
     {
@@ -35,11 +43,14 @@ class Login extends Component
             return;
         }
 
-        $savedpassword = LoginService::decrypting($user->userpassword);
+        // Check if the environment is not production
+        if (app()->environment('production')) {
+            $savedpassword = LoginService::decrypting($user->userpassword);
 
-        if ($savedpassword !== $this->password) {
-            $this->addError('password', trans('auth.failed'));
-            return;
+            if ($savedpassword !== $this->password) {
+                $this->addError('password', trans('auth.failed'));
+                return;
+            }
         }
 
         Auth::login($user);
@@ -49,6 +60,8 @@ class Login extends Component
 
     public function render()
     {
-        return view('livewire.auth.login')->extends('layouts.auth');
+        return view('livewire.auth.login', [
+            'isProduction' => app()->environment('production')
+        ])->extends('layouts.auth');
     }
 }
