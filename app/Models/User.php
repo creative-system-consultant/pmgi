@@ -68,4 +68,9 @@ class User extends Authenticatable
     {
         return optional($this->getBankOfficer())->officer_position;
     }
+
+    public function roles()
+    {
+        return $this->belongsToMany(SettUalRole::class, 'PMGI_SETT_UAL_USER_HAS_ROLE', 'USERID', 'ROLE_ID');
+    }
 }

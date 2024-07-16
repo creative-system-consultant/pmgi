@@ -45,11 +45,23 @@
                                 </ul>
                             </div>
                         </li>
-                        <li>
+                        {{-- <li>
                             <a href="#" class="block text-gray-700 hover:text-primary-700">Laporan</a>
-                        </li>
+                        </li> --}}
                         <li>
-                            <a href="#" class="block text-gray-700 hover:text-primary-700">Tetapan</a>
+                            <button id="tetapanDropdownLink" data-dropdown-toggle="tetapanDropdown" class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium  border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-primary-700 md:p-0 md:w-auto
+                                {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'tetapan') ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">
+                                Tetapan
+                                <x-icon name="chevron-down" class="w-4 h-4 ml-1" />
+                            </button>
+
+                            <div id="tetapanDropdown" class="z-20 hidden font-normal bg-white divide-y divide-gray-100 rounded shadow w-44 " style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(769px, 52px);" data-popper-placement="bottom">
+                                <ul class="py-1 text-sm text-gray-700 " aria-labelledby="dropdownLargeButton">
+                                    <li>
+                                        <a href="{{ route('tetapan.index') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.index' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Akses Pengguna</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
                     </ul>
                 </div>

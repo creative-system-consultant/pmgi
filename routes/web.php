@@ -18,6 +18,8 @@ use App\Livewire\Module\Perakuan;
 use App\Livewire\Module\Prestasi\Bulanan;
 use App\Livewire\Module\Prestasi\Kumulatif;
 use App\Livewire\Module\RekodPmgi;
+use App\Livewire\Module\Tetapan\Index;
+use App\Livewire\Module\Tetapan\Role;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -93,4 +95,7 @@ Route::middleware('auth')->group(function () {
     // prestasi
     Route::get('/prestasi/bulanan', Bulanan::class)->name('prestasi.bulanan');
     Route::get('/prestasi/kumulatif', Kumulatif::class)->name('prestasi.kumulatif');
+
+    // tetapan
+    Route::get('/tetapan/index', Index::class)->name('tetapan.index');
 });
