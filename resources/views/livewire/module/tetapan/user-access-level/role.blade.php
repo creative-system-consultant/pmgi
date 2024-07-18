@@ -17,24 +17,24 @@
                             </thead>
                             <tbody class="bg-white ">
                                 @forelse ($results as $result)
-                                    <tr class="even:bg-gray-100"">
-                                        <td class="p-2 text-sm font-normal tracking-tight text-left text-gray-800 whitespace-nowrap">{{ $result->name }}</td>
-                                        <td class="p-2 text-sm font-normal tracking-tight text-left text-gray-800 whitespace-nowrap">
-                                            <div class="grid grid-cols-3 gap-2">
-                                                @foreach ($result->pages as $data)
-                                                    <x-badge flat info label="{{ $data->page }}" />
-                                                @endforeach
-                                            </div>
-                                        </td>
-                                        <td class="p-2 text-sm font-normal tracking-tight text-center text-gray-800 whitespace-nowrap">
-                                            <x-button icon="pencil" info label="Kemaskini" wire:click="edit({{ $result->id }})" />
-                                            <x-button icon="trash" negative label="Padam" wire:click="remove({{ $result->id }})" />
-                                        </td>
-                                    </tr>
+                                <tr class="even:bg-gray-100"">
+                                        <td class="p-2 text-sm font-normal tracking-tight text-left text-gray-800  whitespace-nowrap">{{ $result->name }}</td>
+                                    <td class="p-2 text-sm font-normal tracking-tight text-left text-gray-800 whitespace-nowrap">
+                                        <div class="grid grid-cols-3 gap-2">
+                                            @foreach ($result->pages as $data)
+                                            <x-badge flat info label="{{ $data->page }}" />
+                                            @endforeach
+                                        </div>
+                                    </td>
+                                    <td class="p-2 text-sm font-normal tracking-tight text-center text-gray-800 whitespace-nowrap">
+                                        <x-button icon="pencil" info label="Kemaskini" wire:click="edit({{ $result->id }})" />
+                                        <x-button icon="trash" negative label="Padam" wire:click="remove({{ $result->id }})" />
+                                    </td>
+                                </tr>
                                 @empty
-                                    <tr>
-                                        <td colspan="3" class="p-2 text-sm font-semibold tracking-tight text-center text-gray-800 whitespace-nowrap">Tiada Data</td>
-                                    </tr>
+                                <tr>
+                                    <td colspan="3" class="p-2 text-sm font-semibold tracking-tight text-center text-gray-800 whitespace-nowrap">Tiada Data</td>
+                                </tr>
                                 @endforelse
                             </tbody>
                         </table>
@@ -47,16 +47,7 @@
     <x-modal blur wire:model="roleModal" align="center" max-width="lg">
         <x-card title="{{ $roleId ? 'Edit Kumpulan' : 'Tambah Kumpulan' }}">
             <x-input label="Nama Kumpulan" placeholder="Nama kumpulan" wire:model="name" />
-            <x-select
-                class="mt-2"
-                label="Halaman"
-                placeholder="Pilih halaman boleh diakses"
-                multiselect
-                :options="$options"
-                option-label="page"
-                option-value="id"
-                wire:model="page"
-            />
+            <x-select class="mt-2" label="Halaman" placeholder="Pilih halaman boleh diakses" multiselect :options="$options" option-label="page" option-value="id" wire:model="page" />
 
             <x-slot name="footer">
                 <div class="flex justify-end gap-x-4">

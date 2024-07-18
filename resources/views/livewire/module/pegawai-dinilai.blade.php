@@ -62,20 +62,17 @@
             @endif
                 <div class="flex items-center w-full px-4 py-2 rounded-lg bg-lime-300">
                     <h3 class="mr-4 text-lg font-medium text-gray-900">Masalah yang dihadapi :</h3>
-                    <x-select class="flex-1 block mr-4 text-sm text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                    <x-select class="flex-1 block w-24 mr-4 text-sm text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Sila Pilih"
                         multiselect
-                        :options="[
-                            ['value' => 1, 'label' => 'Tiada bimbingan daripada Pejabat Negeri'],
-                            ['value' => 2, 'label' => 'Masalah Kesihatan'],
-                            ['value' => 3, 'label' => 'Tiada tunjuk ajar daripada penyelia ( nyatakan masalah dan keperluan tersebut )']
-                        ]"
-                        option-label="label"
-                        option-value="value"
-                        wire:model.defer="model"
+                        :options="$problem"
+                        option-label="description"
+                        option-value="id"
+                        wire:model="model"
                     />
-                    <x-icon solid  name="information-circle" class="w-6 h-6 bg-white rounded-xl text-primary-500" />
+                    <x-icon solid  name="information-circle" class="w-6 h-6 bg-white cursor-pointer rounded-xl text-primary-500" wire:click="openInfo" />
                 </div>
+
                 <div class="my-4">
                     <label for="punca" class="block mb-2 font-medium text-gray-900 text-md dark:text-white">Nyatakan punca bagi masalah tersebut :</label>
                     <textarea id="punca" rows="3" class="block p-2.5 w-full text-md text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"></textarea>
@@ -104,4 +101,13 @@
             </div>
         </div>
     </div>
+
+    <x-modal wire:model="infoModal" blur align="center" max-width="6xl">
+        <x-card title="Info Pegawai Yang Dinilai">
+            <div class="flex items-center justify-center">
+                <img class="w-90% h-90%" src="{{ asset('storage/' . $savedFile->filename) }}" alt="Tiada Fail">
+            </div>
+        </x-card>
+    </x-modal>
+
 </main>

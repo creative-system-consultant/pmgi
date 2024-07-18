@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Module\Tetapan;
+namespace App\Livewire\Module\Tetapan\UserAccessLevel;
 
 use App\Models\SettUalPage;
 use App\Models\SettUalRole;
@@ -108,9 +108,9 @@ class Role extends Component
     {
         $this->result = SettUalRole::all();
 
-        return view('livewire.module.tetapan.role', [
+        return view('livewire.module.tetapan.user-access-level.role', [
             'results' => $this->result,
             'options' => $this->data
-        ])->extends('layouts.main');
+        ]);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Module\Tetapan;
+namespace App\Livewire\Module\Tetapan\UserAccessLevel;
 
 use App\Models\SettUalRole;
 use App\Models\SettUalUserHasRole;
@@ -66,7 +66,7 @@ class UserAccess extends Component
 
     public function render()
     {
-        return view('livewire.module.tetapan.user-access', [
+        return view('livewire.module.tetapan.user-access-level.user-access', [
             'results' => $this->results,
             'options' => $this->option
         ]);

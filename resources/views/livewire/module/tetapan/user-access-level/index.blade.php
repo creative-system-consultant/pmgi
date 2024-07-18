@@ -22,15 +22,14 @@
                     </div>
                 </div>
             </div>
-    </div>
+        </div>
 
-    {{-- result --}}
-    <div x-show="tab === 'user-access'" x-transition>
-        <livewire:module.tetapan.user-access />
-    </div>
+        {{-- result --}}
+        <div x-show="tab === 'user-access'" x-transition>
+            <livewire:module.tetapan.user-access-level.user-access />
+        </div>
 
-    <div x-show="tab === 'role'" x-transition>
-        <livewire:module.tetapan.role />
-    </div>
-
+        <div x-show="tab === 'role'" x-transition>
+            <livewire:module.tetapan.user-access-level.role />
+        </div>
 </main>
