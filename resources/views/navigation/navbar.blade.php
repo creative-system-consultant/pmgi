@@ -55,10 +55,16 @@
                                 <x-icon name="chevron-down" class="w-4 h-4 ml-1" />
                             </button>
 
-                            <div id="tetapanDropdown" class="z-20 hidden font-normal bg-white divide-y divide-gray-100 rounded shadow w-44 " style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(769px, 52px);" data-popper-placement="bottom">
+                            <div id="tetapanDropdown" class="z-20 hidden font-normal bg-white divide-y divide-gray-100 rounded shadow w-50 " style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(769px, 52px);" data-popper-placement="bottom">
                                 <ul class="py-1 text-sm text-gray-700 " aria-labelledby="dropdownLargeButton">
                                     <li>
-                                        <a href="{{ route('tetapan.index') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.index' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Akses Pengguna</a>
+                                        <a href="{{ route('tetapan.user-access') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.user-access' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Akses Pengguna</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('tetapan.info-pegawai') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.info-pegawai' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Info PYD, PYM & PMC</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('tetapan.urusetia-negeri') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.urusetia-negeri' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Lantikan Urusetia Negeri</a>
                                     </li>
                                 </ul>
                             </div>

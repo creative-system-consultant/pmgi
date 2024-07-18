@@ -19,7 +19,10 @@ use App\Livewire\Module\Prestasi\Bulanan;
 use App\Livewire\Module\Prestasi\Kumulatif;
 use App\Livewire\Module\RekodPmgi;
 use App\Livewire\Module\Tetapan\Index;
+use App\Livewire\Module\Tetapan\OfficerInfo\Index as OfficerInfoIndex;
 use App\Livewire\Module\Tetapan\Role;
+use App\Livewire\Module\Tetapan\StateSecretariat\Index as StateSecretariatIndex;
+use App\Livewire\Module\Tetapan\UserAccessLevel\Index as UserAccessLevelIndex;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -97,5 +100,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/prestasi/kumulatif', Kumulatif::class)->name('prestasi.kumulatif');
 
     // tetapan
-    Route::get('/tetapan/index', Index::class)->name('tetapan.index');
+    Route::get('/tetapan/user-access', UserAccessLevelIndex::class)->name('tetapan.user-access');
+    Route::get('/tetapan/info-pegawai', OfficerInfoIndex::class)->name('tetapan.info-pegawai');
+    Route::get('/tetapan/urusetia-negeri', StateSecretariatIndex::class)->name('tetapan.urusetia-negeri');
 });
