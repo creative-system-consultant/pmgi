@@ -21,4 +21,9 @@ class BnmStatecode extends Model
     {
         return $this->hasMany(Branch::class, 'state_code', 'code');
     }
+
+    public function committee()
+    {
+        return $this->hasOne(SettStateCommittee::class, 'statecode', 'code');
+    }
 }

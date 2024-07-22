@@ -41,12 +41,32 @@
                 visibility: hidden;
                 overflow: hidden
             }
+
+            #globalLoading {
+                display: none;
+                position: fixed;
+                z-index: 9999;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                background-color: rgba(0,0,0,0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
         </style>
         @stack('style')
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </head>
 
     <body>
         <x-dialog blur="md" align="center" />
+
+        <div id="globalLoading">
+            <img class="h-96" src="{{ asset('image/tekun-loading.gif') }}" alt="Loading...">
+        </div>
 
         @yield('body')
     </body>
