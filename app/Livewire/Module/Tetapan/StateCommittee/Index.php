@@ -30,7 +30,9 @@ class Index extends Component
                 $query->select('officer_id', 'branch_code');
             }, 'bankOfficer.branch' => function ($query) {
                 $query->select('branch_code', 'branch_name');
-            }])->get(['userid', 'username']);
+            }])
+            ->where('userstatus', 1)
+            ->get(['userid', 'username']);
         });
 
         $this->initializeSelectedUsers();
@@ -39,7 +41,7 @@ class Index extends Component
 
     protected function initializeSelectedUsers()
     {
-        $states = BnmStatecode::whereNotIn('code', ['00', '99'])->get();
+        $states = BnmStatecode::whereNotIn('code', ['00', '15', '16', '99'])->get();
         $existingAssignments = SettStateCommittee::whereIn('statecode', $states->pluck('code'))->get();
 
         foreach ($states as $state) {
@@ -125,7 +127,7 @@ class Index extends Component
     public function render()
     {
         $data = BnmStatecode::with('committee')
-            ->whereNotIn('code', ['00', '99'])
+            ->whereNotIn('code', ['00', '15', '16', '99'])
             ->get();
 
         return view('livewire.module.tetapan.state-committee.index', [

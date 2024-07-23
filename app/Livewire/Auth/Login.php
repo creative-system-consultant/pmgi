@@ -36,7 +36,9 @@ class Login extends Component
     {
         $this->validate();
 
-        $user = User::where('userid', strtoupper($this->userId))->first();
+        $user = User::where('userid', strtoupper($this->userId))
+                        ->where('userstatus', 1)
+                        ->first();
 
         if (!$user) {
             $this->addError('userId', trans('auth.notFound'));

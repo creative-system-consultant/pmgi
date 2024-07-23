@@ -26,12 +26,16 @@ class UserAccess extends Component
 
     public function find(): void
     {
-        $this->results = User::where('username', 'like', '%' . strtoupper($this->name) . '%')->get();
+        $this->results = User::where('username', 'like', '%' . strtoupper($this->name) . '%')
+                                ->where('userstatus', 1)
+                                ->get();
     }
 
     public function showModal($userId)
     {
-        $this->user = User::where('userid', $userId)->first();
+        $this->user = User::where('userid', $userId)
+                            ->where('userstatus', 1)
+                            ->first();
         $this->name = $this->user->username;
         $this->role = $this->user->roles->pluck('id')->toArray();
         $this->userAccessModal = true;
