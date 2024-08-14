@@ -5,32 +5,25 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class LantikanPymPmc extends Mailable
+class LantikanUrusetiaNegeri extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $fileUrl;
-    public $type;
     public $filepath;
 
-    public function __construct($fileUrl, $type, $filepath)
+    public function __construct($filepath)
     {
-        $this->fileUrl = $fileUrl;
-        $this->type = $type;
         $this->filepath = $filepath;
     }
 
     public function envelope(): Envelope
     {
-        ($this->type == 'pym') ? $title = 'Pegawai Yang Menilai' : $title = 'Pegawai Mudah Cara';
-
         return new Envelope(
-            subject: 'Lantikan sebagai '. $title .' bagi Pelaksanaan PMGi',
+            subject: 'Urusetia Pelaksanaan PMGi di peringkat Cawangan',
         );
     }
 
@@ -48,13 +41,10 @@ class LantikanPymPmc extends Mailable
                 'imageMime' => $imageMime,
             ]
         );
-
     }
 
     public function attachments(): array
     {
-        return [
-            Attachment::fromPath(public_path($this->fileUrl)),
-        ];
+        return [];
     }
 }

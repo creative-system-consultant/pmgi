@@ -5,16 +5,14 @@ namespace App\Livewire\Module\Lantikan\Evaluator;
 use App\Exports\EvaluatorSessionList;
 use App\Jobs\CleanupTemporaryFiles;
 use App\Jobs\SendLantikanPymPmcEmail;
-use App\Mail\LantikanPymPmc;
 use App\Models\BankOfficer;
 use App\Models\MntrSession;
 use App\Models\SettPymPmc;
+use App\Services\HtmlToImageService;
 use Carbon\Carbon;
-use Illuminate\Bus\Batch;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Maatwebsite\Excel\Facades\Excel;
@@ -23,6 +21,8 @@ use WireUi\Traits\Actions;
 abstract class BasePmgi extends Component
 {
     use Actions;
+
+    private $htmlToImageService;
 
     public $stateCode;
     public $selectedDate;
@@ -55,6 +55,11 @@ abstract class BasePmgi extends Component
     }
 
     protected $listeners = ['refreshPmgi' => 'updateReportDate'];
+
+    public function __construct()
+    {
+        $this->htmlToImageService = new HtmlToImageService();
+    }
 
     public function mount($month, $year)
     {
@@ -105,10 +110,10 @@ abstract class BasePmgi extends Component
             $pymEmail,
             $pmcEmail,
             $fileUrl,
-            $pymImagePath['imagePath'],
-            $pymImagePath['htmlPath'],
-            $pmcImagePath ? $pmcImagePath['imagePath'] : null,
-            $pmcImagePath ? $pmcImagePath['htmlPath'] : null,
+            $pymImagePath['image'],
+            $pymImagePath['html'],
+            $pmcImagePath ? $pmcImagePath['image'] : null,
+            $pmcImagePath ? $pmcImagePath['html'] : null,
         );
 
         $this->resetAfterSave();
@@ -181,41 +186,16 @@ abstract class BasePmgi extends Component
         $lastDate = Carbon::create($this->selectedDate->format('Y'), $this->selectedDate->format('m'), 20)->format('d-m-Y');
         $userId = $type === 'pym' ? $this->selectedPym : $this->selectedPmc;
 
-        // Generate the HTML content from the Blade view
-        $htmlContent = view('emails.lantikan_pym_pmc', [
-            'type' => $type,
-            'session' => substr($this->getPmgiLevel(), -1),
-            'lastDate' => $lastDate,
-        ])->render();
-
-        // Define the directory and file paths with unique filenames
-        $directoryPath = storage_path('app/public/emails/');
-        $htmlFileName = "email_content_{$type}_{$userId}.html";
-        $htmlPath = $directoryPath . $htmlFileName;
-        $imageFileName = "email_image_{$type}_{$userId}.png";
-        $imagePath = $directoryPath . $imageFileName;
-
-        // Check if the directory exists, and create it if it doesn't
-        if (!file_exists($directoryPath)) {
-            mkdir($directoryPath, 0777, true);
-        }
-
-        // Save the HTML content to a temporary file
-        file_put_contents($htmlPath, $htmlContent);
-
-        // Convert the HTML to an image using wkhtmltoimage
-        Artisan::call('convert:html-to-image', [
-            'htmlPath' => $htmlPath,
-            'imagePath' => $imagePath,
-            '--quality' => 85,
-            '--format' => 'png',
-        ]);
-
-        // Return both paths as an array
-        return [
-            'htmlPath' => $htmlPath,
-            'imagePath' => $imagePath,
-        ];
+        return $this->htmlToImageService->generate(
+            'emails.lantikan_pym_pmc',
+            [
+                'type' => $type,
+                'session' => substr($this->getPmgiLevel(), -1),
+                'lastDate' => $lastDate,
+            ],
+            'emails/lantikan_pym_pmc/',
+            "email_content_{$type}_{$userId}"
+        );
     }
 
     private function sendEmails($pymEmail, $pmcEmail, $fileUrl, $pymImagePath, $pymHtmlPath, $pmcImagePath, $pmcHtmlPath)
@@ -236,7 +216,6 @@ abstract class BasePmgi extends Component
         // Dispatch the jobs as a chain
         Bus::chain($jobs)->dispatch();
     }
-
 
     private function resetAfterSave()
     {

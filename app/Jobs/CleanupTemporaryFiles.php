@@ -16,7 +16,7 @@ class CleanupTemporaryFiles implements ShouldQueue
     protected $htmlPaths;
     protected $fileUrl;
 
-    public function __construct($imagePaths, $htmlPaths, $fileUrl)
+    public function __construct($imagePaths, $htmlPaths, $fileUrl = null)
     {
         $this->imagePaths = $imagePaths;
         $this->htmlPaths = $htmlPaths;
@@ -40,9 +40,11 @@ class CleanupTemporaryFiles implements ShouldQueue
         }
 
         // Cleanup Excel file
-        $filePath = public_path($this->fileUrl);
-        if (file_exists($filePath)) {
-            unlink($filePath);
+        if($this->fileUrl) {
+            $filePath = public_path($this->fileUrl);
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
         }
     }
 }
