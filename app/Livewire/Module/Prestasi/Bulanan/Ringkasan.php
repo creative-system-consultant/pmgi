@@ -11,7 +11,7 @@ class Ringkasan extends Component
     public function render()
     {
         $officerData = DB::table('PMGI_SUMM_MTH_OFFICER as a')
-            ->join('BANK_OFFICERS as b', 'a.officer_id', '=', 'b.officer_id')
+            ->join('PMGI_BANK_OFFICERS_NAZ as b', 'a.officer_id', '=', 'b.officer_id')
             ->select(
                 'a.report_date',
                 'a.officer_name',

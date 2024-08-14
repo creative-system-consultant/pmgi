@@ -9,7 +9,7 @@ class SummMthOfficer extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_SUMM_MTH_OFFICER";
+    protected $table="PMGI_NAZ_SUMM_MTH_OFFICER";
     protected $guarded = [];
     public $timestamps = false;
 }

@@ -19,6 +19,7 @@
         "vite": "^5.0"
     },
     "dependencies": {
-        "apexcharts": "^3.49.0"
+        "apexcharts": "^3.49.0",
+        "lottie-web": "^5.12.2"
     }
 }

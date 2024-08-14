@@ -45,6 +45,28 @@
                                 </ul>
                             </div>
                         </li>
+                        <li>
+                            <button
+                                id="lantikanDropdownLink"
+                                data-dropdown-toggle="lantikanDropdown"
+                                class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium  border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-primary-700 md:p-0 md:w-auto
+                                {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'lantikan') ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}"
+                            >
+                                Lantikan
+                                <x-icon name="chevron-down" class="w-4 h-4 ml-1" />
+                            </button>
+
+                            <div id="lantikanDropdown" class="z-20 hidden font-normal bg-white divide-y divide-gray-100 rounded shadow w-50 " style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(769px, 52px);" data-popper-placement="bottom">
+                                <ul class="py-1 text-sm text-gray-700 " aria-labelledby="dropdownLargeButton">
+                                    <li>
+                                        <a href="{{ route('lantikan.urusetia-negeri') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'lantikan.urusetia-negeri' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Lantikan Urusetia Negeri</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('lantikan.penilai') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'lantikan.penilai' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Lantikan PYM & PMC</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
                         {{-- <li>
                             <a href="#" class="block text-gray-700 hover:text-primary-700">Laporan</a>
                         </li> --}}
@@ -62,9 +84,6 @@
                                     </li>
                                     <li>
                                         <a href="{{ route('tetapan.info-pegawai') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.info-pegawai' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Info PYD, PYM & PMC</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('tetapan.urusetia-negeri') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.urusetia-negeri' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Lantikan Urusetia Negeri</a>
                                     </li>
                                 </ul>
                             </div>
@@ -163,10 +182,10 @@
 
                 <div class="z-50 hidden w-56 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow " id="userMenuDropdown" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(1712px, 58px);" data-popper-placement="bottom">
                     <div class="px-4 py-3">
-                        <span class="block text-sm font-semibold text-gray-900 ">Neil Sims</span>
-                        <span class="block text-sm font-light text-gray-500 truncate ">name@flowbite.com</span>
+                        <span class="block text-sm font-semibold text-gray-900 ">{{ auth()->user()->username }}</span>
+                        <span class="block text-sm font-light text-gray-500 truncate ">{{ auth()->user()->bankOfficer->email }}</span>
                     </div>
-                    <ul class="py-1 font-light text-gray-500 " aria-labelledby="userMenuDropdownButton">
+                    {{-- <ul class="py-1 font-light text-gray-500 " aria-labelledby="userMenuDropdownButton">
                         <li>
                             <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 ">My profile</a>
                         </li>
@@ -183,7 +202,7 @@
                             <a href="#" class="flex items-center px-4 py-2 text-sm hover:bg-gray-100 ">
                                 <x-icon solid name="collection" class="w-5 h-5 mr-2 text-gray-400" /> Collections</a>
                         </li>
-                    </ul>
+                    </ul> --}}
                     <ul class="py-1 font-light text-gray-500 " aria-labelledby="dropdown">
                         <li>
                             <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="block px-4 py-2 text-sm hover:bg-gray-100 " role="menuitem" tabindex="-1" id="user-menu-item-1">Sign out</a>

@@ -18,8 +18,9 @@ use App\Livewire\Module\Perakuan;
 use App\Livewire\Module\Prestasi\Bulanan;
 use App\Livewire\Module\Prestasi\Kumulatif;
 use App\Livewire\Module\RekodPmgi;
+use App\Livewire\Module\Lantikan\Evaluator\Index as EvaluatorIndex;
+use App\Livewire\Module\Lantikan\StateCommittee\Index as StateCommitteeIndex;
 use App\Livewire\Module\Tetapan\OfficerInfo\Index as OfficerInfoIndex;
-use App\Livewire\Module\Tetapan\StateCommittee\Index as StateCommitteeIndex;
 use App\Livewire\Module\Tetapan\UserAccessLevel\Index as UserAccessLevelIndex;
 use Illuminate\Support\Facades\Route;
 
@@ -97,8 +98,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/prestasi/bulanan', Bulanan::class)->name('prestasi.bulanan');
     Route::get('/prestasi/kumulatif', Kumulatif::class)->name('prestasi.kumulatif');
 
+    // lantikan
+    Route::get('/lantikan/urusetia-negeri', StateCommitteeIndex::class)->name('lantikan.urusetia-negeri');
+    Route::get('/lantikan/penilai', EvaluatorIndex::class)->name('lantikan.penilai');
+
     // tetapan
     Route::get('/tetapan/user-access', UserAccessLevelIndex::class)->name('tetapan.user-access');
     Route::get('/tetapan/info-pegawai', OfficerInfoIndex::class)->name('tetapan.info-pegawai');
-    Route::get('/tetapan/urusetia-negeri', StateCommitteeIndex::class)->name('tetapan.urusetia-negeri');
 });
