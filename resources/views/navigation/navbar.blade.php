@@ -15,79 +15,107 @@
                                 aria-current="page"
                             >Dashboard</a>
                         </li>
-                        <li>
-                            <a href="{{ route('maklumat-warga-kerja') }}" class="block {{ Route::currentRouteName() === 'maklumat-warga-kerja' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Maklumat Warga Kerja</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('rekod-pmgi') }}" class="block {{ Route::currentRouteName() === 'rekod-pmgi' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">
-                                Rekod PMGi
-                            </a>
-                        </li>
-                        <li>
-                            <button
-                                id="prestasiDropdownLink"
-                                data-dropdown-toggle="prestasiDropdown"
-                                class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium  border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-primary-700 md:p-0 md:w-auto
-                                {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'prestasi') ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}"
-                            >
-                                Prestasi
-                                <x-icon name="chevron-down" class="w-4 h-4 ml-1" />
-                            </button>
+                        @if(hasAccess('maklumat-warga-kerja'))
+                            <li>
+                                <a href="{{ route('maklumat-warga-kerja') }}" class="block {{ Route::currentRouteName() === 'maklumat-warga-kerja' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Maklumat Warga Kerja</a>
+                            </li>
+                        @endif
 
-                            <div id="prestasiDropdown" class="z-20 hidden font-normal bg-white divide-y divide-gray-100 rounded shadow w-44 " style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(769px, 52px);" data-popper-placement="bottom">
-                                <ul class="py-1 text-sm text-gray-700 " aria-labelledby="dropdownLargeButton">
-                                    <li>
-                                        <a href="{{ route('prestasi.bulanan') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'prestasi.bulanan' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Prestasi Bulanan</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('prestasi.kumulatif') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'prestasi.kumulatif' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Prestasi Kumulatif</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li>
-                            <button
-                                id="lantikanDropdownLink"
-                                data-dropdown-toggle="lantikanDropdown"
-                                class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium  border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-primary-700 md:p-0 md:w-auto
-                                {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'lantikan') ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}"
-                            >
-                                Lantikan
-                                <x-icon name="chevron-down" class="w-4 h-4 ml-1" />
-                            </button>
+                        @if(hasAccess('rekod-pmgi'))
+                            <li>
+                                <a href="{{ route('rekod-pmgi') }}" class="block {{ Route::currentRouteName() === 'rekod-pmgi' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">
+                                    Rekod PMGi
+                                </a>
+                            </li>
+                        @endif
 
-                            <div id="lantikanDropdown" class="z-20 hidden font-normal bg-white divide-y divide-gray-100 rounded shadow w-50 " style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(769px, 52px);" data-popper-placement="bottom">
-                                <ul class="py-1 text-sm text-gray-700 " aria-labelledby="dropdownLargeButton">
-                                    <li>
-                                        <a href="{{ route('lantikan.urusetia-negeri') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'lantikan.urusetia-negeri' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Lantikan Urusetia Negeri</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('lantikan.penilai') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'lantikan.penilai' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Lantikan PYM & PMC</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                        @if(hasAccess('prestasi-bulanan') || hasAccess('prestasi-kumulatif'))
+                            <li>
+                                <button
+                                    id="prestasiDropdownLink"
+                                    data-dropdown-toggle="prestasiDropdown"
+                                    class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium  border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-primary-700 md:p-0 md:w-auto
+                                    {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'prestasi') ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}"
+                                >
+                                    Prestasi
+                                    <x-icon name="chevron-down" class="w-4 h-4 ml-1" />
+                                </button>
+
+                                <div id="prestasiDropdown" class="z-20 hidden font-normal bg-white divide-y divide-gray-100 rounded shadow w-44 " style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(769px, 52px);" data-popper-placement="bottom">
+                                    <ul class="py-1 text-sm text-gray-700 " aria-labelledby="dropdownLargeButton">
+                                        @if(hasAccess('prestasi-bulanan'))
+                                            <li>
+                                                <a href="{{ route('prestasi.bulanan') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'prestasi.bulanan' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Prestasi Bulanan</a>
+                                            </li>
+                                        @endif
+
+                                        @if(hasAccess('prestasi-kumulatif'))
+                                            <li>
+                                                <a href="{{ route('prestasi.kumulatif') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'prestasi.kumulatif' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Prestasi Kumulatif</a>
+                                            </li>
+                                        @endif
+                                    </ul>
+                                </div>
+                            </li>
+                        @endif
+
+                        @if(hasAccess('lantikan-urusetia-negeri') || hasAccess('lantikan-pym-mc'))
+                            <li>
+                                <button
+                                    id="lantikanDropdownLink"
+                                    data-dropdown-toggle="lantikanDropdown"
+                                    class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium  border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-primary-700 md:p-0 md:w-auto
+                                    {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'lantikan') ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}"
+                                >
+                                    Lantikan
+                                    <x-icon name="chevron-down" class="w-4 h-4 ml-1" />
+                                </button>
+
+                                <div id="lantikanDropdown" class="z-20 hidden font-normal bg-white divide-y divide-gray-100 rounded shadow w-50 " style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(769px, 52px);" data-popper-placement="bottom">
+                                    <ul class="py-1 text-sm text-gray-700 " aria-labelledby="dropdownLargeButton">
+                                        @if(hasAccess('lantikan-urusetia-negeri'))
+                                            <li>
+                                                <a href="{{ route('lantikan.urusetia-negeri') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'lantikan.urusetia-negeri' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Lantikan Urusetia Negeri</a>
+                                            </li>
+                                        @endif
+
+                                        @if(hasAccess('lantikan-pym-mc'))
+                                            <li>
+                                                <a href="{{ route('lantikan.penilai') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'lantikan.penilai' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Lantikan PYM & PMC</a>
+                                            </li>
+                                        @endif
+                                    </ul>
+                                </div>
+                            </li>
+                        @endif
                         {{-- <li>
                             <a href="#" class="block text-gray-700 hover:text-primary-700">Laporan</a>
                         </li> --}}
-                        <li>
-                            <button id="tetapanDropdownLink" data-dropdown-toggle="tetapanDropdown" class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium  border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-primary-700 md:p-0 md:w-auto
-                                {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'tetapan') ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">
-                                Tetapan
-                                <x-icon name="chevron-down" class="w-4 h-4 ml-1" />
-                            </button>
+                        @if(hasAccess('tetapan-akses-pengguna') || hasAccess('tetapan-info-pyd-pym-pmc'))
+                            <li>
+                                <button id="tetapanDropdownLink" data-dropdown-toggle="tetapanDropdown" class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium  border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-primary-700 md:p-0 md:w-auto
+                                    {{ Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'tetapan') ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">
+                                    Tetapan
+                                    <x-icon name="chevron-down" class="w-4 h-4 ml-1" />
+                                </button>
 
-                            <div id="tetapanDropdown" class="z-20 hidden font-normal bg-white divide-y divide-gray-100 rounded shadow w-50 " style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(769px, 52px);" data-popper-placement="bottom">
-                                <ul class="py-1 text-sm text-gray-700 " aria-labelledby="dropdownLargeButton">
-                                    <li>
-                                        <a href="{{ route('tetapan.user-access') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.user-access' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Akses Pengguna</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('tetapan.info-pegawai') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.info-pegawai' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Info PYD, PYM & PMC</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                                <div id="tetapanDropdown" class="z-20 hidden font-normal bg-white divide-y divide-gray-100 rounded shadow w-50 " style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(769px, 52px);" data-popper-placement="bottom">
+                                    <ul class="py-1 text-sm text-gray-700 " aria-labelledby="dropdownLargeButton">
+                                        @if(hasAccess('tetapan-akses-pengguna'))
+                                            <li>
+                                                <a href="{{ route('tetapan.user-access') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.user-access' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Akses Pengguna</a>
+                                            </li>
+                                        @endif
+
+                                        @if(hasAccess('tetapan-info-pyd-pym-pmc'))
+                                            <li>
+                                                <a href="{{ route('tetapan.info-pegawai') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.info-pegawai' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Info PYD, PYM & PMC</a>
+                                            </li>
+                                        @endif
+                                    </ul>
+                                </div>
+                            </li>
+                        @endif
                     </ul>
                 </div>
             </div>

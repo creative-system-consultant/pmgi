@@ -5,7 +5,7 @@
             <div class="items-center">
                 <div class="mb-4 lg:mb-0">
                     <h3 class="mb-2 text-xl font-bold text-gray-900 ">Prestasi Kumulatif</h3>
-                    @if($search)
+                    @if(!$pmgiSession)
                         <span class="text-base font-normal text-gray-500 ">Prestasi Warga Kerja (Kumulatif) Mengikut Bulan</span>
                         <div class="p-6 mt-4 border rounded-lg shadow bg-primary-100 border-primary-200 dark:bg-gray-800 dark:border-gray-700">
                             <div class="grid grid-cols-7 gap-x-4 gap-y-2">
@@ -56,10 +56,10 @@
                                     <tr class="bg-gray-200">
                                         <th class="bg-white"></th>
                                         <th scope="col" colspan="4" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x ">
-                                            JULAI 2023
+                                            {{ $fromMthName }}
                                         </th>
                                         <th scope="col" colspan="4" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x ">
-                                            OGOS 2023
+                                            {{ $toMthName }}
                                         </th>
                                     </tr>
                                 </thead>
@@ -102,25 +102,33 @@
                                             PK (RM) P + C
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
-                                            59567.47
+                                            {{ number_format($from->rm_patut_kutip, 2) }}
                                         </td>
                                         <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
-                                            150.59%
+                                            {{ $from->rm_dapat_kutip_pts }}%
                                         </td>
                                         <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                            @if($from->rm_dapat_kutip_capai_flag == 'Y')
+                                                <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                            @else
+                                                <span class="bg-pink-100 text-pink-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-pink-100 ">TAK CAPAI</span>
+                                            @endif
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
                                             PK (RM) P + C
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            59567.47
+                                            {{ number_format($to->rm_patut_kutip, 2) }}
                                         </td>
                                         <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            150.59%
+                                            {{ $to->rm_dapat_kutip_pts }}%
                                         </td>
                                         <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed border-x border-y whitespace-nowrap">
-                                            <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                            @if($to->rm_dapat_kutip_capai_flag == 'Y')
+                                                <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                            @else
+                                                <span class="bg-pink-100 text-pink-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-pink-100 ">TAK CAPAI</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -128,13 +136,13 @@
                                             DK (RM)
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            89705.1
+                                            {{ number_format($from->rm_dapat_kutip, 2) }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
                                             DK (RM)
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            800
+                                            {{ number_format($to->rm_dapat_kutip, 2) }}
                                         </td>
                                     </tr>
                                     {{-- kriteria 2 --}}
@@ -175,25 +183,33 @@
                                             BILANGAN SELIAAN
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
-                                            243
+                                            {{ number_format($from->bil_patut_kutip) }}
                                         </td>
                                         <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
-                                            82.72%
+                                            {{ number_format($from->bil_dapat_kutip_pts, 2) }}%
                                         </td>
                                         <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                            @if($from->bil_dapat_kutip_capai_flag == 'Y')
+                                                <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                            @else
+                                                <span class="bg-pink-100 text-pink-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-pink-100 ">TAK CAPAI</span>
+                                            @endif
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
                                             BILANGAN SELIAAN
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            150
+                                            {{ number_format($to->bil_patut_kutip) }}
                                         </td>
                                         <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            96.67%
+                                            {{ number_format($to->bil_dapat_kutip_pts, 2) }}%
                                         </td>
                                         <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed border-x border-y whitespace-nowrap">
-                                            <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                            @if($to->bil_dapat_kutip_capai_flag == 'Y')
+                                                <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                            @else
+                                                <span class="bg-pink-100 text-pink-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-pink-100 ">TAK CAPAI</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -201,13 +217,13 @@
                                             BILANGAN MEMBAYAR
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            201
+                                            {{ number_format($from->bil_dapat_kutip) }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
                                             BILANGAN MEMBAYAR
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            145
+                                            {{ number_format($to->bil_dapat_kutip) }}
                                         </td>
                                     </tr>
                                     {{-- kriteria 3 --}}
@@ -248,25 +264,33 @@
                                             BILANGAN SELIAAN
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
-                                            243
+                                            {{ number_format($from->bil_selia) }}
                                         </td>
                                         <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
-                                            99.18%
+                                            {{ number_format($from->bil_lawat_pts, 2) }}%
                                         </td>
                                         <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                            @if($from->bil_lawat_capai_flag == 'Y')
+                                                <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                            @else
+                                                <span class="bg-pink-100 text-pink-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-pink-100 ">TAK CAPAI</span>
+                                            @endif
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
                                             BILANGAN SELIAAN
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            1000
+                                            {{ number_format($to->bil_selia) }}
                                         </td>
                                         <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            80.00%
+                                            {{ number_format($to->bil_lawat_pts, 2) }}%
                                         </td>
                                         <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed border-x border-y whitespace-nowrap">
-                                            <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                            @if($to->bil_lawat_capai_flag == 'Y')
+                                                <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                            @else
+                                                <span class="bg-pink-100 text-pink-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-pink-100 ">TAK CAPAI</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -274,13 +298,13 @@
                                             JUMLAH LAWATAN
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            241
+                                            {{ number_format($from->bil_lawat) }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
                                             JUMLAH LAWATAN
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            800
+                                            {{ number_format($to->bil_lawat) }}
                                         </td>
                                     </tr>
                                     {{-- kriteria 4 --}}
@@ -321,25 +345,33 @@
                                             BILANGAN AKAUN A3 (5.01-6)
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
-                                            3
+                                            {{ number_format($from->bil_kawal_npf_sblm) }}
                                         </td>
                                         <td rowspan="3" class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
-                                            99.18%
+                                            {{ number_format($from->bil_kawal_npf_pts, 2) }}%
                                         </td>
                                         <td rowspan="3" class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                            @if($from->bil_kawal_npf_capai_flag == 'Y')
+                                                <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                            @else
+                                                <span class="bg-pink-100 text-pink-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-pink-100 ">TAK CAPAI</span>
+                                            @endif
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
                                             BILANGAN AKAUN A3 (5.01-6)
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            21
+                                            {{ number_format($to->bil_kawal_npf_sblm) }}
                                         </td>
                                         <td rowspan="3" class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            45.83%
+                                            {{ number_format($to->bil_kawal_npf_pts, 2) }}%
                                         </td>
                                         <td rowspan="3" class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed border-x border-y whitespace-nowrap">
-                                            <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-red-100 ">TIDAK CAPAI</span>
+                                            @if($to->bil_kawal_npf_capai_flag == 'Y')
+                                                <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                            @else
+                                                <span class="bg-pink-100 text-pink-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-pink-100 ">TAK CAPAI</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -347,13 +379,13 @@
                                             BERTUKAR B1
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            2
+                                            {{ number_format($from->bil_kawal_npf_tukar) }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
                                             BERTUKAR B1
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            11
+                                            {{ number_format($to->bil_kawal_npf_tukar) }}
                                         </td>
                                     </tr>
                                     <tr>
@@ -361,13 +393,13 @@
                                             BILANGAN KEKAL
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            1
+                                            {{ number_format($from->bil_kawal_npf_kekal) }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
                                             BILANGAN KEKAL
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            10
+                                            {{ number_format($to->bil_kawal_npf_kekal) }}
                                         </td>
                                     </tr>
                                     {{-- kriteria 5 --}}
@@ -408,25 +440,33 @@
                                             BILANGAN AKAUN NPF
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
-                                            52
+                                            {{ number_format($from->bil_pulih_npf_sblm) }}
                                         </td>
                                         <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
-                                            1.92%
+                                            {{ number_format($from->bil_pulih_npf_pts) }}%
                                         </td>
                                         <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-red-100 ">TIDAK CAPAI</span>
+                                            @if($from->bil_pulih_npf_capai_flag == 'Y')
+                                                <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                            @else
+                                                <span class="bg-pink-100 text-pink-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-pink-100 ">TAK CAPAI</span>
+                                            @endif
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
                                             BILANGAN AKAUN NPF
                                         </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            46
+                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
+                                            {{ number_format($to->bil_pulih_npf_sblm) }}
+                                        </td>
+                                        <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
+                                            {{ number_format($to->bil_pulih_npf_pts) }}%
                                         </td>
                                         <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            8.70%
-                                        </td>
-                                        <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed border-x border-y whitespace-nowrap">
-                                            <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                            @if($to->bil_pulih_npf_capai_flag == 'Y')
+                                                <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                            @else
+                                                <span class="bg-pink-100 text-pink-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-pink-100 ">TAK CAPAI</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -434,13 +474,13 @@
                                             BERTUKAR SEMASA
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            1
+                                            {{ number_format($from->bil_pulih_npf_tukar) }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
                                             BERTUKAR SEMASA
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap border-y">
-                                            4
+                                            {{ number_format($to->bil_pulih_npf_tukar) }}
                                         </td>
                                     </tr>
                                 </tbody>

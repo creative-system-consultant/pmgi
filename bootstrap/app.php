@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\Middleware\CheckUserAccess;
+use App\Http\Middleware\EnsureHasSession;
+use App\Http\Middleware\RestrictDuringSession;
+use App\Http\Middleware\RestrictLoadingAccess;
+use App\Http\Middleware\RestrictPerakuanAccess;
+use App\Http\Middleware\RestrictSessionAccess;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -11,7 +17,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            'check.access' => CheckUserAccess::class,
+            'restrict.session' => RestrictDuringSession::class,
+            'restrict.loading' => RestrictLoadingAccess::class,
+            'ensure.session' => EnsureHasSession::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

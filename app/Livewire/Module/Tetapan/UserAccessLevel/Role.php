@@ -21,7 +21,7 @@ class Role extends Component
 
     public function mount()
     {
-        $this->data = SettUalPage::all()->toArray();
+        $this->data = SettUalPage::orderBy('id', 'asc')->get()->toArray();
     }
 
     private function resetForm()
@@ -106,7 +106,7 @@ class Role extends Component
 
     public function render()
     {
-        $this->result = SettUalRole::all();
+        $this->result = SettUalRole::orderBy('id', 'ASC')->get();
 
         return view('livewire.module.tetapan.user-access-level.role', [
             'results' => $this->result,

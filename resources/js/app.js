@@ -4,9 +4,13 @@ import './dashboard-chart';
 
 document.addEventListener("DOMContentLoaded", function() {
     let loading = document.getElementById('globalLoading');
+    const currentPath = window.location.pathname;
 
     function showLoading() {
-        loading.style.display = 'flex';
+        // Only show loading if not on excluded routes
+        if (!['/loading-pmgi', '/loading-perakuan'].includes(currentPath)) {
+            loading.style.display = 'flex';
+        }
     }
 
     function hideLoading() {

@@ -6,24 +6,30 @@
                 <div class="mb-4 lg:mb-0">
                     <div class="flex items-center mb-2 ">
                         <h3 class="mb-2 text-xl font-bold text-gray-900 ">Ulasan Pegawai Yang Dinilai (PYD)</h3>
-                        @if($edit)
-                        <a href="{{ route('pegawai-dinilai') }}" class="inline-flex items-center px-4 py-2 ml-4 font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800">
-                            Kemaskini
-                        </a>
+                        @if($perakuan && auth()->user()->userid == $sessionSetting->pyd_id)
+                            <button class="inline-flex items-center px-4 py-2 ml-4 font-medium text-center text-white bg-indigo-700 rounded-lg cursor-pointer focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800" wire:click="updates">
+                                Kemaskini
+                            </button>
                         @endif
                     </div>
 
-                    @if($search)
+                    @if(!$perakuan)
                         <span class="text-base font-normal text-gray-500 ">Ulasan Prestasi Semasa Dan Keperluan Penambahbaikan Oleh Pegawai Yang Dinilai (PYD)</span>
                         <div class="p-6 mt-4 border rounded-lg shadow bg-primary-100 border-primary-200 dark:bg-gray-800 dark:border-gray-700">
                             <div class="flex">
                                 <div class="grid w-[60%] grid-cols-3 gap-4">
                                     <p class="flex items-center font-semibold">Nama Pegawai Yang Dinilai</p>
-                                    <input type="text" id="small-input" class="block w-full col-span-2 p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 ">
+                                    <div class="block w-full col-span-2">
+                                        <x-input placeholder="Nama" wire:model="pydName" disabled />
+                                    </div>
                                     <p class="flex items-center font-semibold">Jawatan</p>
-                                    <input type="text" id="small-input" class="block w-full col-span-2 p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 ">
+                                    <div class="block w-full col-span-2">
+                                        <x-input placeholder="Jawatan" wire:model="pydPosition" disabled />
+                                    </div>
                                     <p class="flex items-center font-semibold">Nombor Pekerja</p>
-                                    <input type="text" id="small-input" class="block w-full col-span-2 p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 ">
+                                    <div class="block w-full col-span-2">
+                                        <x-input placeholder="Staff No" wire:model="pydStaffNo" disabled />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -31,7 +37,7 @@
                 </div>
             </div>
 
-            @if($search)
+            @if(!$perakuan)
                 <div class="flex mt-8">
                     <button wire:click="togglePrestasiKumulatif" class="inline-flex items-center py-2.5 px-4 font-medium text-center text-white bg-teal-700 rounded-lg focus:ring-4 focus:ring-teal-200 dark:focus:ring-teal-900 hover:bg-teal-800">
                         {{ $showPrestasiKumulatif ? 'Tutup' : 'Lihat' }} Prestasi Kumulatif
@@ -49,51 +55,71 @@
                     x-transition:leave-end="opacity-0 transform scale-95"
                 >
                     @if($showPrestasiKumulatif)
-                        <livewire:module.prestasi.kumulatif :search="false">
+                        <livewire:module.prestasi.kumulatif :pmgiSession="true" :pmgiSessionId=$sessionId >
                     @endif
                 </div>
                 {{-- end prestasi kumulatif --}}
             @endif
 
-            @if($search == false)
+            @if($perakuan)
             <div class="mt-4">
             @else
             <div class="mt-4 w-[70%]">
             @endif
                 <div class="flex items-center w-full px-4 py-2 rounded-lg bg-lime-300">
                     <h3 class="mr-4 text-lg font-medium text-gray-900">Masalah yang dihadapi :</h3>
-                    <x-select class="flex-1 block w-24 mr-4 text-sm text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Sila Pilih"
-                        multiselect
-                        :options="$problem"
-                        option-label="description"
-                        option-value="id"
-                        wire:model="model"
-                    />
+                    @if($perakuan && auth()->user()->userid != $sessionSetting->pyd_id)
+                        <x-select class="flex-1 mr-4" placeholder="Sila Pilih" :options="$problemSelection" option-label="description" option-value="id" wire:model="problem" disabled />
+                    @else
+                        <x-select class="flex-1 mr-4" placeholder="Sila Pilih" :options="$problemSelection" option-label="description" option-value="id" wire:model="problem" />
+                    @endif
                     <x-icon solid  name="information-circle" class="w-6 h-6 bg-white cursor-pointer rounded-xl text-primary-500" wire:click="openInfo" />
                 </div>
 
                 <div class="my-4">
-                    <label for="punca" class="block mb-2 font-medium text-gray-900 text-md dark:text-white">Nyatakan punca bagi masalah tersebut :</label>
-                    <textarea id="punca" rows="3" class="block p-2.5 w-full text-md text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"></textarea>
+                    @if($perakuan && auth()->user()->userid != $sessionSetting->pyd_id)
+                        <x-textarea label="Nyatakan punca bagi masalah tersebut :" placeholder="Tuliskan masalah anda" wire:model="reason" disabled />
+                    @else
+                        <x-textarea label="Nyatakan punca bagi masalah tersebut :" placeholder="Tuliskan masalah anda" wire:model="reason"/>
+                    @endif
                 </div>
                 <div class="mb-4">
-                    <label for="pelan" class="block mb-2 font-medium text-gray-900 text-md dark:text-white">Pelan tindakan untuk meningkatkan prestasi :</label>
-                    <textarea id="pelan" rows="3" class="block p-2.5 w-full text-md text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"></textarea>
+                    @if($perakuan && auth()->user()->userid != $sessionSetting->pyd_id)
+                        <x-textarea label="Pelan tindakan untuk meningkatkan prestasi :" placeholder="Tuliskan pelan tindakan anda" wire:model="actionPlan" disabled />
+                    @else
+                        <x-textarea label="Pelan tindakan untuk meningkatkan prestasi :" placeholder="Tuliskan pelan tindakan anda" wire:model="actionPlan"/>
+                    @endif
                 </div>
                 <div class="mb-4">
-                    <label for="ulasan" class="block mb-2 font-medium text-gray-900 text-md dark:text-white">Ulasan (Jika ada) :</label>
-                    <textarea id="ulasan" rows="3" class="block p-2.5 w-full text-md text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"></textarea>
+                    @if($perakuan && auth()->user()->userid != $sessionSetting->pyd_id)
+                        <x-textarea label="Ulasan (Jika ada) :" placeholder="" wire:model="comment" disabled />
+                    @else
+                        <x-textarea label="Ulasan (Jika ada) :" placeholder="" wire:model="comment" />
+                    @endif
                 </div>
 
-                @if($search)
-                    <div class="mb-4">
+                @if($perakuan)
+                    <img class="mb-5 w-60" src="{{ asset('storage/' . $attachment) }}" alt="Logo">
+                @endif
+
+                @if(!$perakuan)
+                    <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true" x-on:livewire-upload-finish="uploading = false" x-on:livewire-upload-cancel="uploading = false" x-on:livewire-upload-error="uploading = false" x-on:livewire-upload-progress="progress = $event.detail.progress" class="mb-4">
+                        <!-- File Input -->
                         <label for="muatnaik" class="block mb-2 font-medium text-gray-900 text-md dark:text-white">Muat Naik Fail (Jika berkaitan) :</label>
-                        <input class="block w-full mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none dark:bg-gray-700" id="default_size" type="file">
+                        <input class="block w-full mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none dark:bg-gray-700" id="default_size" type="file" wire:model="file">
+
+                        <!-- Progress Bar -->
+                        <div x-show="uploading">
+                            <progress max="100" x-bind:value="progress"></progress>
+                        </div>
                     </div>
 
+                    @if($file)
+                    <img class="mb-5 w-60" src="{{ $file->temporaryUrl() }}">
+                    @endif
+
                     <div class="flex">
-                        <button type="submit" class="inline-flex items-center py-2.5 px-4 font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+                        <button type="submit" wire:click="submit" class="inline-flex items-center py-2.5 px-4 font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
                             Hantar
                         </button>
                     </div>

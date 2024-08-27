@@ -156,7 +156,7 @@ class Index extends Component
         Bus::chain($jobs)->dispatch();
     }
 
-    public function test()
+    public function testSp()
     {
         // Define the output parameter for the OUT parameter
         $output = '';

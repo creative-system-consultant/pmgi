@@ -10,7 +10,7 @@
 
             <div class="w-1/2 mx-auto mt-8">
                 <p class="mb-8 text-xl text-gray-600" style="text-indent: 4rem;text-align: justify;">
-                    Saya <span class="font-semibold underline">WAN MOHAMAD RIDZUAN BIN WAN JAAPAR</span> No. Kad Pengenalan <span class="font-semibold underline">910506-11-5087</span> , Nombor Pekerja <span class="font-semibold underline">4227</span> daripada Cawangan telah ditetapkan dan dipersetujui oleh saya di dalam Borang Prestasi (PMG-i) ini dalam masa dua (2) bulan mulai - <span class="font-semibold underline">AUG 2024</span> sehingga <span class="font-semibold underline">SEP 2024</span> . Jika saya masih gagal meningkatkan prestasi dan / atau mencapai sasaran seperti yang dinyatakan di dalam Borang Pemantauan Prestasi (PMG-i) ini, maka saya bersetuju bahawa saya boleh dikenakan tindakan tatatertib mengikut Manual Prosedur Pentadbiran dan Sumber Manusia, TEKUN Nasional (Etika Kerja - Kod Tatakelakuan termasuk dibuang kerja).
+                    Saya <span class="font-semibold underline">{{ $pydName }}</span> No. Kad Pengenalan <span class="font-semibold underline">{{ substr($pydIcNo, 0, 6) . '-' . substr($pydIcNo, 6, 2) . '-' . substr($pydIcNo, 8, 4) }}</span> , Nombor Pekerja <span class="font-semibold underline">{{ $pydStaffNo }}</span> daripada Cawangan telah ditetapkan dan dipersetujui oleh saya di dalam Borang Prestasi (PMG-i) ini dalam masa dua (2) bulan mulai - <span class="font-semibold underline">{{ $from }}</span> sehingga <span class="font-semibold underline">{{ $to }}</span> . Jika saya masih gagal meningkatkan prestasi dan / atau mencapai sasaran seperti yang dinyatakan di dalam Borang Pemantauan Prestasi (PMG-i) ini, maka saya bersetuju bahawa saya boleh dikenakan tindakan tatatertib mengikut Manual Prosedur Pentadbiran dan Sumber Manusia, TEKUN Nasional (Etika Kerja - Kod Tatakelakuan termasuk dibuang kerja).
                 </p>
             </div>
 
@@ -34,28 +34,29 @@
                             Pegawai Yang Menilai
                         </div>
                     </li>
-                    <li class="me-2">
-                        <div
-                            @click="tab = 'PMC'"
-                            :class="{ 'bg-primary-600 text-white': tab === 'PMC', 'hover:text-gray-900 hover:bg-gray-100': tab !== 'PMC' }"
-                            class="inline-block px-4 py-3 rounded-lg cursor-pointer"
-                        >
-                            Pegawai Pemudah Cara
-                        </div>
-                    </li>
+                    @if($setting->pmgi_level == 'PM3')
+                        <li class="me-2">
+                            <div
+                                @click="tab = 'PMC'"
+                                :class="{ 'bg-primary-600 text-white': tab === 'PMC', 'hover:text-gray-900 hover:bg-gray-100': tab !== 'PMC' }"
+                                class="inline-block px-4 py-3 rounded-lg cursor-pointer"
+                            >
+                                Pegawai Pemudah Cara
+                            </div>
+                        </li>
+                    @endif
                 </ul>
                 <div x-show="tab === 'PYD'" x-transition>
-                    {{-- PYD --}}
-                    <livewire:module.pegawai-dinilai :search=false :edit=true />
+                    <livewire:module.pegawai-dinilai :perakuan=true />
                 </div>
                 <div x-show="tab === 'PYM'" x-transition>
-                    {{-- PYM --}}
-                    <livewire:module.pegawai-menilai :search=false :edit=true />
+                    <livewire:module.pegawai-menilai :perakuan=true />
                 </div>
-                <div x-show="tab === 'PMC'" x-transition>
-                    {{-- PMC --}}
-                    <livewire:module.pegawai-pemudah-cara :search=false :edit=true />
-                </div>
+                @if($setting->pmgi_level == 'PM3')
+                    <div x-show="tab === 'PMC'" x-transition>
+                        <livewire:module.pegawai-pemudah-cara :perakuan=true />
+                    </div>
+                @endif
             </div>
 
             <div class="flex justify-center">
@@ -70,7 +71,7 @@
     <x-modal.card title="Verifikasi Perakuan" blur align="center" max-width="md" hide-close=true wire:model="verifyModal">
         <div class="grid grid-rows-2 gap-1 text-sm font-semibold ">
             <p>NAMA: <span class="text-indigo-500">{{ auth()->user()->username }}</span></p>
-            <p>NO. KAD PENGENALAN: <span class="text-indigo-500">{{ auth()->user()->icNo() }}</span></p>
+            <p>NO. KAD PENGENALAN: <span class="text-indigo-500">{{ substr(auth()->user()->icNo(), 0, 6) . '-' . substr(auth()->user()->icNo(), 6, 2) . '-' . substr(auth()->user()->icNo(), 8, 4) }}</span></p>
         </div>
 
         <p class="mt-4 text-sm text-gray-600">
@@ -78,8 +79,8 @@
         </p>
 
         <div class="grid grid-cols-1 gap-4 mt-4">
-            <x-input label="ID Pengguna" placeholder="ID Pengguna Anda" />
-            <x-input label="Password" placeholder="Password Anda" />
+            <x-input class="uppercase" label="ID Pengguna" placeholder="ID Pengguna Anda" wire:model="userId" />
+            <x-input label="Kata Laluan" placeholder="Kata Laluan Anda" wire:model="password" />
         </div>
 
         <x-slot name="footer">

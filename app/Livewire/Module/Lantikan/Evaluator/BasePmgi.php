@@ -167,7 +167,8 @@ abstract class BasePmgi extends Component
             'created_at' => $existingRecord ? $existingRecord->created_at : now(),
             'updated_by' => auth()->user()->userid,
             'updated_at' => now(),
-            'report_date' => $pydInfo->report_date
+            'report_date' => $pydInfo->report_date,
+            'branch_code' => $pydInfo->branch_code,
         ];
     }
 
@@ -234,7 +235,7 @@ abstract class BasePmgi extends Component
             ->join('FMS_USERS as a', 'm.officer_id', '=', 'a.userid')
             ->join('BRANCHES as b', 'm.branch_code', '=', 'b.branch_code')
             ->join('PMGI_BANK_OFFICERS_NAZ as c', 'c.officer_id', '=', 'a.userid')
-            ->select('a.userid', 'a.username', 'c.officer_position', 'b.branch_name', 'm.pmgi_cycle', 'm.pmgi_level')
+            ->select('a.userid', 'a.username', 'm.branch_code', 'c.officer_position', 'b.branch_name', 'm.pmgi_cycle', 'm.pmgi_level')
             ->whereDate('SESSION_DATE_START', $this->selectedDate)
             ->where('m.STATE_CODE', $this->stateCode)
             ->where('m.PMGI_LEVEL', $this->getPmgiLevel())

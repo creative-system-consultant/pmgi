@@ -21,7 +21,7 @@ class UserAccess extends Component
 
     public function mount()
     {
-        $this->option = SettUalRole::all();
+        $this->option = SettUalRole::orderBy('id', 'ASC')->get();
     }
 
     public function find(): void
