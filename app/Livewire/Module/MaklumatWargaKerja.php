@@ -104,26 +104,6 @@ class MaklumatWargaKerja extends Component
 
     public function render()
     {
-        $stateOptions = BnmStatecode::whereNotIn('code', ['00', '15', '16', '99'])
-                                    ->orderBy('code', 'ASC')
-                                    ->get();
-
-        if($this->selectedState) {
-            $branchOptions = Branch::whereNotIn('closeflag', [1])
-                                    ->whereNotIn('state_code', ['00', '15', '16', '99'])
-                                    ->whereStateCode($this->selectedState)
-                                    ->orderBy('branch_code', 'ASC')
-                                    ->get();
-        } else {
-            $branchOptions = Branch::whereNotIn('closeflag', [1])
-                                    ->whereNotIn('state_code', ['00', '15', '16', '99'])
-                                    ->orderBy('branch_code', 'ASC')
-                                    ->get();
-        }
-
-        return view('livewire.module.maklumat-warga-kerja', [
-            'stateOptions' => $stateOptions,
-            'branchOptions' => $branchOptions,
-        ])->extends('layouts.main');
+        return view('livewire.module.maklumat-warga-kerja')->extends('layouts.main');
     }
 }

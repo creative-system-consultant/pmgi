@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\CheckUserAccess;
+use App\Http\Middleware\CheckUserRole;
 use App\Http\Middleware\EnsureHasSession;
 use App\Http\Middleware\RestrictDuringSession;
 use App\Http\Middleware\RestrictLoadingAccess;
@@ -18,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
+            'check.role' => CheckUserRole::class,
             'check.access' => CheckUserAccess::class,
             'restrict.session' => RestrictDuringSession::class,
             'restrict.loading' => RestrictLoadingAccess::class,

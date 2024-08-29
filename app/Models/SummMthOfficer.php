@@ -12,4 +12,8 @@ class SummMthOfficer extends Model
     protected $table="PMGI_NAZ_SUMM_MTH_OFFICER";
     protected $guarded = [];
     public $timestamps = false;
+
+    // Indicate that the model doesn't have a primary key
+    protected $primaryKey = null;
+    public $incrementing = false;
 }

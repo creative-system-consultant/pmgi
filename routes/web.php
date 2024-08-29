@@ -45,8 +45,7 @@ Route::middleware('guest')->group(function () {
         return redirect()->route('login');
     });
 
-    Route::get('login', Login::class)
-        ->name('login');
+    Route::get('login', Login::class)->name('login');
 
     // Route::get('register', Register::class)
     //     ->name('register');
@@ -58,7 +57,7 @@ Route::get('password/reset', Email::class)
 Route::get('password/reset/{token}', Reset::class)
     ->name('password.reset');
 
-Route::middleware(['auth', 'restrict.session'])->group(function () {
+Route::middleware(['auth', 'check.role', 'restrict.session'])->group(function () {
     Route::get('/', Home::class)->name('home');
     Route::get('/dashboard-jtt', HomeJtt::class)->name('dashboard-jtt');
 
@@ -87,7 +86,7 @@ Route::middleware(['auth', 'restrict.session'])->group(function () {
     Route::get('/tetapan/info-pegawai', OfficerInfoIndex::class)->name('tetapan.info-pegawai')->middleware('check.access:tetapan-info-pyd-pym-pmc');
 });
 
-Route::middleware(['auth', 'ensure.session'])->group(function () {
+Route::middleware(['auth', 'check.role', 'ensure.session'])->group(function () {
     // PYD
     Route::get('/pegawai-dinilai', PegawaiDinilai::class)->name('pegawai-dinilai');
 

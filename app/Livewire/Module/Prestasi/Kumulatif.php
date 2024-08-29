@@ -2,49 +2,138 @@
 
 namespace App\Livewire\Module\Prestasi;
 
+use App\Models\BankOfficer;
+use App\Models\BnmStatecode;
+use App\Models\Branch;
 use App\Models\SettPymPmc;
-use App\Models\SummMthOfficer;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
+
+use function PHPSTORM_META\map;
 
 class Kumulatif extends Component
 {
     public $pmgiSession = false;
     public $pmgiSessionId;
     public $pydId;
-    public $fromReporDate;
+    public $fromReportDate;
     public $toReportDate;
+    public $fromData;
+    public $fromDataMthName;
+    public $toData;
+    public $toDataMthName;
+    public $data;
+
+    // input
+    #[Validate('required', message: 'Negeri diperlukan.')]
+    public $state;
+
+    #[Validate('required', message: 'Cawangan diperlukan.')]
+    public $branch;
+
+    #[Validate('required', message: 'Nama @ No Pekerja diperlukan.')]
+    public $searchTerm;
+
+    #[Validate('required', message: 'Dari diperlukan.')]
+    public $from;
+
+    #[Validate('required', message: 'Hingga diperlukan.')]
+    public $to;
 
     public function mount()
+    {
+        $this->populateDataForSession();
+        $this->populateData();
+    }
+
+    protected function populateDataForSession()
     {
         if($this->pmgiSessionId) { // used in pmgi session ; pegawai dinilai/ pegawai menilai/ pegawai mudah cara page when in session
             $setting = SettPymPmc::whereSessionId($this->pmgiSessionId)->first();
             $this->pydId = $setting->pyd_id;
             $report_date = Carbon::parse($setting->report_date);
-            $this->fromReporDate = $report_date->copy()->subMonth(2)->endOfMonth()->format('Y-m-d');
+            $this->fromReportDate = $report_date->copy()->subMonth(2)->endOfMonth()->format('Y-m-d');
             $this->toReportDate = $report_date->copy()->subMonth()->endOfMonth()->format('Y-m-d');
+            $this->getData();
+        }
+    }
+
+    protected function populateData()
+    {
+        $role = [];
+        foreach(auth()->user()->roles as $roles) {
+            $role[] = $roles->name;
+        }
+
+        if (in_array('PYD', $role)) {
+            $this->pydId = auth()->user()->userid;
+            $report_date = now();
+            $this->fromReportDate = $report_date->copy()->subMonth(2)->endOfMonth()->format('Y-m-d');
+            $this->toReportDate = $report_date->copy()->subMonth()->endOfMonth()->format('Y-m-d');
+            $this->getData();
+        }
+    }
+
+    public function search()
+    {
+        $this->validate();
+
+        $this->searchTerm = strtoupper($this->searchTerm);
+
+        $this->pydId = BankOfficer::whereBranchCode($this->branch)
+                            ->where(function($q) {
+                                $q->where('officer_name', 'LIKE', '%' . $this->searchTerm . '%')
+                                ->orWhere('staffno', 'LIKE', '%' . $this->searchTerm . '%');
+                            })
+                            ->value('officer_id');
+
+        $this->fromReportDate = Carbon::parse($this->from)->endOfMonth()->format('Y-m-d');
+        $this->toReportDate = Carbon::parse($this->to)->endOfMonth()->format('Y-m-d');
+
+        $this->getData();
+    }
+
+    protected function getData()
+    {
+        if($this->pydId) { // filter out null oficer_id; if not it will fetch all null data in summ mth officer
+            $this->data = DB::table('PMGI_NAZ_SUMM_MTH_OFFICER')
+                            ->where('officer_id', $this->pydId)
+                            ->whereBetween('report_date', [$this->fromReportDate, $this->toReportDate])
+                            ->orderBy('report_date', 'asc')
+                            ->get();
+
+            // Calculate month names for each entry in the retrieved data
+            $this->data->each(function ($item) {
+                $item->month_name = Carbon::parse($item->report_date)->translatedFormat('F Y');
+            });
         }
     }
 
     public function render()
     {
-        $from = SummMthOfficer::whereOfficerId($this->pydId)
-                                ->whereDate('report_date', $this->fromReporDate)
-                                ->first();
+        $stateSelection = BnmStatecode::whereNotIn('code', ['00', '15', '16', '99'])
+                                        ->orderBy('code', 'ASC')
+                                        ->get();
 
-        $fromMthName = Carbon::parse($from->report_date)->translatedFormat('F Y');
-
-        $to = SummMthOfficer::whereOfficerId($this->pydId)
-                                ->whereDate('report_date', $this->toReportDate)
-                                ->first();
-
-        $toMthName = Carbon::parse($to->report_date)->translatedFormat('F Y');
+        if($this->state) {
+            $branchSelection = Branch::whereNotIn('closeflag', [1])
+                                    ->whereNotIn('state_code', ['00', '15', '16', '99'])
+                                    ->whereStateCode($this->state)
+                                    ->orderBy('branch_name', 'ASC')
+                                    ->get();
+        } else {
+            $branchSelection = Branch::whereNotIn('closeflag', [1])
+                                    ->whereNotIn('state_code', ['00', '15', '16', '99'])
+                                    ->orderBy('branch_code', 'ASC')
+                                    ->get();
+        }
 
         return view('livewire.module.prestasi.kumulatif', [
-            'from' => $from,
-            'fromMthName' => $fromMthName,
-            'to' => $to,
-            'toMthName' => $toMthName,
+            'stateSelection' => $stateSelection,
+            'branchSelection' => $branchSelection,
+            'datas' => $this->data,
         ])->extends('layouts.main');
     }
 }

@@ -47,7 +47,7 @@
                 {{-- Prestasi Kumulatif --}}
                 <div x-show="showPrestasiKumulatif" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95">
                     @if($showPrestasiKumulatif)
-                        <livewire:module.prestasi.kumulatif :search="false">
+                        <livewire:module.prestasi.kumulatif :pmgiSession="true" :pmgiSessionId=$sessionId >
                     @endif
                 </div>
                 {{-- end prestasi kumulatif --}}

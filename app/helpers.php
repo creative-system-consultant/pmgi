@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\SettUalPage;
 use App\Models\SettUalRole;
 use App\Models\SettUalRoleHasPage;
-use Illuminate\Support\Facades\Redirect;
 
 if (!function_exists('hasAccess')) {
     function hasAccess($pageKey)
@@ -18,18 +17,6 @@ if (!function_exists('hasAccess')) {
 
         // Get all role IDs associated with the user
         $userRoleIds = $user->roles()->pluck('role_id');
-
-        // Check if the user has no roles assigned
-        if ($userRoleIds->isEmpty()) {
-            // Find the role ID for 'PYD'
-            $pydRoleId = SettUalRole::where('name', 'PYD')->value('id');
-
-            if ($pydRoleId) {
-                // Assign the 'PYD' role to the user
-                $user->roles()->attach($pydRoleId);
-                $userRoleIds = collect([$pydRoleId]);
-            }
-        }
 
         // Check if any of the user's roles have access to the page
         return SettUalRoleHasPage::whereIn('role_id', $userRoleIds)
