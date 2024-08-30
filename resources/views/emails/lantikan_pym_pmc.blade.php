@@ -15,8 +15,7 @@
     <meta name="x-apple-disable-message-reformatting" />
     <link href="https://fonts.googleapis.com/css?family=Fraunces:ital,wght@0,400;0,700" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Rubik:ital,wght@0,400;0,700" rel="stylesheet" />
-    <title>David Shye</title>
-    <!-- Made with Postcards by Designmodo https://designmodo.com/postcards -->
+    <title>Emel Lantikan</title>
     <style>
         html, body {
             margin: 0 !important;

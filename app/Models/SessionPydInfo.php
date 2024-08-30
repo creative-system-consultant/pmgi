@@ -22,4 +22,9 @@ class SessionPydInfo extends Model
     {
         return $this->belongsTo(SessionInfo::class, 'session_id', 'session_id');
     }
+
+    public function problemTable()
+    {
+        return $this->belongsTo(SettPydProb::class, 'problem', 'id');
+    }
 }

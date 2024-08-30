@@ -6,13 +6,14 @@
                 <div class="mb-4 lg:mb-0">
                     <div class="flex items-center mb-2 ">
                         <h3 class="text-xl font-bold text-gray-900 ">Ulasan Pegawai Pemudah Cara (PMC)</h3>
-                        @if($edit)
+                        @if($perakuan && auth()->user()->userid == $sessionSetting->pmc_id)
                         <a href="{{ route('pegawai-pemudah-cara') }}" class="inline-flex items-center px-4 py-2 ml-4 font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800">
                             Kemaskini
                         </a>
                         @endif
                     </div>
-                    @if($search)
+
+                    @if(!$perakuan)
                         <div class="p-6 mt-4 border rounded-lg shadow bg-primary-100 border-primary-200 dark:bg-gray-800 dark:border-gray-700">
                             <div class="flex">
                                 <div class="grid w-[60%] grid-cols-3 gap-4">
@@ -29,7 +30,7 @@
                 </div>
             </div>
 
-            @if($search)
+            @if(!$perakuan)
                 <div class="flex mt-8">
                     <button wire:click="togglePrestasiKumulatif" class="inline-flex items-center py-2.5 px-4 font-medium text-center text-white bg-teal-700 rounded-lg focus:ring-4 focus:ring-teal-200 dark:focus:ring-teal-900 hover:bg-teal-800">
                         {{ $showPrestasiKumulatif ? 'Tutup' : 'Lihat' }} Prestasi Kumulatif
@@ -45,7 +46,7 @@
                 {{-- end prestasi kumulatif --}}
             @endif
 
-            @if($search == false)
+            @if($perakuan)
             <div class="mt-4">
             @else
             <div class="mt-4 w-[70%]">
@@ -121,7 +122,8 @@
                         <textarea id="punca" rows="3" class="block p-2.5 w-full text-md text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"></textarea>
                     </div>
                 </div>
-                @if($search)
+
+                @if(!$perakuan)
                     <div class="mb-4">
                         <label for="muatnaik" class="block mb-2 font-medium text-gray-900 text-md dark:text-white">Muat Naik Fail (Jika berkaitan) :</label>
                         <input class="block w-full mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none dark:bg-gray-700" id="default_size" type="file">

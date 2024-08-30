@@ -72,6 +72,7 @@ Route::middleware(['auth', 'check.role', 'restrict.session'])->group(function ()
 
     // rekod PMGi (individu)
     Route::get('/rekod-pmgi', RekodPmgi::class)->name('rekod-pmgi')->middleware('check.access:rekod-pmgi');
+    Route::get('/stream-pdf/{sessionId}', [RekodPmgi::class, 'streamRekodPmgi'])->name('stream.rekodPmgi');
 
     // prestasi
     Route::get('/prestasi/bulanan', Bulanan::class)->name('prestasi.bulanan')->middleware('check.access:prestasi-bulanan');

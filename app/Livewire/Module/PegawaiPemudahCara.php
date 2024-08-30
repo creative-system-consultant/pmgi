@@ -6,9 +6,10 @@ use Livewire\Component;
 
 class PegawaiPemudahCara extends Component
 {
-    public $search = true;
+    public $perakuan = false;
     public $syorKeluar = "0";
     public $showPrestasiKumulatif = false;
+    public $sessionSetting;
 
     public function togglePrestasiKumulatif()
     {

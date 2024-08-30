@@ -31,4 +31,10 @@ class SettPymPmc extends Model
     {
         return $this->hasOne(SessionInfo::class, 'session_id', 'session_id');
     }
+
+    public function mntrSession()
+    {
+        return $this->hasOne(MntrSession::class, 'report_date', 'report_date')
+            ->where('officer_id', $this->pyd_id);
+    }
 }
