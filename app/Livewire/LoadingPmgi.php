@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\SessionPmcInfo;
 use App\Models\SessionPydInfo;
 use App\Models\SessionPymInfo;
 use Livewire\Component;
@@ -60,14 +61,29 @@ class LoadingPmgi extends Component
 
     public function checkRecord()
     {
-        // Check if records exist in the respective tables with the session ID
-        $pydRecordExists = SessionPydInfo::where('session_id', $this->sessionId)->exists();
-        $pymRecordExists = SessionPymInfo::where('session_id', $this->sessionId)->exists();
+        $pmgiLevel = substr($this->sessionId, 3, 1);
 
-        if ($pydRecordExists && $pymRecordExists) {
-            // Create a single redirect URL based on the source
-            $encodedSessionId = str_replace('/', '-', $this->sessionId);
-            return $this->redirect('/perakuan?session_id='.$encodedSessionId.'&source='.$this->source);
+        if($pmgiLevel != 3) {
+            // Check if records exist in the respective tables with the session ID
+            $pydRecordExists = SessionPydInfo::where('session_id', $this->sessionId)->exists();
+            $pymRecordExists = SessionPymInfo::where('session_id', $this->sessionId)->exists();
+
+            if ($pydRecordExists && $pymRecordExists) {
+                // Create a single redirect URL based on the source
+                $encodedSessionId = str_replace('/', '-', $this->sessionId);
+                return $this->redirect('/perakuan?session_id='.$encodedSessionId.'&source='.$this->source);
+            }
+        } else {
+            // Check if records exist in the respective tables with the session ID
+            $pydRecordExists = SessionPydInfo::where('session_id', $this->sessionId)->exists();
+            $pymRecordExists = SessionPymInfo::where('session_id', $this->sessionId)->exists();
+            $pmcRecordExists = SessionPmcInfo::where('session_id', $this->sessionId)->exists();
+
+            if ($pydRecordExists && $pymRecordExists && $pmcRecordExists) {
+                // Create a single redirect URL based on the source
+                $encodedSessionId = str_replace('/', '-', $this->sessionId);
+                return $this->redirect('/perakuan?session_id='.$encodedSessionId.'&source='.$this->source);
+            }
         }
     }
 

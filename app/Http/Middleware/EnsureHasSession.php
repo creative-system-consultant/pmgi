@@ -19,14 +19,17 @@ class EnsureHasSession
     {
         $user = Auth::user();
 
+        $sessionId = str_replace('-', '/', $request->session_id);
+
         // Check if there's an active session for today
-        $session = SessionInfo::whereDate('session_date', now())
+        $session = SessionInfo::whereSessionId($sessionId)
+                                ->whereDate('session_date', now())
                                 ->where('status', 0) // Assuming status 0 means the session is active
                                 ->whereHas('setting', function ($query) use ($user) {
                                     $query->where(function ($q) use ($user) {
-                                        $q->where('pyd_id', $user->id)
-                                            ->orWhere('pym_id', $user->id)
-                                            ->orWhere('pmc_id', $user->id);
+                                        $q->where('pyd_id', $user->userid)
+                                            ->orWhere('pym_id', $user->userid)
+                                            ->orWhere('pmc_id', $user->userid);
                                     });
                                 })
                                 ->first();

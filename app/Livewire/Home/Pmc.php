@@ -9,7 +9,8 @@ class Pmc extends BasePymPmc
     protected function getQuery()
     {
         return SettPymPmc::wherePmcId(auth()->user()->userid)
-                            ->wherePmgiLevel('PM3');
+                            ->wherePmgiLevel('PM3')
+                            ->whereStatus(0);
     }
 
     protected function getTitle()

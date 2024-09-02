@@ -24,7 +24,6 @@
                 </div>
             </div>
 
-            @if($allSession->count() > 0)
             <div x-data="{ tab: 'PMGi1' }" class="mt-6">
                 <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500">
                     <li class="me-2">
@@ -322,7 +321,6 @@
                     @endif
                 </x-modal.card>
             </div>
-            @endif
         </div>
     </div>
 </main>

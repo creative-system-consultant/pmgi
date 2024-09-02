@@ -37,7 +37,6 @@ class PegawaiMenilai extends Component
 
     public function mount()
     {
-
         // check flash error from middleware
         if (session()->has('flash_error')) {
             $this->dialog()->error(
