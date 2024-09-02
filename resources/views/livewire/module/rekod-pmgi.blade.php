@@ -138,7 +138,7 @@
                                                     @endif
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
-                                                    <x-badge rounded primary label="Lihat" class="cursor-pointer" wire:click="toggleDetail" />
+                                                    <x-badge rounded primary label="Lihat" class="cursor-pointer" wire:click="toggleDetail('{{ $data->session_id }}')" />
                                                 </td>
                                             </tr>
                                             @empty
@@ -184,9 +184,9 @@
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
                                                     @if($data->mntrSession->pmgi_result == 'PEX')
-                                                    <div class="inline-block bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">KELUAR SENARAI<br>TANPA SYARAT</div>
+                                                    <div class="inline-block bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">KELUAR SENARAI TANPA SYARAT</div>
                                                     @elseif($data->mntrSession->pmgi_result == 'EXC')
-                                                    <div class="inline-block bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">KELUAR SENARAI<br>DENGAN SYARAT</div>
+                                                    <div class="inline-block bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">KELUAR SENARAI DENGAN SYARAT</div>
                                                     @elseif($data->mntrSession->pmgi_result == 'EXP')
                                                     <div class="inline-block bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">PENANGGUHAN</div>
                                                     @else
@@ -194,7 +194,7 @@
                                                     @endif
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
-                                                    <x-badge rounded primary label="Lihat" class="cursor-pointer" wire:click="toggleDetail" />
+                                                    <x-badge rounded primary label="Lihat" class="cursor-pointer" wire:click="toggleDetail('{{ $data->session_id }}')" />
                                                 </td>
                                             </tr>
                                             @empty

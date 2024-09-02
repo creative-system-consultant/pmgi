@@ -6,6 +6,7 @@ use App\Models\BankOfficer;
 use App\Models\BnmStatecode;
 use App\Models\Branch;
 use App\Models\SessionInfo;
+use App\Models\SessionPmcInfo;
 use App\Models\SessionPydInfo;
 use App\Models\SessionPymInfo;
 use App\Models\SettPymPmc;
@@ -75,8 +76,6 @@ class RekodPmgi extends Component
     public function toggleDetail($sessionId)
     {
         $this->sessionId = str_replace('/', '-', $sessionId);
-        // $this->getDataFirstPage();
-
         $this->detailsModal = true;
     }
 
@@ -90,8 +89,21 @@ class RekodPmgi extends Component
         $branch = Branch::where('branch_code', $settInfo->branch_code)->value('branch_name');
         $sessionInfo = SessionInfo::whereSessionId($sessionId)->first();
         $bankOfficerPym = BankOfficer::whereOfficerId($settInfo->pym_id)->first();
+
+        if ($settInfo->pmgi_level == 'PM3') {
+            $bankOfficerPmc = BankOfficer::whereOfficerId($settInfo->pmc_id)->first();
+        } else {
+            $bankOfficerPmc = NULL;
+        }
+
         $pydInfo = SessionPydInfo::with('problemTable')->whereSessionId($sessionId)->first();
         $pymInfo = SessionPymInfo::whereSessionId($sessionId)->first();
+        if ($settInfo->pmgi_level == 'PM3') {
+            $pmcInfo = SessionPmcInfo::whereSessionId($sessionId)->first();
+        } else {
+            $pmcInfo = NULL;
+        }
+
         $from = strtoupper(Carbon::parse($settInfo->report_date)->copy()->addMonth()->translatedFormat('F Y'));
         $to = strtoupper(Carbon::parse($settInfo->report_date)->copy()->addMonth(2)->translatedFormat('F Y'));
 
@@ -120,9 +132,9 @@ class RekodPmgi extends Component
             "{$settInfo->pyd_id}_{$fromReportDate}_to_{$toReportDate}"
         );
 
-        $pdf = Pdf::loadView('pdf.borang_jpoc_12', compact(
-                'settInfo','bankOfficerPyd', 'state', 'branch', 'sessionInfo', 'bankOfficerPym',
-                'pydInfo', 'pymInfo', 'from', 'to', 'paths'
+        $pdf = Pdf::loadView('pdf.borang_jpoc', compact(
+                'settInfo','bankOfficerPyd', 'state', 'branch', 'sessionInfo', 'bankOfficerPym', 'bankOfficerPmc',
+                'pydInfo', 'pymInfo', 'pmcInfo', 'from', 'to', 'paths'
             ))->setPaper('A4', 'portrait');
 
         // Use output buffering to ensure the file is streamed before cleanup
