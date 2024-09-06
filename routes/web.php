@@ -20,6 +20,7 @@ use App\Livewire\Module\Prestasi\Kumulatif;
 use App\Livewire\Module\RekodPmgi;
 use App\Livewire\Module\Lantikan\Evaluator\Index as EvaluatorIndex;
 use App\Livewire\Module\Lantikan\StateCommittee\Index as StateCommitteeIndex;
+use App\Livewire\Module\Tetapan\MeetingRoom\MeetingRoom;
 use App\Livewire\Module\ListPydJtt;
 use App\Livewire\Module\Tetapan\JttOfficer;
 use App\Livewire\Module\Tetapan\OfficerInfo\Index as OfficerInfoIndex;
@@ -92,6 +93,7 @@ Route::middleware(['auth', 'check.role', 'restrict.session'])->group(function ()
     Route::get('/tetapan/user-access', UserAccessLevelIndex::class)->name('tetapan.user-access')->middleware('check.access:tetapan-akses-pengguna');
     Route::get('/tetapan/info-pegawai', OfficerInfoIndex::class)->name('tetapan.info-pegawai')->middleware('check.access:tetapan-info-pyd-pym-pmc');
     Route::get('/tetapan/ahli-jtt', JttOfficer::class)->name('tetapan.ahli-jtt')->middleware('check.access:tetapan-ahli-jtt');
+    Route::get('/tetapan/meeting-room', MeetingRoom::class)->name('tetapan.meeting-room');
 });
 
 Route::middleware(['auth', 'check.role', 'ensure.session'])->group(function () {

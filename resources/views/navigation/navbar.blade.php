@@ -119,6 +119,9 @@
                                                     <a href="{{ route('tetapan.ahli-jtt') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.ahli-jtt' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Ahli JTT</a>
                                                 </li>
                                             @endif
+                                            <li>
+                                                <a href="{{ route('tetapan.meeting-room') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.meeting-room' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Bilik Mesyuarat</a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </li>
