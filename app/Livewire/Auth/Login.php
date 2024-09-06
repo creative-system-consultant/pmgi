@@ -5,7 +5,6 @@ namespace App\Livewire\Auth;
 use App\Models\User;
 use App\Services\General\LoginService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class Login extends Component

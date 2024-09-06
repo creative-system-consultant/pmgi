@@ -5,8 +5,6 @@ use App\Http\Middleware\CheckUserRole;
 use App\Http\Middleware\EnsureHasSession;
 use App\Http\Middleware\RestrictDuringSession;
 use App\Http\Middleware\RestrictLoadingAccess;
-use App\Http\Middleware\RestrictPerakuanAccess;
-use App\Http\Middleware\RestrictSessionAccess;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;

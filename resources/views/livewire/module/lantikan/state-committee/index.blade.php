@@ -41,11 +41,6 @@
                             Simpan
                         </button>
                     </div>
-                    <div class="flex justify-center mt-6">
-                        <button type="submit" class="inline-flex items-center py-2.5 px-4 font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800" wire:click="test">
-                            test sp
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>

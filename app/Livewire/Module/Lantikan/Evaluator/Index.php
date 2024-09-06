@@ -15,6 +15,10 @@ class Index extends Component
 
     public function mount()
     {
+        // Set the test date to November 2024
+        // $simulatedDate = Carbon::create(2024, 10, 1, 12);
+        // Carbon::setTestNow($simulatedDate);
+
         $this->getYearsAndMonths();
     }
 

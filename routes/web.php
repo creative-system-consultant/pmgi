@@ -1,14 +1,12 @@
 <?php
 
-use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Livewire\Auth\Login;
-use App\Livewire\Auth\Passwords\Confirm;
 use App\Livewire\Auth\Passwords\Email;
 use App\Livewire\Auth\Passwords\Reset;
-use App\Livewire\Auth\Verify;
 use App\Livewire\Home;
 use App\Livewire\HomeJtt;
+use App\Livewire\JttAttendance;
 use App\Livewire\LoadingPerakuan;
 use App\Livewire\LoadingPmgi;
 use App\Livewire\Module\MaklumatWargaKerja;
@@ -22,9 +20,10 @@ use App\Livewire\Module\Prestasi\Kumulatif;
 use App\Livewire\Module\RekodPmgi;
 use App\Livewire\Module\Lantikan\Evaluator\Index as EvaluatorIndex;
 use App\Livewire\Module\Lantikan\StateCommittee\Index as StateCommitteeIndex;
+use App\Livewire\Module\ListPydJtt;
+use App\Livewire\Module\Tetapan\JttOfficer;
 use App\Livewire\Module\Tetapan\OfficerInfo\Index as OfficerInfoIndex;
 use App\Livewire\Module\Tetapan\UserAccessLevel\Index as UserAccessLevelIndex;
-use App\Livewire\WaitingLobby;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,6 +48,11 @@ Route::middleware('guest')->group(function () {
 
     // Route::get('register', Register::class)
     //     ->name('register');
+
+    // update JTT attendance
+    Route::get('/confirm-attendance/{token}', [HomeJtt::class, 'confirmAttendance'])->name('confirm.attendance');
+    // success landing page for jtt session
+    Route::get('/jtt-attendance/{status}', JttAttendance::class)->name('jtt.attendance');
 });
 
 Route::get('password/reset', Email::class)
@@ -59,7 +63,7 @@ Route::get('password/reset/{token}', Reset::class)
 
 Route::middleware(['auth', 'check.role', 'restrict.session'])->group(function () {
     Route::get('/', Home::class)->name('home');
-    Route::get('/dashboard-jtt', HomeJtt::class)->name('dashboard-jtt');
+
 
     Route::post('logout', LogoutController::class)
         ->name('logout');
@@ -67,7 +71,9 @@ Route::middleware(['auth', 'check.role', 'restrict.session'])->group(function ()
     // maklumat warga kerja
     Route::get('/maklumat-warga-kerja', MaklumatWargaKerja::class)->name('maklumat-warga-kerja')->middleware('check.access:maklumat-warga-kerja');
 
-    // mesyuarat JTT
+    //  JTT.
+    Route::get('/dashboard-jtt', HomeJtt::class)->name('dashboard-jtt');
+    Route::get('/list-jtt', ListPydJtt::class)->name('list-pyd-jtt');
     Route::get('/mesyuarat-jtt', MesyuaratJtt::class)->name('mesyuarat-jtt');
 
     // rekod PMGi (individu)
@@ -85,6 +91,7 @@ Route::middleware(['auth', 'check.role', 'restrict.session'])->group(function ()
     // tetapan
     Route::get('/tetapan/user-access', UserAccessLevelIndex::class)->name('tetapan.user-access')->middleware('check.access:tetapan-akses-pengguna');
     Route::get('/tetapan/info-pegawai', OfficerInfoIndex::class)->name('tetapan.info-pegawai')->middleware('check.access:tetapan-info-pyd-pym-pmc');
+    Route::get('/tetapan/ahli-jtt', JttOfficer::class)->name('tetapan.ahli-jtt')->middleware('check.access:tetapan-ahli-jtt');
 });
 
 Route::middleware(['auth', 'check.role', 'ensure.session'])->group(function () {

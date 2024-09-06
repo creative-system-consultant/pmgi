@@ -156,36 +156,6 @@ class Index extends Component
         Bus::chain($jobs)->dispatch();
     }
 
-    public function testSp()
-    {
-        // Define the output parameter for the OUT parameter
-        $output = '';
-
-        // Use DB::executeProcedure for calling stored procedures
-        $procedureName = 'dbo.UP_PMGI_UPD_MNTR_SESSION';
-
-        $bindings = [
-            'pi_reportdt'    => '2024-01-31',
-            'pi_state_code'  => '01',
-            'pi_branch_code' => '0112',
-            'pi_officer_id'  => 'FARID',
-            'pi_pmgi_result' => 'RSG',
-            'pi_wait_period' => 0,
-            'pi_operated_by' => 'CR7',
-            'pi_ret_msg'     => [
-                'value' => &$output,
-                'type'  => PDO::PARAM_STR,
-                'length' => 4000,
-            ],
-        ];
-
-        // Execute the procedure
-        $result = DB::executeProcedure($procedureName, $bindings);
-
-        // Display the output message
-        dd($output);
-    }
-
     public function render()
     {
         $data = BnmStatecode::with('committee')

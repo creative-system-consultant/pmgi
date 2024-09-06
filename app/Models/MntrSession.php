@@ -22,4 +22,15 @@ class MntrSession extends Model
     {
         return $this->hasOne(Branch::class, 'branch_code', 'branch_code');
     }
+
+    public function state()
+    {
+        return $this->hasOne(BnmStatecode::class, 'code', 'state_code');
+    }
+
+    public function settPymPmc()
+    {
+        return $this->belongsTo(SettPymPmc::class, 'report_date', 'report_date')
+                    ->where('pyd_id', $this->officer_id);
+    }
 }

@@ -1,5 +1,9 @@
 <main>
 
+    @if(hasRoles('PTT'))
+        <livewire:home.ptt />
+    @endif
+
     @if(hasRoles('PYD'))
         <livewire:home.pyd />
     @endif
