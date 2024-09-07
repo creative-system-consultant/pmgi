@@ -22,6 +22,7 @@ class LoadingPerakuan extends Component
     public $title;
     public $subtitle;
     public $pmgiLevel;
+    public $hasRedirected = false;
 
     public function mount()
     {
@@ -55,6 +56,11 @@ class LoadingPerakuan extends Component
 
     public function checkRecord()
     {
+        // If already redirected, stop further processing
+        if ($this->hasRedirected) {
+            return;
+        }
+
         if($this->pmgiLevel != 3) {
             // Check if a date signed exists in the table with the session ID
             $pydSigned = SessionPydInfo::where('session_id', $this->sessionId)->value('date_signed');
@@ -68,6 +74,7 @@ class LoadingPerakuan extends Component
 
                 // Redirect to the next page or do whatever action you need
                 if (substr($resultSp, 0, 1) == '0') {
+                    $this->hasRedirected = true;
                     return redirect()->route('home')->with('flash_success', 'Sesi selesai dilaksanakan.');
                 } else {
                     $this->dialog()->error(
@@ -90,6 +97,7 @@ class LoadingPerakuan extends Component
 
                 // Redirect to the next page or do whatever action you need
                 if (substr($resultSp, 0, 1) == '0') {
+                    $this->hasRedirected = true;
                     return redirect()->route('home')->with('flash_success', 'Sesi selesai dilaksanakan.');
                 } else {
                     $this->dialog()->error(
