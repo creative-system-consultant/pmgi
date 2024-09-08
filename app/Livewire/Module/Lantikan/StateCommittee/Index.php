@@ -30,7 +30,6 @@ class Index extends Component
         'selectedUsers.*' => 'nullable|exists:FMS_USERS,userid',
     ];
 
-
     public function __construct()
     {
         $this->htmlToImageService = new HtmlToImageService();

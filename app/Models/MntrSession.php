@@ -12,6 +12,18 @@ class MntrSession extends Model
     protected $table="PMGI_NAZ_MNTR_SESSION";
     protected $guarded = [];
     public $timestamps = false;
+    public $incrementing = false;
+    protected $primaryKey = null;
+
+    public function getKeyName()
+    {
+        return null;
+    }
+
+    public static function findFirst($conditions)
+    {
+        return static::where($conditions)->first();
+    }
 
     public function user()
     {

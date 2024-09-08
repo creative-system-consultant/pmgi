@@ -51,8 +51,10 @@ class ListPydJtt extends Component
 
         $data = MntrSession::with('user')
                             ->whereIn('pmgi_level', ['JT1', 'JT2'])
-                            ->where('session_date_start', '<=', now()->format('Y-m-d H:i:s'))
-                            ->where('session_date_end', '>=', now()->format('Y-m-d H:i:s'))
+                            ->where('session_date_start', '<=', now()->addMonth()->format('Y-m-d H:i:s'))
+                            ->where('session_date_end', '>=', now()->addMonth()->format('Y-m-d H:i:s')) //DEBUG
+                            // ->where('session_date_start', '<=', now()->format('Y-m-d H:i:s'))
+                            // ->where('session_date_end', '>=', now()->format('Y-m-d H:i:s')) //REAL
                             ->wherePmgiResult(NULL)
                             ->get();
 

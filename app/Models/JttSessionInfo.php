@@ -17,4 +17,9 @@ class JttSessionInfo extends Model
     {
         return $this->hasMany(JttSessionParticipant::class, 'session_id', 'session_id');
     }
+
+    public function venueInfo()
+    {
+        return $this->belongsTo(SettMeetingRoom::class, 'venue', 'id');
+    }
 }

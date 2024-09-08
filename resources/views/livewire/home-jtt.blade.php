@@ -10,6 +10,9 @@
                     </div>
                 </div>
             </div>
+            <div class="mt-4">
+                <x-select label="Tempat" placeholder="Sila Pilih" :options="$rooms" option-label="room_name" option-value="id" wire:model="room" />
+            </div>
             @if ($dataCount == 0)
                 <div class="flex justify-center">
                     <img class="h-96" src="{{ asset('image/animation/no_data.gif') }}" alt="No Data">

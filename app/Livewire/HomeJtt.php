@@ -8,14 +8,18 @@ use App\Models\JttSessionInfo;
 use App\Models\JttSessionParticipant;
 use App\Models\MntrSession;
 use App\Models\SettJtt;
+use App\Models\SettMeetingRoom;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Illuminate\Support\Str;
+use Livewire\Attributes\Validate;
 
 class HomeJtt extends Component
 {
+    #[Validate('required', message: 'Sila pilih tempat.')]
+    public $room;
     public $jttRoles = [];
 
     public function mount()
@@ -28,6 +32,8 @@ class HomeJtt extends Component
 
     public function startMeeting()
     {
+        $this->validate();
+
         $selectedOfficers = array_filter($this->jttRoles, function($role) {
             return $role !== '';
         });
@@ -37,6 +43,7 @@ class HomeJtt extends Component
         // save meeting info
         $jttInfo = JttSessionInfo::create([
             'session_id' => $sessionId,
+            'venue' => $this->room,
             'session_date' => now(),
             'created_by' => auth()->user()->userid,
         ]);
@@ -101,7 +108,10 @@ class HomeJtt extends Component
                             ->where('session_date_end', '>=', now()->format('Y-m-d H:i:s'))
                             ->count();
 
+        $rooms = SettMeetingRoom::orderBy('ID', 'asc')->get();
+
         return view('livewire.home-jtt', [
+            'rooms' => $rooms,
             'jttOfficers' => $jttOfficer,
             'dataCount' => $dataCount,
         ])->extends('layouts.main');

@@ -8,40 +8,27 @@ use App\Models\SettUalRoleHasPage;
 if (!function_exists('hasAccess')) {
     function hasAccess($pageKey)
     {
-        $user = Auth::user();
-        $page = SettUalPage::where('key', $pageKey)->first();
+        // Get access pages from session
+        $accessPages = session('user_access_pages', []);
 
-        if (!$page) {
-            return false;
-        }
-
-        // Get all role IDs associated with the user
-        $userRoleIds = $user->roles()->pluck('role_id');
-
-        // Check if any of the user's roles have access to the page
-        return SettUalRoleHasPage::whereIn('role_id', $userRoleIds)
-            ->where('page_id', $page->id)
-            ->exists();
+        // Check if the page key exists in the access pages
+        return in_array($pageKey, $accessPages);
     }
 }
 
 if (!function_exists('hasRoles')) {
     function hasRoles($roles)
     {
-        $user = Auth::user();
+        // Get user roles from session
+        $userRoles = session('user_roles', []);
 
-        // Convert the $roles parameter to an array if it's not already
+        // Convert roles to an array if it's not already
         $roles = is_array($roles) ? $roles : [$roles];
 
-        // Get the user's role IDs
-        $userRoleIds = $user->roles()->pluck('role_id')->toArray();
+        // Get role IDs for the specified role names or IDs
+        $roleIds = SettUalRole::whereIn('name', $roles)->pluck('id')->toArray();
 
-        // Get the role IDs for the specified role names or IDs
-        $roleIds = SettUalRole::whereIn('name', $roles)
-            ->pluck('id')
-            ->toArray();
-
-        // Check if the user has any of the specified roles
-        return !empty(array_intersect($userRoleIds, $roleIds));
+        // Check if any of the specified roles match the user's roles
+        return !empty(array_intersect($userRoles, $roleIds));
     }
 }

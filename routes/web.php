@@ -9,6 +9,7 @@ use App\Livewire\HomeJtt;
 use App\Livewire\JttAttendance;
 use App\Livewire\LoadingPerakuan;
 use App\Livewire\LoadingPmgi;
+use App\Livewire\Module\Hr\Index as HrIndex;
 use App\Livewire\Module\MaklumatWargaKerja;
 use App\Livewire\Module\MesyuaratJtt;
 use App\Livewire\Module\PegawaiDinilai;
@@ -94,6 +95,9 @@ Route::middleware(['auth', 'check.role', 'restrict.session'])->group(function ()
     Route::get('/tetapan/info-pegawai', OfficerInfoIndex::class)->name('tetapan.info-pegawai')->middleware('check.access:tetapan-info-pyd-pym-pmc');
     Route::get('/tetapan/ahli-jtt', JttOfficer::class)->name('tetapan.ahli-jtt')->middleware('check.access:tetapan-ahli-jtt');
     Route::get('/tetapan/meeting-room', MeetingRoom::class)->name('tetapan.meeting-room');
+
+    // HR
+    Route::get('/hr/{userid}', HrIndex::class)->name('hr.index');
 });
 
 Route::middleware(['auth', 'check.role', 'ensure.session'])->group(function () {

@@ -2,9 +2,12 @@
 
 namespace App\Livewire\Auth;
 
+use App\Models\SettUalPage;
+use App\Models\SettUalRoleHasPage;
 use App\Models\User;
 use App\Services\General\LoginService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class Login extends Component
@@ -55,6 +58,21 @@ class Login extends Component
         }
 
         Auth::login($user);
+
+        $loggedUser = Auth::user();
+
+        // Fetch access pages and roles
+        $accessPages = SettUalPage::select('key')
+            ->whereIn('id', SettUalRoleHasPage::whereIn('role_id', $loggedUser->roles()->pluck('role_id'))
+                            ->pluck('page_id'))
+            ->pluck('key')
+            ->toArray();
+
+        $userRoles = $loggedUser->roles()->pluck('role_id')->toArray();
+
+        // Store access pages and roles in session
+        Session::put('user_access_pages', $accessPages);
+        Session::put('user_roles', $userRoles);
 
         return redirect()->intended(route('home'));
     }

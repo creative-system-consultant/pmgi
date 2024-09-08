@@ -16,4 +16,8 @@
         <livewire:home.pmc />
     @endif
 
+    @if(hasRoles('HR'))
+        <livewire:home.hr />
+    @endif
+
 </main>
