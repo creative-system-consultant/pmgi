@@ -164,22 +164,22 @@
                                             @endisset
                                         </td>
                                         <td class="p-2 text-xs font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap ">
-                                            {{ number_format($officerData->bil_selia) }}
+                                            {{ number_format($officerData->bil_selia) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            {{ number_format($officerData->bil_dapat_kutip) }}
+                                            {{ number_format($officerData->bil_dapat_kutip) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-xs font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            {{ number_format(($officerData->bil_dapat_kutip / $officerData->bil_selia) * 100, 2) }}%
+                                            {{ ($officerData->bil_selia) ? number_format(($officerData->bil_dapat_kutip / $officerData->bil_selia) * 100, 2) ? 0 }}%
                                         </td>
                                         <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            {{ number_format($officerData->rm_patut_kutip, 2) }}
+                                            {{ number_format($officerData->rm_patut_kutip, 2) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            {{ number_format($officerData->rm_dapat_kutip, 2) }}
+                                            {{ number_format($officerData->rm_dapat_kutip, 2) ?? 0}}
                                         </td>
                                         <td class="p-2 text-xs font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            {{ number_format($officerData->rm_dapat_kutip_pts, 2) }}%
+                                            {{ number_format($officerData->rm_dapat_kutip_pts, 2) ?? 0 }}%
                                         </td>
                                         <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap ">
                                             -
@@ -188,10 +188,10 @@
                                             -
                                         </td>
                                         <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            {{ number_format($officerData->bil_lawat) }}
+                                            {{ number_format($officerData->bil_lawat) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-xs font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            {{ number_format($officerData->bil_lawat_pts) }}%
+                                            {{ number_format($officerData->bil_lawat_pts) ?? 0 }}%
                                         </td>
                                         <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap ">
                                             -
