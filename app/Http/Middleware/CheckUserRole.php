@@ -2,10 +2,13 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\SettUalPage;
 use App\Models\SettUalRole;
+use App\Models\SettUalRoleHasPage;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckUserRole
@@ -43,6 +46,19 @@ class CheckUserRole
                     $user->load('roles'); // Reload the roles relationship
                 }
             }
+
+            // Refresh the access pages and roles stored in the session
+            $accessPages = SettUalPage::select('key')
+                ->whereIn('id', SettUalRoleHasPage::whereIn('role_id', $user->roles()->pluck('role_id'))
+                                ->pluck('page_id'))
+                ->pluck('key')
+                ->toArray();
+
+            $userRoles = $user->roles()->pluck('role_id')->toArray();
+
+            // Store the updated access pages and roles in the session
+            Session::put('user_access_pages', $accessPages);
+            Session::put('user_roles', $userRoles);
         }
 
         return $next($request);
