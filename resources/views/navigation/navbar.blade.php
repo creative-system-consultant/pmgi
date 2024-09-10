@@ -18,7 +18,7 @@
                             </li>
                             @if(hasAccess('maklumat-warga-kerja'))
                                 <li>
-                                    <a href="{{ route('maklumat-warga-kerja') }}" class="block {{ Route::currentRouteName() === 'maklumat-warga-kerja' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Maklumat Warga Kerja</a>
+                                    <a href="{{ route('master-list-warga-kerja') }}" class="block {{ Route::currentRouteName() === 'maklumat-warga-kerja' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Master List Warga Kerja</a>
                                 </li>
                             @endif
 

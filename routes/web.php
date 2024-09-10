@@ -23,6 +23,7 @@ use App\Livewire\Module\Lantikan\Evaluator\Index as EvaluatorIndex;
 use App\Livewire\Module\Lantikan\StateCommittee\Index as StateCommitteeIndex;
 use App\Livewire\Module\Tetapan\MeetingRoom\MeetingRoom;
 use App\Livewire\Module\ListPydJtt;
+use App\Livewire\Module\MasterListWargaKerja;
 use App\Livewire\Module\Tetapan\JttOfficer;
 use App\Livewire\Module\Tetapan\OfficerInfo\Index as OfficerInfoIndex;
 use App\Livewire\Module\Tetapan\UserAccessLevel\Index as UserAccessLevelIndex;
@@ -77,7 +78,7 @@ Route::middleware(['auth', 'check.role', 'restrict.session'])->group(function ()
     Route::get('/dashboard-jtt', HomeJtt::class)->name('dashboard-jtt');
     Route::get('/list-jtt', ListPydJtt::class)->name('list-pyd-jtt');
     Route::get('/mesyuarat-jtt', MesyuaratJtt::class)->name('mesyuarat-jtt');
-
+    Route::get('/master-list-warga-kerja', MasterListWargaKerja::class)->name('master-list-warga-kerja');
     // rekod PMGi (individu)
     Route::get('/rekod-pmgi', RekodPmgi::class)->name('rekod-pmgi')->middleware('check.access:rekod-pmgi');
     Route::get('/stream-pdf/{sessionId}', [RekodPmgi::class, 'streamRekodPmgi'])->name('stream.rekodPmgi');
