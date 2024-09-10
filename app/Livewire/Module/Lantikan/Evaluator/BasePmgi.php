@@ -242,7 +242,7 @@ abstract class BasePmgi extends Component
             ->whereNotIn('m.officer_id', function($query) {
                 $query->select('d.PYD_ID')
                     ->from('PMGI_SETT_PYM_PMC as d')
-                    ->whereDate('SESSION_DATE_START', $this->selectedDate)
+                    ->whereDate('REPORT_DATE', $this->selectedDate->subMonth()->endOfMonth())
                     ->whereColumn('d.PYD_ID', 'm.officer_id');
             })
             ->orderBy('b.branch_name', 'asc')
