@@ -5,7 +5,7 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50 ">
                         <tr class="bg-gray-400 ">
-                            <th colspan="2" class="bg-white headcol-clear"></th>
+                            <th class="bg-white headcol-clear"></th>
                             <th scope="col" colspan="4" class="p-2 text-xs font-medium tracking-tight text-center text-white uppercase border-black border-dashed border-x">KRITERIA 1</th>
                             <th scope="col" colspan="4" class="p-2 text-xs font-medium tracking-tight text-center text-white uppercase border-black border-dashed border-x">KRITERIA 2</th>
                             <th scope="col" colspan="4" class="p-2 text-xs font-medium tracking-tight text-center text-white uppercase border-black border-dashed border-x">KRITERIA 3</th>
@@ -14,7 +14,7 @@
                             <th scope="col" rowspan="3" class="p-2 text-xs font-medium tracking-tight text-center text-white uppercase border-black border-dashed border-x">STATUS</th>
                         </tr>
                         <tr class="bg-gray-300">
-                            <th colspan="2" class="bg-white headcol-clear"></th>
+                            <th class="bg-white headcol-clear"></th>
                             <th scope="col" colspan="3" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border border-black border-dashed">PATUT KUTIP (RM)<br>VS<br>DAPAT KUTIP (RM)</th>
                             <th scope="col" class="p-2 text-lg font-semibold tracking-tight text-center text-gray-500 uppercase border border-black border-dashed">{{ $titleData->rm_dapat_kutip_nilai_pts }}%</th>
                             <th scope="col" colspan="3" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border border-black border-dashed">PATUT KUTIP (BIL)<br>VS<br>DAPAT KUTIP (BIL)</th>
@@ -27,9 +27,7 @@
                             <th scope="col" class="p-2 text-lg font-semibold tracking-tight text-center text-gray-500 uppercase border border-black border-dashed">{{ $titleData->bil_pulih_npf_nilai_pts }}%</th>
                         </tr>
                         <tr class="bg-gray-200">
-                            <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase bg-gray-200 headcol">NAMA PEGAWAI</th>
-                            <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase bg-gray-200 headcol">GELARAN</th>
-                            {{-- <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase bg-gray-200 whitespace-nowrap headcol">TARAF JAWATAN</th> --}}
+                            <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase bg-gray-200 headcol">NAMA PEGAWAI<br>GELARAN</th>
                             <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border border-black border-dashed whitespace-nowrap">PATUT KUTIP<br>(RM)</th>
                             <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border border-black border-dashed whitespace-nowrap">DAPAT KUTIP<br>(RM)</th>
                             <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border border-black border-dashed whitespace-nowrap">%</th>
@@ -56,8 +54,8 @@
                     <tbody class="bg-white ">
                         @foreach ($officerData as $index => $data)
                             <tr>
-                                <th scope="col" class="p-2 text-sm font-normal tracking-tight text-left text-gray-800 bg-white headcol-clear whitespace-nowrap">{{ $data->officer_name }}</th>
-                                <th scope="col" class="p-2 text-sm font-normal tracking-tight text-left text-gray-800 bg-white headcol-clear whitespace-nowrap">{{ $data->officer_position }}</th>
+                                <th scope="col" class="p-2 text-sm font-normal tracking-tight text-left text-gray-800 bg-white headcol-clear whitespace-nowrap">{{ $data->officer_name }}<br>
+                                    <p class="text-xs text-gray-600 ">{{ $data->officer_position }}</p></th>
                                 <th scope="col" class="p-2 text-sm font-normal tracking-tight text-center text-gray-800 border-black border-dashed border-x whitespace-nowrap">{{ number_format($data->rm_patut_kutip, 2) }}</th>
                                 <th scope="col" class="p-2 text-sm font-normal tracking-tight text-center text-gray-800 border-black border-dashed border-x whitespace-nowrap">{{ number_format($data->rm_dapat_kutip, 2) }}</th>
                                 <th scope="col" class="p-2 text-sm font-normal tracking-tight text-center text-gray-800 border-black border-dashed border-x whitespace-nowrap">{{ $data->rm_dapat_kutip_pts }}</th>

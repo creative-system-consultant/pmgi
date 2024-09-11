@@ -1,5 +1,5 @@
 <header>
-    <nav class="fixed z-30 w-full px-4 py-3 bg-white border-b border-gray-200 ">
+    <nav class="fixed z-50 w-full px-4 py-3 bg-white border-b border-gray-200">
         <div class="flex items-center justify-between px-8 mx-auto max-w-screen-2xl">
             <div class="flex items-center justify-start">
                 <a href="{{ route('home') }}" class="flex mr-14">

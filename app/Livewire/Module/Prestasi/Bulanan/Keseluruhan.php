@@ -11,11 +11,6 @@ class Keseluruhan extends Component
     public function render()
     {
         $sql = DB::table('PMGI_SUMM_MTH_OFFICER as a')
-            ->join('PMGI_BANK_OFFICERS_NAZ as b', 'a.officer_id', '=', 'b.officer_id')
-            ->select(
-                'b.officer_position',
-                'a.*'
-            )
             ->where('a.officer_id', auth()->user()->userid)
             ->orderBy('a.report_date', 'desc')
             ->take(1);
