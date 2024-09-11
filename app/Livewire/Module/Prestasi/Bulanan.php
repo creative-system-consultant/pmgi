@@ -52,6 +52,12 @@ class Bulanan extends Component
         }
     }
 
+    public function updatedType()
+    {
+        $this->result = false;
+        $this->reset('state','branch', 'date');
+    }
+
     public function updatedState()
     {
         $this->result = false;

@@ -16,7 +16,7 @@
     }
 
     .table-container {
-        height: 300px;
+        height: 100%;
         overflow: auto;
     }
 
@@ -58,7 +58,7 @@
                                     <x-select class="z-50" label="Jenis" placeholder="Sila Pilih" :options="[
                                             ['desc' => 'RINGKASAN',  'id' => 1],
                                             ['desc' => 'KESELURUHAN', 'id' => 2],
-                                        ]" option-label="desc" option-value="id" wire:model="type" />
+                                        ]" option-label="desc" option-value="id" wire:model.live="type" />
                                 </div>
                                 @if($role == 'admin')
                                 <div>
@@ -92,7 +92,10 @@
                             :role=$role :state=$state :branch=$branch :date=$date
                         />
                     @else
-                        {{-- <livewire:module.prestasi.bulanan.keseluruhan /> --}}
+                        <livewire:module.prestasi.bulanan.keseluruhan
+                            :key="'keseluruhan-'.$state.'-'.$branch.'-'.$date"
+                            :role=$role :state=$state :branch=$branch :date=$date
+                        />
                     @endif
                 @endif
             </div>
