@@ -26,6 +26,7 @@ use App\Livewire\Module\ListPydJtt;
 use App\Livewire\Module\MasterListWargaKerja;
 use App\Livewire\Module\Tetapan\JttOfficer;
 use App\Livewire\Module\Tetapan\OfficerInfo\Index as OfficerInfoIndex;
+use App\Livewire\Module\Tetapan\PeratusanKriteria;
 use App\Livewire\Module\Tetapan\UserAccessLevel\Index as UserAccessLevelIndex;
 use Illuminate\Support\Facades\Route;
 
@@ -96,7 +97,7 @@ Route::middleware(['auth', 'check.role', 'restrict.session'])->group(function ()
     Route::get('/tetapan/info-pegawai', OfficerInfoIndex::class)->name('tetapan.info-pegawai')->middleware('check.access:tetapan-info-pyd-pym-pmc');
     Route::get('/tetapan/ahli-jtt', JttOfficer::class)->name('tetapan.ahli-jtt')->middleware('check.access:tetapan-ahli-jtt');
     Route::get('/tetapan/meeting-room', MeetingRoom::class)->name('tetapan.meeting-room');
-
+    Route::get('/tetapan/peratusan-kriteria', PeratusanKriteria::class)->name('tetapan.peratusan-kriteria');
     // HR
     Route::get('/hr/{userid}', HrIndex::class)->name('hr.index');
 });

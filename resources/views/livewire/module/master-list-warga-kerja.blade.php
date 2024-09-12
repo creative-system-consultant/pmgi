@@ -6,7 +6,7 @@
                 <div class="mb-4 lg:mb-0">
                     {{-- current jtt --}}
                     <div class="mt-6">
-                        <h3 class="mb-2 text-xl font-bold text-gray-900 ">Senarai Pegawai Bank</h3>
+                        <h3 class="mb-2 text-xl font-bold text-gray-900 ">Master List Warga Kerja</h3>
                         <div>
                             <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 ">
                                 <!-- Result -->
