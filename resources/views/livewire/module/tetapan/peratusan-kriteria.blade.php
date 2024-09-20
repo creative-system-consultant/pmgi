@@ -10,20 +10,22 @@
                                 <div>
                                     <label for="jenis" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Jenis</label>
                                     <select wire:model.live="type" class="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500">
-                                        <option selected>Sila Pilih</option>
+                                        <option value="">Sila Pilih</option>
                                         <option value="1">Keseluruhan</option>
                                         <option value="2">Negeri</option>
                                     </select>
+                                    @error('type') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                                 </div>
                                 @if($type == 2)
                                 <div>
                                     <label for="negeri" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Negeri</label>
                                     <select wire:model="negeri" class="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500">
-                                        <option selected>Sila Pilih</option>
+                                        <option value="">Sila Pilih</option>
                                         @foreach($stateSelection as $state)
                                             <option value="{{ $state->code }}">{{ $state->description }}</option>
                                         @endforeach
                                     </select>
+                                    @error('negeri') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                                 </div>
                                 @endif
                                 <div>
@@ -54,15 +56,7 @@
                     <div x-data="{
                         sliderValues: @entangle('evaluation_criteria_percentage')
                     }" x-init="$watch('sliderValues', value => console.log('sliderValues changed:', value))">
-                        @php
-                            $titles = [
-                                1 => 'Patut Kutip (RM) vs Dapat Kutip (RM)',
-                                2 => 'Patut Kutip (BIL) vs Dapat Kutip (BIL)',
-                                3 => 'Lawatan Seliaan',
-                                4 => 'Prestasi NPF (KAWALAN)',
-                                5 => 'Prestasi NPF (Pemulihan)'
-                            ];
-                        @endphp
+                       
 
                         <div class="bg-white p-6 rounded-lg shadow">
                             <div class="space-y-4">
@@ -93,6 +87,53 @@
                         label="Simpan Peratusan"
                         wire:click="saveEvaluationCriteriaPercentage"
                     />
+                </div>
+            @endif
+
+            <!-- Result Mount-->
+            @if($resultMount)
+                <div class="mt-6">
+                    <div class="bg-white p-6 rounded-lg shadow overflow-x-auto">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                            Peratusan Kriteria dari tarikh 
+                            {{ \Carbon\Carbon::parse($effective_date)->format('d/m/Y') }} 
+                            hingga 
+                            {{ \Carbon\Carbon::parse($effective_date)->addMonth()->subDay()->format('d/m/Y') }}
+                        </h3>
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    @foreach($tableData[0] as $header)
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            {{ $header }}
+                                        </th>
+                                    @endforeach
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                @php
+                                    $lastRowIndex = count($tableData) - 1;
+                                    $defaultValues = $tableData[$lastRowIndex];
+                                @endphp
+                                @foreach($tableData as $index => $row)
+                                    @if($index > 0) {{-- Skip the header row --}}
+                                        <tr>
+                                            @foreach($row as $key => $cell)
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm 
+                                                    @if($index != $lastRowIndex && $key != 'No.' && $key != 'Negeri' && $cell != $defaultValues[$key])
+                                                        text-red-600 font-semibold
+                                                    @else
+                                                        text-gray-500
+                                                    @endif">
+                                                    {{ $cell }}
+                                                </td>
+                                            @endforeach
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             @endif
         </div>
