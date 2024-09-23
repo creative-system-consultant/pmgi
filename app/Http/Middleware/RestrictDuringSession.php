@@ -61,17 +61,17 @@ class RestrictDuringSession
                 if ($user->userid === $settPymPmc->pyd_id) {
                     if ($pmgiLvl != 3) {
                         if ($pydRecordExists && $pymRecordExists) {
-                            return redirect(route('perakuan', ['session_id' => $encodedSessionId]))->with('flash_error', 'Sila tunggu sehingga sesi ini selesai.');
+                            return redirect(route('perakuan', ['session_id' => $encodedSessionId, 'source' => 'pyd']))->with('flash_error', 'Sila tunggu sehingga sesi ini selesai.');
                         } elseif ($pydRecordExists && !$pymRecordExists) {
-                            return redirect(route('loading', ['session_id' => $encodedSessionId]))->with('flash_error', 'Sila tunggu sehingga penilai selesai membuat penilaian.');
+                            return redirect(route('loading-pmgi', ['session_id' => $encodedSessionId, 'source' => 'pyd']))->with('flash_error', 'Sila tunggu sehingga penilai selesai membuat penilaian.');
                         } else{
                             return redirect($pydUrl)->with('flash_error', $message);
                         }
                     } else {
                         if ($pydRecordExists && $pymRecordExists && $pmcRecordExists) {
-                            return redirect(route('perakuan', ['session_id' => $encodedSessionId]))->with('flash_error', 'Sila tunggu sehingga sesi ini selesai.');
+                            return redirect(route('perakuan', ['session_id' => $encodedSessionId, 'source' => 'pyd']))->with('flash_error', 'Sila tunggu sehingga sesi ini selesai.');
                         } elseif ($pydRecordExists && (!$pymRecordExists || !$pmcRecordExists)) {
-                            return redirect(route('loading', ['session_id' => $encodedSessionId]))->with('flash_error', 'Sila tunggu sehingga penilai selesai membuat penilaian.');
+                            return redirect(route('loading-pmgi', ['session_id' => $encodedSessionId, 'source' => 'pyd']))->with('flash_error', 'Sila tunggu sehingga penilai selesai membuat penilaian.');
                         } else {
                             return redirect($pydUrl)->with('flash_error', $message);
                         }
@@ -82,17 +82,17 @@ class RestrictDuringSession
                 if ($user->userid === $settPymPmc->pym_id) {
                     if ($pmgiLvl != 3) {
                         if ($pydRecordExists && $pymRecordExists) {
-                            return redirect(route('perakuan', ['session_id' => $encodedSessionId]))->with('flash_error', 'Sila tunggu sehingga sesi ini selesai.');
+                            return redirect(route('perakuan', ['session_id' => $encodedSessionId, 'source' => 'pym']))->with('flash_error', 'Sila tunggu sehingga sesi ini selesai.');
                         } elseif (!$pydRecordExists && $pymRecordExists) {
-                            return redirect(route('loading', ['session_id' => $encodedSessionId]))->with('flash_error', 'Sila tunggu sehingga penilai selesai membuat penilaian.');
+                            return redirect(route('loading-pmgi', ['session_id' => $encodedSessionId, 'source' => 'pym']))->with('flash_error', 'Sila tunggu sehingga penilai selesai membuat penilaian.');
                         } else{
                             return redirect($pymUrl)->with('flash_error', $message);
                         }
                     } else {
                         if ($pydRecordExists && $pymRecordExists && $pmcRecordExists) {
-                            return redirect(route('perakuan', ['session_id' => $encodedSessionId]))->with('flash_error', 'Sila tunggu sehingga sesi ini selesai.');
+                            return redirect(route('perakuan', ['session_id' => $encodedSessionId, 'source' => 'pym']))->with('flash_error', 'Sila tunggu sehingga sesi ini selesai.');
                         } elseif ($pymRecordExists && (!$pydRecordExists || !$pmcRecordExists)) {
-                            return redirect(route('loading', ['session_id' => $encodedSessionId]))->with('flash_error', 'Sila tunggu sehingga penilai selesai membuat penilaian.');
+                            return redirect(route('loading-pmgi', ['session_id' => $encodedSessionId, 'source' => 'pym']))->with('flash_error', 'Sila tunggu sehingga penilai selesai membuat penilaian.');
                         } else {
                             return redirect($pymUrl)->with('flash_error', $message);
                         }
@@ -102,9 +102,9 @@ class RestrictDuringSession
                 // Check if the user is the PMC and redirect if necessary
                 if ($settPymPmc->pmgi_level === 'PM3' && $user->userid === $settPymPmc->pmc_id) {
                     if ($pydRecordExists && $pymRecordExists && $pmcRecordExists) {
-                        return redirect(route('perakuan', ['session_id' => $encodedSessionId]))->with('flash_error', 'Sila tunggu sehingga sesi ini selesai.');
+                        return redirect(route('perakuan', ['session_id' => $encodedSessionId, 'source' => 'pmc']))->with('flash_error', 'Sila tunggu sehingga sesi ini selesai.');
                     } elseif ((!$pydRecordExists || !$pymRecordExists) && $pmcRecordExists) {
-                        return redirect(route('loading', ['session_id' => $encodedSessionId]))->with('flash_error', 'Sila tunggu sehingga penilai selesai membuat penilaian.');
+                        return redirect(route('loading-pmgi', ['session_id' => $encodedSessionId, 'source' => 'pmc']))->with('flash_error', 'Sila tunggu sehingga penilai selesai membuat penilaian.');
                     } else {
                         return redirect($pmcUrl)->with('flash_error', $message);
                     }

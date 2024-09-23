@@ -95,7 +95,7 @@ class MaklumatWargaKerja extends Component
         ]);
 
         $sessionId = str_replace('/', '-', $this->sessionId);
-        if ($this->pmgiLevel == 3) {
+        if ($this->pmgiLevel == 'PM3') {
             return $this->redirect('/pegawai-pemudah-cara?session_id=' . $sessionId);
         } else {
             return $this->redirect('/pegawai-menilai?session_id=' . $sessionId);

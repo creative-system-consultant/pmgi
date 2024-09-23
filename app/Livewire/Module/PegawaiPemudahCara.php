@@ -122,7 +122,7 @@ class PegawaiPemudahCara extends Component
 
         $sessionId  = str_replace('/', '-', $this->sessionId);
 
-        return $this->redirect('/loading-pmgi?session_id=' . $sessionId . '&source=pym');
+        return $this->redirect('/loading-pmgi?session_id=' . $sessionId . '&source=pmc');
     }
 
     private function processFile()
