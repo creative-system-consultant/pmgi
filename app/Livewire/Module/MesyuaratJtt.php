@@ -35,9 +35,7 @@ class MesyuaratJtt extends Component
     public $staffName;
     public $staffIc;
     public $pmgiLevel;
-    public $pmgi1Data;
-    public $pmgi2Data;
-    public $pmgi3Data;
+    public $pmgiData;
     public $result;
     public $mthDelay;
     public $comment;
@@ -49,7 +47,6 @@ class MesyuaratJtt extends Component
 
     public function mount()
     {
-        $this->getHrEmail();
         // check flash error from middleware
         if (session()->has('flash_success')) {
             $this->dialog()->success(
@@ -75,36 +72,55 @@ class MesyuaratJtt extends Component
         $this->staffName = $data->user->username;
         $this->staffIc = $data->user->bankOfficer->nokp;
         $this->pmgiLevel = $data->pmgi_level;
-        $this->getPmgiData($data->pmgi_cycle, $this->pmgiLevel);
+        $this->getPmgiData($data->pmgi_cycle);
     }
 
-    public function getPmgiData($cycle, $level)
+    public function getPmgiData($cycle)
     {
-        $this->pmgi1Data = MntrSession::with('settPymPmc')
-                            ->whereOfficerId($this->userId)
-                            ->wherePmgiCycle($cycle)
-                            ->wherePmgiResult('CP1')
-                            ->first();
+        $mntrData = MntrSession::whereOfficerId($this->userId)
+                                ->wherePmgiCycle($cycle)
+                                ->whereNotIn('pmgi_level', ['MN1', 'MN2', 'MN3', 'MN4', 'MT2'])
+                                ->orderBy('seq_no', 'ASC')
+                                ->get();
 
-        $this->pmgi2Data = MntrSession::with('settPymPmc')
-                            ->whereOfficerId($this->userId)
-                            ->wherePmgiCycle($cycle)
-                            ->wherePmgiResult('CP2')
-                            ->first();
+        // Initialize a collection to hold the transformed data
+        $this->pmgiData = $mntrData->map(function ($data) {
+            // Ensure settPymPmc relationship is loaded and exists
+            if ($data->settPymPmc) {
+                // Map pmgi_result codes to their descriptions
+                $resultMapping = [
+                    'CP1' => 'SELESAI DILAKSANAKAN',
+                    'CP2' => 'SELESAI DILAKSANAKAN',
+                    'PEX' => 'DISYORKAN KELUAR TANPA SYARAT',
+                    'EXC' => 'DISYORKAN KELUAR DENGAN SYARAT',
+                    'EXP' => 'DITANGGUHKAN',
+                    'NEX' => 'DIHANTAR KE SESI TIMBANG TARA',
+                    'PDQ' => 'DIBERI TEMPOH'
+                ];
 
-        $this->pmgi3Data = MntrSession::with('settPymPmc')
-                            ->whereOfficerId($this->userId)
-                            ->wherePmgiCycle($cycle)
-                            ->wherePmgiResult('NEX')
-                            ->first();
+                // Get the corresponding description or a default message
+                $pmgiResult = $resultMapping[$data->pmgi_result] ?? 'RESULT UNKNOWN';
 
-        if ($level == 'JT2') {
-            // $pmgi3Data = MntrSession::with('settPymPmc')
-            //                 ->whereOfficerId($this->userId)
-            //                 ->wherePmgiCycle($cycle)
-            //                 ->wherePmgiResult('NEX')
-            //                 ->first();
-        }
+                // Initialize the array with common fields
+                $result = [
+                    'seq' => $data->seq_no,
+                    'lvl' => $data->pmgi_level,
+                    'pym' => $data->settPymPmc->pym->username,
+                    'date_session' => $data->settPymPmc->created_at->format('d/m/Y'),
+                    'result' => $pmgiResult,
+                ];
+
+                // Add 'pmc' field conditionally if pmgi_level is 'PM3'
+                if ($data->pmgi_level == 'PM3') {
+                    $result['pmc'] = $data->settPymPmc->pmc->username;
+                }
+
+                return $result;
+            }
+
+            // Return null or any default value if settPymPmc is missing
+            return null;
+        })->filter();
     }
 
     public function submit()

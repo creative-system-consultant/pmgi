@@ -46,15 +46,15 @@ class ListPydJtt extends Component
     public function render()
     {
         // Set the test date to November 2024
-        // $simulatedDate = Carbon::create(2024, 9, 1, 12);
+        // $simulatedDate = Carbon::create(2024, 12, 1, 12);
         // Carbon::setTestNow($simulatedDate);
 
         $data = MntrSession::with('user')
                             ->whereIn('pmgi_level', ['JT1', 'JT2'])
-                            ->where('session_date_start', '<=', now()->addMonth()->format('Y-m-d H:i:s'))
-                            ->where('session_date_end', '>=', now()->addMonth()->format('Y-m-d H:i:s')) //DEBUG
-                            // ->where('session_date_start', '<=', now()->format('Y-m-d H:i:s'))
-                            // ->where('session_date_end', '>=', now()->format('Y-m-d H:i:s')) //REAL
+                            // ->where('session_date_start', '<=', now()->addMonth()->format('Y-m-d H:i:s'))
+                            // ->where('session_date_end', '>=', now()->addMonth()->format('Y-m-d H:i:s')) //DEBUG
+                            ->where('session_date_start', '<=', now()->format('Y-m-d'))
+                            ->where('session_date_end', '>=', now()->format('Y-m-d')) //REAL
                             ->wherePmgiResult(NULL)
                             ->get();
 
