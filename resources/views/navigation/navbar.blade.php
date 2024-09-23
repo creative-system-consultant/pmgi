@@ -122,6 +122,9 @@
                                             <li>
                                                 <a href="{{ route('tetapan.meeting-room') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.meeting-room' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Bilik Mesyuarat</a>
                                             </li>
+                                            <li>
+                                                <a href="{{ route('tetapan.peratusan-kriteria') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.peratusan-kriteria' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Peratusan PMGi</a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </li>

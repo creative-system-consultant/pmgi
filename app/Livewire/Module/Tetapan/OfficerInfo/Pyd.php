@@ -4,6 +4,7 @@ namespace App\Livewire\Module\Tetapan\OfficerInfo;
 
 use App\Models\SettOfficerInfoFile;
 use App\Models\SettPydProb;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use WireUi\Traits\Actions;
@@ -13,6 +14,8 @@ class Pyd extends Component
     use Actions, WithFileUploads;
 
     public $savedFile;
+
+    #[Validate('required', message: 'Sila isikan masalah yang dihadapi.')]
     public $problem;
     public $file;
 
@@ -23,6 +26,8 @@ class Pyd extends Component
 
     public function add()
     {
+        $this->validate();
+
         SettPydProb::create([
             'DESCRIPTION' => $this->problem
         ]);
