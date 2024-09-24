@@ -4,6 +4,10 @@
         <livewire:home.admin />
     @endif
 
+    @if(hasRoles('URUSETIA NEGERI'))
+        <livewire:home.state-committee />
+    @endif
+
     @if(hasRoles('PTT'))
         <livewire:home.ptt />
     @endif
