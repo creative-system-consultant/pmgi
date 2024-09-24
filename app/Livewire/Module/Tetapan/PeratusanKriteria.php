@@ -52,102 +52,120 @@ class PeratusanKriteria extends Component
     public function retrieveInitialData()
     {
         $eval_pctgs = RefEvalPctg::whereNotIn('state_code', ['00', '15', '16', '99'])
-                                    ->where('effective_date', function ($query) {
-                                        $query->select('effective_date')
-                                            ->from('pmgi_ref_eval_pctg')
-                                            ->where('effective_date', '<=', now())
-                                            ->orderBy('effective_date', 'desc')
-                                            ->limit(1);
-                                    })
-                                    ->with('bnmState')
-                                    ->orderBy('state_code', 'ASC')
-                                    ->orderBy('evaluation_id', 'ASC')
-                                    ->get();
+            ->where('effective_date', function ($query) {
+                $query->select('effective_date')
+                    ->from('pmgi_ref_eval_pctg')
+                    ->where('effective_date', '<=', now())
+                    ->orderBy('effective_date', 'desc')
+                    ->limit(1);
+            })
+            ->with('bnmState')
+            ->orderBy('state_code', 'ASC')
+            ->orderBy('evaluation_id', 'ASC')
+            ->get();
 
         if ($eval_pctgs->isNotEmpty()) {
             $this->effective_date = $eval_pctgs->first()->effective_date;
             $this->noPreviousData = false;
-            $allSame = true;
-            $differentStates = [];
-            $differentStateCodes = [];
+
+            $statePercentages = []; // To store percentages per state
             $tableData = [];
 
             // Initialize the table header
             $tableData[] = array_merge(['No.', 'Negeri'], array_values($this->titles));
 
+            // Collect percentages for each state
+            foreach ($eval_pctgs->groupBy('state_code') as $stateCode => $stateData) {
+                $percentages = [];
+                foreach (range(1, 5) as $evaluationId) {
+                    $percentage = $stateData->where('evaluation_id', $evaluationId)->first();
+                    $percentages[$evaluationId] = $percentage ? $percentage->evaluation_percentage : null;
+                }
+                $statePercentages[$stateCode] = [
+                    'state_code' => $stateCode,
+                    'state_name' => $stateData->first()->bnmState->description,
+                    'percentages' => $percentages,
+                ];
+            }
+
+            $rowNumber = 1;
+            $totalStates = count($statePercentages);
+
+            // Calculate majority percentages for each evaluation
+            $evaluationMajority = [];
             foreach (range(1, 5) as $evaluationId) {
-                $percentages = $eval_pctgs->where('evaluation_id', $evaluationId)
-                    ->groupBy('state_code')
-                    ->map(function ($group) {
-                        return [
-                            'state_code' => $group->first()->state_code,
-                            'state' => $group->first()->bnmState->description,
-                            'percentage' => $group->first()->evaluation_percentage
-                        ];
-                    })->values();
+                $percentages = array_column(array_column($statePercentages, 'percentages'), $evaluationId);
+                $percentageCounts = array_count_values($percentages);
+                arsort($percentageCounts);
+                $majorityPercentage = key($percentageCounts);
+                $evaluationMajority[$evaluationId] = $majorityPercentage;
+            }
 
-                $uniquePercentages = $percentages->pluck('percentage')->unique();
-                if ($uniquePercentages->count() > 1) {
-                    $allSame = false;
-                    $differentStates[$evaluationId] = $percentages->toArray();
+            // Identify states that match the majority percentages across all evaluations
+            $statesMatchingMajority = [];
+            $statesNotMatchingMajority = [];
 
-                    // Find the majority percentage
-                    $percentageValues = $percentages->pluck('percentage')->toArray();
-                    $percentageCounts = array_count_values($percentageValues);
-                    arsort($percentageCounts);
-                    $majorityPercentage = key($percentageCounts);
-
-                    // Record state codes with different values
-                    $differentCodes = $percentages->where('percentage', '!=', $majorityPercentage)
-                        ->pluck('state_code')
-                        ->toArray();
-                    $differentStateCodes = array_merge($differentStateCodes, $differentCodes);
+            foreach ($statePercentages as $stateCode => $data) {
+                $matchesMajority = true;
+                foreach (range(1, 5) as $evaluationId) {
+                    if ($data['percentages'][$evaluationId] != $evaluationMajority[$evaluationId]) {
+                        $matchesMajority = false;
+                        break;
+                    }
+                }
+                if ($matchesMajority) {
+                    $statesMatchingMajority[] = $data;
+                } else {
+                    $statesNotMatchingMajority[] = $data;
                 }
             }
 
-            $differentStateCodes = array_unique($differentStateCodes);
-
-            if ($allSame) {
-                // If all percentages are the same, just add one row for "Semua negeri"
-                $stateData = ['No.' => 1, 'Negeri' => 'SEMUA NEGERI'];
-                foreach (range(1, 5) as $evaluationId) {
-                    $statePercentage = $eval_pctgs->where('evaluation_id', $evaluationId)->first();
-                    $stateData[$this->titles[$evaluationId]] = $statePercentage ? $statePercentage->evaluation_percentage . '%' : 'N/A';
-                }
-                $tableData[] = $stateData;
-            } else {
-                // Add rows for states with different percentages
-                $rowNumber = 1;
-                foreach ($differentStateCodes as $stateCode) {
-                    $stateData = ['No.' => $rowNumber++, 'Negeri' => ''];
+            // Only group under "LAIN-LAIN NEGERI" if totalStates == 14
+            if ($totalStates == 14) {
+                // If all states have the same percentages and total states is 14
+                if (count($statesMatchingMajority) == $totalStates) {
+                    // All states share the same percentages, display as "SEMUA NEGERI"
+                    $stateData = ['No.' => $rowNumber++, 'Negeri' => 'SEMUA NEGERI'];
                     foreach (range(1, 5) as $evaluationId) {
-                        $statePercentage = $eval_pctgs->where('state_code', $stateCode)
-                            ->where('evaluation_id', $evaluationId)
-                            ->first();
-                        $stateData[$this->titles[$evaluationId]] = $statePercentage ? $statePercentage->evaluation_percentage . '%' : 'N/A';
-                        $stateData['Negeri'] = $statePercentage ? $statePercentage->bnmState->description : 'Unknown';
+                        $percentage = $evaluationMajority[$evaluationId];
+                        $stateData[$this->titles[$evaluationId]] = $percentage !== null ? $percentage . '%' : 'N/A';
+                    }
+                    $tableData[] = $stateData;
+                } else {
+                    // Display individual states not matching the majority
+                    foreach ($statesNotMatchingMajority as $data) {
+                        $stateData = ['No.' => $rowNumber++, 'Negeri' => $data['state_name']];
+                        foreach (range(1, 5) as $evaluationId) {
+                            $percentage = $data['percentages'][$evaluationId];
+                            $stateData[$this->titles[$evaluationId]] = $percentage !== null ? $percentage . '%' : 'N/A';
+                        }
+                        $tableData[] = $stateData;
+                    }
+
+                    // Group states matching the majority under "LAIN-LAIN NEGERI"
+                    if (count($statesMatchingMajority) > 0) {
+                        $stateData = ['No.' => $rowNumber++, 'Negeri' => 'LAIN-LAIN NEGERI'];
+                        foreach (range(1, 5) as $evaluationId) {
+                            $percentage = $evaluationMajority[$evaluationId];
+                            $stateData[$this->titles[$evaluationId]] = $percentage !== null ? $percentage . '%' : 'N/A';
+                        }
+                        $tableData[] = $stateData;
+                    }
+                }
+            } else {
+                // Less than 14 states, display all states individually
+                foreach ($statePercentages as $data) {
+                    $stateData = ['No.' => $rowNumber++, 'Negeri' => $data['state_name']];
+                    foreach (range(1, 5) as $evaluationId) {
+                        $percentage = $data['percentages'][$evaluationId];
+                        $stateData[$this->titles[$evaluationId]] = $percentage !== null ? $percentage . '%' : 'N/A';
                     }
                     $tableData[] = $stateData;
                 }
-
-                // Add the last row for all other states
-                $otherStatesData = ['No.' => $rowNumber, 'Negeri' => 'LAIN-LAIN NEGERI'];
-                foreach (range(1, 5) as $evaluationId) {
-                    $otherStatesPercentage = $eval_pctgs->whereNotIn('state_code', $differentStateCodes)
-                        ->where('evaluation_id', $evaluationId)
-                        ->first();
-                    $otherStatesData[$this->titles[$evaluationId]] = $otherStatesPercentage ? $otherStatesPercentage->evaluation_percentage . '%' : 'N/A';
-                }
-                $tableData[] = $otherStatesData;
             }
 
             $this->tableData = $tableData;
             $this->resultMount = true;
-
-            if (!$allSame) {
-                $this->differentStateCodes = $differentStateCodes;
-                $this->diff_pctgs = $eval_pctgs;
-            }
         } else {
             $this->noPreviousData = true;
             $this->resultMount = true;
@@ -158,103 +176,121 @@ class PeratusanKriteria extends Component
     public function retrieveNextEffectiveData()
     {
         $nextEffectiveData = RefEvalPctg::select('effective_date')
-                                            ->where('effective_date', '>=', now())
-                                            ->distinct()
-                                            ->orderBy('effective_date', 'asc')
-                                            ->first();
+            ->where('effective_date', '>=', now())
+            ->distinct()
+            ->orderBy('effective_date', 'asc')
+            ->first();
 
         if ($nextEffectiveData) {
             $nextEffectiveDate = $nextEffectiveData->effective_date;
             $eval_pctgs = RefEvalPctg::whereNotIn('state_code', ['00', '15', '16', '99'])
-                                        ->where('effective_date', $nextEffectiveDate)
-                                        ->with('bnmState')
-                                        ->orderBy('state_code', 'ASC')
-                                        ->orderBy('evaluation_id', 'ASC')
-                                        ->get();
+                ->where('effective_date', $nextEffectiveDate)
+                ->with('bnmState')
+                ->orderBy('state_code', 'ASC')
+                ->orderBy('evaluation_id', 'ASC')
+                ->get();
 
             if ($eval_pctgs->isNotEmpty()) {
                 $this->next_effective_date = $eval_pctgs->first()->effective_date;
-                $allSame = true;
-                $differentStates = [];
-                $differentStateCodes = [];
+
+                $statePercentages = []; // To store percentages per state
                 $tableData = [];
 
                 // Initialize the table header
                 $tableData[] = array_merge(['No.', 'Negeri'], array_values($this->titles));
 
+                // Collect percentages for each state
+                foreach ($eval_pctgs->groupBy('state_code') as $stateCode => $stateData) {
+                    $percentages = [];
+                    foreach (range(1, 5) as $evaluationId) {
+                        $percentage = $stateData->where('evaluation_id', $evaluationId)->first();
+                        $percentages[$evaluationId] = $percentage ? $percentage->evaluation_percentage : null;
+                    }
+                    $statePercentages[$stateCode] = [
+                        'state_code' => $stateCode,
+                        'state_name' => $stateData->first()->bnmState->description,
+                        'percentages' => $percentages,
+                    ];
+                }
+
+                $rowNumber = 1;
+                $totalStates = count($statePercentages);
+
+                // Calculate majority percentages for each evaluation
+                $evaluationMajority = [];
                 foreach (range(1, 5) as $evaluationId) {
-                    $percentages = $eval_pctgs->where('evaluation_id', $evaluationId)
-                        ->groupBy('state_code')
-                        ->map(function ($group) {
-                            return [
-                                'state_code' => $group->first()->state_code,
-                                'state' => $group->first()->bnmState->description,
-                                'percentage' => $group->first()->evaluation_percentage
-                            ];
-                        })->values();
+                    $percentages = array_column(array_column($statePercentages, 'percentages'), $evaluationId);
+                    $percentageCounts = array_count_values($percentages);
+                    arsort($percentageCounts);
+                    $majorityPercentage = key($percentageCounts);
+                    $evaluationMajority[$evaluationId] = $majorityPercentage;
+                }
 
-                    $uniquePercentages = $percentages->pluck('percentage')->unique();
-                    if ($uniquePercentages->count() > 1) {
-                        $allSame = false;
-                        $differentStates[$evaluationId] = $percentages->toArray();
+                // Identify states that match the majority percentages across all evaluations
+                $statesMatchingMajority = [];
+                $statesNotMatchingMajority = [];
 
-                        // Find the majority percentage
-                        $percentageValues = $percentages->pluck('percentage')->toArray();
-                        $percentageCounts = array_count_values($percentageValues);
-                        arsort($percentageCounts);
-                        $majorityPercentage = key($percentageCounts);
-
-                        // Record state codes with different values
-                        $differentCodes = $percentages->where('percentage', '!=', $majorityPercentage)
-                            ->pluck('state_code')
-                            ->toArray();
-                        $differentStateCodes = array_merge($differentStateCodes, $differentCodes);
+                foreach ($statePercentages as $stateCode => $data) {
+                    $matchesMajority = true;
+                    foreach (range(1, 5) as $evaluationId) {
+                        if ($data['percentages'][$evaluationId] != $evaluationMajority[$evaluationId]) {
+                            $matchesMajority = false;
+                            break;
+                        }
+                    }
+                    if ($matchesMajority) {
+                        $statesMatchingMajority[] = $data;
+                    } else {
+                        $statesNotMatchingMajority[] = $data;
                     }
                 }
 
-                $differentStateCodes = array_unique($differentStateCodes);
-
-                if ($allSame) {
-                    // If all percentages are the same, just add one row for "Semua negeri"
-                    $stateData = ['No.' => 1, 'Negeri' => 'SEMUA NEGERI'];
-                    foreach (range(1, 5) as $evaluationId) {
-                        $statePercentage = $eval_pctgs->where('evaluation_id', $evaluationId)->first();
-                        $stateData[$this->titles[$evaluationId]] = $statePercentage ? $statePercentage->evaluation_percentage . '%' : 'N/A';
-                    }
-                    $tableData[] = $stateData;
-                } else {
-                    // Add rows for states with different percentages
-                    $rowNumber = 1;
-                    foreach ($differentStateCodes as $stateCode) {
-                        $stateData = ['No.' => $rowNumber++, 'Negeri' => ''];
+                // Only group under "LAIN-LAIN NEGERI" if totalStates == 14
+                if ($totalStates == 14) {
+                    // If all states have the same percentages and total states is 14
+                    if (count($statesMatchingMajority) == $totalStates) {
+                        // All states share the same percentages, display as "SEMUA NEGERI"
+                        $stateData = ['No.' => $rowNumber++, 'Negeri' => 'SEMUA NEGERI'];
                         foreach (range(1, 5) as $evaluationId) {
-                            $statePercentage = $eval_pctgs->where('state_code', $stateCode)
-                                ->where('evaluation_id', $evaluationId)
-                                ->first();
-                            $stateData[$this->titles[$evaluationId]] = $statePercentage ? $statePercentage->evaluation_percentage . '%' : 'N/A';
-                            $stateData['Negeri'] = $statePercentage ? $statePercentage->bnmState->description : 'Unknown';
+                            $percentage = $evaluationMajority[$evaluationId];
+                            $stateData[$this->titles[$evaluationId]] = $percentage !== null ? $percentage . '%' : 'N/A';
+                        }
+                        $tableData[] = $stateData;
+                    } else {
+                        // Display individual states not matching the majority
+                        foreach ($statesNotMatchingMajority as $data) {
+                            $stateData = ['No.' => $rowNumber++, 'Negeri' => $data['state_name']];
+                            foreach (range(1, 5) as $evaluationId) {
+                                $percentage = $data['percentages'][$evaluationId];
+                                $stateData[$this->titles[$evaluationId]] = $percentage !== null ? $percentage . '%' : 'N/A';
+                            }
+                            $tableData[] = $stateData;
+                        }
+
+                        // Group states matching the majority under "LAIN-LAIN NEGERI"
+                        if (count($statesMatchingMajority) > 0) {
+                            $stateData = ['No.' => $rowNumber++, 'Negeri' => 'LAIN-LAIN NEGERI'];
+                            foreach (range(1, 5) as $evaluationId) {
+                                $percentage = $evaluationMajority[$evaluationId];
+                                $stateData[$this->titles[$evaluationId]] = $percentage !== null ? $percentage . '%' : 'N/A';
+                            }
+                            $tableData[] = $stateData;
+                        }
+                    }
+                } else {
+                    // Less than 14 states, display all states individually
+                    foreach ($statePercentages as $data) {
+                        $stateData = ['No.' => $rowNumber++, 'Negeri' => $data['state_name']];
+                        foreach (range(1, 5) as $evaluationId) {
+                            $percentage = $data['percentages'][$evaluationId];
+                            $stateData[$this->titles[$evaluationId]] = $percentage !== null ? $percentage . '%' : 'N/A';
                         }
                         $tableData[] = $stateData;
                     }
-
-                    // Add the last row for all other states
-                    $otherStatesData = ['No.' => $rowNumber, 'Negeri' => 'LAIN-LAIN NEGERI'];
-                    foreach (range(1, 5) as $evaluationId) {
-                        $otherStatesPercentage = $eval_pctgs->whereNotIn('state_code', $differentStateCodes)
-                            ->where('evaluation_id', $evaluationId)
-                            ->first();
-                        $otherStatesData[$this->titles[$evaluationId]] = $otherStatesPercentage ? $otherStatesPercentage->evaluation_percentage . '%' : 'N/A';
-                    }
-                    $tableData[] = $otherStatesData;
                 }
 
                 $this->nextTableData = $tableData;
                 $this->nextResultMount = true;
-
-                if (!$allSame) {
-                    $this->nextDifferentStateCodes = $differentStateCodes;
-                    $this->nextDiff_pctgs = $eval_pctgs;
-                }
             }
         }
     }
