@@ -1,5 +1,9 @@
 <main>
 
+    @if(hasRoles('ADMINISTRATOR'))
+        <livewire:home.admin />
+    @endif
+
     @if(hasRoles('PTT'))
         <livewire:home.ptt />
     @endif
