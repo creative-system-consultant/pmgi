@@ -96,8 +96,8 @@ Route::middleware(['auth', 'check.role', 'restrict.session'])->group(function ()
     Route::get('/tetapan/user-access', UserAccessLevelIndex::class)->name('tetapan.user-access')->middleware('check.access:tetapan-akses-pengguna');
     Route::get('/tetapan/info-pegawai', OfficerInfoIndex::class)->name('tetapan.info-pegawai')->middleware('check.access:tetapan-info-pyd-pym-pmc');
     Route::get('/tetapan/ahli-jtt', JttOfficer::class)->name('tetapan.ahli-jtt')->middleware('check.access:tetapan-ahli-jtt');
-    Route::get('/tetapan/meeting-room', MeetingRoom::class)->name('tetapan.meeting-room');
-    Route::get('/tetapan/peratusan-kriteria', PeratusanKriteria::class)->name('tetapan.peratusan-kriteria');
+    Route::get('/tetapan/meeting-room', MeetingRoom::class)->name('tetapan.meeting-room')->middleware('check.access:tetapan-bilik-meeting');
+    Route::get('/tetapan/peratusan-kriteria', PeratusanKriteria::class)->name('tetapan.peratusan-kriteria')->middleware('check.access:tetapan-peratusan-kriteria');
     // HR
     Route::get('/hr/{userid}', HrIndex::class)->name('hr.index');
 });
