@@ -207,7 +207,6 @@
                     </div>
                 </div>
                 @endif
-
             </div>
         </div>
 
@@ -273,22 +272,22 @@
                                         <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                             TERIMA
                                         </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border-black border-dashed border-x">
+                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                             LULUS
                                         </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border-black border-dashed border-x">
+                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                             TOLAK
                                         </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border-black border-dashed border-x">
+                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                             BAKI
                                         </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border-black border-dashed border-x">
+                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                             JANA
                                         </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border-black border-dashed border-x">
+                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                             JUM. TERIMA (RM)
                                         </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border-black border-dashed border-x">
+                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                             JUM. LULUS (RM)
                                         </th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
@@ -299,28 +298,28 @@
                                 <tbody class="bg-white ">
                                     <tr>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            35
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            35
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            0
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            0
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            35
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            262,933.87
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            262,933.87
+                                            {{ number_format($penjadualanSemula->terima) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">
-                                            0.00
+                                            {{ number_format($penjadualanSemula->lulus) ?? 0 }}
+                                        </td>
+                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">
+                                            {{ number_format($penjadualanSemula->tolak) ?? 0 }}
+                                        </td>
+                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">
+                                            {{ number_format($penjadualanSemula->baki) ?? 0 }}
+                                        </td>
+                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">
+                                            {{ number_format($penjadualanSemula->jana) ?? 0 }}
+                                        </td>
+                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">
+                                            {{ number_format($penjadualanSemula->jumterima, 2) ?? 0 }}
+                                        </td>
+                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">
+                                            {{ number_format($penjadualanSemula->jumlulus, 2) ?? 0 }}
+                                        </td>
+                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">
+                                            {{ number_format($penjadualanSemula->jumtolak, 2) ?? 0 }}
                                         </td>
                                     </tr>
                                 </tbody>
@@ -350,13 +349,13 @@
                                         <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                             JUMLAH
                                         </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border-black border-dashed border-x">
+                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase ">
                                             LULUS
                                         </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border-black border-dashed border-x">
+                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase ">
                                             PROSES
                                         </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border-black border-dashed border-x">
+                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase ">
                                             TOLAK
                                         </th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
@@ -367,19 +366,19 @@
                                 <tbody class="bg-white ">
                                     <tr>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            0
+                                            {{ number_format($mia->jumlah) ?? 0 }}
                                         </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            0
+                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">
+                                            {{ number_format($mia->lulus) ?? 0 }}
                                         </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            0
+                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">
+                                            {{ number_format($mia->proses) ?? 0 }}
                                         </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            0
+                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">
+                                            {{ number_format($mia->tolak) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            0
+                                            {{ number_format($mia->dikembalikan) ?? 0 }}
                                         </td>
                                     </tr>
                                 </tbody>
@@ -391,7 +390,7 @@
         </div>
 
         {{-- wilma report --}}
-        <div class="p-4 my-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 ">
+        {{-- <div class="p-4 my-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 ">
             <!-- Card header -->
             <div class="items-center justify-between lg:flex">
                 <div class="mb-4 lg:mb-0">
@@ -489,7 +488,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         {{-- pembiayaan --}}
         <div class="p-4 my-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 ">
@@ -504,147 +503,38 @@
                 <div class="overflow-x-auto">
                     <div class="inline-block min-w-full align-middle">
                         <div class="overflow-hidden">
-                            <table class="min-w-full divide-y divide-gray-200 ">
+                            <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
-                                    <tr class="bg-gray-100 ">
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase "></th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-800 uppercase bg-yellow-300 border-black border-dashed border-x">
-                                            PEMULIH
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border-black border-dashed border-x">
-                                            KONTRAK i
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-800 uppercase bg-yellow-300 border-black border-dashed border-x">
-                                            PLUS
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-800 uppercase bg-yellow-300 border-black border-dashed border-x">
-                                            PROGRAM KHAS
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-800 uppercase bg-yellow-300 border-black border-dashed border-x">
-                                            PENJANA
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border-black border-dashed border-x">
-                                            TEKUN NIAGA
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border-black border-dashed border-x">
-                                            SPUMI
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-800 uppercase bg-yellow-300 border-black border-dashed border-x">
-                                            TEMAN
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-800 uppercase bg-yellow-300 border-black border-dashed border-x">
-                                            TEMAN 2.0
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-800 uppercase bg-yellow-300 ">
-                                            TEMANNITA
-                                        </th>
+                                    <tr class="bg-gray-100">
+                                        <th class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase"></th>
+                                        @foreach ($pembiayaan['product_categories'] as $category)
+                                        <th class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">{{ $category }}</th>
+                                        @endforeach
                                     </tr>
                                 </thead>
-                                <tbody class="bg-white ">
+                                <tbody class="bg-white">
+                                    <!-- Row for BIL PEMINJAM -->
                                     <tr>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            BIL PEMINJAM
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            200
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            41
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            1
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            91
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            87
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            1,308
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            261
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            424
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            31
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">
-                                            50
-                                        </td>
+                                        <td class="p-2 text-sm font-normal text-center text-gray-500 bg-gray-100 whitespace-nowrap">BIL PEMINJAM</td>
+                                        @foreach ($pembiayaan['bil_peminjam'] as $bilPeminjam)
+                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ $bilPeminjam }}</td>
+                                        @endforeach
                                     </tr>
-                                    <tr class="bg-gray-50">
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            BIL AKAUN
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            200
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            64
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            1
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            94
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            87
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            1,754
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            295
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            454
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            39
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            50
-                                        </td>
-                                    </tr>
+
+                                    <!-- Row for BIL AKAUN -->
                                     <tr>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            AMAUN (RM)
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            2,332,100.00
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            3,780,000.00
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            5,000.00
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            1,319,500.00
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            572,000.00
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            18,203,400.00
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            3,735,500.00
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            2,581,000.00
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            289,000.00
-                                        </td>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            285,000.00
-                                        </td>
+                                        <td class="p-2 text-sm font-normal text-center text-gray-500 bg-gray-100 whitespace-nowrap">BIL AKAUN</td>
+                                        @foreach ($pembiayaan['bil_akaun'] as $bilAkaun)
+                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ $bilAkaun }}</td>
+                                        @endforeach
+                                    </tr>
+
+                                    <!-- Row for AMAUN (RM) -->
+                                    <tr>
+                                        <td class="p-2 text-sm font-normal text-center text-gray-500 bg-gray-100 whitespace-nowrap">AMAUN (RM)</td>
+                                        @foreach ($pembiayaan['jumlah_pembiayaan'] as $jumlahPembiayaan)
+                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ $jumlahPembiayaan }}</td>
+                                        @endforeach
                                     </tr>
                                 </tbody>
                             </table>
