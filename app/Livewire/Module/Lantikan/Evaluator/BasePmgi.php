@@ -8,6 +8,8 @@ use App\Jobs\SendLantikanPymPmcEmail;
 use App\Models\BankOfficer;
 use App\Models\MntrSession;
 use App\Models\SettPymPmc;
+use App\Models\SettUalRole;
+use App\Models\User;
 use App\Services\HtmlToImageService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
@@ -31,6 +33,8 @@ abstract class BasePmgi extends Component
     public $selection = [];
     public $selectedPym;
     public $selectedPmc;
+    public $selectAll = false;
+    public $datas;
 
     protected function rules()
     {
@@ -71,6 +75,15 @@ abstract class BasePmgi extends Component
     {
         $this->selectedDate = Carbon::create($year, $month, 1)->startOfMonth();
         $this->reset('selection');
+    }
+
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            $this->selection = $this->datas->pluck('userid')->toArray();
+        } else {
+            $this->reset('selection');
+        }
     }
 
     abstract protected function getPmgiLevel(): string;
@@ -144,6 +157,29 @@ abstract class BasePmgi extends Component
                 $existingRecord->update($data);
             } else {
                 SettPymPmc::create($data);
+            }
+        }
+
+        $this->giveRoles();
+    }
+
+    private function giveRoles()
+    {
+        $userPym = User::where('userid', $this->selectedPym)->first();
+
+        $pymRoleId = SettUalRole::where('name', 'PYM')->value('id');
+        if ($pymRoleId) {
+            $userPym->roles()->attach($pymRoleId);
+            $userPym->load('roles');
+        }
+
+        if ($this->selectedPmc) {
+            $userPmc = User::where('userid', $this->selectedPmc)->first();
+
+            $pmcRoleId = SettUalRole::where('name', 'PMC')->value('id');
+            if ($pmcRoleId) {
+                $userPmc->roles()->attach($pmcRoleId);
+                $userPmc->load('roles');
             }
         }
     }
@@ -231,7 +267,7 @@ abstract class BasePmgi extends Component
 
     public function render()
     {
-        $data = DB::table('PMGI_NAZ_MNTR_SESSION as m')
+        $this->datas = DB::table('PMGI_MNTR_SESSION as m')
             ->join('FMS_USERS as a', 'm.officer_id', '=', 'a.userid')
             ->join('BRANCHES as b', 'm.branch_code', '=', 'b.branch_code')
             ->join('PMGI_BANK_OFFICERS_NAZ as c', 'c.officer_id', '=', 'a.userid')
@@ -262,7 +298,7 @@ abstract class BasePmgi extends Component
 
         return view('livewire.module.lantikan.evaluator.base-pmgi', [
             'pmgiValue' => $pmgiValue,
-            'datas' => $data,
+            'datas' => $this->datas,
             'pym' => $pym,
         ]);
     }
