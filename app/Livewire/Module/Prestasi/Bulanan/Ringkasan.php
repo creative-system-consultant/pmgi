@@ -65,7 +65,7 @@ class Ringkasan extends Component
                     ->orderBy('cawangan', 'asc')
                     ->orderBy('incl_pmgi_flag', 'asc')  // Ensure branch totals (N) come after individual records
                     ->get();
-}
+    }
 
     private function getBranchData(): Collection
     {

@@ -65,21 +65,29 @@
                                     <x-select class="z-50" label="Negeri" placeholder="Sila Pilih" :options="$stateSelection" option-label="description" option-value="code" wire:model.live="state" />
                                 </div>
                                 <div>
-                                    <x-select empty-message="Sila Pilih Negeri" class="z-50" label="Cawangan" placeholder="Sila Pilih" :options="$branchSelection" option-label="branch_name" option-value="branch_code" wire:model="branch" />
+                                    <x-select empty-message="Sila Pilih Negeri" class="z-50" label="Cawangan" placeholder="Sila Pilih" :options="$branchSelection" option-label="branch_name" option-value="branch_code" wire:model.live="branch" />
                                 </div>
                                 @endif
                                 <div class="z-50 ">
                                     <x-datetime-picker label="Bulan" placeholder="Bulan" display-format="MMM-YYYY" wire:model="date" without-time />
                                 </div>
                             </div>
-                            <div class="inline-flex items-center px-3 py-2 mt-4 text-sm font-medium text-center text-white rounded-lg cursor-pointer bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" wire:click="generate">
-                                Cari
-                                <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                                </svg>
+
+                            <div class="flex">
+                                @if($result)
+                                    <div class="inline-flex items-center px-3 py-2 mt-4 mr-4 text-sm font-medium text-center text-white rounded-lg cursor-pointer bg-lime-500 hover:bg-lime-800 focus:ring-4 focus:outline-none focus:ring-lime-300 dark:bg-lime-600 dark:hover:bg-lime-700 dark:focus:ring-lime-800" wire:click="download">
+                                        <x-icon name="download" class="w-6 h-6 mr-2" />
+                                        Muat Turun
+                                    </div>
+                                @endif
+                                <div class="inline-flex items-center px-3 py-2 mt-4 text-sm font-medium text-center text-white rounded-lg cursor-pointer bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" wire:click="generate">
+                                    Cari
+                                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+                                    </svg>
+                                </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
