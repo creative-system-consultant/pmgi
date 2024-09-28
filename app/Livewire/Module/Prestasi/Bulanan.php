@@ -2,11 +2,14 @@
 
 namespace App\Livewire\Module\Prestasi;
 
+use App\Exports\PrestasiBulananKeseluruhan;
+use App\Exports\PrestasiBulananRingkasan;
 use App\Models\BnmStatecode;
 use App\Models\Branch;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Bulanan extends Component
 {
@@ -64,11 +67,25 @@ class Bulanan extends Component
         $this->reset('branch');
     }
 
+    public function updatedBranch()
+    {
+        $this->result = false;
+    }
+
     public function generate(): void
     {
         $this->validate();
 
         $this->result = true;
+    }
+
+    public function download()
+    {
+        if ($this->type == 1) {
+            return Excel::download(new PrestasiBulananRingkasan($this->date, $this->state, $this->branch), 'PRESTASI_BULANAN_RINGKASAN.xlsx');
+        } else {
+            return Excel::download(new PrestasiBulananKeseluruhan($this->date, $this->state, $this->branch), 'PRESTASI_BULANAN_KESELURUHAN.xlsx');
+        }
     }
 
     public function render()

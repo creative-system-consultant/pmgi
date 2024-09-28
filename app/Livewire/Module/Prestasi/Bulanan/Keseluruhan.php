@@ -62,7 +62,7 @@ class Keseluruhan extends Component
             ->first()->officer_branch_code;
 
         return SummMthOfficer::whereAcctBranchCode($branch_code)
-            ->whereDate('report_date', $this->reportDate->format('Y-m-d'))
+            ->whereDate('report_date', $this->reportDate->copy()->endOfMonth()->format('Y-m-d'))
             ->orderBy('incl_pmgi_flag', 'asc')
             ->get();
     }
