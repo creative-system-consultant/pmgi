@@ -56,6 +56,27 @@ return [
             'throw' => false,
         ],
 
+        'ftps' => [
+            'driver'   => 'ftp',
+            'host'     => env('FTP_HOST', 'ftp.example.com'),
+            'username' => env('FTP_USERNAME', 'ftp_username'),
+            'password' => env('FTP_PASSWORD', 'ftp_password'),
+
+            // FTPS specific settings
+            'port'     => env('FTP_PORT', 21),   // Port for FTPS (default: 21)
+            'root'     => env('FTP_ROOT', '/'),  // Root directory on the FTP server
+            'passive'  => true,                  // Enable passive mode
+            'ssl'      => true,                  // Enable SSL for FTPS
+            'timeout'  => 30,                    // Timeout for connection
+
+            // Enable explicit FTPS mode by sending AUTH TLS before login
+            'options'  => [
+                'ftp' => [
+                    CURLOPT_USE_SSL => CURLUSESSL_ALL, // Use FTPS explicit mode
+                ],
+            ],
+        ],
+
     ],
 
     /*
