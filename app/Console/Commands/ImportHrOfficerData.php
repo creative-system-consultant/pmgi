@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Notification\Whatsapp;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -25,6 +26,16 @@ class ImportHrOfficerData extends Command
      * @var string
      */
     protected $description = 'Import HR Officer data from a predefined TXT file inside a dynamic ZIP file into the PMGI_IMP_HR_OFFICER table and execute a stored procedure with the extracted date.';
+
+    /**
+     * The phone numbers to which the WhatsApp notifications will be sent.
+     *
+     * @var array
+     */
+    protected $phoneNumbers = [
+        '60189445211', // Replace with actual phone number 1
+        '60122057891', // Replace with actual phone number 2
+    ];
 
     /**
      * The column names that should match between the TXT file and the database table.
@@ -81,113 +92,188 @@ class ImportHrOfficerData extends Command
      */
     public function handle()
     {
-        // Download the latest zip file from the FTP server
-        $zipFilePath = $this->downloadLatestZipFileFromFtp();
+        // Initialize Whatsapp instance and log collector
+        $whatsapp = new Whatsapp();
+        $logMessage = '';
+        $status = 'Success'; // Default status
 
-        if (!$zipFilePath) {
-            $this->error("No matching zip file found on the FTP server.");
-            return 1;
-        }
+        try {
+            // Download the latest zip file from the FTP server
+            $zipFilePath = $this->downloadLatestZipFileFromFtp();
 
-        $this->info("Downloaded zip file: $zipFilePath");
-
-        // Extract the date portion from the file name (e.g., "20240930")
-        $fileName = pathinfo($zipFilePath, PATHINFO_FILENAME);
-        $dateString = $this->extractDateFromFileName($fileName);
-        if (!$dateString) {
-            $this->error("Failed to extract date from the file name: $fileName");
-            return 1;
-        }
-
-        $this->info("Extracted date from file name: $dateString");
-
-        // Define the extraction path
-        $extractPath = storage_path('app/hr/temp_extracted');
-
-        // Ensure the extraction path exists
-        if (!File::exists($extractPath)) {
-            File::makeDirectory($extractPath, 0755, true);
-        }
-
-        // Open the zip file using ZipArchive
-        $zip = new ZipArchive;
-        if ($zip->open($zipFilePath) === true) {
-            // Set the password for the zip file
-            $zip->setPassword('CSC12345');
-
-            // Extract the file to the extraction path
-            if (!$zip->extractTo($extractPath)) {
-                $this->error('Failed to extract the zip file. Check if the password is correct.');
+            if (!$zipFilePath) {
+                $errorMessage = "No matching zip file found on the FTP server.";
+                $this->error($errorMessage);
+                $logMessage .= $errorMessage . "\n";
+                $status = 'Error'; // Set status to Error
+                $this->sendToWhatsapp($logMessage, $status);
                 return 1;
             }
 
-            // Close the zip file
-            $zip->close();
-            $this->info("Successfully extracted the zip file to: $extractPath");
-        } else {
-            $this->error("Failed to open the zip file at path $zipFilePath");
-            return 1;
-        }
+            $this->info("Downloaded zip file: $zipFilePath");
+            $logMessage .= "Downloaded zip file: $zipFilePath\n";
 
-        // Locate the extracted .txt file (assuming only one .txt file is present)
-        $extractedFiles = File::files($extractPath);
-        $txtFile = null;
-
-        foreach ($extractedFiles as $file) {
-            if ($file->getExtension() === 'txt') {
-                $txtFile = $file->getPathname();
-                break;
+            // Extract the date portion from the file name (e.g., "20240930")
+            $fileName = pathinfo($zipFilePath, PATHINFO_FILENAME);
+            $dateString = $this->extractDateFromFileName($fileName);
+            if (!$dateString) {
+                $errorMessage = "Failed to extract date from the file name: $fileName";
+                $this->error($errorMessage);
+                $logMessage .= $errorMessage . "\n";
+                $status = 'Error'; // Set status to Error
+                $this->sendToWhatsapp($logMessage, $status);
+                return 1;
             }
-        }
 
-        if (!$txtFile) {
-            $this->error('No .txt file found in the extracted contents.');
-            return 1;
-        }
+            $this->info("Extracted date from file name: $dateString");
+            $logMessage .= "Extracted date from file name: $dateString\n";
 
-        // Read the contents of the .txt file
-        $contents = File::get($txtFile);
+            // Define the extraction path
+            $extractPath = storage_path('app/hr/temp_extracted');
 
-        // Truncate the table before inserting new data
-        try {
-            DB::table('PMGI_IMP_HR_OFFICER')->truncate();
-            $this->info("Truncated the PMGI_IMP_HR_OFFICER table successfully.");
-        } catch (\Exception $e) {
-            $this->error("Failed to truncate table: " . $e->getMessage());
-            return 1;
-        }
+            // Ensure the extraction path exists
+            if (!File::exists($extractPath)) {
+                File::makeDirectory($extractPath, 0755, true);
+            }
 
-        // Process the file contents and insert data into the table (same logic as before)
-        $data = $this->processData($contents);
+            // Open the zip file using ZipArchive
+            $zip = new ZipArchive;
+            if ($zip->open($zipFilePath) === true) {
+                // Set the password for the zip file
+                $zip->setPassword('CSC12345');
 
-        // Insert data into Oracle DB table
-        $insertedRows = 0;
-        foreach ($data as $row) {
+                // Extract the file to the extraction path
+                if (!$zip->extractTo($extractPath)) {
+                    $errorMessage = 'Failed to extract the zip file. Check if the password is correct.';
+                    $this->error($errorMessage);
+                    $logMessage .= $errorMessage . "\n";
+                    $status = 'Error'; // Set status to Error
+                    $this->sendToWhatsapp($logMessage, $status);
+                    return 1;
+                }
+
+                // Close the zip file
+                $zip->close();
+                $this->info("Successfully extracted the zip file to: $extractPath");
+                $logMessage .= "Successfully extracted the zip file to: $extractPath\n";
+            } else {
+                $errorMessage = "Failed to open the zip file at path $zipFilePath";
+                $this->error($errorMessage);
+                $logMessage .= $errorMessage . "\n";
+                $status = 'Error'; // Set status to Error
+                $this->sendToWhatsapp($logMessage, $status);
+                return 1;
+            }
+
+            // Locate the extracted .txt file (assuming only one .txt file is present)
+            $extractedFiles = File::files($extractPath);
+            $txtFile = null;
+
+            foreach ($extractedFiles as $file) {
+                if ($file->getExtension() === 'txt') {
+                    $txtFile = $file->getPathname();
+                    break;
+                }
+            }
+
+            if (!$txtFile) {
+                $errorMessage = 'No .txt file found in the extracted contents.';
+                $this->error($errorMessage);
+                $logMessage .= $errorMessage . "\n";
+                $status = 'Error'; // Set status to Error
+                $this->sendToWhatsapp($logMessage, $status);
+                return 1;
+            }
+
+            // Read the contents of the .txt file
+            $contents = File::get($txtFile);
+
+            // Truncate the table before inserting new data
             try {
-                DB::table('PMGI_IMP_HR_OFFICER')->insert($row);
-                $insertedRows++;
+                DB::table('PMGI_IMP_HR_OFFICER')->truncate();
+                $this->info("Truncated the PMGI_IMP_HR_OFFICER table successfully.");
+                $logMessage .= "Truncated the PMGI_IMP_HR_OFFICER table successfully.\n";
             } catch (\Exception $e) {
-                $this->error("Failed to insert row: " . json_encode($row) . " Error: " . $e->getMessage());
+                $errorMessage = "Failed to truncate table: " . $e->getMessage();
+                $this->error($errorMessage);
+                $logMessage .= $errorMessage . "\n";
+                $status = 'Error'; // Set status to Error
+                $this->sendToWhatsapp($logMessage, $status);
+                return 1;
             }
+
+            // Process the file contents and insert data into the table
+            $data = $this->processData($contents);
+
+            // Insert data into Oracle DB table
+            $insertedRows = 0;
+            foreach ($data as $row) {
+                try {
+                    DB::table('PMGI_IMP_HR_OFFICER')->insert($row);
+                    $insertedRows++;
+                } catch (\Exception $e) {
+                    $errorMessage = "Failed to insert row: " . json_encode($row) . " Error: " . $e->getMessage();
+                    $this->error($errorMessage);
+                    $logMessage .= $errorMessage . "\n";
+                    $status = 'Error'; // Set status to Error
+                }
+            }
+
+            $this->info("Successfully inserted $insertedRows rows into the PMGI_IMP_HR_OFFICER table.");
+            $logMessage .= "Successfully inserted $insertedRows rows into the PMGI_IMP_HR_OFFICER table.\n";
+
+            // Run the stored procedure `UP_PMGI_IMP_HR_OFFICER`
+            $this->runStoredProcedure($dateString);
+
+            // Clean up extracted files
+            File::deleteDirectory($extractPath);
+
+            // Delete the downloaded zip file
+            if (File::exists($zipFilePath)) {
+                File::delete($zipFilePath);
+                $this->info("Deleted the zip file: $zipFilePath");
+                $logMessage .= "Deleted the zip file: $zipFilePath\n";
+            } else {
+                $errorMessage = "Failed to delete the zip file: $zipFilePath not found.";
+                $this->error($errorMessage);
+                $logMessage .= $errorMessage . "\n";
+                $status = 'Error'; // Set status to Error
+            }
+
+        } catch (\Exception $e) {
+            // Catch any exception and set the status to Error
+            $errorMessage = "An error occurred: " . $e->getMessage();
+            $this->error($errorMessage);
+            $logMessage .= $errorMessage . "\n";
+            $status = 'Error'; // Set status to Error
         }
 
-        $this->info("Successfully inserted $insertedRows rows into the PMGI_IMP_HR_OFFICER table.");
-
-        // Run the stored procedure `UP_PMGI_IMP_HR_OFFICER`
-        $this->runStoredProcedure($dateString);
-
-        // Clean up extracted files
-        File::deleteDirectory($extractPath);
-
-        // **Delete the downloaded zip file**
-        if (File::exists($zipFilePath)) {
-            File::delete($zipFilePath);
-            $this->info("Deleted the zip file: $zipFilePath");
-        } else {
-            $this->error("Failed to delete the zip file: $zipFilePath not found.");
-        }
+        // Send the final log message to WhatsApp with the determined status
+        $this->sendToWhatsapp($logMessage, $status);
 
         return 0;
+    }
+
+    /**
+     * Send message to multiple WhatsApp contacts.
+     *
+     * @param string $message
+     * @return void
+     */
+    protected function sendToWhatsapp($message, $status = 'Success')
+    {
+        // Add status to the message with dynamic formatting based on status
+        $formattedMessage = "*System*: PMGI\n" .
+                            "*Module*: Import HR Data\n" .
+                            "*Status: " . ($status === 'Success' ? "Success*" : "Error*") . "\n\n" .
+                            $message;
+
+        $whatsapp = new Whatsapp();
+
+        // Send the formatted message to each phone number
+        foreach ($this->phoneNumbers as $phoneNumber) {
+            $whatsapp->send($phoneNumber, $formattedMessage);
+        }
     }
 
     /**
