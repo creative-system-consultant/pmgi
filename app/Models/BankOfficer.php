@@ -9,7 +9,7 @@ class BankOfficer extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_BANK_OFFICERS_NAZ";
+    protected $table="PMGI_FMS_BANK_OFFICERS";
     protected $guarded = [];
     public $timestamps = false;
 

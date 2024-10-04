@@ -3,7 +3,7 @@
         <a href="{{ route('home') }}" class="flex items-center justify-center">
             <x-logo class="h-24" />
         </a>
-        <div class="flex flex-col items-center justify-center ">
+        <div class="flex flex-col items-center justify-center text-center">
             <h1 class="mb-2 text-4xl font-extrabold leading-none tracking-tight text-gray-900 ">Performance Monitoring Guidelines</h1>
             <h1 class="text-4xl font-extrabold text-gray-900 "><span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">PMG-i</span> </h1>
         </div>

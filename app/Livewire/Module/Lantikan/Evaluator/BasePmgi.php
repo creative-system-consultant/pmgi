@@ -270,7 +270,7 @@ abstract class BasePmgi extends Component
         $this->datas = DB::table('PMGI_MNTR_SESSION as m')
             ->join('FMS_USERS as a', 'm.officer_id', '=', 'a.userid')
             ->join('BRANCHES as b', 'm.branch_code', '=', 'b.branch_code')
-            ->join('PMGI_BANK_OFFICERS_NAZ as c', 'c.officer_id', '=', 'a.userid')
+            ->join('PMGI_FMS_BANK_OFFICERS as c', 'c.officer_id', '=', 'a.userid')
             ->select('a.userid', 'a.username', 'm.branch_code', 'c.officer_position', 'b.branch_name', 'm.pmgi_cycle', 'm.pmgi_level')
             ->whereDate('SESSION_DATE_START', $this->selectedDate)
             ->where('m.STATE_CODE', $this->stateCode)
@@ -285,7 +285,7 @@ abstract class BasePmgi extends Component
             ->get();
 
         $pym = DB::table('FMS_USERS as a')
-                        ->join('PMGI_BANK_OFFICERS_NAZ as b', 'b.officer_id', '=', 'a.userid')
+                        ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
                         ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
                         ->select('a.userid', 'b.officer_name', 'c.branch_name')
                         ->where('a.userstatus', 1)

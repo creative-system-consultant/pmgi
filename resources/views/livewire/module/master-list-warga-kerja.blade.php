@@ -36,8 +36,8 @@
                                                             <td class="p-2 text-sm font-normal tracking-tight text-left text-gray-800 whitespace-nowrap">{{ $wk->nokp }}</td>
                                                             <td class="p-2 text-sm font-normal tracking-tight text-left text-gray-800 whitespace-nowrap">{{ $wk->staffno }}</td>
                                                             <td class="p-2 text-sm font-normal tracking-tight text-left text-gray-800 whitespace-nowrap">
-                                                                {{ $wk->date_resign ? date('d/m/Y', strtotime($wk->date_resign)) : 'Masih Bekerja' }}
-                                                            </td>   
+                                                                {{ $wk->HR_DATE_RESIGN ? date('d/m/Y', strtotime($wk->HR_DATE_RESIGN)) : 'Masih Bekerja' }}
+                                                            </td>
                                                         </tr>
                                                         @empty
                                                         <tr>

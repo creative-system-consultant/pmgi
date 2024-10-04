@@ -9,7 +9,7 @@ class MntrSession extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_NAZ_MNTR_SESSION";
+    protected $table="PMGI_MNTR_SESSION";
     protected $guarded = [];
     public $timestamps = false;
     public $incrementing = false;

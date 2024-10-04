@@ -12,7 +12,7 @@ class MasterListWargaKerja extends Component
 
     public function render()
     {
-        $wargaKerja = BankOfficer::select('officer_id', 'officer_name', 'OFFICER_POSITION', 'email', 'nokp', 'STAFFNO', 'HR_MGR_FLAG', 'DATE_RESIGN')->paginate(10);
+        $wargaKerja = BankOfficer::select('officer_id', 'officer_name', 'OFFICER_POSITION', 'email', 'nokp', 'STAFFNO', 'HR_MGR_FLAG', 'HR_DATE_RESIGN')->paginate(10);
         return view('livewire.module.master-list-warga-kerja', ['wargaKerja' => $wargaKerja])->extends('layouts.main');
     }
 }
