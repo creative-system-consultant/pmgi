@@ -8,6 +8,7 @@ use App\Models\Branch;
 use App\Models\SessionInfo;
 use App\Models\SettPymPmc;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -30,6 +31,10 @@ class MaklumatWargaKerja extends Component
     public $pymStaffNo;
     public $pmcName;
     public $pmcStaffNo;
+    public $pydDateJoined;
+    public $pydCurrentService;
+    public $pydPhoneNo;
+    public $pydAddress;
 
     protected function rules()
     {
@@ -72,6 +77,10 @@ class MaklumatWargaKerja extends Component
             $this->pydIc = substr($bankOfficerPyd->nokp, 0, 6) . '-' . substr($bankOfficerPyd->nokp, 6, 2) . '-' . substr($bankOfficerPyd->nokp, 8, 4);
             $this->pymName = $bankOfficerPym->officer_name;
             $this->pymStaffNo = $bankOfficerPym->staffno;
+            $this->pydDateJoined = Carbon::parse($bankOfficerPyd->hrData->tarikh_lantikan)->format('d/m/Y');
+            $this->pydCurrentService = $bankOfficerPyd->hrData->tempoh_penempatan_semasa;
+            $this->pydPhoneNo = $bankOfficerPyd->hrData->notel;
+            $this->pydAddress = $bankOfficerPyd->hrData->alamat;
 
             if ($settInfo->pmgi_level == 'PM3') {
                 $bankOfficerPmc = BankOfficer::whereOfficerId($settInfo->pmc_id)->first();

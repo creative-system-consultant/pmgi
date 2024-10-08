@@ -75,11 +75,11 @@
                                         </div>
                                         <p class="flex items-center font-semibold">Tarikh Lantikan</p>
                                         <div class="block w-full col-span-2">
-                                            <x-input placeholder="Tarikh Lantikan" wire:model="dateJoined" disabled />
+                                            <x-input placeholder="Tarikh Lantikan" wire:model="pydDateJoined" disabled />
                                         </div>
                                         <p class="flex items-center font-semibold">Tempoh Berkhidmat di Cawangan Semasa</p>
                                         <div class="block w-full col-span-2">
-                                            <x-input placeholder="Tempoh Berkhidmat" wire:model="servicePeriod" disabled />
+                                            <x-input placeholder="Tempoh Berkhidmat" wire:model="pydCurrentService" disabled />
                                         </div>
                                     </div>
                                 </div>
@@ -99,26 +99,11 @@
                                         </div>
                                         <p class="flex items-center font-semibold">No Telefon</p>
                                         <div class="block w-full col-span-2">
-                                            <x-input placeholder="No Telefon" wire:model="phoneNo" disabled />
+                                            <x-input placeholder="No Telefon" wire:model="pydPhoneNo" disabled />
                                         </div>
-                                        <p class="flex items-center font-semibold">Alamat Kediaman</p>
+                                        <p class="flex items-start font-semibold">Alamat Kediaman</p>
                                         <div class="block w-full col-span-2">
-                                            <x-input placeholder="Alamat 1" wire:model="address1" disabled />
-                                        </div>
-                                        <div></div> {{-- dummy--}}
-                                        <div class="block w-full col-span-2">
-                                            <x-input placeholder="Alamat 2" wire:model="address2" disabled />
-                                        </div>
-                                        <div></div> {{-- dummy--}}
-                                        <div class="block w-full col-span-2">
-                                            <x-input placeholder="Alamat 3" wire:model="address3" disabled />
-                                        </div>
-                                        <div></div> {{-- dummy--}}
-                                        <div class="block w-full">
-                                            <x-input placeholder="Poskod" wire:model="postcode" disabled />
-                                        </div>
-                                        <div class="block w-full">
-                                            <x-input placeholder="Negeri" wire:model="state" disabled />
+                                            <x-textarea wire:model="pydAddress" placeholder="Alamat" disabled />
                                         </div>
                                     </div>
                                 </div>

@@ -8,7 +8,11 @@ class Pym extends BasePymPmc
 {
     protected function getQuery()
     {
-        return SettPymPmc::wherePymId(auth()->user()->userid)->whereStatus(0);
+        $lastMonthEnd = now()->subMonth()->endOfMonth();
+
+        return SettPymPmc::wherePymId(auth()->user()->userid)
+                        ->whereDate('report_date', $lastMonthEnd)
+                        ->whereStatus(0);
     }
 
     protected function getTitle()

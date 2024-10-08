@@ -26,4 +26,9 @@ class BankOfficer extends Model
     {
         return $this->hasOne(Branch::class, 'branch_code', 'branch_code');
     }
+
+    public function hrData()
+    {
+        return $this->hasOne(HrdOfficer::class, 'no_kp', 'nokp');
+    }
 }
