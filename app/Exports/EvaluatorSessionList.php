@@ -35,17 +35,17 @@ class EvaluatorSessionList implements FromView, WithColumnFormatting, ShouldAuto
 
     public function view(): View
     {
-        $data = MntrSession::join('PMGI_BANK_OFFICERS_NAZ', 'PMGI_NAZ_MNTR_SESSION.OFFICER_ID', '=', 'PMGI_BANK_OFFICERS_NAZ.officer_id')
-                ->join('BRANCHES', 'PMGI_BANK_OFFICERS_NAZ.branch_code', '=', 'BRANCHES.branch_code')
+        $data = MntrSession::join('PMGI_FMS_BANK_OFFICERS', 'PMGI_NAZ_MNTR_SESSION.OFFICER_ID', '=', 'PMGI_FMS_BANK_OFFICERS.officer_id')
+                ->join('BRANCHES', 'PMGI_FMS_BANK_OFFICERS.branch_code', '=', 'BRANCHES.branch_code')
                 ->whereIn('PMGI_NAZ_MNTR_SESSION.OFFICER_ID', $this->officerIds)
                 ->whereDate('PMGI_NAZ_MNTR_SESSION.SESSION_DATE_START', $this->reportDate)
                 ->orderBy('BRANCHES.branch_name')
                 ->select(
                     'PMGI_NAZ_MNTR_SESSION.pmgi_level',
                     'PMGI_NAZ_MNTR_SESSION.report_date',
-                    'PMGI_BANK_OFFICERS_NAZ.officer_name',
-                    'PMGI_BANK_OFFICERS_NAZ.staffno',
-                    'PMGI_BANK_OFFICERS_NAZ.nokp',
+                    'PMGI_FMS_BANK_OFFICERS.officer_name',
+                    'PMGI_FMS_BANK_OFFICERS.staffno',
+                    'PMGI_FMS_BANK_OFFICERS.nokp',
                     'BRANCHES.branch_name'
                 )
                 ->get()
