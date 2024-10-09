@@ -192,7 +192,7 @@ abstract class BasePmgi extends Component
     {
         $datePart = now()->format('Ym');
         $formattedDatePart = substr($datePart, 2, 2) . substr($datePart, 4, 2);
-        return 'PGM' . substr($pydInfo->pmgi_level, -1) . $formattedDatePart . '/' . $pydInfo->pmgi_cycle . '/' . $pyd;
+        return 'PMG' . substr($pydInfo->pmgi_level, -1) . $formattedDatePart . '/' . $pydInfo->pmgi_cycle . '/' . $pyd;
     }
 
     private function prepareData($sessionId, $pydInfo, $pyd, $existingRecord)
