@@ -33,7 +33,7 @@ class Pmc extends Component
         );
 
         $this->reset('file');
-        $this->redirect('/tetapan/info-pegawai', true);
+        $this->redirect('/tetapan/info-pegawai');
     }
 
     public function render()
