@@ -65,9 +65,13 @@ abstract class BasePmgi extends Component
         $this->htmlToImageService = new HtmlToImageService();
     }
 
-    public function mount($month, $year)
+    public function mount($currentDate)
     {
         $this->stateCode = auth()->user()->stateCode();
+
+        $month = $currentDate->format('m');
+        $year = $currentDate->format('Y');
+
         $this->updateReportDate($month, $year);
     }
 
