@@ -79,7 +79,10 @@ Route::middleware(['auth', 'check.role', 'restrict.session'])->group(function ()
     Route::get('/dashboard-jtt', HomeJtt::class)->name('dashboard-jtt');
     Route::get('/list-jtt', ListPydJtt::class)->name('list-pyd-jtt');
     Route::get('/mesyuarat-jtt', MesyuaratJtt::class)->name('mesyuarat-jtt');
+
+    // Mastrlist
     Route::get('/master-list-warga-kerja', MasterListWargaKerja::class)->name('master-list-warga-kerja');
+
     // rekod PMGi (individu)
     Route::get('/rekod-pmgi', RekodPmgi::class)->name('rekod-pmgi')->middleware('check.access:rekod-pmgi');
     Route::get('/stream-pdf/{sessionId}', [RekodPmgi::class, 'streamRekodPmgi'])->name('stream.rekodPmgi');

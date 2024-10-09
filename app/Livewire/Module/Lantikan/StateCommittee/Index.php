@@ -8,6 +8,7 @@ use App\Models\BankOfficer;
 use App\Models\BnmStatecode;
 use App\Models\SettStateCommittee;
 use App\Models\SettUalRole;
+use App\Models\SettUalUserHasRole;
 use App\Models\User;
 use App\Services\HtmlToImageService;
 use Illuminate\Support\Facades\Bus;
@@ -115,7 +116,20 @@ class Index extends Component
                 $this->originalSelectedUsers[$stateCode] = $userId;
             }
 
-            $this->giveRoles($userId);
+            $stateCommitteeRoleId = SettUalRole::where('name', 'URUSETIA NEGERI')->value('id');
+
+            if ($stateCommitteeRoleId && !empty($userId)) { // Explicit check for empty userId
+                $existingRole = SettUalUserHasRole::where(DB::raw('UPPER(USERID)'), strtoupper($userId))
+                    ->where('ROLE_ID', $stateCommitteeRoleId)
+                    ->exists();
+
+                if (!$existingRole) {
+                    SettUalUserHasRole::create([
+                        'USERID' => strtoupper($userId), // Ensure consistent case
+                        'ROLE_ID' => $stateCommitteeRoleId,
+                    ]);
+                }
+            }
         }
 
         // Using batch insert/update
@@ -129,17 +143,6 @@ class Index extends Component
             $title = 'Berjaya disimpan',
             $description = 'Lantikan Urusetia berjaya disimpan.'
         );
-    }
-
-    private function giveRoles($userId)
-    {
-        $user = User::where('userid', $userId)->first();
-
-        $stateCommitteeRoleId = SettUalRole::where('name', 'URUSETIA NEGERI')->value('id');
-                if ($stateCommitteeRoleId) {
-                    $user->roles()->attach($stateCommitteeRoleId);
-                    $user->load('roles');
-                }
     }
 
     private function generateImageFromHtml($stateCode, $userId)
