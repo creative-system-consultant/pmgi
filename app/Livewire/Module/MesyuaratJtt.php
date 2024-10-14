@@ -174,7 +174,7 @@ class MesyuaratJtt extends Component
 
         $output = '';
 
-        $procedureName = 'dbo.UP_PMGI_NAZ_UPD_MNTR_SESSION';
+        $procedureName = 'dbo.UP_PMGI_UPD_MNTR_SESSION';
 
         $bindings = [
             'pi_reportdt'    => Carbon::parse($data->report_date)->format('Y-m-d'),

@@ -27,7 +27,7 @@ class Index extends Component
 
         $data = DB::select('
             SELECT ms.*, u.username, bo.staffno, s.description as state_description, b.branch_name
-            FROM PMGI_NAZ_MNTR_SESSION ms
+            FROM PMGI_MNTR_SESSION ms
             JOIN fms_users u ON ms.officer_id = u.userid
             JOIN bank_officers bo ON u.userid = bo.officer_id
             JOIN bnm_statecodes s ON ms.state_code = s.code
@@ -91,7 +91,7 @@ class Index extends Component
 
         $output = '';
 
-        $procedureName = 'dbo.UP_PMGI_NAZ_UPD_MNTR_SESSION';
+        $procedureName = 'dbo.UP_PMGI_UPD_MNTR_SESSION';
 
         $bindings = [
             'pi_reportdt'    => Carbon::parse($this->mntrData->report_date)->format('Y-m-d'),
