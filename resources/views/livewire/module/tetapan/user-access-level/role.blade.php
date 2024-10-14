@@ -18,7 +18,7 @@
                             <tbody class="bg-white ">
                                 @forelse ($results as $result)
                                 <tr class="even:bg-gray-100"">
-                                        <td class="p-2 text-sm font-normal tracking-tight text-left text-gray-800  whitespace-nowrap">{{ $result->name }}</td>
+                                        <td class="p-2 text-sm font-normal tracking-tight text-left text-gray-800 whitespace-nowrap">{{ $result->name }}</td>
                                     <td class="p-2 text-sm font-normal tracking-tight text-left text-gray-800 whitespace-nowrap">
                                         <div class="grid grid-cols-3 gap-2">
                                             @foreach ($result->pages as $data)
@@ -28,7 +28,9 @@
                                     </td>
                                     <td class="p-2 text-sm font-normal tracking-tight text-center text-gray-800 whitespace-nowrap">
                                         <x-button icon="pencil" info label="Kemaskini" wire:click="edit({{ $result->id }})" />
-                                        <x-button icon="trash" negative label="Padam" wire:click="remove({{ $result->id }})" />
+                                        @if (!in_array($result->name, ['ADMINISTRATOR', 'PYD', 'PYM', 'PMC', 'PTT', 'URUSETIA NEGERI', 'HR']))
+                                            <x-button icon="trash" negative label="Padam" wire:click="remove({{ $result->id }})" />
+                                        @endif
                                     </td>
                                 </tr>
                                 @empty
