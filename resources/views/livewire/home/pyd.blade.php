@@ -546,7 +546,7 @@
     </div>
 
     <script>
-        window.chartData = @json($officerDatas);
+        window.chartData = @json($officerDatasAsc);
 
     </script>
 </div>
