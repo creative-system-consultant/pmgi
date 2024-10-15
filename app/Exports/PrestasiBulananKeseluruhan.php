@@ -33,9 +33,20 @@ class PrestasiBulananKeseluruhan implements FromView, WithStyles
                                 ->whereDate('report_date', $this->reportDate->copy()->endOfMonth()->format('Y-m-d'));
 
         if(!$this->state) {
-            $branch_code = SummMthOfficer::whereOfficerId(auth()->user()->userid)
-                                            ->orderBy('report_date', 'desc')
-                                            ->first()->officer_branch_code;
+            $userData = SummMthOfficer::whereOfficerId(auth()->user()->userid)
+                                        ->orderBy('report_date', 'desc')
+                                        ->first();
+
+            if ($userData) {
+                $branch_code = $userData->officer_branch_code;
+            } else {
+                return view('exports.prestasi-bulanan-keseluruhan', [
+                    'groupedData' => collect(),
+                    'selectedState' => 'N/A',
+                    'selectedBranch' => 'N/A',
+                    'reportDate' => strtoupper($this->reportDate->format('F Y')),
+                ]);
+            }
 
             $query->whereAcctBranchCode($branch_code);
         } else {
@@ -173,55 +184,58 @@ class PrestasiBulananKeseluruhan implements FromView, WithStyles
 
         // Style rows based on flags
         $startRow = 11;
-        foreach ($this->groupedData as $stateData) {
-            foreach ($stateData as $branchData) {
-                foreach ($branchData as $officerData) {
-                    $inclPmgiFlag = $officerData->first()->incl_pmgi_flag;
 
-                    $cell = "B$startRow"; // Adjust for the actual column
+        if (!empty($this->groupedData) && $this->groupedData->isNotEmpty()) {
+            foreach ($this->groupedData as $stateData) {
+                foreach ($stateData as $branchData) {
+                    foreach ($branchData as $officerData) {
+                        $inclPmgiFlag = $officerData->first()->incl_pmgi_flag;
 
-                    if ($inclPmgiFlag == 'J') {
-                        $sheet->getStyle($cell)->applyFromArray([
-                            'font' => [
-                                'bold' => true,  // Apply bold for resigned officers
-                                'color' => ['argb' => Color::COLOR_RED],
-                                'size' => 11,
-                            ]
-                        ]);
-                    } elseif ($inclPmgiFlag == 'G') {
-                        $sheet->getStyle($cell)->applyFromArray([
-                            'font' => [
-                                'bold' => true,  // Apply bold for transferred officers
-                                'color' => ['argb' => Color::COLOR_RED],
-                                'size' => 11,
-                            ]
-                        ]);
-                    } elseif ($inclPmgiFlag == 'N') {
-                        $sheet->getStyle($cell)->applyFromArray([
-                            'font' => [
-                                'color' => ['argb' => Color::COLOR_BLACK],  // Black text color
-                                'size' => 11,
-                            ]
-                        ]);
-                    } elseif ($inclPmgiFlag == 'S' || $inclPmgiFlag == 'W') {
-                        $sheet->getStyle($cell)->applyFromArray([
-                            'font' => [
-                                'color' => ['argb' => Color::COLOR_WHITE],  // White text color
-                                'size' => 11,
-                            ]
-                        ]);
-                    } else {
-                        $sheet->getStyle($cell)->applyFromArray([
-                            'font' => [
-                                'bold' => false,  // Normal text for other cases
-                                'color' => ['argb' => Color::COLOR_BLACK],
-                                'size' => 11,
-                            ]
-                        ]);
+                        $cell = "B$startRow"; // Adjust for the actual column
+
+                        if ($inclPmgiFlag == 'J') {
+                            $sheet->getStyle($cell)->applyFromArray([
+                                'font' => [
+                                    'bold' => true,  // Apply bold for resigned officers
+                                    'color' => ['argb' => Color::COLOR_RED],
+                                    'size' => 11,
+                                ]
+                            ]);
+                        } elseif ($inclPmgiFlag == 'G') {
+                            $sheet->getStyle($cell)->applyFromArray([
+                                'font' => [
+                                    'bold' => true,  // Apply bold for transferred officers
+                                    'color' => ['argb' => Color::COLOR_RED],
+                                    'size' => 11,
+                                ]
+                            ]);
+                        } elseif ($inclPmgiFlag == 'N') {
+                            $sheet->getStyle($cell)->applyFromArray([
+                                'font' => [
+                                    'color' => ['argb' => Color::COLOR_BLACK],  // Black text color
+                                    'size' => 11,
+                                ]
+                            ]);
+                        } elseif ($inclPmgiFlag == 'S' || $inclPmgiFlag == 'W') {
+                            $sheet->getStyle($cell)->applyFromArray([
+                                'font' => [
+                                    'color' => ['argb' => Color::COLOR_WHITE],  // White text color
+                                    'size' => 11,
+                                ]
+                            ]);
+                        } else {
+                            $sheet->getStyle($cell)->applyFromArray([
+                                'font' => [
+                                    'bold' => false,  // Normal text for other cases
+                                    'color' => ['argb' => Color::COLOR_BLACK],
+                                    'size' => 11,
+                                ]
+                            ]);
+                        }
+
+                        // Increment row for the next officer
+                        $startRow++;
                     }
-
-                    // Increment row for the next officer
-                    $startRow++;
                 }
             }
         }
@@ -237,6 +251,11 @@ class PrestasiBulananKeseluruhan implements FromView, WithStyles
     {
         // Start at row 10 because we have headers up to row 9
         $totalRows = 10;
+
+        // Ensure groupedData is not null or empty
+        if (empty($this->groupedData) || $this->groupedData->isEmpty()) {
+            return $totalRows; // Return just the header rows if there's no data
+        }
 
         // Iterate through grouped data and count each officer's record
         foreach ($this->groupedData as $stateData) {

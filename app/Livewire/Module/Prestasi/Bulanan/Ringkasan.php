@@ -69,9 +69,15 @@ class Ringkasan extends Component
 
     private function getBranchData(): Collection
     {
-        $branch_code = SummMthOfficer::whereOfficerId(auth()->user()->userid)
+        $userData = SummMthOfficer::whereOfficerId(auth()->user()->userid)
             ->orderBy('report_date', 'desc')
-            ->first()->officer_branch_code;
+            ->first();
+
+        if ($userData) {
+            $branch_code = $userData->officer_branch_code;
+        } else {
+            return collect();
+        }
 
         return SummMthOfficer::whereAcctBranchCode($branch_code)
             ->whereBetween('report_date', [$this->reportDate->copy()->subMonth()->startOfMonth(), $this->reportDate->copy()->endOfMonth()])
