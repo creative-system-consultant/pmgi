@@ -98,7 +98,7 @@ class Kumulatif extends Component
     protected function getData()
     {
         if($this->pydId) { // filter out null oficer_id; if not it will fetch all null data in summ mth officer
-            $this->data = DB::table('PMGI_NAZ_SUMM_MTH_OFFICER')
+            $this->data = DB::table('PMGI_SUMM_MTH_OFFICER')
                             ->where('officer_id', $this->pydId)
                             ->whereBetween('report_date', [$this->fromReportDate, $this->toReportDate])
                             ->orderBy('report_date', 'asc')

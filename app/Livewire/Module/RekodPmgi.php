@@ -112,7 +112,7 @@ class RekodPmgi extends Component
         $fromReportDate = $report_date->copy()->subMonth(2)->endOfMonth()->format('Y-m-d');
         $toReportDate = $report_date->copy()->subMonth()->endOfMonth()->format('Y-m-d');
 
-        $data = DB::table('PMGI_NAZ_SUMM_MTH_OFFICER')
+        $data = DB::table('PMGI_SUMM_MTH_OFFICER')
                     ->where('officer_id', $settInfo->pyd_id)
                     ->whereBetween('report_date', [$fromReportDate, $toReportDate])
                     ->orderBy('report_date', 'asc')

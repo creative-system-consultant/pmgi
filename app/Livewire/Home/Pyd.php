@@ -143,6 +143,7 @@ class Pyd extends Component
                             'a.bil_lawat',
                             'a.bil_lawat_pts'
                         )
+                        ->distinct()
                         ->orderBy('a.report_date', 'desc')
                         ->take(8) // Equivalent to ROWNUM <= 8 in Oracle
                         ->get();
