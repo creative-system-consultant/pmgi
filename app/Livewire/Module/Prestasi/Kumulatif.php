@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-use function PHPSTORM_META\map;
-
 class Kumulatif extends Component
 {
     public $pmgiSession = false;
@@ -44,18 +42,22 @@ class Kumulatif extends Component
 
     public function mount()
     {
-        $this->populateDataForSession();
-        $this->populateData();
+        if ($this->pmgiSessionId) {
+            $this->populateDataForSession(); // Call for PMGI session users
+        } else {
+            $this->populateData(); // Call for regular users
+        }
     }
 
     protected function populateDataForSession()
     {
         if($this->pmgiSessionId) { // used in pmgi session ; pegawai dinilai/ pegawai menilai/ pegawai mudah cara page when in session
             $setting = SettPymPmc::whereSessionId($this->pmgiSessionId)->first();
+
             $this->pydId = $setting->pyd_id;
             $report_date = Carbon::parse($setting->report_date);
-            $this->fromReportDate = $report_date->copy()->subMonth(2)->endOfMonth()->format('Y-m-d');
-            $this->toReportDate = $report_date->copy()->subMonth()->endOfMonth()->format('Y-m-d');
+            $this->fromReportDate = $report_date->copy()->subMonthsNoOverflow(2)->endOfMonth()->format('Y-m-d');
+            $this->toReportDate = $report_date->copy()->subMonthsNoOverflow()->endOfMonth()->format('Y-m-d');
             $this->getData();
         }
     }

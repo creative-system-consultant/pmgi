@@ -547,6 +547,5 @@
 
     <script>
         window.chartData = @json($officerDatasAsc);
-
     </script>
 </div>

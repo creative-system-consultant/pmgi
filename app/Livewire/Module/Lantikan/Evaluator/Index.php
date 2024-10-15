@@ -9,15 +9,14 @@ use Livewire\Component;
 class Index extends Component
 {
     public $current;
-    public $selectedYear;
-    public $selectedMonth;
 
     public function mount()
     {
-        $this->current = Carbon::now();
+        // prod used this
+        // $this->current = Carbon::now();
 
-        $this->selectedYear = $this->current->year;
-        $this->selectedMonth = $this->current->month;
+        // uat pmgi 1
+        $this->current = Carbon::createFromFormat('d/m/Y', '01/02/2023'); // session_date_start
     }
 
     public function render()

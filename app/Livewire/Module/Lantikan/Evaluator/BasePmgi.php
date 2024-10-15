@@ -70,12 +70,8 @@ abstract class BasePmgi extends Component
         $this->stateCode = auth()->user()->stateCode();
 
         // prod used this
-        // $month = $currentDate->format('m');
-        // $year = $currentDate->format('Y');
-
-        // uat pmgi 1
-        $month = 1;
-        $year = 2023;
+        $month = $currentDate->format('m');
+        $year = $currentDate->format('Y');
 
         $this->updateReportDate($month, $year);
     }
