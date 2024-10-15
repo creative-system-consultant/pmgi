@@ -50,7 +50,7 @@ class Ringkasan extends Component
     private function getAdminData(): Collection
     {
         $query = SummMthOfficer::with(['branch', 'officerBranch'])
-            ->whereBetween('report_date', [$this->reportDate->copy()->subMonth()->startOfMonth(), $this->reportDate->copy()->endOfMonth()]);
+                                ->whereBetween('report_date', [$this->reportDate->copy()->subMonth()->startOfMonth(), $this->reportDate->copy()->endOfMonth()]);
 
         if ($this->state != '%') {
             $query->where('branch_state_code', $this->state);
@@ -74,7 +74,7 @@ class Ringkasan extends Component
             ->first()->officer_branch_code;
 
         return SummMthOfficer::whereAcctBranchCode($branch_code)
-            ->whereBetween('report_date', [now()->subMonth()->startOfMonth(), now()->endOfMonth()])
+            ->whereBetween('report_date', [$this->reportDate->copy()->subMonth()->startOfMonth(), $this->reportDate->copy()->endOfMonth()])
             ->orderBy('report_date', 'asc')
             ->orderBy('incl_pmgi_flag', 'asc') // Ensure branch totals (N) come after individual records
             ->get();

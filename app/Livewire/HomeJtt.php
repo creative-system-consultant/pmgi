@@ -101,12 +101,18 @@ class HomeJtt extends Component
 
     public function render()
     {
+        // prod use this
+        // $sessionDate = now()->format('Y-m-d');
+
+        // uat pmgi 1
+        $sessionDate = Carbon::createFromFormat('d/m/Y', '01/01/2023')->addMonth()->format('Y-m-d');
+
         $jttOfficer = SettJtt::all();
 
         $dataCount = MntrSession::whereIn('pmgi_level', ['JT1', 'JT2'])
-                            ->where('session_date_start', '<=', now()->format('Y-m-d H:i:s'))
-                            ->where('session_date_end', '>=', now()->format('Y-m-d H:i:s'))
-                            ->count();
+                                ->where('session_date_start', '<=', $sessionDate)
+                                ->where('session_date_end', '>=', $sessionDate)
+                                ->count();
 
         $rooms = SettMeetingRoom::orderBy('ID', 'asc')->get();
 

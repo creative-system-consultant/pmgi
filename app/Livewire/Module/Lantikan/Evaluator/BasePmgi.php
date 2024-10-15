@@ -69,8 +69,13 @@ abstract class BasePmgi extends Component
     {
         $this->stateCode = auth()->user()->stateCode();
 
-        $month = $currentDate->format('m');
-        $year = $currentDate->format('Y');
+        // prod used this
+        // $month = $currentDate->format('m');
+        // $year = $currentDate->format('Y');
+
+        // uat pmgi 1
+        $month = 1;
+        $year = 2023;
 
         $this->updateReportDate($month, $year);
     }
@@ -272,21 +277,22 @@ abstract class BasePmgi extends Component
     public function render()
     {
         $this->datas = DB::table('PMGI_MNTR_SESSION as m')
-            ->join('FMS_USERS as a', 'm.officer_id', '=', 'a.userid')
-            ->join('BRANCHES as b', 'm.branch_code', '=', 'b.branch_code')
-            ->join('PMGI_FMS_BANK_OFFICERS as c', 'c.officer_id', '=', 'a.userid')
-            ->select('a.userid', 'a.username', 'm.branch_code', 'c.officer_position', 'b.branch_name', 'm.pmgi_cycle', 'm.pmgi_level')
-            ->whereDate('SESSION_DATE_START', $this->selectedDate)
-            ->where('m.STATE_CODE', $this->stateCode)
-            ->where('m.PMGI_LEVEL', $this->getPmgiLevel())
-            ->whereNotIn('m.officer_id', function($query) {
-                $query->select('d.PYD_ID')
-                    ->from('PMGI_SETT_PYM_PMC as d')
-                    ->whereDate('REPORT_DATE', $this->selectedDate->copy()->subMonth()->endOfMonth())
-                    ->whereColumn('d.PYD_ID', 'm.officer_id');
-            })
-            ->orderBy('b.branch_name', 'asc')
-            ->get();
+                        ->join('FMS_USERS as a', 'm.officer_id', '=', 'a.userid')
+                        ->join('BRANCHES as b', 'm.branch_code', '=', 'b.branch_code')
+                        ->join('PMGI_FMS_BANK_OFFICERS as c', 'c.officer_id', '=', 'a.userid')
+                        ->join('PMGI_HRD_OFFICER as d', 'd.no_pekerja', '=', 'c.staffno')
+                        ->select('a.userid', 'a.username', 'm.branch_code', 'd.jawatan', 'b.branch_name', 'm.pmgi_cycle', 'm.pmgi_level')
+                        ->whereDate('SESSION_DATE_START', $this->selectedDate)
+                        ->where('m.STATE_CODE', $this->stateCode)
+                        ->where('m.PMGI_LEVEL', $this->getPmgiLevel())
+                        ->whereNotIn('m.officer_id', function($query) {
+                            $query->select('d.PYD_ID')
+                                ->from('PMGI_SETT_PYM_PMC as d')
+                                ->whereDate('REPORT_DATE', $this->selectedDate->copy()->subMonth()->endOfMonth())
+                                ->whereColumn('d.PYD_ID', 'm.officer_id');
+                        })
+                        ->orderBy('b.branch_name', 'asc')
+                        ->get();
 
         $pym = DB::table('FMS_USERS as a')
                         ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
