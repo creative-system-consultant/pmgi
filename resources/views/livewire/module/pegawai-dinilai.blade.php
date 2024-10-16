@@ -99,7 +99,23 @@
                 </div>
 
                 @if($perakuan)
-                    <img class="mb-5 w-60" src="{{ asset('storage/' . $attachment) }}" alt="Logo">
+                    @if($attachment)
+                        @php
+                            $fileExtension = pathinfo($attachment, PATHINFO_EXTENSION);
+                        @endphp
+
+                        @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
+                            <img class="mb-5 w-60" src="{{ asset('storage/' . $attachment) }}" alt="Attachment Preview">
+                        @elseif($fileExtension === 'pdf')
+                            <button type="button" class="text-blue-500 hover:underline" wire:click="toggleDetail">
+                                {{ basename($attachment) }}
+                            </button>
+                        @elseif($fileExtension === 'docx')
+                            <a href="{{ asset('storage/' . $attachment) }}" target="_blank" class="text-blue-500 hover:underline">
+                                {{ basename($attachment) }}
+                            </a>
+                        @endif
+                    @endif
                 @endif
 
                 @if(!$perakuan)
@@ -115,10 +131,16 @@
                     </div>
 
                     @if($file)
-                    <img class="mb-5 w-60" src="{{ $file->temporaryUrl() }}">
+                        @if(in_array($file->getClientOriginalExtension(), ['jpg', 'jpeg', 'png', 'gif']))
+                            <img class="mb-5 w-60" src="{{ $file->temporaryUrl() }}" alt="Attachment Preview">
+                        @else
+                            <a type="button" class="text-blue-500 hover:underline" wire:click="toggleDetail">
+                                {{ $file->getClientOriginalName() }}
+                            </a>
+                        @endif
                     @endif
 
-                    <div class="flex">
+                    <div class="flex mt-4">
                         <button type="submit" wire:click="submit" class="inline-flex items-center py-2.5 px-4 font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
                             Hantar
                         </button>
@@ -135,5 +157,12 @@
             </div>
         </x-card>
     </x-modal>
+
+    {{-- attachment modal --}}
+    <x-modal.card blur align="center" max-width="7xl" hide-close=false wire:model="attachmentModal">
+        @if($attachmentUrl)
+        <iframe src="{{ $attachmentUrl }}" frameborder="0" width="100%" height="700px"></iframe>
+        @endif
+    </x-modal.card>
 
 </main>

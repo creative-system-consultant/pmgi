@@ -35,7 +35,7 @@
                     </thead>
                     <tbody class="bg-white">
                         @foreach ($datas as $index => $data)
-                        <tr class="{{ $index % 2 != 0 ? 'bg-blue-50' : '' }}">
+                        <tr class=" @if($data->status == 1) bg-green-100 @endif">
                             <td class="p-2 text-sm font-normal text-left text-gray-900 border border-black whitespace-nowrap">
                                 {{ $loop->iteration }}
                             </td>
@@ -50,7 +50,16 @@
                             </td>
                             <td class="p-1 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
                                 <div class="flex justify-center">
-                                    <x-checkbox id="checkbox-{{ $data->userid }}" value="{{ $data->userid }}" wire:model="selection" />
+                                    @if($data->status == 0)
+                                        <x-checkbox id="checkbox-{{ $data->userid }}" value="{{ $data->userid }}" wire:model="selection" />
+                                    @else
+                                        <div class="text-gray-900">
+                                            <span class="block">PYM: {{ $data->pym_name ?? 'N/A' }}</span>
+                                            @if($data->pmgi_level == '3')
+                                            <span class="block">PMC: {{ $data->pmc_name ?? 'N/A' }}</span>
+                                            @endif
+                                        </div>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

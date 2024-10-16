@@ -220,17 +220,17 @@
             </div>
 
             {{-- punca --}}
-            <div class="input-container" style="top: 350px; left: 140px;">
+            <div class="input-container" style="top: 350px; left: 140px; width: 500px; word-wrap: break-word; white-space: normal;">
                 <strong>{{ $pydInfo->reason }}</strong>
             </div>
 
             {{-- pelan tindakan --}}
-            <div class="input-container" style="top: 500px; left: 140px;">
+            <div class="input-container" style="top: 500px; left: 140px; width: 500px; word-wrap: break-word; white-space: normal;">
                 <strong>{{ $pydInfo->action }}</strong>
             </div>
 
             {{-- ulasan --}}
-            <div class="input-container" style="top: 660px; left: 140px;">
+            <div class="input-container" style="top: 660px; left: 140px; width: 500px; word-wrap: break-word; white-space: normal;">
                 <strong>{{ $pydInfo->comments }}</strong>
             </div>
         </div>
@@ -241,12 +241,12 @@
         <img src="image/borang/jpoc/BorangJpocPmgi12-4.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
         <div class="content-overlay">
             {{-- ulasan --}}
-            <div class="input-container" style="top: 190px; left: 140px;">
+            <div class="input-container" style="top: 190px; left: 140px; width: 500px; word-wrap: break-word; white-space: normal;">
                 <strong>{{ $pymInfo->comments }}</strong>
             </div>
 
             {{-- pelan tindakan --}}
-            <div class="input-container" style="top: 360px; left: 140px;">
+            <div class="input-container" style="top: 360px; left: 140px; width: 500px; word-wrap: break-word; white-space: normal;">
                 <strong>{{ $pymInfo->action }}</strong>
             </div>
         </div>
@@ -346,7 +346,7 @@
                 @endif
 
                 {{-- ulasan --}}
-                <div class="input-container" style="top: 260px; left: 140px;">
+                <div class="input-container" style="top: 260px; left: 140px; width: 500px; word-wrap: break-word; white-space: normal;">
                     <strong>{{ $pmcInfo->fair_comments }}</strong>
                 </div>
 
@@ -362,12 +362,12 @@
                 @endif
 
                 {{-- ulasan --}}
-                <div class="input-container" style="top: 530px; left: 140px;">
+                <div class="input-container" style="top: 530px; left: 140px; width: 500px; word-wrap: break-word; white-space: normal;">
                     <strong>{{ $pmcInfo->comments }}</strong>
                 </div>
 
                 {{-- lain-lain --}}
-                <div class="input-container" style="top: 685px; left: 140px;">
+                <div class="input-container" style="top: 685px; left: 140px; width: 500px; word-wrap: break-word; white-space: normal;">
                     <strong>{{ $pmcInfo->others }}</strong>
                 </div>
             </div>

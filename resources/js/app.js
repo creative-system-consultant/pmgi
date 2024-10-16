@@ -37,11 +37,24 @@ document.addEventListener("DOMContentLoaded", function() {
         form.addEventListener('submit', showLoading);
     });
 
-    // Show loading on all link clicks
+    // Show loading on all link clicks, but hide it shortly after for download links
     document.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', function(event) {
-            if (event.target.getAttribute('href') && !event.target.getAttribute('href').startsWith('#')) {
+            const href = event.target.getAttribute('href');
+
+            if (href && !href.startsWith('#')) {
                 showLoading();
+
+                // Check if the link is for a file download based on file extension
+                const downloadExtensions = ['pdf', 'docx', 'xlsx', 'csv'];
+                const isDownloadLink = downloadExtensions.some(ext => href.endsWith(`.${ext}`));
+
+                // If it's a download link, hide the loading indicator after a short delay
+                if (isDownloadLink) {
+                    setTimeout(() => {
+                        hideLoading();
+                    }, 1000); // Adjust the delay as needed (3 seconds here)
+                }
             }
         });
     });

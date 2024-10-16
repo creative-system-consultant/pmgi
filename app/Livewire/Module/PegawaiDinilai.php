@@ -22,6 +22,8 @@ class PegawaiDinilai extends Component
     public $savedFile;
     public $showPrestasiKumulatif = false;
     public $infoModal = false;
+    public $attachmentUrl = null;
+    public $attachmentModal = false;
     public $sessionId;
     public $pydName;
     public $pydPosition;
@@ -80,6 +82,14 @@ class PegawaiDinilai extends Component
     public function togglePrestasiKumulatif()
     {
         $this->showPrestasiKumulatif = !$this->showPrestasiKumulatif;
+    }
+
+    public function toggleDetail()
+    {
+        if ($this->file) {
+            $this->attachmentUrl = $this->file->temporaryUrl();
+        }
+        $this->attachmentModal = true;
     }
 
     public function openInfo()

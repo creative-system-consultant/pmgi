@@ -109,8 +109,8 @@ class RekodPmgi extends Component
 
         // prestasi kumulatf var
         $report_date = Carbon::parse($settInfo->report_date);
-        $fromReportDate = $report_date->copy()->subMonth(2)->endOfMonth()->format('Y-m-d');
-        $toReportDate = $report_date->copy()->subMonth()->endOfMonth()->format('Y-m-d');
+        $fromReportDate = $report_date->copy()->subMonth()->endOfMonth()->format('Y-m-d');
+        $toReportDate = $report_date->copy()->endOfMonth()->format('Y-m-d');
 
         $data = DB::table('PMGI_SUMM_MTH_OFFICER')
                     ->where('officer_id', $settInfo->pyd_id)

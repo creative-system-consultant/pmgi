@@ -56,8 +56,8 @@ class Kumulatif extends Component
 
             $this->pydId = $setting->pyd_id;
             $report_date = Carbon::parse($setting->report_date);
-            $this->fromReportDate = $report_date->copy()->subMonthsNoOverflow(2)->endOfMonth()->format('Y-m-d');
-            $this->toReportDate = $report_date->copy()->subMonthsNoOverflow()->endOfMonth()->format('Y-m-d');
+            $this->fromReportDate = $report_date->copy()->subMonthsNoOverflow(1)->endOfMonth()->format('Y-m-d');
+            $this->toReportDate = $report_date->copy()->endOfMonth()->format('Y-m-d');
             $this->getData();
         }
     }
@@ -71,9 +71,17 @@ class Kumulatif extends Component
 
         if (in_array('PYD', $role)) {
             $this->pydId = auth()->user()->userid;
-            $report_date = now();
-            $this->fromReportDate = $report_date->copy()->subMonth(2)->endOfMonth()->format('Y-m-d');
-            $this->toReportDate = $report_date->copy()->subMonth()->endOfMonth()->format('Y-m-d');
+
+            // prod use this
+            // $report_date = now();
+            // uat pmgi 1
+            // $report_date = Carbon::createFromFormat('d/m/Y', '31/01/2023')->format('Y-m-d');
+
+            // uat pmgi 2
+            $report_date = Carbon::createFromFormat('d/m/Y', '30/04/2023');
+
+            $this->fromReportDate = $report_date->copy()->subMonth(1)->endOfMonth()->format('Y-m-d');
+            $this->toReportDate = $report_date->copy()->endOfMonth()->format('Y-m-d');
             $this->getData();
         }
     }
