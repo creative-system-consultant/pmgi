@@ -132,20 +132,15 @@ class Pyd extends Component
         ]);
     }
 
-    private function getOfficerData(string $order, int $limit)
+    public function getOfficerData(string $order, int $limit)
     {
-        $officerData = DB::table('PMGI_SUMM_MTH_OFFICER as a')
-            ->leftJoin('PMGI_MNTR_SESSION as b', function ($join) {
-                $join->on('a.officer_id', '=', 'b.officer_id')
-                    ->whereRaw("TO_CHAR(a.report_date, 'MM-YYYY') = TO_CHAR(b.session_date_start, 'MM-YYYY')")
-                    ->orWhereRaw("TO_CHAR(a.report_date, 'MM-YYYY') = TO_CHAR(b.session_date_end, 'MM-YYYY')");
-            })
-            ->where('a.officer_id', auth()->user()->userid)
+        $officerId = auth()->user()->userid;
+
+        // Get summary data from PMGI_SUMM_MTH_OFFICER
+        $summaryData = DB::table('PMGI_SUMM_MTH_OFFICER as a')
+            ->where('a.officer_id', $officerId)
             ->select(
                 'a.report_date',
-                'a.officer_id',
-                'b.pmgi_result',
-                'b.pmgi_level',
                 'a.bil_selia',
                 'a.bil_dapat_kutip',
                 'a.rm_patut_kutip',
@@ -154,17 +149,56 @@ class Pyd extends Component
                 'a.bil_lawat',
                 'a.bil_lawat_pts'
             )
-            ->distinct()
             ->orderBy('a.report_date', $order)
             ->take($limit)
             ->get();
 
         // Format the report_date field
-        $officerData->transform(function ($item) {
-            $item->report_date = Carbon::parse($item->report_date)->translatedFormat('M-y');
+        $summaryData->transform(function ($item) {
+            $item->report_date = \Carbon\Carbon::parse($item->report_date)->format('Y-m');
             return $item;
         });
 
-        return $officerData;
+        // Get session data from PMGI_MNTR_SESSION for the same officer
+        $sessionData = DB::table('PMGI_MNTR_SESSION as b')
+            ->where('b.officer_id', $officerId)
+            ->select(
+                'b.pmgi_result',
+                'b.pmgi_level',
+                DB::raw("TO_CHAR(b.session_date_start, 'YYYY-MM') as session_start_month"),
+                DB::raw("TO_CHAR(b.session_date_end, 'YYYY-MM') as session_end_month")
+            )
+            ->get();
+
+        return $this->mergeData($summaryData, $sessionData);
+    }
+
+    private function mergeData($summaryData, $sessionData)
+    {
+        // Prepare a map for session data based on the month/year
+        $sessionMap = [];
+        foreach ($sessionData as $session) {
+            $sessionMap[$session->session_start_month] = $session;
+            $sessionMap[$session->session_end_month] = $session;
+        }
+
+        // Merge the session data into the summary data
+        foreach ($summaryData as $summary) {
+            $monthYear = \Carbon\Carbon::parse($summary->report_date)->format('Y-m');
+
+            // Check if there's a corresponding session record for this month/year
+            if (isset($sessionMap[$monthYear])) {
+                $summary->pmgi_result = $sessionMap[$monthYear]->pmgi_result;
+                $summary->pmgi_level = $sessionMap[$monthYear]->pmgi_level;
+            } else {
+                $summary->pmgi_result = null;
+                $summary->pmgi_level = null;
+            }
+
+            // Format the report_date to your desired format
+            $summary->report_date = \Carbon\Carbon::parse($summary->report_date)->translatedFormat('M-y');
+        }
+
+        return $summaryData;
     }
 }

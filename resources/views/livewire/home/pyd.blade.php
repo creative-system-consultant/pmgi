@@ -7,65 +7,74 @@
                 <div class="mb-4 lg:mb-0">
                     <h3 class="mb-2 text-xl font-bold text-gray-900 ">Ringkasan</h3>
                     <span class="text-base font-normal text-gray-500 ">Ini adalah ringkasan status PMG-i anda</span>
-                    <div class="grid grid-cols-2 mt-4 text-xs text-gray-700 gap-x-8 gap-y-0">
+                    <div class="grid grid-cols-2 mt-4 text-xs text-gray-700 uppercase gap-x-8 gap-y-0">
                         <h3>NAMA</h3>
                         <P>{{ auth()->user()->username }}</P>
                         <h3>NO PEKERJA</h3>
                         <P>{{ auth()->user()->staffNo() }}</P>
                         <h3>JAWATAN</h3>
-                        <P>{{ auth()->user()->position() }}</P>
+                        <P>{{ auth()->user()->bankOfficer->hrData->jawatan }}</P>
                         <h3>NEGERI</h3>
                         <P>{{ auth()->user()->stateName() }}</P>
                         <h3>CAWANGAN</h3>
                         <P>{{ auth()->user()->branchName() }}</P>
-                        {{-- <h3>TARIKH LANTIKAN</h3> <P>15 JULAI 2019</P>
-                        <h3>TEMPOH KHIDMAT DI CAWANGAN SEMASA</h3> <P>4 TAHUN 9 BULAN 1 HARI</P> --}}
+                        <h3>TARIKH LANTIKAN</h3>
+                        <P>{{ \Carbon\Carbon::parse(auth()->user()->bankOfficer->hrData->tarikh_lantikan)->translatedFormat('d F Y') }}</P>
+                        @php
+                            $tempoh = auth()->user()->bankOfficer->hrData->tempoh_penempatan_semasa;
+                            $tempohFormatted = str_replace(['Y', 'M', 'D'], [' Tahun ', ' Bulan ', ' Hari'], $tempoh);
+                        @endphp
+                        <h3>TEMPOH KHIDMAT DI CAWANGAN SEMASA</h3>
+                        <P>{{ $tempohFormatted }}</P>
                     </div>
                 </div>
-                <div class="items-center">
-                    <div class="overflow-hidden shadow-md sm:rounded-lg">
-                        <table class="min-w-full divide-y divide-gray-200 ">
-                            <thead class="bg-indigo-400 ">
-                                <tr>
-                                    <th scope="col" class="p-4 text-xs font-medium tracking-wider text-center text-black uppercase">
-                                        BIL. PP
-                                    </th>
-                                    <th scope="col" class="p-4 text-xs font-medium tracking-wider text-center text-black uppercase">
-                                        BIL. SEMASA
-                                    </th>
-                                    <th scope="col" class="p-4 text-xs font-medium tracking-wider text-center text-black uppercase">
-                                        BIL. NPF
-                                    </th>
-                                    <th scope="col" class="p-4 text-xs font-medium tracking-wider text-center text-black uppercase">
-                                        JUMLAH
-                                    </th>
-                                    <th scope="col" class="p-4 text-xs font-medium tracking-wider text-center text-black uppercase">
-                                        RATIO / PP
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white">
-                                <tr>
-                                    <td class="p-4 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                        2
-                                    </td>
-                                    <td class="p-4 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                        293
-                                    </td>
-                                    <td class="p-4 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                        327
-                                    </td>
-                                    <td class="p-4 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                        620
-                                    </td>
-                                    <td class="p-4 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                        310
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+
+                @if (auth()->user()->bankOfficer->hrData->jawatan != 'PEMBANTU PEGAWAI')
+                    <div class="items-center">
+                        <div class="overflow-hidden shadow-md sm:rounded-lg">
+                            <table class="min-w-full divide-y divide-gray-200 ">
+                                <thead class="bg-indigo-400 ">
+                                    <tr>
+                                        <th scope="col" class="p-4 text-xs font-medium tracking-wider text-center text-black uppercase">
+                                            BIL. PP
+                                        </th>
+                                        <th scope="col" class="p-4 text-xs font-medium tracking-wider text-center text-black uppercase">
+                                            BIL. SEMASA
+                                        </th>
+                                        <th scope="col" class="p-4 text-xs font-medium tracking-wider text-center text-black uppercase">
+                                            BIL. NPF
+                                        </th>
+                                        <th scope="col" class="p-4 text-xs font-medium tracking-wider text-center text-black uppercase">
+                                            JUMLAH
+                                        </th>
+                                        <th scope="col" class="p-4 text-xs font-medium tracking-wider text-center text-black uppercase">
+                                            RATIO / PP
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white">
+                                    <tr>
+                                        <td class="p-4 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
+                                            2
+                                        </td>
+                                        <td class="p-4 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
+                                            293
+                                        </td>
+                                        <td class="p-4 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
+                                            327
+                                        </td>
+                                        <td class="p-4 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
+                                            620
+                                        </td>
+                                        <td class="p-4 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
+                                            310
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
             <!-- Table -->
             <div class="flex flex-col mt-6">
@@ -89,9 +98,11 @@
                                         <th scope="col" colspan="2" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x ">
                                             LAWATAN
                                         </th>
-                                        <th scope="col" colspan="2" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x ">
-                                            PRESTASI NPF
-                                        </th>
+                                        @if (auth()->user()->bankOfficer->hrData->jawatan != 'PEMBANTU PEGAWAI')
+                                            <th scope="col" colspan="2" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x ">
+                                                PRESTASI NPF
+                                            </th>
+                                        @endif
                                     </tr>
                                     <tr class="bg-gray-100">
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
@@ -133,12 +144,14 @@
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-r border-black border-dashed ">
                                             %<br>LAWAT
                                         </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
-                                            OS - RM (% NPF)<br>≥ 2015
-                                        </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-r border-black border-dashed ">
-                                            BEZA SASARAN NPF<br>≥2015 @ ≤25%
-                                        </th>
+                                        @if (auth()->user()->bankOfficer->hrData->jawatan != 'PEMBANTU PEGAWAI')
+                                            <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
+                                                OS - RM (% NPF)<br>≥ 2015
+                                            </th>
+                                            <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-r border-black border-dashed ">
+                                                BEZA SASARAN NPF<br>≥2015 @ ≤25%
+                                            </th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white ">
@@ -149,18 +162,24 @@
                                         </td>
                                         <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap ">
                                             @isset($pmgiLevels[$officerData->pmgi_level])
-                                            <p class="font-bold text-red-600">{{ $pmgiLevels[$officerData->pmgi_level] }}</p>
+                                                <p class="font-bold text-red-600">{{ $pmgiLevels[$officerData->pmgi_level] }}</p>
+                                            @elseif (!$officerData->pmgi_level)
+                                                -
                                             @else
-                                            PENDING
+                                                TEMPOH<br>PEMANTAUAN
                                             @endisset
                                         </td>
                                         <td class="p-2 text-xs font-semibold text-center text-gray-900 whitespace-nowrap ">
                                             @isset($pmgiResults[$officerData->pmgi_level][$officerData->pmgi_result])
-                                            <div class="{{ $pmgiResults[$officerData->pmgi_level][$officerData->pmgi_result]['class'] }} text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100">
-                                                {!! $pmgiResults[$officerData->pmgi_level][$officerData->pmgi_result]['text'] !!}
-                                            </div>
+                                                <div class="{{ $pmgiResults[$officerData->pmgi_level][$officerData->pmgi_result]['class'] }} text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100">
+                                                    {!! $pmgiResults[$officerData->pmgi_level][$officerData->pmgi_result]['text'] !!}
+                                                </div>
                                             @elseif(in_array($officerData->pmgi_level, ['PM1', 'PM2']))
-                                            <div class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100">DIBERI<br>TEMPOH</div>
+                                                @if($officerData->pmgi_result == 'NCD')
+                                                    <div class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-red-100">TIDAK<br>DILAKSANA</div>
+                                                @else
+                                                    <div class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100">DIBERI<br>TEMPOH</div>
+                                                @endif
                                             @endisset
                                         </td>
                                         <td class="p-2 text-xs font-normal text-center text-gray-500 border-l border-black border-dashed whitespace-nowrap ">
@@ -193,12 +212,14 @@
                                         <td class="p-2 text-xs font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
                                             {{ number_format($officerData->bil_lawat_pts) ?? 0 }}%
                                         </td>
-                                        <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            -
-                                        </td>
-                                        <td class="p-2 text-xs font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
-                                            -
-                                        </td>
+                                        @if (auth()->user()->bankOfficer->hrData->jawatan != 'PEMBANTU PEGAWAI')
+                                            <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap ">
+                                                -
+                                            </td>
+                                            <td class="p-2 text-xs font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
+                                                -
+                                            </td>
+                                        @endif
                                     </tr>
                                     @endforeach
                                 </tbody>

@@ -13,12 +13,12 @@
     <div class="w-full max-w-sm p-6 space-y-8 bg-white rounded-lg shadow-xl sm:p-8 ">
         <div class="flex justify-center">
             <h2 class="text-2xl font-bold text-gray-900 ">
-                Sign in
+                Log Masuk
             </h2>
         </div>
         <form class="mt-8 space-y-6" wire:submit.prevent="authenticate">
             <div>
-                <label for="text" class="block mb-2 text-sm font-medium text-gray-900 ">Your User ID</label>
+                <label for="text" class="block mb-2 text-sm font-medium text-gray-900 ">User ID</label>
                 <input wire:model="userId" type="text" name="text" id="text" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 @error('userId') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror" placeholder="ABCD1234" required>
 
                 @error('userId')
@@ -26,7 +26,7 @@
                 @enderror
             </div>
             <div>
-                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 ">Your Password</label>
+                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 ">Kata Laluan</label>
                 <input wire:model="password" type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 @error('password') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror" @if($isProduction) required @endif>
 
                 @error('password')
@@ -35,7 +35,7 @@
             </div>
             <div class="flex justify-center">
                 <button type="submit" class="w-full px-5 py-3 text-base text-center text-white rounded-lg font-xs bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto">
-                    Login
+                    Log Masuk
                 </button>
             </div>
         </form>

@@ -78,7 +78,10 @@ class Kumulatif extends Component
             // $report_date = Carbon::createFromFormat('d/m/Y', '31/01/2023')->format('Y-m-d');
 
             // uat pmgi 2
-            $report_date = Carbon::createFromFormat('d/m/Y', '30/04/2023');
+            // $report_date = Carbon::createFromFormat('d/m/Y', '30/04/2023');
+
+            // uat pmgi 3
+            $report_date = Carbon::createFromFormat('d/m/Y', '31/07/2023');
 
             $this->fromReportDate = $report_date->copy()->subMonth(1)->endOfMonth()->format('Y-m-d');
             $this->toReportDate = $report_date->copy()->endOfMonth()->format('Y-m-d');

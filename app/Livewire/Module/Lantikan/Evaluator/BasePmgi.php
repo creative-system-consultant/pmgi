@@ -5,7 +5,9 @@ namespace App\Livewire\Module\Lantikan\Evaluator;
 use App\Exports\EvaluatorSessionList;
 use App\Jobs\CleanupTemporaryFiles;
 use App\Jobs\SendLantikanPymPmcEmail;
+use App\Models\BahagianOperasi;
 use App\Models\BankOfficer;
+use App\Models\HrdOfficer;
 use App\Models\MntrSession;
 use App\Models\SettPymPmc;
 use App\Models\SettUalRole;
@@ -35,6 +37,8 @@ abstract class BasePmgi extends Component
     public $selectedPmc;
     public $selectAll = false;
     public $datas;
+    public $pymSelection;
+    public $pmcSelection;
 
     protected function rules()
     {
@@ -69,7 +73,6 @@ abstract class BasePmgi extends Component
     {
         $this->stateCode = auth()->user()->stateCode();
 
-        // prod used this
         $month = $currentDate->format('m');
         $year = $currentDate->format('Y');
 
@@ -96,11 +99,104 @@ abstract class BasePmgi extends Component
 
     public function showSelection($pmgi)
     {
-        if(count($this->selection) == 0) {
+        if (count($this->selection) == 0) {
             $this->emptySelection();
         } else {
-            $this->pmgi = $pmgi;
-        $this->cardModal = true;
+            $jawatanList = [];
+
+            foreach ($this->selection as $selectedPyd) {
+                $bankOfficer = BankOfficer::with('hrData')->whereOfficerId($selectedPyd)->first();
+
+                if ($bankOfficer && $bankOfficer->hrData) {
+                    $jawatanList[] = $bankOfficer->hrData->jawatan;
+                }
+            }
+
+            if ($this->getPmgiLevel() == 'PM3') {
+                // Check if all 'jawatan' are the same
+                $uniqueJawatan = array_unique($jawatanList);
+                if (count($uniqueJawatan) === 1) {
+                    // Pass the unique jawatan to the getJawatan method
+                    $this->getPymPmc($uniqueJawatan[0]);
+                    $this->pmgi = $pmgi;
+                    $this->cardModal = true;
+                } else {
+                    $this->dialog()->error(
+                        $title = 'Ralat!',
+                        $description = 'Sila buat pilihan berdasarkan Jawatan yang sama sahaja.'
+                    );
+                }
+            } else {
+                $this->getPym();
+                $this->pmgi = $pmgi;
+                $this->cardModal = true;
+            }
+        }
+    }
+
+    public function getPym()
+    {
+        $this->pymSelection = DB::table('FMS_USERS as a')
+                        ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
+                        ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
+                        ->select('a.userid', 'b.officer_name', 'c.branch_name')
+                        ->where('a.userstatus', 1)
+                        ->where(DB::raw('substr(b.branch_code, 0, 2)'), $this->stateCode)
+                        ->whereIn('b.officer_group', [5,12])
+                        ->get()
+                        ->toArray();
+    }
+
+    public function getPymPmc($jawatan)
+    {
+        if ($jawatan == 'PEMBANTU PEGAWAI') {
+            $this->pymSelection = DB::table('FMS_USERS as a')
+                            ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
+                            ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
+                            ->select('a.userid', 'b.officer_name', 'c.branch_name')
+                            ->where('a.userstatus', 1)
+                            ->where(DB::raw('substr(b.branch_code, 0, 2)'), $this->stateCode)
+                            ->whereIn('b.officer_group', [5,12])
+                            ->get()
+                            ->toArray();
+
+            $ptnPmc = DB::table('FMS_USERS as a')
+                            ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
+                            ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
+                            ->select('a.userid', 'b.officer_name', 'c.branch_name')
+                            ->where('a.userstatus', 1)
+                            ->where(DB::raw('substr(b.branch_code, 0, 2)'), $this->stateCode)
+                            ->whereIn('b.officer_group', [5])
+                            ->get()
+                            ->toArray();
+
+            $boPmc = DB::table('PMGI_JPOC as a')
+                            ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
+                            ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
+                            ->select('a.userid', 'b.officer_name', 'c.branch_name')
+                            ->get()
+                            ->toArray();
+
+            $this->pmcSelection = array_merge($boPmc, $ptnPmc);
+
+        } else { // Pengurus Cawangan
+
+            $this->pymSelection = DB::table('FMS_USERS as a')
+                            ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
+                            ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
+                            ->select('a.userid', 'b.officer_name', 'c.branch_name')
+                            ->where('a.userstatus', 1)
+                            ->where(DB::raw('substr(b.branch_code, 0, 2)'), $this->stateCode)
+                            ->whereIn('b.officer_group', [5,12])
+                            ->get()
+                            ->toArray();
+
+            $this->pmcSelection = DB::table('PMGI_JPOC as a')
+                            ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
+                            ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
+                            ->select('a.userid', 'b.officer_name', 'c.branch_name')
+                            ->get()
+                            ->toArray();
         }
     }
 
@@ -304,22 +400,15 @@ abstract class BasePmgi extends Component
                             ->orderBy('b.branch_name', 'asc')
                             ->get();
 
-        $pym = DB::table('FMS_USERS as a')
-                        ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
-                        ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
-                        ->select('a.userid', 'b.officer_name', 'c.branch_name')
-                        ->where('a.userstatus', 1)
-                        ->where(DB::raw('substr(b.branch_code, 0, 2)'), $this->stateCode)
-                        ->whereIn('b.officer_group', [5,12])
-                        ->get()
-                        ->toArray();
+
 
         $pmgiValue = substr($this->getPmgiLevel(), -1);
 
         return view('livewire.module.lantikan.evaluator.base-pmgi', [
             'pmgiValue' => $pmgiValue,
             'datas' => $this->datas,
-            'pym' => $pym,
+            'pym' => $this->pymSelection,
+            'pmc' => $this->pmcSelection,
         ]);
     }
 }

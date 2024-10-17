@@ -89,7 +89,7 @@
                     class="flex-1 block w-24 mt-4 mr-4 text-sm text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                     Label="Pegawai Pemudah Cara (PMC)"
                     placeholder="Sila Pilih"
-                    :options="$pym"
+                    :options="$pmc"
                     option-label="officer_name"
                     option-value="userid"
                     option-description="branch_name"
