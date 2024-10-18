@@ -3,12 +3,16 @@
 namespace App\Livewire\Home;
 
 use App\Models\SettPymPmc;
+use Carbon\Carbon;
 
 class Pmc extends BasePymPmc
 {
     protected function getQuery()
     {
-        $lastMonthEnd = now()->subMonth()->endOfMonth();
+        // uat pmgi 3
+        $lastMonthEnd = Carbon::createFromFormat('d/m/Y', '31/07/2023')->format('Y-m-d');
+
+        // $lastMonthEnd = now()->subMonth()->endOfMonth();
 
         return SettPymPmc::wherePmcId(auth()->user()->userid)
                             ->whereDate('report_date', $lastMonthEnd)

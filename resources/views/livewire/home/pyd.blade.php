@@ -178,7 +178,7 @@
                                                 @if($officerData->pmgi_result == 'NCD')
                                                     <div class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-red-100">TIDAK<br>DILAKSANA</div>
                                                 @else
-                                                    <div class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100">DIBERI<br>TEMPOH</div>
+                                                    <div class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100">SELESAI<br>DILAKSANA</div>
                                                 @endif
                                             @endisset
                                         </td>
