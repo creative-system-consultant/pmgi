@@ -3,6 +3,7 @@
 namespace App\Livewire\Module;
 
 use App\Models\BankOfficer;
+use App\Models\HrdOfficer;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -12,7 +13,7 @@ class MasterListWargaKerja extends Component
 
     public function render()
     {
-        $wargaKerja = BankOfficer::select('officer_id', 'officer_name', 'OFFICER_POSITION', 'email', 'nokp', 'STAFFNO', 'HR_MGR_FLAG', 'HR_DATE_RESIGN')->paginate(10);
+        $wargaKerja = HrdOfficer::orderBy('negeri', 'ASC')->orderBy('cawangan', 'ASC')->paginate(10);
 
         return view('livewire.module.master-list-warga-kerja', ['wargaKerja' => $wargaKerja])->extends('layouts.main');
     }
