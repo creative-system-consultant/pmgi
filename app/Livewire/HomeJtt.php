@@ -5,7 +5,7 @@ namespace App\Livewire;
 use App\Mail\JttMeetingInvitation as MailJttMeetingInvitation;
 use App\Models\JttMeetingInvitation;
 use App\Models\JttSessionInfo;
-use App\Models\JttSessionParticipant;
+use App\Models\JttSessionPanel;
 use App\Models\MntrSession;
 use App\Models\SettJtt;
 use App\Models\SettMeetingRoom;
@@ -62,8 +62,8 @@ class HomeJtt extends Component
                 'expires_at' => now()->addHour(),
             ]);
 
-            // save participant
-            JttSessionParticipant::create([
+            // save panel
+            JttSessionPanel::create([
                 'session_id' => $sessionId,
                 'panel_id' => $officer->officer_id,
             ]);
@@ -76,9 +76,9 @@ class HomeJtt extends Component
 
     private function generateSessionId()
     {
-        $datePart = now()->format('Ym');
-        $formattedDatePart = substr($datePart, 2, 2) . substr($datePart, 4, 2);
-        return 'JTT' . $formattedDatePart;
+        $datePart = now()->format('Ymd');
+        $formattedDatePart = substr($datePart, 2, 6);
+        return 'JTT' . $formattedDatePart . $this->room;
     }
 
     public function confirmAttendance($token)

@@ -13,9 +13,9 @@ class JttSessionInfo extends Model
     protected $guarded = [];
     public $timestamps = false;
 
-    public function participantInfo()
+    public function panelInfo()
     {
-        return $this->hasMany(JttSessionParticipant::class, 'session_id', 'session_id');
+        return $this->hasMany(JttSessionPanel::class, 'session_id', 'session_id');
     }
 
     public function venueInfo()

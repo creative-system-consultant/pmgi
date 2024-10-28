@@ -17,4 +17,9 @@ class JttSessionParticipant extends Model
     {
         return $this->belongsTo(JttSessionInfo::class, 'session_id', 'session_id');
     }
+
+    public function mntrSession()
+    {
+        return $this->hasOne(MntrSession::class, 'report_date', 'report_date');
+    }
 }

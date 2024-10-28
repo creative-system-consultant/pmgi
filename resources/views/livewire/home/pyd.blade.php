@@ -5,31 +5,29 @@
             <!-- Card header -->
             <div class="items-center justify-between lg:flex">
                 <div class="mb-4 lg:mb-0">
-                    <h3 class="mb-2 text-xl font-bold text-gray-900 ">Ringkasan</h3>
-                    <span class="text-base font-normal text-gray-500 ">Ini adalah ringkasan status PMG-i anda</span>
+                    @if (!$userId)
+                        <h3 class="mb-2 text-xl font-bold text-gray-900 ">Ringkasan</h3>
+                        <span class="text-base font-normal text-gray-500 ">Ini adalah ringkasan status PMG-i anda</span>
+                    @endif
                     <div class="grid grid-cols-2 mt-4 text-xs text-gray-700 uppercase gap-x-8 gap-y-0">
                         <h3>NAMA</h3>
-                        <P>{{ auth()->user()->username }}</P>
+                        <P>{{ $username }}</P>
                         <h3>NO PEKERJA</h3>
-                        <P>{{ auth()->user()->staffNo() }}</P>
+                        <P>{{ $staffno }}</P>
                         <h3>JAWATAN</h3>
-                        <P>{{ auth()->user()->bankOfficer->hrData->jawatan }}</P>
+                        <P>{{ $jawatan }}</P>
                         <h3>NEGERI</h3>
-                        <P>{{ auth()->user()->stateName() }}</P>
+                        <P>{{ $stateName }}</P>
                         <h3>CAWANGAN</h3>
-                        <P>{{ auth()->user()->branchName() }}</P>
+                        <P>{{ $branchName }}</P>
                         <h3>TARIKH LANTIKAN</h3>
-                        <P>{{ \Carbon\Carbon::parse(auth()->user()->bankOfficer->hrData->tarikh_lantikan)->translatedFormat('d F Y') }}</P>
-                        @php
-                            $tempoh = auth()->user()->bankOfficer->hrData->tempoh_penempatan_semasa;
-                            $tempohFormatted = str_replace(['Y', 'M', 'D'], [' Tahun ', ' Bulan ', ' Hari'], $tempoh);
-                        @endphp
+                        <P>{{ $tarikhLantikan }}</P>
                         <h3>TEMPOH KHIDMAT DI CAWANGAN SEMASA</h3>
-                        <P>{{ $tempohFormatted }}</P>
+                        <P>{{ $tempohBerkhidmat }}</P>
                     </div>
                 </div>
 
-                @if (auth()->user()->bankOfficer->hrData->jawatan != 'PEMBANTU PEGAWAI')
+                @if ($data->bankOfficer->hrData->jawatan != 'PEMBANTU PEGAWAI')
                     <div class="items-center">
                         <div class="overflow-hidden shadow-md sm:rounded-lg">
                             <table class="min-w-full divide-y divide-gray-200 ">
@@ -98,7 +96,7 @@
                                         <th scope="col" colspan="2" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x ">
                                             LAWATAN
                                         </th>
-                                        @if (auth()->user()->bankOfficer->hrData->jawatan != 'PEMBANTU PEGAWAI')
+                                        @if ($data->bankOfficer->hrData->jawatan != 'PEMBANTU PEGAWAI')
                                             <th scope="col" colspan="2" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x ">
                                                 PRESTASI NPF
                                             </th>
@@ -144,7 +142,7 @@
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-r border-black border-dashed ">
                                             %<br>LAWAT
                                         </th>
-                                        @if (auth()->user()->bankOfficer->hrData->jawatan != 'PEMBANTU PEGAWAI')
+                                        @if ($data->bankOfficer->hrData->jawatan != 'PEMBANTU PEGAWAI')
                                             <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase ">
                                                 OS - RM (% NPF)<br>≥ 2015
                                             </th>
@@ -212,7 +210,7 @@
                                         <td class="p-2 text-xs font-normal text-center text-gray-500 border-r border-black border-dashed whitespace-nowrap ">
                                             {{ number_format($officerData->bil_lawat_pts) ?? 0 }}%
                                         </td>
-                                        @if (auth()->user()->bankOfficer->hrData->jawatan != 'PEMBANTU PEGAWAI')
+                                        @if ($data->bankOfficer->hrData->jawatan != 'PEMBANTU PEGAWAI')
                                             <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap ">
                                                 -
                                             </td>

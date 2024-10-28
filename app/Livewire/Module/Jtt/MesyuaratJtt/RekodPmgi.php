@@ -6,6 +6,7 @@ use App\Jobs\CleanupTemporaryFiles;
 use App\Jobs\SendJttHrEmail;
 use App\Models\BankOfficer;
 use App\Models\JttSessionInfo;
+use App\Models\JttSessionParticipant;
 use App\Models\MntrSession;
 use App\Models\SessionInfo;
 use App\Models\SessionJttPydInfo;
@@ -148,6 +149,14 @@ class RekodPmgi extends Component
     public function submit()
     {
         $this->validate();
+
+        // save participant session
+        JttSessionParticipant::create([
+            'session_id' => $this->sessionId,
+            'user_id' => $this->userId,
+            'pmgi_level' => $this->pmgiLevel,
+            'report_date' => $this->reportDate
+        ]);
 
         // save data
         SessionJttPydInfo::create([
