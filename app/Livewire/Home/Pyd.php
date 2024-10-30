@@ -17,6 +17,7 @@ class Pyd extends Component
     public $pmgiResults;
     public $penjadualanSemula;
     public $mia;
+    public $wilma;
     public $pembiayaan;
     public $username;
     public $staffno;
@@ -44,10 +45,11 @@ class Pyd extends Component
         $tempoh = $this->data->bankOfficer->hrData->tempoh_penempatan_semasa;
         $this->tempohBerkhidmat = str_replace(['Y', 'M', 'D'], [' Tahun ', ' Bulan ', ' Hari'], $tempoh);
 
-        $this->penjadualanSemula = Cache::remember('penjadualan_semula', 480, function () {
+        $this->penjadualanSemula = Cache::remember('penjadualan_semula_' . auth()->user()->branchCode(), 480, function () {
             return DB::table('RESCHEDULE_INFO2 as rs')
                 ->join('account_master as m', 'rs.accountno', '=', 'm.account_no')
                 ->where('activestatus', '>=', 0)
+                ->where('branch_code', auth()->user()->branchCode())
                 ->selectRaw('
                             count(*) as terima,
                             sum(case when nvl(branchapproval,0) = 1 then 1 else 0 end) as lulus,
@@ -64,9 +66,10 @@ class Pyd extends Component
                 ->first();
         });
 
-        $this->mia = Cache::remember('mia', 480, function () {
+        $this->mia = Cache::remember('mia_' . auth()->user()->branchCode(), 480, function () {
             return DB::table('mia_appl_list as ma')
                 ->join('account_master as m', 'ma.custid', '=', 'm.cust_id')
+                ->where('branch_code', auth()->user()->branchCode())
                 ->selectRaw('
                             count(*) as jumlah,
                             sum(case when ma.status = 1 then 1 else 0 end) as lulus,
@@ -77,9 +80,49 @@ class Pyd extends Component
                 ->first();
         });
 
+        $this->wilma = Cache::remember('wilma_' . auth()->user()->branchCode(), 480, function () {
+            return DB::select("
+                select
+                    bilA1 as bila1,
+                    bilA2 as bila2,
+                    bilA3 as bila3,
+                    bilb1,
+                    bilB2 as bilb2,
+                    bilC1 as bilc1,
+                    bilC2 as bilc2,
+                    bilD as bild,
+                    (bilA1+bilA2+bilA3+bilb1+bilB2+bilC1+bilC2+bilD) as jumlah,
+                    bilNPF as bilnpf,
+                    round((bilNPF/bilALL)*100,2) as pctnpf,
+                    round((JUMNPF/JUMALL)*100,2) as pctjumnpf
+                from
+                (
+                    select
+                        SUM((CASE WHEN p.npl_category = 'A1'  THEN 1 ELSE 0 END)) AS bilA1,
+                        SUM((CASE WHEN p.npl_category = 'A2'  THEN 1 ELSE 0 END)) AS bilA2,
+                        SUM((CASE WHEN p.npl_category = 'A3'  THEN 1 ELSE 0 END)) AS bilA3,
+                        SUM((CASE WHEN p.npl_category = 'B1'  THEN 1 ELSE 0 END)) AS bilb1,
+                        SUM((CASE WHEN p.npl_category = 'B2'  THEN 1 ELSE 0 END)) AS bilB2,
+                        SUM((CASE WHEN p.npl_category = 'C1'  THEN 1 ELSE 0 END)) AS bilC1,
+                        SUM((CASE WHEN p.npl_category = 'C2'  THEN 1 ELSE 0 END)) AS bilC2,
+                        SUM((CASE WHEN p.npl_category = 'D'  THEN 1 ELSE 0 END)) AS bilD,
+                        SUM((CASE WHEN p.npl_category in ('B1','B2','C1','C2','D')  THEN 1 ELSE 0 END)) AS bilNPF,
+                        SUM((CASE WHEN p.npl_category in ('A1','A2','A3','B1','B2','C1','C2','D')  THEN 1 ELSE 0 END)) AS bilALL,
+                        SUM((CASE WHEN p.npl_category in ('B1','B2','C1','C2','D') THEN p.bal_outstanding ELSE 0 END)) AS JUMNPF,
+                        SUM((CASE WHEN p.npl_category in ('A1','A2','A3','B1','B2','C1','C2','D') THEN p.bal_outstanding ELSE 0 END)) AS JUMALL
+                    from account_master m
+                    inner join account_position p on m.account_no = p.account_no
+                    where m.account_status  not in  (1,2,6,9,13,15,16,19)
+                    AND    nvl(m.account_status2,0) <> '13'
+                    AND    nvl(m.seliaanowner, 'BRN') = 'BRN'
+                    AND    m.branch_code = ?
+                )
+            ", [auth()->user()->branchCode()])[0] ?? null;
+        });
+
         $currentDate = now()->format('d M Y');
 
-        $this->pembiayaan = Cache::remember('pembiayaan_' . $currentDate, 480, function () use ($currentDate) {
+        $this->pembiayaan = Cache::remember('pembiayaan_' . auth()->user()->branchCode() . '_' . $currentDate, 480, function () use ($currentDate) {
             $pembiayanData = DB::select("
                                 select nvl(uf_decode_prodcatg(product_catg), 0) as product_category,
                                     sum(bil) as bilakaun,
@@ -96,6 +139,7 @@ class Pyd extends Component
                                     where ((trunc(d.cheque_Date) <= to_Date(?, 'DD MON YYYY')  and disburse_mode = 'CH' AND d.disb_status not in ('X', 'R','S'))
                                     or (trunc(d.autodebit_Date) <= to_Date(?, 'DD MON YYYY') and disburse_mode = 'AD' AND d.disb_status not in ('X', 'R','S') and (length(d.DEBIT_BANKACCT) > 0)))
                                     and m.account_status <> 2
+                                    and m.branch_code = ?
                                     group by SUBSTR(UF_GET_PRODUCT_CATG(m.PRODUCT_CODE, m.PRODUCT_SUB_CODE), 1, 3)
                                     union
                                     SELECT count(*) AS bil,
@@ -106,7 +150,7 @@ class Pyd extends Component
                                     group by M.Produk_Category
                                 )
                                 group by nvl(uf_decode_prodcatg(product_catg), 0)
-                            ", [$currentDate, $currentDate]);
+                            ", [$currentDate, $currentDate, auth()->user()->branchCode()]);
 
             $pivotData = [
                 'product_categories' => [],
@@ -135,22 +179,23 @@ class Pyd extends Component
 
         $this->pmgiResults = [
             'PM3' => [
-                'TSK' => ['text' => 'TIDAK SYOR<br>KELUAR', 'class' => 'bg-yellow-100 text-yellow-800'],
-                'TGH' => ['text' => 'TANGGUH', 'class' => 'bg-yellow-100 text-yellow-800'],
-                'SYA' => ['text' => 'KELUAR<br>BERSYARAT', 'class' => 'bg-yellow-100 text-yellow-800'],
-                'TSY' => ['text' => 'KELUAR TANPA<br>SYARAT', 'class' => 'bg-green-100 text-green-800'],
+                'NEX' => ['text' => 'TIDAK SYOR<br>KELUAR', 'class' => 'bg-yellow-100 text-yellow-800'],
+                'EXP' => ['text' => 'TANGGUH', 'class' => 'bg-yellow-100 text-yellow-800'],
+                'EXC' => ['text' => 'KELUAR<br>BERSYARAT', 'class' => 'bg-yellow-100 text-yellow-800'],
+                'PEX' => ['text' => 'KELUAR TANPA<br>SYARAT', 'class' => 'bg-green-100 text-green-800'],
             ],
             'JT1' => [
-                'GDI' => ['text' => 'DIBERI TEMPOH<br>TAMBAHAN', 'class' => 'bg-yellow-100 text-yellow-800'],
-                'DIQ' => ['text' => 'DOMESTIC<br>INQUIRY', 'class' => 'bg-red-100 text-red-800'],
+                'EX1' => ['text' => 'KELUAR<br>SENARAI', 'class' => 'bg-green-100 text-green-800'],
+                'PDQ' => ['text' => 'DIBERI<br>TEMPOH', 'class' => 'bg-red-100 text-red-800'],
+                'DQ1' => ['text' => 'DOMESTIC<br>INQUIRY', 'class' => 'bg-red-100 text-red-800'],
             ],
             'JT2' => [
-                'KSR' => ['text' => 'KELUAR<br>SENARAI', 'class' => 'bg-green-100 text-green-800'],
-                'DIQ' => ['text' => 'DOMESTIC<br>INQUIRY', 'class' => 'bg-red-100 text-red-800'],
+                'EXL' => ['text' => 'KELUAR<br>SENARAI', 'class' => 'bg-green-100 text-green-800'],
+                'DQ2' => ['text' => 'DOMESTIC<br>INQUIRY', 'class' => 'bg-red-100 text-red-800'],
             ],
             'HRD' => [
-                'TBI' => ['text' => 'TIDAK<br>DIBERHENTIKAN', 'class' => 'bg-green-100 text-green-800'],
-                'DBI' => ['text' => 'DIBERHENTIKAN', 'class' => 'bg-red-100 text-red-800'],
+                'NDM' => ['text' => 'TIDAK<br>DIBERHENTIKAN', 'class' => 'bg-green-100 text-green-800'],
+                'PDM' => ['text' => 'DIBERHENTIKAN', 'class' => 'bg-red-100 text-red-800'],
             ],
         ];
     }
