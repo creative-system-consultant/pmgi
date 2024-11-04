@@ -101,13 +101,13 @@
             </div>
 
             {{-- tempoh berkhidmat --}}
-            <div class="input-container" style="top: 333px; left: 350px;">
-                <strong>5 TAHUN 2 BULAN</strong>
+            <div class="input-container" style="top: 333px; left: 330px;">
+                <strong>{{ $tempohBerkhidmat }}</strong>
             </div>
 
             {{-- no fon --}}
             <div class="input-container" style="top: 360px; left: 200px;">
-                <strong>019-9445211</strong>
+                <strong>{{ $bankOfficerPyd->hrData->notel }}</strong>
             </div>
 
             {{-- emel --}}
@@ -117,23 +117,13 @@
 
             {{-- alamat 1 --}}
             <div class="input-container" style="top: 390px; left: 150px;">
-                <strong>NO. 11, JALAN 9/6, TAMAN IKS, SEKSYEN 9, BANDAR BARU BANGI</strong>
+                <strong>{{ $alamat1 }}</strong>
             </div>
 
             {{-- alamat 2 --}}
             <div class="input-container" style="top: 420px; left: 150px;">
-                <strong>43650, SELANGOR</strong>
+                <strong>{{ $alamat2 }}</strong>
             </div>
-
-            @php
-                $accCount = ($settInfo->mntrSession->BIL_A1 ?? 0) + ($settInfo->mntrSession->BIL_A2 ?? 0) + ($settInfo->mntrSession->BIL_A3 ?? 0) + ($settInfo->mntrSession->BIL_B1 ?? 0) + ($settInfo->mntrSession->BIL_B2 ?? 0) + ($settInfo->mntrSession->BIL_C1 ?? 0) + ($settInfo->mntrSession->BIL_C2 ?? 0) + ($settInfo->mntrSession->BIL_D ?? 0);
-
-                $osB1D = ($settInfo->mntrSession->RM_B1 ?? 0) + ($settInfo->mntrSession->RM_B2 ?? 0) + ($settInfo->mntrSession->RM_C1 ?? 0) + ($settInfo->mntrSession->RM_C2 ?? 0) + ($settInfo->mntrSession->RM_D ?? 0);
-
-                $osAll = ($settInfo->mntrSession->RM_A1 ?? 0) + ($settInfo->mntrSession->RM_A2 ?? 0) + ($settInfo->mntrSession->RM_A3 ?? 0) + ($settInfo->mntrSession->RM_B1 ?? 0) + ($settInfo->mntrSession->RM_B2 ?? 0) + ($settInfo->mntrSession->RM_C1 ?? 0) + ($settInfo->mntrSession->RM_C2 ?? 0) + ($settInfo->mntrSession->RM_D ?? 0);
-
-                $npfOs = $osAll > 0 ? round(($osB1D / $osAll) * 100, 2) : 0;
-            @endphp
 
             {{-- bil seliaan --}}
             <div class="input-container" style="top: 493px; left: 270px;">
@@ -141,33 +131,33 @@
             </div>
 
             {{-- npf os % --}}
-            <div class="input-container" style="top: 493px; left: 600px;">
+            <div class="input-container" style="top: 493px; left: 590px;">
                 <strong>{{ $npfOs }}</strong>
             </div>
 
             {{-- b1 --}}
-            <div class="input-container" style="top: 520px; left: 285px;">
-                <strong>{{ $settInfo->mntrSession->BIL_B1 ?? 0 }}</strong>
+            <div class="input-container" style="top: 520px; left: 280px;">
+                <strong>{{ $summMthOfficer->bil_b1 ?? 0 }}</strong>
             </div>
 
             {{-- b2 --}}
             <div class="input-container" style="top: 520px; left: 325px;">
-                <strong>{{ $settInfo->mntrSession->BIL_B2 ?? 0 }}</strong>
+                <strong>{{ $summMthOfficer->bil_b1 ?? 0 }}</strong>
             </div>
 
             {{-- c1 --}}
             <div class="input-container" style="top: 520px; left: 367px;">
-                <strong>{{ $settInfo->mntrSession->BIL_C1 ?? 0 }}</strong>
+                <strong>{{ $summMthOfficer->bil_c1 ?? 0 }}</strong>
             </div>
 
             {{-- c2 --}}
             <div class="input-container" style="top: 520px; left: 408px;">
-                <strong>{{ $settInfo->mntrSession->BIL_C2 ?? 0 }}</strong>
+                <strong>{{ $summMthOfficer->bil_c2 ?? 0 }}</strong>
             </div>
 
             {{-- d --}}
             <div class="input-container" style="top: 520px; left: 445px;">
-                <strong>{{ $settInfo->mntrSession->BIL_D ?? 0 }}</strong>
+                <strong>{{ $summMthOfficer->bil_d ?? 0 }}</strong>
             </div>
 
             {{-- tarikh --}}
@@ -289,8 +279,17 @@
                 </div>
 
                 {{-- nama pyd--}}
+                @php
+                    $pydName = $bankOfficerPyd->officer_name;
+                    if (strlen($pydName) > 25) {
+                        $breakPosition = strrpos(substr($pydName, 0, 25), ' ');
+                        $breakPosition = $breakPosition !== false ? $breakPosition : 25;
+                        $pydName = substr($pydName, 0, $breakPosition) . '<br>' . trim(substr($pydName, $breakPosition));
+                    }
+                @endphp
+
                 <div class="input-container" style="top: 358px; left: 145px; font-size: 11px;">
-                    <strong>{{ $bankOfficerPyd->officer_name }}</strong>
+                    <strong>{!! $pydName !!}</strong>
                 </div>
 
                 {{-- ic pyd--}}
@@ -300,7 +299,7 @@
 
                 {{-- tarikh perakuan pyd--}}
                 <div class="input-container" style="top: 386px; left: 145px; font-size: 11px;">
-                    <strong>{{ $pydInfo->date_signed }}</strong>
+                    <strong>{{ $pydInfo->date_signed->format('d/m/Y H:i:s A') }}</strong>
                 </div>
 
                 {{-- userid pyd--}}
@@ -309,8 +308,17 @@
                 </div>
 
                 {{-- nama pym--}}
+                @php
+                    $pymName = $bankOfficerPym->officer_name;
+                    if (strlen($pymName) > 25) {
+                        $breakPosition = strrpos(substr($pymName, 0, 25), ' ');
+                        $breakPosition = $breakPosition !== false ? $breakPosition : 25;
+                        $pymName = substr($pymName, 0, $breakPosition) . '<br>' . trim(substr($pymName, $breakPosition));
+                    }
+                @endphp
+
                 <div class="input-container" style="top: 472px; left: 145px; font-size: 11px;">
-                    <strong>{{ $bankOfficerPym->officer_name }}</strong>
+                    <strong>{!! $pymName !!}</strong>
                 </div>
 
                 {{-- ic pym--}}
@@ -320,7 +328,7 @@
 
                 {{-- tarikh perakuan pym--}}
                 <div class="input-container" style="top: 501px; left: 145px; font-size: 11px;">
-                    <strong>{{ $pymInfo->date_signed }}</strong>
+                    <strong>{{ $pymInfo->date_signed->format('d/m/Y H:i:s A') }}</strong>
                 </div>
 
                 {{-- userid pym--}}
@@ -410,8 +418,17 @@
                 </div>
 
                 {{-- nama pyd--}}
+                @php
+                    $pydName = $bankOfficerPyd->officer_name;
+                    if (strlen($pydName) > 25) {
+                        $breakPosition = strrpos(substr($pydName, 0, 25), ' ');
+                        $breakPosition = $breakPosition !== false ? $breakPosition : 25;
+                        $pydName = substr($pydName, 0, $breakPosition) . '<br>' . trim(substr($pydName, $breakPosition));
+                    }
+                @endphp
+
                 <div class="input-container" style="top: 373px; left: 145px; font-size: 11px;">
-                    <strong>{{ $bankOfficerPyd->officer_name }}</strong>
+                    <strong>{!! $pydName !!}</strong>
                 </div>
 
                 {{-- ic pyd--}}
@@ -421,7 +438,7 @@
 
                 {{-- tarikh perakuan pyd--}}
                 <div class="input-container" style="top: 401px; left: 145px; font-size: 11px;">
-                    <strong>{{ $pydInfo->date_signed }}</strong>
+                    <strong>{{ $pydInfo->date_signed->format('d/m/Y H:i:s A') }}</strong>
                 </div>
 
                 {{-- userid pyd--}}
@@ -430,8 +447,17 @@
                 </div>
 
                 {{-- nama pym--}}
+                @php
+                    $pymName = $bankOfficerPym->officer_name;
+                    if (strlen($pymName) > 25) {
+                        $breakPosition = strrpos(substr($pymName, 0, 25), ' ');
+                        $breakPosition = $breakPosition !== false ? $breakPosition : 25;
+                        $pymName = substr($pymName, 0, $breakPosition) . '<br>' . trim(substr($pymName, $breakPosition));
+                    }
+                @endphp
+
                 <div class="input-container" style="top: 487px; left: 145px; font-size: 11px;">
-                    <strong>{{ $bankOfficerPym->officer_name }}</strong>
+                    <strong>{!! $pymName !!}</strong>
                 </div>
 
                 {{-- ic pym--}}
@@ -441,7 +467,7 @@
 
                 {{-- tarikh perakuan pym--}}
                 <div class="input-container" style="top: 516px; left: 145px; font-size: 11px;">
-                    <strong>{{ $pymInfo->date_signed }}</strong>
+                    <strong>{{ $pymInfo->date_signed->format('d/m/Y H:i:s A') }}</strong>
                 </div>
 
                 {{-- userid pym--}}
@@ -450,8 +476,17 @@
                 </div>
 
                 {{-- nama pmc--}}
+                @php
+                    $pmcName = $bankOfficerPmc->officer_name;
+                    if (strlen($pmcName) > 25) {
+                        $breakPosition = strrpos(substr($pmcName, 0, 25), ' ');
+                        $breakPosition = $breakPosition !== false ? $breakPosition : 25;
+                        $pmcName = substr($pmcName, 0, $breakPosition) . '<br>' . trim(substr($pmcName, $breakPosition));
+                    }
+                @endphp
+
                 <div class="input-container" style="top: 601px; left: 145px; font-size: 11px;">
-                    <strong>{{ $bankOfficerPmc->officer_name }}</strong>
+                    <strong>{!! $pmcName !!}</strong>
                 </div>
 
                 {{-- ic pmc--}}
@@ -461,7 +496,7 @@
 
                 {{-- tarikh perakuan pmc--}}
                 <div class="input-container" style="top: 630px; left: 145px; font-size: 11px;">
-                    <strong>{{ $pmcInfo->date_signed }}</strong>
+                    <strong>{{ $pmcInfo->date_signed->format('d/m/Y H:i:s A') }}</strong>
                 </div>
 
                 {{-- userid pmc--}}

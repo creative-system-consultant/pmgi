@@ -376,7 +376,7 @@ abstract class BasePmgi extends Component
                             ->join('PMGI_HRD_OFFICER as d', 'd.no_pekerja', '=', 'c.staffno')
                             ->leftJoin('PMGI_SETT_PYM_PMC as e', function ($join) {
                                 $join->on('e.PYD_ID', '=', 'm.officer_id')
-                                    ->whereDate('e.REPORT_DATE', $this->selectedDate->copy()->subMonth()->endOfMonth());
+                                    ->whereDate('e.REPORT_DATE', $this->selectedDate->copy()->subMonthNoOverflow()->endOfMonth());
                             })
                             ->leftJoin('FMS_USERS as pym_user', 'e.pym_id', '=', 'pym_user.userid')
                             ->leftJoin('FMS_USERS as pmc_user', 'e.pmc_id', '=', 'pmc_user.userid')

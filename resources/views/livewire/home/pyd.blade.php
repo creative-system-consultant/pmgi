@@ -158,14 +158,14 @@
                                         <td class="p-2 text-xs font-normal text-center text-gray-900 uppercase whitespace-nowrap">
                                             {{ $officerData->report_date }}
                                         </td>
-                                        <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap ">
-                                            @isset($pmgiLevels[$officerData->pmgi_level])
-                                                <p class="font-bold text-red-600">{{ $pmgiLevels[$officerData->pmgi_level] }}</p>
-                                            @elseif (!$officerData->pmgi_level)
-                                                -
-                                            @else
+                                        <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap">
+                                            @if ($officerData->is_monitoring_period)
                                                 TEMPOH<br>PEMANTAUAN
-                                            @endisset
+                                            @elseif (isset($pmgiLevels[$officerData->pmgi_level]))
+                                                <p class="font-bold text-red-600">{{ $pmgiLevels[$officerData->pmgi_level] }}</p>
+                                            @else
+                                                -
+                                            @endif
                                         </td>
                                         <td class="p-2 text-xs font-semibold text-center text-gray-900 whitespace-nowrap ">
                                             @isset($pmgiResults[$officerData->pmgi_level][$officerData->pmgi_result])
@@ -409,7 +409,7 @@
         </div>
 
         {{-- wilma report --}}
-        {{-- <div class="p-4 my-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 ">
+        <div class="p-4 my-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 ">
             <!-- Card header -->
             <div class="items-center justify-between lg:flex">
                 <div class="mb-4 lg:mb-0">
@@ -465,40 +465,40 @@
                                 <tbody class="bg-white ">
                                     <tr>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">
-                                            186
+                                            {{ number_format($wilma->bila1) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            52
+                                            {{ number_format($wilma->bila2) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            55
+                                            {{ number_format($wilma->bila3) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            56
+                                            {{ number_format($wilma->bilb1) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            38
+                                            {{ number_format($wilma->bilb2) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            82
+                                            {{ number_format($wilma->bilc1) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            65
+                                            {{ number_format($wilma->bilc2) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            86
+                                            {{ number_format($wilma->bild) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            620
+                                            {{ number_format($wilma->jumlah) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            327
+                                            {{ number_format($wilma->bilnpf) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 border-black border-dashed whitespace-nowrap border-x">
-                                            52.74
+                                            {{ number_format($wilma->pctnpf, 2) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">
-                                            49.81
+                                            {{ number_format($wilma->pctjumnpf, 2) ?? 0 }}
                                         </td>
                                     </tr>
                                 </tbody>
@@ -507,7 +507,7 @@
                     </div>
                 </div>
             </div>
-        </div> --}}
+        </div>
 
         {{-- pembiayaan --}}
         <div class="p-4 my-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 ">

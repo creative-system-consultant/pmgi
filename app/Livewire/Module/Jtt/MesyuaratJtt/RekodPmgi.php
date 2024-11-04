@@ -42,7 +42,7 @@ class RekodPmgi extends Component
     public $pmgiCycle;
     public $pmgiData;
     public $result;
-    public $mthDelay;
+    public $mthDelay = 0;
     public $comment;
 
     public function __construct()
@@ -215,7 +215,7 @@ class RekodPmgi extends Component
             'pi_branch_code' => $data->branch_code,
             'pi_officer_id'  => $data->officer_id,
             'pi_pmgi_result' => $pmgiResult,
-            'pi_wait_period' => 0,
+            'pi_wait_period' => $this->mthDelay,
             'pi_operated_by' => 'SYSTEM',
             'pi_ret_msg'     => [
                 'value' => &$output,

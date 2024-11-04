@@ -42,7 +42,6 @@ class MntrSession extends Model
 
     public function settPymPmc()
     {
-        return $this->belongsTo(SettPymPmc::class, 'report_date', 'report_date')
-                    ->where('pyd_id', $this->officer_id);
+        return $this->hasOne(SettPymPmc::class, 'report_date', 'report_date');
     }
 }

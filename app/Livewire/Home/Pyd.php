@@ -246,7 +246,8 @@ class Pyd extends Component
                 'b.pmgi_result',
                 'b.pmgi_level',
                 DB::raw("TO_CHAR(b.session_date_start, 'YYYY-MM') as session_start_month"),
-                DB::raw("TO_CHAR(b.session_date_end, 'YYYY-MM') as session_end_month")
+                DB::raw("TO_CHAR(b.session_date_end, 'YYYY-MM') as session_end_month"),
+                'b.wait_period'
             )
             ->get();
 
@@ -262,21 +263,36 @@ class Pyd extends Component
             $sessionMap[$session->session_end_month] = $session;
         }
 
-        // Merge the session data into the summary data
-        foreach ($summaryData as $summary) {
-            $monthYear = \Carbon\Carbon::parse($summary->report_date)->format('Y-m');
+        $monitoringPeriodEnd = null;  // Initialize the monitoring end date
 
-            // Check if there's a corresponding session record for this month/year
+        foreach ($summaryData as $summary) {
+            $monthYear = Carbon::parse($summary->report_date)->format('Y-m');
+
             if (isset($sessionMap[$monthYear])) {
-                $summary->pmgi_result = $sessionMap[$monthYear]->pmgi_result;
-                $summary->pmgi_level = $sessionMap[$monthYear]->pmgi_level;
+                $session = $sessionMap[$monthYear];
+                $summary->pmgi_result = $session->pmgi_result;
+                $summary->pmgi_level = $session->pmgi_level;
+                $summary->wait_period = $session->wait_period;
+
+                // Set the monitoring period end if a wait period exists
+                if ($session->wait_period) {
+                    $monitoringPeriodEnd = Carbon::parse($summary->report_date)->addMonths((int) $session->wait_period);
+                }
             } else {
                 $summary->pmgi_result = null;
                 $summary->pmgi_level = null;
+                $summary->wait_period = null;
+            }
+
+            // Set the monitoring flag for entries within the monitoring period
+            if ($monitoringPeriodEnd && Carbon::parse($summary->report_date)->lessThanOrEqualTo($monitoringPeriodEnd)) {
+                $summary->is_monitoring_period = true;
+            } else {
+                $summary->is_monitoring_period = false;
             }
 
             // Format the report_date to your desired format
-            $summary->report_date = \Carbon\Carbon::parse($summary->report_date)->translatedFormat('M-y');
+            $summary->report_date = Carbon::parse($summary->report_date)->translatedFormat('M-y');
         }
 
         return $summaryData;

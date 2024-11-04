@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\SearchController;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Passwords\Email;
 use App\Livewire\Auth\Passwords\Reset;
@@ -65,9 +66,9 @@ Route::get('password/reset', Email::class)
 Route::get('password/reset/{token}', Reset::class)
     ->name('password.reset');
 
+// Route::middleware(['auth', 'check.sys.availability', 'check.role', 'restrict.session'])->group(function () {
 Route::middleware(['auth', 'check.role', 'restrict.session'])->group(function () {
     Route::get('/', Home::class)->name('home');
-
 
     Route::post('logout', LogoutController::class)
         ->name('logout');
@@ -103,6 +104,9 @@ Route::middleware(['auth', 'check.role', 'restrict.session'])->group(function ()
     Route::get('/tetapan/peratusan-kriteria', PeratusanKriteria::class)->name('tetapan.peratusan-kriteria')->middleware('check.access:tetapan-peratusan-kriteria');
     // HR
     Route::get('/hr/{userid}', HrIndex::class)->name('hr.index');
+
+    // search purpose
+    Route::get('/staff-search', [SearchController::class, 'staffName'])->name('staff-name-search');
 });
 
 Route::middleware(['auth', 'check.role', 'ensure.session'])->group(function () {

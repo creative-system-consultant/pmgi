@@ -5,11 +5,14 @@ namespace App\Livewire\Module;
 use App\Models\BankOfficer;
 use App\Models\BnmStatecode;
 use App\Models\Branch;
+use App\Models\JttSessionParticipant;
+use App\Models\MntrSession;
 use App\Models\SessionInfo;
 use App\Models\SessionPmcInfo;
 use App\Models\SessionPydInfo;
 use App\Models\SessionPymInfo;
 use App\Models\SettPymPmc;
+use App\Models\SummMthOfficer;
 use App\Services\HtmlToImageService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -25,6 +28,8 @@ class RekodPmgi extends Component
     public $searchTerm;
     public $pydId;
     public $allSession;
+    public $jt1Session;
+    public $jt2Session;
     public $sessionId;
     public $isAdmin = true;
 
@@ -37,6 +42,7 @@ class RekodPmgi extends Component
     {
         // Initialize $allSession as an empty collection
         $this->allSession = new Collection();
+        $this->jt1Session = new Collection();
 
         $this->populateData();
     }
@@ -71,6 +77,18 @@ class RekodPmgi extends Component
         $this->allSession = SettPymPmc::wherePydId($this->pydId)
                                         ->whereStatus(1)
                                         ->get();
+
+        $userId = $this->pydId;
+
+        $this->jt1Session = JttSessionParticipant::with([
+            'sessionInfo',
+            'mntrSession' => function ($query) use ($userId) {
+                $query->where('officer_id', $userId); // Apply condition to mntrSession
+            }
+        ])
+        ->whereUserId($this->pydId) // Filter on the main JttSessionParticipant model
+        ->where('pmgi_level', 'JT1')
+        ->get();
     }
 
     public function toggleDetail($sessionId)
@@ -83,12 +101,23 @@ class RekodPmgi extends Component
     {
         $sessionId = str_replace('-', '/', $sessionId);
 
-        $settInfo = SettPymPmc::with('mntrSession')->where('session_id', $sessionId)->first();
-        $bankOfficerPyd = BankOfficer::whereOfficerId($settInfo->pyd_id)->first();
+        $settInfo = SettPymPmc::where('session_id', $sessionId)->first();
+        $summMthOfficer = SummMthOfficer::whereDate('report_date', $settInfo->report_date)->whereOfficerId($settInfo->pyd_id)->first();
+        $bankOfficerPyd = BankOfficer::with('hrData')->whereOfficerId($settInfo->pyd_id)->first();
         $state = BnmStatecode::whereCode(substr($settInfo->branch_code, 0, 2))->value('description');
         $branch = Branch::where('branch_code', $settInfo->branch_code)->value('branch_name');
+        $tempohBerkhidmat = strtoupper(str_replace(['Y', 'M', 'D'], [' Tahun ', ' Bulan ', ' Hari'], $bankOfficerPyd->hrData->tempoh_penempatan_semasa));
+        $address = $bankOfficerPyd->hrData->alamat;
+        if (preg_match('/^(.*?)(\d{5}.*)$/', $address, $matches)) {
+            $alamat1 = trim($matches[1]); // Part before the postcode
+            $alamat2 = trim($matches[2]); // Part starting from the postcode
+        }
         $sessionInfo = SessionInfo::whereSessionId($sessionId)->first();
         $bankOfficerPym = BankOfficer::whereOfficerId($settInfo->pym_id)->first();
+        $accCount = ($summMthOfficer->bil_a1 ?? 0) + ($summMthOfficer->bil_a2 ?? 0) + ($summMthOfficer->bil_a3 ?? 0) + ($summMthOfficer->bil_b1 ?? 0) + ($summMthOfficer->bil_b2 ?? 0) + ($summMthOfficer->bil_c1 ?? 0) + ($summMthOfficer->bil_c2 ?? 0) + ($summMthOfficer->bil_d ?? 0);
+        $osB1D = ($summMthOfficer->rm_b1 ?? 0) + ($summMthOfficer->rm_b2 ?? 0) + ($summMthOfficer->rm_c1 ?? 0) + ($summMthOfficer->rm_c2 ?? 0) + ($summMthOfficer->rm_d ?? 0);
+        $osAll = ($summMthOfficer->rm_a1 ?? 0) + ($summMthOfficer->rm_a2 ?? 0) + ($summMthOfficer->rm_a3 ?? 0) + ($summMthOfficer->rm_b1 ?? 0) + ($summMthOfficer->rm_b2 ?? 0) + ($summMthOfficer->rm_c1 ?? 0) + ($summMthOfficer->rm_c2 ?? 0) + ($summMthOfficer->rm_d ?? 0);
+        $npfOs = $osAll > 0 ? round(($osB1D / $osAll) * 100, 2) : 0;
 
         if ($settInfo->pmgi_level == 'PM3') {
             $bankOfficerPmc = BankOfficer::whereOfficerId($settInfo->pmc_id)->first();
@@ -104,17 +133,18 @@ class RekodPmgi extends Component
             $pmcInfo = NULL;
         }
 
-        $from = strtoupper(Carbon::parse($settInfo->report_date)->copy()->addMonth()->translatedFormat('F Y'));
-        $to = strtoupper(Carbon::parse($settInfo->report_date)->copy()->addMonth(2)->translatedFormat('F Y'));
+        $from = strtoupper(Carbon::parse($sessionInfo->session_date)->copy()->addMonthNoOverflow()->translatedFormat('F Y'));
+        $to = strtoupper(Carbon::parse($sessionInfo->session_date)->copy()->addMonthNoOverflow(2)->translatedFormat('F Y'));
 
         // prestasi kumulatf var
         $report_date = Carbon::parse($settInfo->report_date);
-        $fromReportDate = $report_date->copy()->subMonth()->endOfMonth()->format('Y-m-d');
+        $fromReportDate = $report_date->copy()->subMonthNoOverflow()->endOfMonth()->format('Y-m-d');
         $toReportDate = $report_date->copy()->endOfMonth()->format('Y-m-d');
 
         $data = DB::table('PMGI_SUMM_MTH_OFFICER')
                     ->where('officer_id', $settInfo->pyd_id)
                     ->whereBetween('report_date', [$fromReportDate, $toReportDate])
+                    ->whereNotIn('incl_pmgi_flag', ['G'])
                     ->orderBy('report_date', 'asc')
                     ->get();
 
@@ -133,7 +163,7 @@ class RekodPmgi extends Component
         );
 
         $pdf = Pdf::loadView('pdf.borang_jpoc', compact(
-                'settInfo','bankOfficerPyd', 'state', 'branch', 'sessionInfo', 'bankOfficerPym', 'bankOfficerPmc',
+                'settInfo','bankOfficerPyd', 'state', 'branch', 'tempohBerkhidmat', 'alamat1', 'alamat2','summMthOfficer', 'accCount', 'osB1D', 'osAll', 'npfOs', 'sessionInfo', 'bankOfficerPym', 'bankOfficerPmc',
                 'pydInfo', 'pymInfo', 'pmcInfo', 'from', 'to', 'paths'
             ))->setPaper('A4', 'portrait');
 
@@ -156,6 +186,8 @@ class RekodPmgi extends Component
 
     public function render()
     {
-        return view('livewire.module.rekod-pmgi')->extends('layouts.main');
+        return view('livewire.module.rekod-pmgi', [
+            'jt1Session' => $this->jt1Session
+        ])->extends('layouts.main');
     }
 }

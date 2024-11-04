@@ -11,7 +11,14 @@
                             <div class="flex justify-between">
                                 <div class="grid w-[70%] grid-cols-3 gap-x-4 gap-y-2">
                                     <div class="col-span-2">
-                                        <x-input label="Nama Pegawai @ No Pekerja" placeholder="Sila Taip Nama @ No Pekerja pegawai" wire:model="searchTerm" wire:keydown.enter="search" />
+                                        <x-select
+                                            label="Nama Pegawai"
+                                            wire:model="searchTerm"
+                                            placeholder="Sila Taip Nama"
+                                            :async-data="route('staff-name-search')"
+                                            option-label="officer_name"
+                                            option-value="officer_name"
+                                        />
                                     </div>
                                 </div>
                                 <button wire:click="search" class="inline-flex items-center px-3 py-2 mt-4 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 ">
@@ -230,13 +237,13 @@
                                             </tr>
                                         </thead>
                                         <tbody class="bg-white ">
-                                            @forelse ($allSession->where('pmgi_level', 'JT1') as $data)
+                                            @forelse ($jt1Session as $data)
                                             <tr>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
                                                     {{ $loop->iteration }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
-                                                    {{ strtoupper($data->created_at->translatedFormat('F Y')) }}
+                                                    {{ strtoupper(\Carbon\Carbon::parse($data->sessionInfo->session_date)->translatedFormat('F Y')) }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
                                                     @if($data->mntrSession->pmgi_result == 'PDQ')

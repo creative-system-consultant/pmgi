@@ -12,6 +12,9 @@ class SessionPmcInfo extends Model
     protected $table="PMGI_SESSION_PMC_INFO";
     protected $guarded = [];
     public $timestamps = false;
+    protected $casts = [
+        'date_signed' => 'datetime',
+    ];
 
     public function setting()
     {
