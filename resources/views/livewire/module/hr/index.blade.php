@@ -9,9 +9,7 @@
                         <div class="flex justify-between">
                             <div class="grid w-full grid-cols-6 gap-x-4 gap-y-2">
                                 <x-input label="No Pekerja" wire:model="staffNo" wire:keydown.enter="search" disabled />
-                                {{-- <div class="col-span-2"> --}}
                                 <x-input label="Negeri" wire:model="state" wire:keydown.enter="search" disabled />
-                                {{-- </div> --}}
                                 <div class="col-span-2">
                                     <x-input label="Cawangan" wire:model="branch" wire:keydown.enter="search" disabled />
                                 </div>

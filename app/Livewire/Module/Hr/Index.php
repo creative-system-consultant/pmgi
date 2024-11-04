@@ -6,6 +6,7 @@ use App\Models\HrdInfo;
 use App\Models\MntrSession;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use PDO;
 
@@ -20,6 +21,28 @@ class Index extends Component
     public $effectiveDate;
     public $result;
     public $dateUntil;
+
+    protected function rules()
+    {
+        return [
+            'effectiveDate' => 'required',
+            'result' => 'required',
+            'dateUntil' => [
+                Rule::requiredIf(function () {
+                    return $this->result == 0;
+                }),
+            ],
+        ];
+    }
+
+    protected function messages()
+    {
+        return [
+            'effectiveDate.required' => 'Sila pilih Tarikh Kuatkuasa.',
+            'result.required' => 'Sila pilih Keputusan.',
+            'dateUntil.required' => 'Sila pilih Tarikh Sehingga.',
+        ];
+    }
 
     public function mount($userid)
     {
@@ -57,6 +80,8 @@ class Index extends Component
 
     public function submit()
     {
+        $this->validate();
+
         // save data
         HrdInfo::create([
             'report_date' => $this->mntrData->report_date,
