@@ -33,8 +33,13 @@
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>
+            <x-checkbox id="right-label" label="Semua maklumat yang terkandung di sini adalah untuk kegunaan dalaman sahaja dan tidak boleh didedahkan ke luar dalam apa jua keadaan." wire:model.live="tnc" />
             <div class="flex justify-center">
-                <button type="submit" class="w-full px-5 py-3 text-base text-center text-white rounded-lg font-xs bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto">
+                <button type="submit"
+                        class="w-full px-5 py-3 text-base text-center text-white rounded-lg font-xs
+                        @if($tnc) bg-primary-700 hover:bg-primary-800 focus:ring-primary-300
+                        @else bg-gray-400 cursor-not-allowed @endif focus:ring-4 sm:w-auto"
+                        @if(!$tnc) disabled @endif>
                     Log Masuk
                 </button>
             </div>

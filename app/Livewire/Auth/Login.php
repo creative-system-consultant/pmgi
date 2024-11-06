@@ -9,9 +9,12 @@ use App\Services\General\LoginService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class Login extends Component
 {
+    use Actions;
+
     /** @var string */
     public $userId = '';
 
@@ -20,6 +23,8 @@ class Login extends Component
 
     /** @var bool */
     public $remember = false;
+
+    public $tnc = false;
 
     protected function rules()
     {
@@ -32,6 +37,24 @@ class Login extends Component
         }
 
         return $rules;
+    }
+
+    public function mount()
+    {
+        // check flash error from middleware
+        if (session()->has('flash_error')) {
+            $this->dialog()->error(
+                $title = 'Ralat!',
+                $description = session('flash_error')
+            );
+        }
+
+        if (session()->has('flash_success')) {
+            $this->dialog()->success(
+                $title = 'Berjaya!',
+                $description = session('flash_success')
+            );
+        }
     }
 
     public function authenticate()
