@@ -54,10 +54,16 @@
                 <h3 class="text-lg font-medium text-center text-gray-900">Keputusan :</h3>
                 <x-select
                     placeholder="Sila Pilih"
-                    :options="[
-                        ['name' => ($pmgiLevel == 'JT1') ? 'Diberi Tempoh' : 'Keluar Senarai', 'id' => ($pmgiLevel == 'JT1') ? 'Diberi Tempoh' : 'Keluar Senarai'],
-                        ['name' => 'Domestic Inquiry (DI)', 'id' => 'Domestic Inquiry (DI)'],
-                    ]"
+                    :options="($pmgiLevel == 'JT1')
+                        ? [
+                            ['name' => 'Keluar Senarai', 'id' => 'Keluar Senarai'],
+                            ['name' => 'Diberi Tempoh', 'id' => 'Diberi Tempoh'],
+                            ['name' => 'Domestic Inquiry (DI)', 'id' => 'Domestic Inquiry (DI)']
+                        ]
+                        : [
+                            ['name' => 'Keluar Senarai', 'id' => 'Keluar Senarai'],
+                            ['name' => 'Domestic Inquiry (DI)', 'id' => 'Domestic Inquiry (DI)']
+                        ]"
                     option-label="name"
                     option-value="id"
                     wire:model.live="result"

@@ -118,7 +118,13 @@ class RekodPmgi extends Component
                     'EXC' => 'DISYORKAN KELUAR DENGAN SYARAT',
                     'EXP' => 'DITANGGUHKAN',
                     'NEX' => 'DIHANTAR KE SESI TIMBANG TARA',
-                    'PDQ' => 'DIBERI TEMPOH'
+                    'EX1' => 'KELUAR SENARAI',
+                    'PDQ' => 'DIBERI TEMPOH',
+                    'DQ1' => 'DOMESTIC INQUIRY',
+                    'EXL' => 'KELUAR SENARAI',
+                    'DQ2' => 'DOMESTIC INQUIRY',
+                    'PDM' => 'DITAMATKAN PERKHIDMATAN',
+                    'NDM' => 'PERKHIDMATAN DISAMBUNG',
                 ];
 
                 // Get the corresponding description or a default message
@@ -190,6 +196,8 @@ class RekodPmgi extends Component
         if ($this->pmgiLevel == 'JT1') {
             if ($this->result == 'Diberi Tempoh') {
                 $pmgiResult = 'PDQ';
+            } elseif($this->result == 'Keluar Senarai') {
+                $pmgiResult = 'EX1';
             } else {
                 $pmgiResult = 'DQ1';
             }
