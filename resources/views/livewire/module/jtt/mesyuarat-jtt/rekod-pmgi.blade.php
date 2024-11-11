@@ -45,6 +45,9 @@
                 <p class="flex items-center font-semibold">Keputusan</p>
                 <input type="text" id="small-input" x-model="activePmgi.result" class="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 " disabled>
             </div>
+            <div class="flex justify-center mt-4">
+                <x-badge rounded primary label="Lihat Laporan" class="px-3 py-2 cursor-pointer" @click="$wire.toggleDetail(activePmgi.session_id)" />
+            </div>
         </div>
     </div>
 
@@ -87,4 +90,12 @@
             Simpan
         </button>
     </div>
+
+    {{-- details modal --}}
+    <x-modal.card blur align="center" max-width="7xl" hide-close=false wire:model="detailsModal">
+        @if($pmgiSessionId)
+        <iframe src="{{ route('stream.rekodPmgi', ['sessionId' => $pmgiSessionId]) }}" frameborder="0" width="100%" height="700px"></iframe>
+        @endif
+    </x-modal.card>
+
 </div>

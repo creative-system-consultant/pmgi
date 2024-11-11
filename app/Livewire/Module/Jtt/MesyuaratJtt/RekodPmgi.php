@@ -28,9 +28,11 @@ class RekodPmgi extends Component
 
     private $htmlToImageService;
 
+    public $detailsModal = false;
     public $userId;
     public $reportDate;
     public $sessionId;
+    public $pmgiSessionId;
     public $cycle;
     public $sessionInfo;
     public $staffNo;
@@ -98,58 +100,79 @@ class RekodPmgi extends Component
         $this->getPmgiData($data->pmgi_cycle);
     }
 
+    public function toggleDetail($sessionId)
+    {
+        $this->pmgiSessionId = str_replace('/', '-', $sessionId);
+        $this->detailsModal = true;
+    }
+
     public function getPmgiData($cycle)
     {
-        $mntrData = MntrSession::whereOfficerId($this->userId)
-                                ->wherePmgiCycle($cycle)
-                                ->whereNotIn('pmgi_level', ['MN1', 'MN2', 'MN3', 'MN4', 'MT2'])
-                                ->orderBy('seq_no', 'ASC')
-                                ->get();
+        // Use a join to filter by both report_date and officer_id
+        $mntrData = DB::table('PMGI_MNTR_SESSION as ms')
+                    ->join('PMGI_SETT_PYM_PMC as sp', function ($join) {
+                        $join->on('ms.report_date', '=', 'sp.report_date')
+                            ->where('sp.pyd_id', '=', $this->userId); // Match on both report_date and officer_id (pyd_id)
+                    })
+                    ->where('ms.officer_id', '=', $this->userId)
+                    ->where('ms.pmgi_cycle', '=', $cycle)
+                    ->whereNotIn('ms.pmgi_level', ['MN1', 'MN2', 'MN3', 'MN4', 'MT2'])
+                    ->orderBy('ms.seq_no', 'ASC')
+                    ->select(
+                        'ms.seq_no as seq',
+                        'ms.pmgi_level as lvl',
+                        'sp.pym_id', // We’ll use this to retrieve the pym's username
+                        'sp.pmc_id', // We’ll use this to retrieve the pmc's username (if needed)
+                        'sp.session_id',
+                        'sp.created_at as date_session',
+                        'ms.pmgi_result'
+                    )
+                    ->get();
 
-        // Initialize a collection to hold the transformed data
-        $this->pmgiData = $mntrData->map(function ($data) {
-            // Ensure settPymPmc relationship is loaded and exists
-            if ($data->settPymPmc) {
-                // Map pmgi_result codes to their descriptions
-                $resultMapping = [
-                    'CP1' => 'SELESAI DILAKSANAKAN',
-                    'CP2' => 'SELESAI DILAKSANAKAN',
-                    'PEX' => 'DISYORKAN KELUAR TANPA SYARAT',
-                    'EXC' => 'DISYORKAN KELUAR DENGAN SYARAT',
-                    'EXP' => 'DITANGGUHKAN',
-                    'NEX' => 'DIHANTAR KE SESI TIMBANG TARA',
-                    'EX1' => 'KELUAR SENARAI',
-                    'PDQ' => 'DIBERI TEMPOH',
-                    'DQ1' => 'DOMESTIC INQUIRY',
-                    'EXL' => 'KELUAR SENARAI',
-                    'DQ2' => 'DOMESTIC INQUIRY',
-                    'PDM' => 'DITAMATKAN PERKHIDMATAN',
-                    'NDM' => 'PERKHIDMATAN DISAMBUNG',
-                ];
+        // Transform the data
+        $resultMapping = [
+            'CP1' => 'SELESAI DILAKSANAKAN',
+            'CP2' => 'SELESAI DILAKSANAKAN',
+            'PEX' => 'DISYORKAN KELUAR TANPA SYARAT',
+            'EXC' => 'DISYORKAN KELUAR DENGAN SYARAT',
+            'EXP' => 'DITANGGUHKAN',
+            'NEX' => 'DIHANTAR KE SESI TIMBANG TARA',
+            'EX1' => 'KELUAR SENARAI',
+            'PDQ' => 'DIBERI TEMPOH',
+            'DQ1' => 'DOMESTIC INQUIRY',
+            'EXL' => 'KELUAR SENARAI',
+            'DQ2' => 'DOMESTIC INQUIRY',
+            'PDM' => 'DITAMATKAN PERKHIDMATAN',
+            'NDM' => 'PERKHIDMATAN DISAMBUNG',
+        ];
 
-                // Get the corresponding description or a default message
-                $pmgiResult = $resultMapping[$data->pmgi_result] ?? 'RESULT UNKNOWN';
+        $this->pmgiData = $mntrData->map(function ($data) use ($resultMapping) {
+            // Map pmgi_result code to its description
+            $pmgiResult = $resultMapping[$data->pmgi_result] ?? 'RESULT UNKNOWN';
 
-                // Initialize the array with common fields
-                $result = [
-                    'seq' => $data->seq_no,
-                    'lvl' => $data->pmgi_level,
-                    'pym' => $data->settPymPmc->pym->username,
-                    'date_session' => $data->settPymPmc->created_at->format('d/m/Y'),
-                    'result' => $pmgiResult,
-                ];
+            // Get the pym and pmc usernames (if needed) by loading the related User model
+            $pym = BankOfficer::find($data->pym_id);
+            $pmc = BankOfficer::find($data->pmc_id);
 
-                // Add 'pmc' field conditionally if pmgi_level is 'PM3'
-                if ($data->pmgi_level == 'PM3') {
-                    $result['pmc'] = $data->settPymPmc->pmc->username;
-                }
+            // Initialize the array with common fields
+            $result = [
+                'seq' => $data->seq,
+                'lvl' => $data->lvl,
+                'pym' => $pym ? $pym->officer_name : 'N/A',
+                'session_id' => $data->session_id,
+                'date_session' => Carbon::parse($data->date_session)->format('d/m/Y'),
+                'result' => $pmgiResult,
+            ];
 
-                return $result;
+            // Add 'pmc' field conditionally if pmgi_level is 'PM3'
+            if ($data->lvl == 'PM3' && $pmc) {
+                $result['pmc'] = $pmc->officer_name;
             }
 
-            // Return null or any default value if settPymPmc is missing
-            return null;
-        })->filter();
+            return $result;
+        });
+
+        // dd($this->pmgiData); // Check the resulting collection
     }
 
     public function submit()
