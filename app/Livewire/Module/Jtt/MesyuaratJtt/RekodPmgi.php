@@ -4,6 +4,7 @@ namespace App\Livewire\Module\Jtt\MesyuaratJtt;
 
 use App\Jobs\CleanupTemporaryFiles;
 use App\Jobs\SendJttHrEmail;
+use App\Livewire\Module\RekodPmgi as RekodPmgiModule;
 use App\Models\BankOfficer;
 use App\Models\JttSessionInfo;
 use App\Models\JttSessionParticipant;
@@ -171,11 +172,9 @@ class RekodPmgi extends Component
 
             return $result;
         });
-
-        // dd($this->pmgiData); // Check the resulting collection
     }
 
-    public function submit()
+    public function submit($pmgiSessionIds)
     {
         $this->validate();
 
@@ -201,8 +200,15 @@ class RekodPmgi extends Component
         // Redirect to the next page or do whatever action you need
         if (substr($resultSp, 0, 1) == '0') {
             // sent email to HR if DI
-            if($this->result == 'Domestic Inquiry (DI)'){
-                $this->sendEmailToHr();
+            if ($this->result == 'Domestic Inquiry (DI)') {
+                $pmgiInstance = new RekodPmgiModule();
+                $pmgiReports = [
+                    $pmgiInstance->saveRekodPmgi($pmgiSessionIds['PM1'], 'PM1'),
+                    $pmgiInstance->saveRekodPmgi($pmgiSessionIds['PM2'], 'PM2'),
+                    $pmgiInstance->saveRekodPmgi($pmgiSessionIds['PM3'], 'PM3'),
+                ];
+
+                $this->sendEmailToHr($pmgiReports);
             }
 
             return redirect()->route('list-pyd-jtt', ['sessionId' => $this->sessionId])->with('flash_success', 'Sesi selesai dilaksanakan.');
@@ -261,13 +267,13 @@ class RekodPmgi extends Component
         return $output;
     }
 
-    private function sendEmailToHr()
+    private function sendEmailToHr(array $reportPaths)
     {
         $path = $this->generateImageFromHtml();
         $emails = $this->getHrEmail();
 
         foreach ($emails as $email) {
-            $this->sendEmail($email, $path['image'], $path['html']);
+            $this->sendEmail($email, $path['image'], $path['html'], $reportPaths);
         }
     }
 
@@ -305,16 +311,17 @@ class RekodPmgi extends Component
         return $hrEmails;
     }
 
-    private function sendEmail($email, $imagePath, $htmlPath)
+    private function sendEmail($email, $imagePath, $htmlPath, array $reportPaths)
     {
         $jobs = [];
 
         if ($email) {
-            $jobs[] = new SendJttHrEmail($email, $imagePath);
+            $jobs[] = new SendJttHrEmail($email, $imagePath, $reportPaths);
         }
 
         // Chain the cleanup job after the email jobs
         $jobs[] = new CleanupTemporaryFiles([$imagePath], [$htmlPath]);
+        $jobs[] = new CleanupTemporaryFiles($reportPaths, []);
 
         // Dispatch the jobs as a chain
         Bus::chain($jobs)->dispatch();

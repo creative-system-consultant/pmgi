@@ -184,6 +184,91 @@ class RekodPmgi extends Component
         return $output;
     }
 
+    public function saveRekodPmgi($sessionId, $level)
+    {
+        $formattedSessionId = str_replace('/', '-', $sessionId);
+        $sessionId = str_replace('-', '/', $sessionId);
+
+        // Set up the directory path
+        $directoryPath = storage_path("app/temp/reports");
+
+        // Check if the directory exists; if not, create it
+        if (!file_exists($directoryPath)) {
+            mkdir($directoryPath, 0777, true);
+        }
+
+        $settInfo = SettPymPmc::where('session_id', $sessionId)->first();
+        $summMthOfficer = SummMthOfficer::whereDate('report_date', $settInfo->report_date)->whereOfficerId($settInfo->pyd_id)->first();
+        $bankOfficerPyd = BankOfficer::with('hrData')->whereOfficerId($settInfo->pyd_id)->first();
+        $state = BnmStatecode::whereCode(substr($settInfo->branch_code, 0, 2))->value('description');
+        $branch = Branch::where('branch_code', $settInfo->branch_code)->value('branch_name');
+        $tempohBerkhidmat = strtoupper(str_replace(['Y', 'M', 'D'], [' Tahun ', ' Bulan ', ' Hari'], $bankOfficerPyd->hrData->tempoh_penempatan_semasa));
+        $address = $bankOfficerPyd->hrData->alamat;
+        if (preg_match('/^(.*?)(\d{5}.*)$/', $address, $matches)) {
+            $alamat1 = trim($matches[1]); // Part before the postcode
+            $alamat2 = trim($matches[2]); // Part starting from the postcode
+        }
+        $sessionInfo = SessionInfo::whereSessionId($sessionId)->first();
+        $bankOfficerPym = BankOfficer::whereOfficerId($settInfo->pym_id)->first();
+        $accCount = ($summMthOfficer->bil_a1 ?? 0) + ($summMthOfficer->bil_a2 ?? 0) + ($summMthOfficer->bil_a3 ?? 0) + ($summMthOfficer->bil_b1 ?? 0) + ($summMthOfficer->bil_b2 ?? 0) + ($summMthOfficer->bil_c1 ?? 0) + ($summMthOfficer->bil_c2 ?? 0) + ($summMthOfficer->bil_d ?? 0);
+        $osB1D = ($summMthOfficer->rm_b1 ?? 0) + ($summMthOfficer->rm_b2 ?? 0) + ($summMthOfficer->rm_c1 ?? 0) + ($summMthOfficer->rm_c2 ?? 0) + ($summMthOfficer->rm_d ?? 0);
+        $osAll = ($summMthOfficer->rm_a1 ?? 0) + ($summMthOfficer->rm_a2 ?? 0) + ($summMthOfficer->rm_a3 ?? 0) + ($summMthOfficer->rm_b1 ?? 0) + ($summMthOfficer->rm_b2 ?? 0) + ($summMthOfficer->rm_c1 ?? 0) + ($summMthOfficer->rm_c2 ?? 0) + ($summMthOfficer->rm_d ?? 0);
+        $npfOs = $osAll > 0 ? round(($osB1D / $osAll) * 100, 2) : 0;
+
+        if ($settInfo->pmgi_level == 'PM3') {
+            $bankOfficerPmc = BankOfficer::whereOfficerId($settInfo->pmc_id)->first();
+        } else {
+            $bankOfficerPmc = NULL;
+        }
+
+        $pydInfo = SessionPydInfo::with('problemTable')->whereSessionId($sessionId)->first();
+        $pymInfo = SessionPymInfo::whereSessionId($sessionId)->first();
+        if ($settInfo->pmgi_level == 'PM3') {
+            $pmcInfo = SessionPmcInfo::whereSessionId($sessionId)->first();
+        } else {
+            $pmcInfo = NULL;
+        }
+
+        $from = strtoupper(Carbon::parse($sessionInfo->session_date)->copy()->addMonthNoOverflow()->translatedFormat('F Y'));
+        $to = strtoupper(Carbon::parse($sessionInfo->session_date)->copy()->addMonthNoOverflow(2)->translatedFormat('F Y'));
+
+        // prestasi kumulatf var
+        $report_date = Carbon::parse($settInfo->report_date);
+        $fromReportDate = $report_date->copy()->subMonthNoOverflow()->endOfMonth()->format('Y-m-d');
+        $toReportDate = $report_date->copy()->endOfMonth()->format('Y-m-d');
+
+        $data = DB::table('PMGI_SUMM_MTH_OFFICER')
+                    ->where('officer_id', $settInfo->pyd_id)
+                    ->whereBetween('report_date', [$fromReportDate, $toReportDate])
+                    ->whereNotIn('incl_pmgi_flag', ['G'])
+                    ->orderBy('report_date', 'asc')
+                    ->get();
+
+        // Calculate month names for each entry in the retrieved data
+        $data->each(function ($item) {
+            $item->month_name = Carbon::parse($item->report_date)->translatedFormat('F Y');
+        });
+
+        $paths = $this->htmlToImageService->generate(
+            'pdf.prestasi_kumulatif',
+            [
+                'datas' => $data,
+            ],
+            'pdf/prestasi_kumulatif/',
+            "{$settInfo->pyd_id}_{$fromReportDate}_to_{$toReportDate}"
+        );
+
+        $pdf = Pdf::loadView('pdf.borang_jpoc', compact(
+                'settInfo','bankOfficerPyd', 'state', 'branch', 'tempohBerkhidmat', 'alamat1', 'alamat2','summMthOfficer', 'accCount', 'osB1D', 'osAll', 'npfOs', 'sessionInfo', 'bankOfficerPym', 'bankOfficerPmc',
+                'pydInfo', 'pymInfo', 'pmcInfo', 'from', 'to', 'paths'
+            ))->setPaper('A4', 'portrait');
+
+        $filePath = storage_path("app/temp/reports/borang_jpoc_{$formattedSessionId}_{$level}.pdf");
+        $pdf->save($filePath);
+
+        return $filePath;
+    }
+
     public function render()
     {
         return view('livewire.module.rekod-pmgi', [

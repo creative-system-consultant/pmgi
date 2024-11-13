@@ -17,16 +17,18 @@ class SendJttHrEmail implements ShouldQueue
     protected $email;
     protected $imagePath;
     protected $htmlPath;
+    protected $reportPaths;
 
-    public function __construct($email, $imagePath)
+    public function __construct($email, $imagePath, array $reportPaths)
     {
         $this->email = $email;
         $this->imagePath = $imagePath;
+        $this->reportPaths = $reportPaths;
     }
 
     public function handle(): void
     {
         Mail::to($this->email)
-            ->send(new JttHr($this->imagePath));
+            ->send(new JttHr($this->imagePath, $this->reportPaths));
     }
 }

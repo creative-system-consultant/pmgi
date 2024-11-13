@@ -1,20 +1,26 @@
-<div>
-    <div x-data="{
+<div x-data="{
         tab: 'PM1',
         pmgiData: {{ json_encode($pmgiData) }},
         activePmgi: {},
+        pmgiSessionIds: { PM1: null, PM2: null, PM3: null },
 
         // Function to update the activePmgi when the tab changes
         setActivePmgi(lvl) {
             this.tab = lvl;
             this.activePmgi = this.pmgiData.find(pmgi => pmgi.lvl === lvl) || {};
+            this.pmgiSessionIds[lvl] = this.activePmgi.session_id;
         },
 
         // Initialize the first tab's data when the component is mounted
         init() {
+            this.pmgiData.forEach(pmgi => {
+                this.pmgiSessionIds[pmgi.lvl] = pmgi.session_id;
+            });
             this.setActivePmgi('PM1'); // Default to PM1 on mount
         }
-    }" x-init="init()" class="mt-4">
+    }" x-init="init()">
+
+    <div  class="mt-4">
         <!-- Tab List -->
         <ul class="flex flex-wrap mb-4 text-sm font-medium text-center text-gray-500">
             @foreach ($pmgiData as $pmgi)
@@ -86,7 +92,7 @@
     </div>
 
     <div class="flex justify-center mt-4">
-        <button wire:click="submit" class="inline-flex items-center py-2.5 px-4 font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+        <button wire:click="submit(pmgiSessionIds)" class="inline-flex items-center py-2.5 px-4 font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
             Simpan
         </button>
     </div>
