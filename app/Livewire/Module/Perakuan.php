@@ -80,8 +80,38 @@ class Perakuan extends Component
 
     public function verify(): void
     {
-        $this->verifyModal = true;
+        $pydSigned = SessionPydInfo::where('session_id', $this->sessionId)->value('date_signed');
+        $pymSigned = SessionPymInfo::where('session_id', $this->sessionId)->value('date_signed');
+
+        switch ($this->source) {
+            case 'pym':
+                if ($pydSigned) {
+                    $this->verifyModal = true;
+                    return;
+                }
+                $this->dialog()->error(
+                    $title = 'Ralat!',
+                    $description = 'Sila tunggu PYD membuat perakuan.'
+                );
+                break;
+
+            case 'pmc':
+                if ($pymSigned) {
+                    $this->verifyModal = true;
+                    return;
+                }
+                $this->dialog()->error(
+                    $title = 'Ralat!',
+                    $description = 'Sila tunggu PYM membuat perakuan.'
+                );
+                break;
+
+            case 'pyd':
+                $this->verifyModal = true;
+                break;
+        }
     }
+
 
     public function save() {
         $this->validate();

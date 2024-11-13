@@ -23,7 +23,7 @@ class Pym extends BasePymPmc
 
         return SettPymPmc::wherePymId(auth()->user()->userid)
                         ->whereDate('report_date', $lastMonthEnd)
-                        ->whereStatus(0);
+                        ->orderBy('status', 'ASC');
     }
 
     protected function getTitle()

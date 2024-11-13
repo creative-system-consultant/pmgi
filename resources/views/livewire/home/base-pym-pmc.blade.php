@@ -45,12 +45,16 @@
                                             {{ substr($data->pmgi_level, -1) }}
                                         </td>
                                         <td class="p-2 text-xs font-normal text-center text-gray-900 uppercase border-black border-dashed border-x whitespace-nowrap">
-                                            @if(substr($data->pmgi_level, -1) != 3 && $data->pym_id == auth()->user()->userid)
-                                                <x-badge rounded primary label="Mulakan sesi" class="cursor-pointer" wire:click="startSession('{{ $data->session_id }}')" />
-                                            @elseif(substr($data->pmgi_level, -1) == 3 && $data->pmc_id == auth()->user()->userid)
-                                                <x-badge rounded primary label="Mulakan sesi" class="cursor-pointer" wire:click="startSession('{{ $data->session_id }}')" />
+                                            @if ($data->status == 0)
+                                                @if(substr($data->pmgi_level, -1) != 3 && $data->pym_id == auth()->user()->userid)
+                                                    <x-badge rounded primary label="Mulakan sesi" class="cursor-pointer" wire:click="startSession('{{ $data->session_id }}')" />
+                                                @elseif(substr($data->pmgi_level, -1) == 3 && $data->pmc_id == auth()->user()->userid)
+                                                    <x-badge rounded primary label="Mulakan sesi" class="cursor-pointer" wire:click="startSession('{{ $data->session_id }}')" />
+                                                @else
+                                                    <x-badge rounded warning label="Menunggu PMC mulakan sesi" class="cursor-not-allowed" />
+                                                @endif
                                             @else
-                                                <x-badge rounded warning label="Menunggu PMC mulakan sesi" class="cursor-not-allowed" />
+                                                <x-badge rounded positive label="Sesi Selesai Dilaksana" class="cursor-not-allowed" />
                                             @endif
                                         </td>
                                     </tr>

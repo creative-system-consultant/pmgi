@@ -17,7 +17,7 @@ class Pmc extends BasePymPmc
         return SettPymPmc::wherePmcId(auth()->user()->userid)
                             ->whereDate('report_date', $lastMonthEnd)
                             ->wherePmgiLevel('PM3')
-                            ->whereStatus(0);
+                            ->orderBy('status', 'ASC');
     }
 
     protected function getTitle()
