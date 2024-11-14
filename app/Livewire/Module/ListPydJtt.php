@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Module;
 
+use App\Models\JttMeetingInvitation;
 use App\Models\MntrSession;
 use Carbon\Carbon;
 use Livewire\Component;
@@ -57,8 +58,11 @@ class ListPydJtt extends Component
                             ->wherePmgiResult(NULL)
                             ->get();
 
+        $panels = JttMeetingInvitation::with('officer')->get();
+
         return view('livewire.module.list-pyd-jtt', [
-            'datas' => $data
-            ])->extends('layouts.main');
+            'datas' => $data,
+            'panels' => $panels
+        ])->extends('layouts.main');
     }
 }

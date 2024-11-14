@@ -18,6 +18,6 @@ class JttMeetingInvitation extends Model
 
     public function officer()
     {
-        return $this->belongsTo(SettJtt::class, 'officer_id');
+        return $this->belongsTo(BankOfficer::class, 'officer_id', 'officer_id');
     }
 }

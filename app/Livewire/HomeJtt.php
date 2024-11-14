@@ -56,6 +56,7 @@ class HomeJtt extends Component
 
             // Create a new meeting invitation record
             JttMeetingInvitation::create([
+                'session_id' => $sessionId,
                 'officer_id' => $officer->officer_id,
                 'role' => $role,
                 'token' => $token,

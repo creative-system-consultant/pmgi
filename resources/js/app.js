@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function showLoading() {
         // Only show loading if not on excluded routes
-        if (!['/loading-pmgi', '/loading-perakuan'].includes(currentPath)) {
+        if (!['/loading-pmgi', '/loading-perakuan', '/list-jtt'].includes(currentPath)) {
             loading.style.display = 'flex';
         }
     }

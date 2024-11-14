@@ -1,7 +1,7 @@
-<div>
-    <div class="px-4 pt-6 2xl:px-0">
+<div wire:poll.500ms>
+    <div class="flex items-start px-4 pt-6 2xl:px-0 gap-x-4">
         {{-- ringkasan --}}
-        <div class="p-4 my-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 ">
+        <div class="w-9/12 p-4 my-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 ">
             <!-- Card header -->
             <div class="items-center lg:flex">
                 <div class="mb-4 lg:mb-0">
@@ -58,6 +58,30 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="w-3/12 p-4 my-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6">
+            <!-- Card header -->
+            <div class="items-center lg:flex">
+                <div class="mb-4 lg:mb-0">
+                    <h3 class="mb-2 text-xl font-bold text-gray-900 ">Senarai Panel</h3>
+                    <span class="text-base font-normal text-gray-500 ">Senarai Panel Penilai JTT</span>
+                </div>
+            </div>
+            <div class="flex flex-col mt-12">
+                @foreach ($panels as $panel)
+                    <div class="flex justify-between w-full">
+                        <span class="text-xs font-medium tracking-tight text-gray-600 uppercase">{{ $panel->officer->officer_name }}</span>
+                        <span>
+                            @if($panel->confirmed_at)
+                            <span class="inline-block w-3 h-3 bg-green-600 rounded-full animate-pulse"></span>
+                            @else
+                            <span class="inline-block w-3 h-3 bg-red-500 rounded-full"></span>
+                            @endif
+                        </span>
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>
