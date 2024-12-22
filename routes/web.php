@@ -81,8 +81,8 @@ Route::middleware(['auth', 'check.role', 'restrict.session'])->group(function ()
     Route::get('/list-jtt', ListPydJtt::class)->name('list-pyd-jtt');
     Route::get('/mesyuarat-jtt', MesyuaratJtt::class)->name('mesyuarat-jtt');
 
-    // Mastrlist
-    Route::get('/master-list-warga-kerja', MasterListWargaKerja::class)->name('master-list-warga-kerja');
+    // MastErlist
+    Route::get('/master-list-warga-kerja', MasterListWargaKerja::class)->name('master-list-warga-kerja')->middleware('check.access:masterlist-warga-kerja');
 
     // rekod PMGi (individu)
     Route::get('/rekod-pmgi', RekodPmgi::class)->name('rekod-pmgi')->middleware('check.access:rekod-pmgi');
@@ -102,6 +102,7 @@ Route::middleware(['auth', 'check.role', 'restrict.session'])->group(function ()
     Route::get('/tetapan/ahli-jtt', JttOfficer::class)->name('tetapan.ahli-jtt')->middleware('check.access:tetapan-ahli-jtt');
     Route::get('/tetapan/meeting-room', MeetingRoom::class)->name('tetapan.meeting-room')->middleware('check.access:tetapan-bilik-meeting');
     Route::get('/tetapan/peratusan-kriteria', PeratusanKriteria::class)->name('tetapan.peratusan-kriteria')->middleware('check.access:tetapan-peratusan-kriteria');
+    
     // HR
     Route::get('/hr/{userid}', HrIndex::class)->name('hr.index');
 
