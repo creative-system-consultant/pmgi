@@ -28,7 +28,7 @@ class ListPydJtt extends Component
 
         if (session()->has('flash_error')) {
             $this->dialog()->error(
-                $title = 'Ralat!',
+                $title = 'Perhatian.',
                 $description = session('flash_error')
             );
         }

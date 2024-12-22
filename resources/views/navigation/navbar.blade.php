@@ -17,9 +17,9 @@
                                     aria-current="page"
                                 >Dashboard</a>
                             </li>
-                            @if(hasAccess('maklumat-warga-kerja'))
+                            @if(hasAccess('masterlist-warga-kerja'))
                                 <li>
-                                    <a href="{{ route('master-list-warga-kerja') }}" class="block {{ Route::currentRouteName() === 'maklumat-warga-kerja' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Master List Warga Kerja</a>
+                                    <a href="{{ route('master-list-warga-kerja') }}" class="block {{ Route::currentRouteName() === 'masterlist-warga-kerja' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Master List Warga Kerja</a>
                                 </li>
                             @endif
 
@@ -187,9 +187,9 @@
                 <li class="block border-b">
                     <a href="/" class="block px-4 py-3 {{ Route::currentRouteName() === 'home' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}" aria-current="page">Dashboard</a>
                 </li>
-                @if(hasAccess('maklumat-warga-kerja'))
+                @if(hasAccess('masterlist-warga-kerja'))
                 <li class="block border-b">
-                    <a href="{{ route('master-list-warga-kerja') }}" class="block px-4 py-3 {{ Route::currentRouteName() === 'maklumat-warga-kerja' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Master List Warga Kerja</a>
+                    <a href="{{ route('master-list-warga-kerja') }}" class="block px-4 py-3 {{ Route::currentRouteName() === 'masterlist-warga-kerja' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Master List Warga Kerja</a>
                 </li>
                 @endif
 

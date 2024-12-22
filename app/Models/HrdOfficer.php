@@ -21,4 +21,9 @@ class HrdOfficer extends Model
         'tarikh_lantikan' => 'datetime',
         'date_disiplin' => 'datetime',
     ];
+
+    public function bankOfficer()
+    {
+        return $this->hasOne(BankOfficer::class, 'staffno', 'no_pekerja');
+    }
 }

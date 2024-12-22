@@ -57,7 +57,7 @@ class Perakuan extends Component
         // check flash error from middleware
         if (session()->has('flash_error')) {
             $this->dialog()->error(
-                $title = 'Ralat!',
+                $title = 'Perhatian.',
                 $description = session('flash_error')
             );
         }
@@ -90,7 +90,7 @@ class Perakuan extends Component
                     return;
                 }
                 $this->dialog()->error(
-                    $title = 'Ralat!',
+                    $title = 'Perhatian.',
                     $description = 'Sila tunggu PYD membuat perakuan.'
                 );
                 break;
@@ -101,7 +101,7 @@ class Perakuan extends Component
                     return;
                 }
                 $this->dialog()->error(
-                    $title = 'Ralat!',
+                    $title = 'Perhatian.',
                     $description = 'Sila tunggu PYM membuat perakuan.'
                 );
                 break;
