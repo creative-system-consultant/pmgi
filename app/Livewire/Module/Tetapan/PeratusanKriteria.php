@@ -52,13 +52,7 @@ class PeratusanKriteria extends Component
     public function retrieveInitialData()
     {
         $eval_pctgs = RefEvalPctg::whereNotIn('state_code', ['00', '15', '16', '99'])
-            ->where('effective_date', function ($query) {
-                $query->select('effective_date')
-                    ->from('pmgi_ref_eval_pctg')
-                    ->where('effective_date', '<=', now())
-                    ->orderBy('effective_date', 'desc')
-                    ->limit(1);
-            })
+            ->where('effective_date', '<=', now()) 
             ->with('bnmState')
             ->orderBy('state_code', 'ASC')
             ->orderBy('evaluation_id', 'ASC')
