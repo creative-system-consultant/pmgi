@@ -497,12 +497,6 @@
                         </tr>
                     </tbody>
                 </table>
-                <div class="bg-white">
-                    <div class="flex p-4 mt-4 text-xs text-blue-800 rounded-lg bg-blue-50" role="alert">
-                        <x-icon name="information-circle" class="w-5 h-5 mr-4 text-blue-800" />
-                        NOTA : Bagi Kriteria 4, % purata adalah Total Bilangan Akaun Kekal A3 untuk 2 Bulan Penilaian / Total Bilangan Akaun A3 untuk 2 Bulan Penilaian
-                    </div>
-                </div>
             </div>
         </div>
     </main>

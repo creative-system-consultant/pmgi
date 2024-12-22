@@ -26,6 +26,12 @@ class Login extends Component
 
     public $tnc = false;
 
+    public $tnc2 = false;
+
+    public $tncModal = false;
+
+    public $tnc2Modal = false;
+
     protected function rules()
     {
         $rules = [
@@ -55,6 +61,16 @@ class Login extends Component
                 $description = session('flash_success')
             );
         }
+    }
+
+    public function openTncCard()
+    {
+        $this->tncModal = !$this->tncModal;
+    }
+
+    public function openTnc2Card()
+    {
+        $this->tnc2Modal = !$this->tnc2Modal;
     }
 
     public function authenticate()
