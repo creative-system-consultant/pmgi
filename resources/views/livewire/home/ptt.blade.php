@@ -17,7 +17,7 @@
                     </div>
                     <div class="flex justify-center gap-4">
                         <button class="inline-flex items-center p-5 text-sm font-bold text-center text-white bg-indigo-700 rounded-lg hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 " wire:click="startMeeting(1)">
-                            MULA MESYUARAT JTT
+                            MULA MESYUARAT JkTT
                             <x-icon name="arrow-circle-right" class="w-6 h-6 ms-2" />
                         </button>
                     </div>

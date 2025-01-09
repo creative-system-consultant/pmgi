@@ -17,6 +17,8 @@ class SearchController extends Controller
         // Try to retrieve the data from the cache
         $data = Cache::remember($cacheKey, now()->addDay(), function () use ($request) {
             return BankOfficer::query()
+                ->join('FMS_USERS', 'PMGI_FMS_BANK_OFFICERS.officer_id', '=', 'FMS_USERS.userid')
+                ->where('FMS_USERS.userstatus', 1)
                 ->when($request->search, fn (Builder $query) =>
                     $query->whereRaw('UPPER(officer_name) LIKE ?', ['%' . strtoupper($request->search) . '%'])
                 )
@@ -27,5 +29,22 @@ class SearchController extends Controller
         });
 
         return $data;
+    }
+
+    public function staffNameByBranch(Request $request)
+    {
+        return BankOfficer::query()
+            ->join('FMS_USERS', 'PMGI_FMS_BANK_OFFICERS.officer_id', '=', 'FMS_USERS.userid')
+            ->where('FMS_USERS.userstatus', 1)
+            ->when($request->branch_code, fn(Builder $query) =>
+                $query->where('PMGI_FMS_BANK_OFFICERS.branch_code', $request->branch_code)
+            )
+            ->when($request->search, fn(Builder $query) =>
+                $query->whereRaw('UPPER(PMGI_FMS_BANK_OFFICERS.officer_name) LIKE ?', ['%' . strtoupper($request->search) . '%'])
+            )
+            ->when($request->exists('selected'), fn(Builder $query) =>
+                $query->whereIn('PMGI_FMS_BANK_OFFICERS.officer_id', $request->input('selected', []))
+            )
+            ->get();
     }
 }

@@ -7,6 +7,7 @@ use App\Models\BnmStatecode;
 use App\Models\Branch;
 use App\Models\JttSessionParticipant;
 use App\Models\MntrSession;
+use App\Models\RefEvalPctg;
 use App\Models\SessionInfo;
 use App\Models\SessionPmcInfo;
 use App\Models\SessionPydInfo;
@@ -24,6 +25,8 @@ class RekodPmgi extends Component
 {
     private $htmlToImageService;
 
+    public $pmgiSession = false;
+    public $pydIdOrigin;
     public $detailsModal = false;
     public $searchTerm;
     public $pydId;
@@ -56,6 +59,12 @@ class RekodPmgi extends Component
 
         if (in_array('PYD', $role)) {
             $this->pydId = auth()->user()->userid;
+            $this->isAdmin = false;
+            $this->getData();
+        }
+
+        if($this->pmgiSession) {
+            $this->pydId = $this->pydIdOrigin;
             $this->isAdmin = false;
             $this->getData();
         }
@@ -148,6 +157,11 @@ class RekodPmgi extends Component
                     ->orderBy('report_date', 'asc')
                     ->get();
 
+        $percentage = RefEvalPctg::where('state_code', $data->first()->branch_state_code)
+                ->whereDate('effective_date', '<=', $toReportDate)
+                ->orderBy('evaluation_id', 'ASC')
+                ->get();
+
         // Calculate month names for each entry in the retrieved data
         $data->each(function ($item) {
             $item->month_name = Carbon::parse($item->report_date)->translatedFormat('F Y');
@@ -157,6 +171,7 @@ class RekodPmgi extends Component
             'pdf.prestasi_kumulatif',
             [
                 'datas' => $data,
+                'percentage' => $percentage,
             ],
             'pdf/prestasi_kumulatif/',
             "{$settInfo->pyd_id}_{$fromReportDate}_to_{$toReportDate}"
@@ -244,6 +259,11 @@ class RekodPmgi extends Component
                     ->orderBy('report_date', 'asc')
                     ->get();
 
+        $percentage = RefEvalPctg::where('state_code', $data->first()->branch_state_code)
+                ->whereDate('effective_date', '<=', $toReportDate)
+                ->orderBy('evaluation_id', 'ASC')
+                ->get();
+
         // Calculate month names for each entry in the retrieved data
         $data->each(function ($item) {
             $item->month_name = Carbon::parse($item->report_date)->translatedFormat('F Y');
@@ -253,6 +273,7 @@ class RekodPmgi extends Component
             'pdf.prestasi_kumulatif',
             [
                 'datas' => $data,
+                'percentage' => $percentage,
             ],
             'pdf/prestasi_kumulatif/',
             "{$settInfo->pyd_id}_{$fromReportDate}_to_{$toReportDate}"

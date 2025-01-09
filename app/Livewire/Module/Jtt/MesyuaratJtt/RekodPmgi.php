@@ -140,9 +140,9 @@ class RekodPmgi extends Component
             'NEX' => 'DIHANTAR KE SESI TIMBANG TARA',
             'EX1' => 'KELUAR SENARAI',
             'PDQ' => 'DIBERI TEMPOH',
-            'DQ1' => 'DOMESTIC INQUIRY',
+            'DQ1' => 'TINDAKAN TATATERTIB',
             'EXL' => 'KELUAR SENARAI',
-            'DQ2' => 'DOMESTIC INQUIRY',
+            'DQ2' => 'TINDAKAN TATATERTIB',
             'PDM' => 'DITAMATKAN PERKHIDMATAN',
             'NDM' => 'PERKHIDMATAN DISAMBUNG',
         ];
@@ -200,7 +200,7 @@ class RekodPmgi extends Component
         // Redirect to the next page or do whatever action you need
         if (substr($resultSp, 0, 1) == '0') {
             // sent email to HR if DI
-            if ($this->result == 'Domestic Inquiry (DI)') {
+            if ($this->result == 'Tindakan Tatatertib') {
                 $pmgiInstance = new RekodPmgiModule();
                 $pmgiReports = [
                     $pmgiInstance->saveRekodPmgi($pmgiSessionIds['PM1'], 'PM1'),

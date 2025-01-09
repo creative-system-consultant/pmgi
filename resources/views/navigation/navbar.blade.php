@@ -117,7 +117,7 @@
 
                                             @if(hasAccess('tetapan-ahli-jtt'))
                                                 <li>
-                                                    <a href="{{ route('tetapan.ahli-jtt') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.ahli-jtt' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Ahli JTT</a>
+                                                    <a href="{{ route('tetapan.ahli-jtt') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.ahli-jtt' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Ahli JKTT</a>
                                                 </li>
                                             @endif
                                             <li>
@@ -258,7 +258,7 @@
 
                         @if(hasAccess('tetapan-ahli-jtt'))
                             <li class="block border-b">
-                                <a href="{{ route('tetapan.ahli-jtt') }}" class="block px-4 py-3 {{ Route::currentRouteName() === 'tetapan.ahli-jtt' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Ahli JTT</a>
+                                <a href="{{ route('tetapan.ahli-jtt') }}" class="block px-4 py-3 {{ Route::currentRouteName() === 'tetapan.ahli-jtt' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Ahli JKTT</a>
                         </li>
                         @endif
                         <li class="block border-b">

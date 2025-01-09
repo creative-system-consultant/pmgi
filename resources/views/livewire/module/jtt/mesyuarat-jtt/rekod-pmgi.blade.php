@@ -67,11 +67,11 @@
                         ? [
                             ['name' => 'Keluar Senarai', 'id' => 'Keluar Senarai'],
                             ['name' => 'Diberi Tempoh', 'id' => 'Diberi Tempoh'],
-                            ['name' => 'Domestic Inquiry (DI)', 'id' => 'Domestic Inquiry (DI)']
+                            ['name' => 'Tindakan Tatatertib', 'id' => 'Tindakan Tatatertib']
                         ]
                         : [
                             ['name' => 'Keluar Senarai', 'id' => 'Keluar Senarai'],
-                            ['name' => 'Domestic Inquiry (DI)', 'id' => 'Domestic Inquiry (DI)']
+                            ['name' => 'Tindakan Tatatertib', 'id' => 'Tindakan Tatatertib']
                         ]"
                     option-label="name"
                     option-value="id"

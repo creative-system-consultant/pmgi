@@ -8,7 +8,7 @@
             <div class="items-center lg:flex">
                 <div class="mb-4 lg:mb-0">
                     <h3 class="mb-2 text-lg font-bold text-gray-900 ">Pegawai Sumber Manusia</h3>
-                    <span class="text-base font-normal text-gray-500 ">Senarai PYD yang perlu diberi keputusan DI</span>
+                    <span class="text-base font-normal text-gray-500 ">Senarai PYD yang perlu diberi keputusan Tindakan Tatatertib</span>
                 </div>
             </div>
             <div class="flex flex-col mt-6">

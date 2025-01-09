@@ -22,17 +22,45 @@
 
     table {
         width: 100%;
-        border-collapse: collapse;
+        /* Remove border-collapse to make sure borders appear */
+        border-spacing: 0;
+        border: 1px solid black;
+        /* Add outer border around the table */
     }
 
-    .headcol {
+    th,
+    td {
+        /* Ensure borders are visible for table cells */
+        border: 1px solid black;
+    }
+
+    /* Sticky Header Styling */
+    thead th {
         position: sticky;
         top: 0;
+        z-index: 1;
+        /* Ensure header is above the table rows */
+        background-color: #f1f1f1;
+        /* Replace with your desired header color */
     }
 
+    /* Sticky First Column */
+    .headcol {
+        position: sticky;
+        left: 0;
+        z-index: 2;
+        /* Ensure this is above other columns */
+        !background-color: #9ca3af;
+        /* Replace with your desired column color */
+    }
+
+    /* Sticky first column in header */
     thead th:nth-child(1) {
         position: sticky;
         left: 0;
+        z-index: 2;
+        background-color: #f1f1f1;
+        /* Replace with your desired header color */
     }
 
     tbody th:nth-child(1) {
@@ -56,8 +84,8 @@
                             <div class="grid w-[70%] grid-cols-4 gap-x-4 gap-y-2">
                                 <div>
                                     <x-select class="z-50" label="Jenis" placeholder="Sila Pilih" :options="[
-                                            ['desc' => 'RINGKASAN',  'id' => 1],
-                                            ['desc' => 'KESELURUHAN', 'id' => 2],
+                                            ['desc' => 'RINGKASAN PRESTASI',  'id' => 1],
+                                            ['desc' => 'PERINCIAN PRESTASI', 'id' => 2],
                                         ]" option-label="desc" option-value="id" wire:model.live="type" />
                                 </div>
                                 @if($role == 'admin')

@@ -5,6 +5,7 @@ namespace App\Livewire\Module\Prestasi;
 use App\Models\BankOfficer;
 use App\Models\BnmStatecode;
 use App\Models\Branch;
+use App\Models\RefEvalPctg;
 use App\Models\SettPymPmc;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +24,7 @@ class Kumulatif extends Component
     public $toData;
     public $toDataMthName;
     public $data;
+    public $percentage;
 
     // input
     #[Validate('required', message: 'Negeri diperlukan.')]
@@ -75,13 +77,13 @@ class Kumulatif extends Component
             // prod use this
             // $report_date = now();
             // uat pmgi 1
-            // $report_date = Carbon::createFromFormat('d/m/Y', '31/01/2023')->format('Y-m-d');
+            $report_date = Carbon::createFromFormat('d/m/Y', '31/01/2023');
 
             // uat pmgi 2
             // $report_date = Carbon::createFromFormat('d/m/Y', '30/04/2023');
 
             // uat pmgi 3
-            $report_date = Carbon::createFromFormat('d/m/Y', '31/07/2023');
+            // $report_date = Carbon::createFromFormat('d/m/Y', '31/07/2023');
 
             $this->fromReportDate = $report_date->copy()->subMonth(1)->endOfMonth()->format('Y-m-d');
             $this->toReportDate = $report_date->copy()->endOfMonth()->format('Y-m-d');
@@ -122,6 +124,11 @@ class Kumulatif extends Component
             $this->data->each(function ($item) {
                 $item->month_name = Carbon::parse($item->report_date)->translatedFormat('F Y');
             });
+
+            $this->percentage = RefEvalPctg::where('state_code', $this->data->first()->branch_state_code)
+                ->whereDate('effective_date', '<=', $this->toReportDate)
+                ->orderBy('evaluation_id', 'ASC')
+                ->get();
         }
     }
 

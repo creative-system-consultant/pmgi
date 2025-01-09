@@ -102,12 +102,13 @@ Route::middleware(['auth', 'check.role', 'restrict.session'])->group(function ()
     Route::get('/tetapan/ahli-jtt', JttOfficer::class)->name('tetapan.ahli-jtt')->middleware('check.access:tetapan-ahli-jtt');
     Route::get('/tetapan/meeting-room', MeetingRoom::class)->name('tetapan.meeting-room')->middleware('check.access:tetapan-bilik-meeting');
     Route::get('/tetapan/peratusan-kriteria', PeratusanKriteria::class)->name('tetapan.peratusan-kriteria')->middleware('check.access:tetapan-peratusan-kriteria');
-    
+
     // HR
     Route::get('/hr/{userid}', HrIndex::class)->name('hr.index');
 
     // search purpose
     Route::get('/staff-search', [SearchController::class, 'staffName'])->name('staff-name-search');
+    Route::get('/staff-search-by-branch', [SearchController::class, 'staffNameByBranch'])->name('staff-name-search-by-branch');
 });
 
 Route::middleware(['auth', 'check.role', 'ensure.session'])->group(function () {

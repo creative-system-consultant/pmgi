@@ -91,7 +91,7 @@
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
                                                     @if($data->mntrSession->pmgi_result == 'CP1')
-                                                    <div class="inline-block bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">SELESAI SESI</div>
+                                                    <div class="inline-block bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">SELESAI DILAKSANA</div>
                                                     @endif
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
@@ -197,7 +197,7 @@
                                                     @elseif($data->mntrSession->pmgi_result == 'EXP')
                                                     <div class="inline-block bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">PENANGGUHAN</div>
                                                     @else
-                                                    <div class="inline-block bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-red-100 ">DIBAWA KE JTT1</div>
+                                                    <div class="inline-block bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-red-100 ">DIBAWA KE JKTT1</div>
                                                     @endif
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">

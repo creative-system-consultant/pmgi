@@ -4,8 +4,8 @@
             <!-- Card header -->
             <div class="items-center">
                 <div class="mb-4 lg:mb-0">
-                    <h3 class="mb-2 text-xl font-bold text-gray-900 ">Tetapan Ahli JTT</h3>
-                    <span class="text-base font-normal text-gray-500 ">Tetapan ahli mesyuarat JTT</span>
+                    <h3 class="mb-2 text-xl font-bold text-gray-900 ">Tetapan Ahli JKTT</h3>
+                    <span class="text-base font-normal text-gray-500 ">Tetapan ahli mesyuarat JKTT</span>
                     <div class="mt-6">
                         <div>
                             <div class="p-4 my-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 ">
@@ -65,7 +65,7 @@
 
                     {{-- current jtt --}}
                     <div class="mt-6">
-                        <h3 class="mb-2 text-xl font-bold text-gray-900 ">Senarai Ahli JTT</h3>
+                        <h3 class="mb-2 text-xl font-bold text-gray-900 ">Senarai Ahli JKTT</h3>
                         <div>
                             <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 ">
                                 <!-- Result -->

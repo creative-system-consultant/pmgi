@@ -15,7 +15,7 @@ class Home extends Component
         // check flash error from middleware
         if (session()->has('flash_error')) {
             $this->dialog()->error(
-                $title = 'Ralat!',
+                $title = 'Perhatian.',
                 $description = session('flash_error')
             );
         }

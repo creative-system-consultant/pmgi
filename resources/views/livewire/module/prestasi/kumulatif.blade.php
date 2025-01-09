@@ -13,10 +13,17 @@
                                     <x-select label="Negeri" placeholder="Sila Pilih" :options="$stateSelection" option-label="description" option-value="code" wire:model.live="state" />
                                 </div>
                                 <div class="col-span-2 ">
-                                    <x-select label="Cawangan" placeholder="Sila Pilih" :options="$branchSelection" option-label="branch_name" option-value="branch_code" wire:model="branch" />
+                                    <x-select label="Cawangan" placeholder="Sila Pilih" :options="$branchSelection" option-label="branch_name" option-value="branch_code" wire:model.live="branch" />
                                 </div>
                                 <div class="col-span-2 ">
-                                    <x-input label="Nama Pegawai @ No Pekerja" placeholder="Sila Taip Nama @ No Pekerja pegawai" wire:model="searchTerm" />
+                                    <x-select
+                                        label="Nama Pegawai"
+                                        wire:model="searchTerm"
+                                        placeholder="Sila Taip Nama"
+                                        :async-data="route('staff-name-search-by-branch', ['branch_code' => $branch])"
+                                        option-label="officer_name"
+                                        option-value="officer_name"
+                                    />
                                 </div>
                                 <div>
                                     <x-datetime-picker label="Dari" placeholder="Dari" display-format="DD-MM-YYYY" wire:model="from" without-time />
@@ -89,7 +96,7 @@
                                         </tr>
                                         <tr>
                                             <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 border-l border-black border-dashed border-y whitespace-nowrap">
-                                                KUTIPAN TANPA KONTRAK I (Minimum 80%)
+                                                KUTIPAN TANPA KONTRAK I (Minimum {{ $this->percentage->get(0)->evaluation_percentage }}%)
                                             </td>
                                             @foreach($datas as $data)
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
@@ -142,7 +149,7 @@
                                         </tr>
                                         <tr>
                                             <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 border-l border-black border-dashed border-y whitespace-nowrap">
-                                                BILANGAN MEMBAYAR (Minimum 80%)
+                                                BILANGAN MEMBAYAR (Minimum {{ $this->percentage->get(1)->evaluation_percentage }}%)
                                             </td>
                                             @foreach($datas as $data)
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
@@ -195,7 +202,7 @@
                                         </tr>
                                         <tr>
                                             <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 border-l border-black border-dashed border-y whitespace-nowrap">
-                                                LAWATAN SELIAAN (Minimum 80%)
+                                                LAWATAN SELIAAN (Minimum {{ $this->percentage->get(2)->evaluation_percentage }}%)
                                             </td>
                                             @foreach($datas as $data)
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
@@ -248,7 +255,7 @@
                                         </tr>
                                         <tr>
                                             <td rowspan="3" class="p-2 text-sm font-normal text-center text-gray-900 border-l border-black border-dashed border-y whitespace-nowrap">
-                                                PRESTASI NPF (KAWALAN) (Minimum 50%)
+                                                PRESTASI NPF (KAWALAN) (Minimum {{ $this->percentage->get(3)->evaluation_percentage }}%)
                                             </td>
                                             @foreach($datas as $data)
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">
@@ -311,7 +318,7 @@
                                         </tr>
                                         <tr>
                                             <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 border-l border-black border-dashed border-y whitespace-nowrap">
-                                                PRESTASI NPF PEMULIHAN (Minimum 5%)
+                                                PRESTASI NPF PEMULIHAN (Minimum {{ $this->percentage->get(4)->evaluation_percentage }}%)
                                             </td>
                                             @foreach($datas as $data)
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 border-l border-black border-dashed border-y whitespace-nowrap">

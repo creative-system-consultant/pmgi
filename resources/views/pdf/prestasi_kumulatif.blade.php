@@ -242,7 +242,7 @@
                         </tr>
                         <tr>
                             <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 border border-black border-dashed border-y whitespace-nowrap">
-                                KUTIPAN TANPA KONTRAK I (Minimum 80%)
+                                KUTIPAN TANPA KONTRAK I (Minimum {{ $percentage->get(0)->evaluation_percentage }}%)
                             </td>
                             @foreach($datas as $data)
                             <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
@@ -295,7 +295,7 @@
                         </tr>
                         <tr>
                             <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 border border-black border-dashed border-y whitespace-nowrap">
-                                BILANGAN MEMBAYAR (Minimum 80%)
+                                BILANGAN MEMBAYAR (Minimum {{ $percentage->get(1)->evaluation_percentage }}%)
                             </td>
                             @foreach($datas as $data)
                             <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
@@ -348,7 +348,7 @@
                         </tr>
                         <tr>
                             <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 border border-black border-dashed border-y whitespace-nowrap">
-                                LAWATAN SELIAAN (Minimum 80%)
+                                LAWATAN SELIAAN (Minimum {{ $percentage->get(2)->evaluation_percentage }}%)
                             </td>
                             @foreach($datas as $data)
                             <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
@@ -401,7 +401,7 @@
                         </tr>
                         <tr>
                             <td rowspan="3" class="p-2 text-sm font-normal text-center text-gray-900 border border-black border-dashed border-y whitespace-nowrap">
-                                PRESTASI NPF (KAWALAN) (Minimum 50%)
+                                PRESTASI NPF (KAWALAN) (Minimum {{ $percentage->get(3)->evaluation_percentage }}%)
                             </td>
                             @foreach($datas as $data)
                             <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
@@ -464,7 +464,7 @@
                         </tr>
                         <tr>
                             <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 border border-black border-dashed border-y whitespace-nowrap">
-                                PRESTASI NPF PEMULIHAN (Minimum 5%)
+                                PRESTASI NPF PEMULIHAN (Minimum {{ $percentage->get(4)->evaluation_percentage }}%)
                             </td>
                             @foreach($datas as $data)
                             <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">

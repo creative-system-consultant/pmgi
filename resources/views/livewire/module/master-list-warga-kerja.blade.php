@@ -4,7 +4,6 @@
             <!-- Card header -->
             <div class="items-center">
                 <div class="mb-4 lg:mb-0">
-                    {{-- current jtt --}}
                     <div class="mt-6">
                         <h3 class="mb-2 text-xl font-bold text-gray-900 ">Master List Warga Kerja</h3>
 

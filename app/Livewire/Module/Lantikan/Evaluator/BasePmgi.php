@@ -160,27 +160,14 @@ abstract class BasePmgi extends Component
                             ->get()
                             ->toArray();
 
-            $ptnPmc = DB::table('FMS_USERS as a')
-                            ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
-                            ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
-                            ->select('a.userid', 'b.officer_name', 'c.branch_name')
-                            ->where('a.userstatus', 1)
-                            ->where(DB::raw('substr(b.branch_code, 0, 2)'), $this->stateCode)
-                            ->whereIn('b.officer_group', [5])
-                            ->get()
-                            ->toArray();
-
-            $boPmc = DB::table('PMGI_JPOC as a')
+            $this->pmcSelection = DB::table('PMGI_JPOC as a')
                             ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
                             ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
                             ->select('a.userid', 'b.officer_name', 'c.branch_name')
                             ->get()
                             ->toArray();
-
-            $this->pmcSelection = array_merge($boPmc, $ptnPmc);
 
         } else { // Pengurus Cawangan
-
             $this->pymSelection = DB::table('FMS_USERS as a')
                             ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
                             ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')

@@ -25,6 +25,7 @@ class Perakuan extends Component
     public $pydName;
     public $pydIcNo;
     public $pydStaffNo;
+    public $pydBranch;
     public $from;
     public $to;
     public $setting;
@@ -72,6 +73,7 @@ class Perakuan extends Component
             $this->pydName = $bankOfficer->officer_name;
             $this->pydIcNo = $bankOfficer->nokp;
             $this->pydStaffNo = $bankOfficer->staffno;
+            $this->pydBranch = $bankOfficer->hr_branch_name;
             $this->from = $sessionDate->copy()->addMonth()->format('m/Y');
             $this->to = $sessionDate->copy()->addMonth(2)->format('m/Y');
             $this->setting = SettPymPmc::whereSessionId($this->sessionId)->first();
