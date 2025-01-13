@@ -141,12 +141,16 @@ class Kumulatif extends Component
         if($this->state) {
             $branchSelection = Branch::whereNotIn('closeflag', [1])
                                     ->whereNotIn('state_code', ['00', '15', '16', '99'])
+                                    ->whereBranchType('BRN')
+                                    ->whereHideflag(0)
                                     ->whereStateCode($this->state)
                                     ->orderBy('branch_name', 'ASC')
                                     ->get();
         } else {
             $branchSelection = Branch::whereNotIn('closeflag', [1])
                                     ->whereNotIn('state_code', ['00', '15', '16', '99'])
+                                    ->whereBranchType('BRN')
+                                    ->whereHideflag(0)
                                     ->orderBy('branch_code', 'ASC')
                                     ->get();
         }

@@ -5,25 +5,25 @@
                 <thead class="sticky top-0 z-10 bg-gray-50">
                     <tr class="bg-gray-400 ">
                         <th class="bg-white headcol"></th>
-                        <th scope="col" colspan="4" class="p-2 text-xs font-medium tracking-tight text-center text-white uppercase border-black border-dashed border-x">KRITERIA 1</th>
-                        <th scope="col" colspan="4" class="p-2 text-xs font-medium tracking-tight text-center text-white uppercase border-black border-dashed border-x">KRITERIA 2</th>
-                        <th scope="col" colspan="4" class="p-2 text-xs font-medium tracking-tight text-center text-white uppercase border-black border-dashed border-x">KRITERIA 3</th>
-                        <th scope="col" colspan="5" class="p-2 text-xs font-medium tracking-tight text-center text-white uppercase border-black border-dashed border-x">KRITERIA 4</th>
-                        <th scope="col" colspan="4" class="p-2 text-xs font-medium tracking-tight text-center text-white uppercase border-black border-dashed border-x">KRITERIA 5</th>
-                        <th scope="col" rowspan="3" class="p-2 text-xs font-medium tracking-tight text-center text-white uppercase border-black border-dashed border-x">STATUS</th>
+                        <th scope="col" colspan="4" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x">KRITERIA 1</th>
+                        <th scope="col" colspan="4" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x">KRITERIA 2</th>
+                        <th scope="col" colspan="4" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x">KRITERIA 3</th>
+                        <th scope="col" colspan="5" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x">KRITERIA 4</th>
+                        <th scope="col" colspan="4" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x">KRITERIA 5</th>
+                        <th scope="col" rowspan="3" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x">STATUS</th>
                     </tr>
                     <tr class="bg-gray-300">
                         <th class="bg-white headcol"></th>
-                        <th scope="col" colspan="4" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border border-black border-dashed">PATUT KUTIP (RM)<br>VS<br>DAPAT KUTIP (RM)</th>
-                        {{-- <th scope="col" class="p-2 text-lg font-semibold tracking-tight text-center text-gray-500 uppercase border border-black border-dashed">{{ $titleData->rm_dapat_kutip_nilai_pts }}%</th> --}}
-                        <th scope="col" colspan="4" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border border-black border-dashed">PATUT KUTIP (BIL)<br>VS<br>DAPAT KUTIP (BIL)</th>
-                        {{-- <th scope="col" class="p-2 text-lg font-semibold tracking-tight text-center text-gray-500 uppercase border border-black border-dashed">{{ $titleData->bil_dapat_kutip_nilai_pts }}%</th> --}}
-                        <th scope="col" colspan="4" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border border-black border-dashed">LAWATAN SELIAAN</th>
-                        {{-- <th scope="col" class="p-2 text-lg font-semibold tracking-tight text-center text-gray-500 uppercase border border-black border-dashed">{{ $titleData->bil_lawat_nilai_pts }}%</th> --}}
-                        <th scope="col" colspan="5" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border border-black border-dashed">PRESTASI NPF (KAWALAN)</th>
-                        {{-- <th scope="col" class="p-2 text-lg font-semibold tracking-tight text-center text-gray-500 uppercase border border-black border-dashed">{{ $titleData->bil_kawal_npf_nilai_pts }}%</th> --}}
-                        <th scope="col" colspan="4" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border border-black border-dashed">PRESTASI NPF (PEMULIHAN)</th>
-                        {{-- <th scope="col" class="p-2 text-lg font-semibold tracking-tight text-center text-gray-500 uppercase border border-black border-dashed">{{ $titleData->bil_pulih_npf_nilai_pts }}%</th> --}}
+                        <th scope="col" colspan="3" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border border-black border-dashed">PATUT KUTIP (RM)<br>VS<br>DAPAT KUTIP (RM)</th>
+                        <th scope="col" class="p-2 text-lg font-semibold tracking-tight text-center text-gray-500 uppercase border border-black border-dashed"> {{ $this->percentage->get(0)->evaluation_percentage }}%</th>
+                        <th scope="col" colspan="3" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border border-black border-dashed">PATUT KUTIP (BIL)<br>VS<br>DAPAT KUTIP (BIL)</th>
+                        <th scope="col" class="p-2 text-lg font-semibold tracking-tight text-center text-gray-500 uppercase border border-black border-dashed"> {{ $this->percentage->get(1)->evaluation_percentage }}%</th>
+                        <th scope="col" colspan="3" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border border-black border-dashed">LAWATAN SELIAAN</th>
+                        <th scope="col" class="p-2 text-lg font-semibold tracking-tight text-center text-gray-500 uppercase border border-black border-dashed"> {{ $this->percentage->get(2)->evaluation_percentage }}%</th>
+                        <th scope="col" colspan="4" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border border-black border-dashed">PRESTASI NPF (KAWALAN)</th>
+                        <th scope="col" class="p-2 text-lg font-semibold tracking-tight text-center text-gray-500 uppercase border border-black border-dashed"> {{ $this->percentage->get(3)->evaluation_percentage }}%</th>
+                        <th scope="col" colspan="3" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border border-black border-dashed">PRESTASI NPF (PEMULIHAN)</th>
+                        <th scope="col" class="p-2 text-lg font-semibold tracking-tight text-center text-gray-500 uppercase border border-black border-dashed"> {{ $this->percentage->get(4)->evaluation_percentage }}%</th>
                     </tr>
                     <tr class="bg-gray-200">
                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase bg-gray-200 headcol">NAMA PEGAWAI<br>GELARAN</th>

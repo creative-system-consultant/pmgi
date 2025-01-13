@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Module\Prestasi\Bulanan;
 
+use App\Models\RefEvalPctg;
 use App\Models\SummMthOfficer;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -13,6 +14,7 @@ class Keseluruhan extends Component
     public $state;
     public $branch;
     public $date;
+    public $percentage;
     private $reportDate;
 
     public function mount()
@@ -30,6 +32,11 @@ class Keseluruhan extends Component
 
         // Group data
         $groupedData = $this->groupData($officerData);
+
+        $this->percentage = RefEvalPctg::where('state_code', '01') // once da approve utk by negeri, tukar ni.. skrg pkai 01 sbb smua negeri sama value
+                ->whereDate('effective_date', '<=', $this->date)
+                ->orderBy('evaluation_id', 'ASC')
+                ->get();
 
         return view('livewire.module.prestasi.bulanan.keseluruhan', [
             'groupedData' => $groupedData,
