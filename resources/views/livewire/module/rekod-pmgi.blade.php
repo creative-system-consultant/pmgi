@@ -1,13 +1,13 @@
 <main>
     <div class="px-4 pt-6 2xl:px-0">
-        <div class="p-4 my-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 ">
+        <div class="p-4 my-4 bg-white rounded-lg border border-gray-200 shadow-sm sm:p-6">
             <!-- Card header -->
             <div class="items-center">
                 <div class="mb-4 lg:mb-0">
-                    <h3 class="mb-2 text-xl font-bold text-gray-900 ">Rekod PMGi</h3>
-                    <span class="text-base font-normal text-gray-500 ">Rekod PMGi Individu</span>
+                    <h3 class="mb-2 text-xl font-bold text-gray-900">Rekod PMGi</h3>
+                    <span class="text-base font-normal text-gray-500">Rekod PMGi Individu</span>
                     @if($isAdmin)
-                        <div class="p-6 mt-4 border rounded-lg shadow bg-primary-100 border-primary-200 dark:bg-gray-800 dark:border-gray-700">
+                        <div class="p-6 mt-4 rounded-lg border shadow bg-primary-100 border-primary-200 dark:bg-gray-800 dark:border-gray-700">
                             <div class="flex justify-between">
                                 <div class="grid w-[70%] grid-cols-3 gap-x-4 gap-y-2">
                                     <div class="col-span-2">
@@ -21,7 +21,7 @@
                                         />
                                     </div>
                                 </div>
-                                <button wire:click="search" class="inline-flex items-center px-3 py-2 mt-4 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 ">
+                                <button wire:click="search" class="inline-flex items-center px-3 py-2 mt-4 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300">
                                     Cari
                                     <x-icon name="search" class="w-4 h-4 ms-2" />
                                 </button>
@@ -61,12 +61,12 @@
                 </ul>
 
                 <div x-show="tab === 'PMGi1'" x-transition>
-                    <div class="flex flex-col p-4 my-4 mt-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6">
+                    <div class="flex flex-col p-4 my-4 mt-4 bg-white rounded-lg border border-gray-200 shadow-sm sm:p-6">
                         <div class="overflow-x-auto">
                             <div class="inline-block min-w-full align-middle">
                                 <div class="overflow-hidden">
-                                    <table class="min-w-full divide-y divide-gray-200 ">
-                                        <thead class=" bg-gray-50">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
                                             <tr class="bg-gray-100">
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                                     BIL
@@ -80,27 +80,27 @@
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black"></th>
                                             </tr>
                                         </thead>
-                                        <tbody class="bg-white ">
+                                        <tbody class="bg-white">
                                             @forelse ($allSession->where('pmgi_level', 'PM1') as $data)
                                             <tr>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     {{ $loop->iteration }}
                                                 </td>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     {{ strtoupper($data->created_at->translatedFormat('F Y')) }}
                                                 </td>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     @if($data->mntrSession->pmgi_result == 'CP1')
-                                                    <div class="inline-block bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">SELESAI DILAKSANA</div>
+                                                    <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-green-800 bg-green-100 rounded-md border-green-100">SELESAI DILAKSANA</div>
                                                     @endif
                                                 </td>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     <x-badge rounded primary label="Lihat" class="cursor-pointer" wire:click="toggleDetail('{{ $data->session_id }}')" />
                                                 </td>
                                             </tr>
                                             @empty
                                             <tr>
-                                                <td colspan="4" class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">TIADA DATA</td>
+                                                <td colspan="4" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
                                             </tr>
                                             @endforelse
                                         </tbody>
@@ -111,12 +111,12 @@
                     </div>
                 </div>
                 <div x-show="tab === 'PMGi2'" x-transition>
-                    <div class="flex flex-col p-4 my-4 mt-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6">
+                    <div class="flex flex-col p-4 my-4 mt-4 bg-white rounded-lg border border-gray-200 shadow-sm sm:p-6">
                         <div class="overflow-x-auto">
                             <div class="inline-block min-w-full align-middle">
                                 <div class="overflow-hidden">
-                                    <table class="min-w-full divide-y divide-gray-200 ">
-                                        <thead class=" bg-gray-50">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
                                             <tr class="bg-gray-100">
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                                     BIL
@@ -130,27 +130,27 @@
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black"></th>
                                             </tr>
                                         </thead>
-                                        <tbody class="bg-white ">
+                                        <tbody class="bg-white">
                                             @forelse ($allSession->where('pmgi_level', 'PM2') as $data)
                                             <tr>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     {{ $loop->iteration }}
                                                 </td>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     {{ strtoupper($data->created_at->translatedFormat('F Y')) }}
                                                 </td>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     @if($data->mntrSession->pmgi_result == 'CP2')
-                                                    <div class="inline-block bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">SELESAI SESI</div>
+                                                    <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-green-800 bg-green-100 rounded-md border-green-100">SELESAI SESI</div>
                                                     @endif
                                                 </td>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     <x-badge rounded primary label="Lihat" class="cursor-pointer" wire:click="toggleDetail('{{ $data->session_id }}')" />
                                                 </td>
                                             </tr>
                                             @empty
                                             <tr>
-                                                <td colspan="4" class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">TIADA DATA</td>
+                                                <td colspan="4" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
                                             </tr>
                                             @endforelse
                                         </tbody>
@@ -161,12 +161,12 @@
                     </div>
                 </div>
                 <div x-show="tab === 'PMGi3'" x-transition>
-                    <div class="flex flex-col p-4 my-4 mt-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6">
+                    <div class="flex flex-col p-4 my-4 mt-4 bg-white rounded-lg border border-gray-200 shadow-sm sm:p-6">
                         <div class="overflow-x-auto">
                             <div class="inline-block min-w-full align-middle">
                                 <div class="overflow-hidden">
-                                    <table class="min-w-full divide-y divide-gray-200 ">
-                                        <thead class=" bg-gray-50">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
                                             <tr class="bg-gray-100">
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                                     BIL
@@ -180,33 +180,33 @@
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black"></th>
                                             </tr>
                                         </thead>
-                                        <tbody class="bg-white ">
+                                        <tbody class="bg-white">
                                             @forelse ($allSession->where('pmgi_level', 'PM3') as $data)
                                             <tr>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     {{ $loop->iteration }}
                                                 </td>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     {{ strtoupper($data->created_at->translatedFormat('F Y')) }}
                                                 </td>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     @if($data->mntrSession->pmgi_result == 'PEX')
-                                                    <div class="inline-block bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">KELUAR SENARAI TANPA SYARAT</div>
+                                                    <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-green-800 bg-green-100 rounded-md border-green-100">KELUAR SENARAI TANPA SYARAT</div>
                                                     @elseif($data->mntrSession->pmgi_result == 'EXC')
-                                                    <div class="inline-block bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">KELUAR SENARAI DENGAN SYARAT</div>
+                                                    <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-yellow-800 bg-yellow-100 rounded-md border-yellow-100">KELUAR SENARAI DENGAN SYARAT</div>
                                                     @elseif($data->mntrSession->pmgi_result == 'EXP')
-                                                    <div class="inline-block bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">PENANGGUHAN</div>
+                                                    <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-yellow-800 bg-yellow-100 rounded-md border-yellow-100">PENANGGUHAN</div>
                                                     @else
-                                                    <div class="inline-block bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-red-100 ">DIBAWA KE JKTT1</div>
+                                                    <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-red-800 bg-red-100 rounded-md border-red-100">DIBAWA KE JKTT1</div>
                                                     @endif
                                                 </td>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     <x-badge rounded primary label="Lihat" class="cursor-pointer" wire:click="toggleDetail('{{ $data->session_id }}')" />
                                                 </td>
                                             </tr>
                                             @empty
                                             <tr>
-                                                <td colspan="4" class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">TIADA DATA</td>
+                                                <td colspan="4" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
                                             </tr>
                                             @endforelse
                                         </tbody>
@@ -217,12 +217,12 @@
                     </div>
                 </div>
                 <div x-show="tab === 'JTT1'" x-transition>
-                    <div class="flex flex-col p-4 my-4 mt-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6">
+                    <div class="flex flex-col p-4 my-4 mt-4 bg-white rounded-lg border border-gray-200 shadow-sm sm:p-6">
                         <div class="overflow-x-auto">
                             <div class="inline-block min-w-full align-middle">
                                 <div class="overflow-hidden">
-                                    <table class="min-w-full divide-y divide-gray-200 ">
-                                        <thead class=" bg-gray-50">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
                                             <tr class="bg-gray-100">
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                                     BIL
@@ -236,29 +236,29 @@
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black"></th>
                                             </tr>
                                         </thead>
-                                        <tbody class="bg-white ">
+                                        <tbody class="bg-white">
                                             @forelse ($jt1Session as $data)
                                             <tr>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     {{ $loop->iteration }}
                                                 </td>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     {{ strtoupper(\Carbon\Carbon::parse($data->sessionInfo->session_date)->translatedFormat('F Y')) }}
                                                 </td>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     @if($data->mntrSession->pmgi_result == 'PDQ')
-                                                    <div class="inline-block bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-yellow-100 ">DIBERI TEMPOH</div>
+                                                    <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-yellow-800 bg-yellow-100 rounded-md border-yellow-100">DIBERI TEMPOH</div>
                                                     @else
-                                                    <div class="inline-block bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-red-100 ">TINDAKAN TATA TERTIB</div>
+                                                    <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-red-800 bg-red-100 rounded-md border-red-100">TINDAKAN TATA TERTIB</div>
                                                     @endif
                                                 </td>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     <x-badge rounded primary label="Lihat" class="cursor-pointer" wire:click="toggleDetail" />
                                                 </td>
                                             </tr>
                                             @empty
                                             <tr>
-                                                <td colspan="4" class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">TIADA DATA</td>
+                                                <td colspan="4" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
                                             </tr>
                                             @endforelse
                                         </tbody>
@@ -269,12 +269,12 @@
                     </div>
                 </div>
                 <div x-show="tab === 'JTT2'" x-transition>
-                    <div class="flex flex-col p-4 my-4 mt-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6">
+                    <div class="flex flex-col p-4 my-4 mt-4 bg-white rounded-lg border border-gray-200 shadow-sm sm:p-6">
                         <div class="overflow-x-auto">
                             <div class="inline-block min-w-full align-middle">
                                 <div class="overflow-hidden">
-                                    <table class="min-w-full divide-y divide-gray-200 ">
-                                        <thead class=" bg-gray-50">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
                                             <tr class="bg-gray-100">
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                                     BIL
@@ -288,29 +288,29 @@
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black"></th>
                                             </tr>
                                         </thead>
-                                        <tbody class="bg-white ">
+                                        <tbody class="bg-white">
                                             @forelse ($allSession->where('pmgi_level', 'JT2') as $data)
                                             <tr>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     {{ $loop->iteration }}
                                                 </td>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     {{ strtoupper($data->created_at->translatedFormat('F Y')) }}
                                                 </td>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     @if($data->mntrSession->pmgi_result == 'EXL')
-                                                    <div class="inline-block bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">KELUAR SENARAI</div>
+                                                    <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-green-800 bg-green-100 rounded-md border-green-100">KELUAR SENARAI</div>
                                                     @else
-                                                    <div class="inline-block bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-red-100 ">TINDAKAN TATA TERTIB</div>
+                                                    <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-red-800 bg-red-100 rounded-md border-red-100">TINDAKAN TATA TERTIB</div>
                                                     @endif
                                                 </td>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     <x-badge rounded primary label="Lihat" class="cursor-pointer" wire:click="toggleDetail" />
                                                 </td>
                                             </tr>
                                             @empty
                                             <tr>
-                                                <td colspan="4" class="p-2 text-sm font-normal text-center text-gray-500 border border-black whitespace-nowrap">TIADA DATA</td>
+                                                <td colspan="4" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
                                             </tr>
                                             @endforelse
                                         </tbody>

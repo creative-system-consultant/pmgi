@@ -50,8 +50,8 @@ class Bulanan extends Component
 
     public function mount()
     {
-        if (hasRoles('ADMINISTRATOR')) {
-            $this->role = 'admin';
+        if (hasRoles('PYD')) {
+            $this->role = 'pyd';
         }
     }
 

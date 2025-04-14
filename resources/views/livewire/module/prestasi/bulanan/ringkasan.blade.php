@@ -1,4 +1,4 @@
-<div class="h-full ">
+<div class="h-full">
     @if ($groupedData->count() > 0)
         <div class="table-container">
             <table>
@@ -6,18 +6,18 @@
                     <tr class="bg-gray-400">
                         <th class="bg-white headcol"></th>
                         @foreach ($months as $month)
-                        <th scope="col" colspan="6" class="p-2 text-xs font-medium tracking-tight text-center text-white uppercase border-black border-dashed border-x">{{ $month }}</th>
+                        <th scope="col" colspan="6" class="p-2 text-xs font-medium tracking-tight text-center text-gray-800 uppercase border-black border-dashed border-x">{{ $month }}</th>
                         @endforeach
                     </tr>
                     <tr class="z-40 bg-gray-200">
                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase bg-gray-200 headcol">NAMA PEGAWAI<br>GELARAN</th>
                         @foreach ($months as $month)
-                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x whitespace-nowrap">1<br>(PK / DK)</th>
-                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x whitespace-nowrap">2<br>(BILANGAN)</th>
-                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x whitespace-nowrap">3<br>(LAWATAN)</th>
-                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x whitespace-nowrap">4<br>(NPF KAWALAN)</th>
-                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x whitespace-nowrap">5<br>(NPF PEMULIHAN)</th>
-                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x whitespace-nowrap">STATUS</th>
+                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase whitespace-nowrap border-black border-dashed border-x">1<br>(PK / DK)</th>
+                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase whitespace-nowrap border-black border-dashed border-x">2<br>(BILANGAN)</th>
+                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase whitespace-nowrap border-black border-dashed border-x">3<br>(LAWATAN)</th>
+                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase whitespace-nowrap border-black border-dashed border-x">4<br>(NPF KAWALAN)</th>
+                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase whitespace-nowrap border-black border-dashed border-x">5<br>(NPF PEMULIHAN)</th>
+                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase whitespace-nowrap border-black border-dashed border-x">STATUS</th>
                         @endforeach
                     </tr>
                 </thead>
@@ -28,9 +28,9 @@
                                 <tr class="@if($records->first()->incl_pmgi_flag == 'W') bg-gray-800 @elseif($records->first()->incl_pmgi_flag == 'S') bg-gray-500 @elseif($records->first()->incl_pmgi_flag == 'N') bg-gray-200 @endif">
                                     <th scope="col" class="p-2 text-sm font-normal tracking-tight text-left text-gray-800 @if($records->first()->incl_pmgi_flag == 'W') bg-gray-800 @elseif($records->first()->incl_pmgi_flag == 'S') bg-gray-500 @elseif($records->first()->incl_pmgi_flag == 'N') bg-gray-200 @else bg-white @endif headcol whitespace-nowrap">
                                         @if ($records->first()->incl_pmgi_flag == 'W')
-                                            <p class="font-semibold text-white ">KESELURUHAN TOTAL</p>
+                                            <p class="font-semibold text-white">KESELURUHAN TOTAL</p>
                                         @elseif ($records->first()->incl_pmgi_flag == 'S')
-                                            <p class="font-semibold text-white ">{{ $records->first()->negeri }} TOTAL</p>
+                                            <p class="font-semibold text-white">{{ $records->first()->negeri }} TOTAL</p>
                                         @elseif ($records->first()->incl_pmgi_flag == 'N')
                                             <p class="font-semibold text-gray-500">{{ $records->first()->branch->branch_name }} TOTAL</p>
                                         @else
@@ -65,9 +65,9 @@
                                         </th>
                                         <th scope="col" class="p-2 text-sm font-normal tracking-tight text-center @if($record && ($record->incl_pmgi_flag == 'W' || $record->incl_pmgi_flag == 'S')) text-white @else text-gray-800 @endif border-black border-dashed border-x whitespace-nowrap">
                                             @if($record && $record->pmgi_capai_flag == 'Y')
-                                                <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100">CAPAI</span>
+                                                <span class="px-2.5 py-0.5 mr-2 text-xs font-medium text-green-800 bg-green-100 rounded-md border-green-100">CAPAI</span>
                                             @elseif($record)
-                                                <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-red-100">TIDAK CAPAI</span>
+                                                <span class="px-2.5 py-0.5 mr-2 text-xs font-medium text-red-800 bg-red-100 rounded-md border-red-100">TIDAK CAPAI</span>
                                             @else
                                                 -
                                             @endif

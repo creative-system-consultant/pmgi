@@ -24,7 +24,7 @@ class Keseluruhan extends Component
 
     public function render()
     {
-        if ($this->role == 'admin') {
+        if ($this->role != 'pyd') {
             $officerData = $this->getAdminData();
         } else {
             $officerData = $this->getBranchData();

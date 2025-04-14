@@ -72,12 +72,14 @@ class RekodPmgi extends Component
 
     public function search()
     {
-        $this->pydId = BankOfficer::where(function($q) {
-                                $q->where('officer_name', 'LIKE', '%' . $this->searchTerm . '%')
-                                ->orWhere('staffno', 'LIKE', '%' . $this->searchTerm . '%');
-                            })
-                            ->value('officer_id');
-
+        $this->pydId = BankOfficer::join('FMS_USERS', 'PMGI_FMS_BANK_OFFICERS.OFFICER_ID', '=', 'FMS_USERS.USERID')
+            ->where('FMS_USERS.USERSTATUS', 1)
+            ->where(function($q) {
+                $q->where('PMGI_FMS_BANK_OFFICERS.OFFICER_NAME', 'LIKE', '%' . $this->searchTerm . '%')
+                    ->orWhere('PMGI_FMS_BANK_OFFICERS.STAFFNO', 'LIKE', '%' . $this->searchTerm . '%');
+            })
+            ->value('officer_id');
+        
         $this->getData();
     }
 
@@ -153,7 +155,7 @@ class RekodPmgi extends Component
         $data = DB::table('PMGI_SUMM_MTH_OFFICER')
                     ->where('officer_id', $settInfo->pyd_id)
                     ->whereBetween('report_date', [$fromReportDate, $toReportDate])
-                    ->whereNotIn('incl_pmgi_flag', ['G'])
+                    ->whereNotIn('incl_pmgi_flag', ['G', 'H'])
                     ->orderBy('report_date', 'asc')
                     ->get();
 
