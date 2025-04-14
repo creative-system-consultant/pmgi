@@ -6,7 +6,7 @@
             <div class="items-center lg:flex">
                 <div class="mb-4 lg:mb-0">
                     <h3 class="mb-2 text-xl font-bold text-gray-900 ">Senarai PYD</h3>
-                    <span class="text-base font-normal text-gray-500 ">Senarai PYD untuk dinilai JkTT</span>
+                    <span class="text-base font-normal text-gray-500 ">Senarai PYD untuk dinilai JKTT</span>
                 </div>
             </div>
             <div class="flex flex-col mt-6">
@@ -23,7 +23,7 @@
                                             CAWANGAN
                                         </th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x ">
-                                            JkTT
+                                            JKTT
                                         </th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x ">
                                             TINDAKAN

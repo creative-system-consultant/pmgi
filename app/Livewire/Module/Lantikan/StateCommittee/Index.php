@@ -106,7 +106,8 @@ class Index extends Component
             if ($userId && (!isset($this->originalSelectedUsers[$stateCode]) || $this->originalSelectedUsers[$stateCode] !== $userId)) {
                 // Generate emails image and send email only for updated entries
                 $path = $this->generateImageFromHtml($stateCode, $userId);
-                $email = BankOfficer::where('officer_id', $userId)->value('email');
+                $email = 'hafizah@tekun.gov.my'; //FAT purpose
+                // $email = BankOfficer::where('officer_id', $userId)->value('email');
                 $this->sendEmail($email, $path['image'], $path['html']);
 
                 // Add to the update list

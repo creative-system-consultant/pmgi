@@ -113,19 +113,10 @@ abstract class BasePmgi extends Component
             }
 
             if ($this->getPmgiLevel() == 'PM3') {
-                // Check if all 'jawatan' are the same
-                $uniqueJawatan = array_unique($jawatanList);
-                if (count($uniqueJawatan) === 1) {
                     // Pass the unique jawatan to the getJawatan method
-                    $this->getPymPmc($uniqueJawatan[0]);
+                    $this->getPymPmc();
                     $this->pmgi = $pmgi;
                     $this->cardModal = true;
-                } else {
-                    $this->dialog()->error(
-                        $title = 'Ralat!',
-                        $description = 'Sila buat pilihan berdasarkan Jawatan yang sama sahaja.'
-                    );
-                }
             } else {
                 $this->getPym();
                 $this->pmgi = $pmgi;
@@ -147,44 +138,24 @@ abstract class BasePmgi extends Component
                         ->toArray();
     }
 
-    public function getPymPmc($jawatan)
+    public function getPymPmc()
     {
-        if ($jawatan == 'PEMBANTU PEGAWAI') {
-            $this->pymSelection = DB::table('FMS_USERS as a')
-                            ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
-                            ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
-                            ->select('a.userid', 'b.officer_name', 'c.branch_name')
-                            ->where('a.userstatus', 1)
-                            ->where(DB::raw('substr(b.branch_code, 0, 2)'), $this->stateCode)
-                            ->whereIn('b.officer_group', [5,12])
-                            ->get()
-                            ->toArray();
+        $this->pymSelection = DB::table('FMS_USERS as a')
+                        ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
+                        ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
+                        ->select('a.userid', 'b.officer_name', 'c.branch_name')
+                        ->where('a.userstatus', 1)
+                        ->where(DB::raw('substr(b.branch_code, 0, 2)'), $this->stateCode)
+                        ->whereIn('b.officer_group', [5,12])
+                        ->get()
+                        ->toArray();
 
-            $this->pmcSelection = DB::table('PMGI_JPOC as a')
-                            ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
-                            ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
-                            ->select('a.userid', 'b.officer_name', 'c.branch_name')
-                            ->get()
-                            ->toArray();
-
-        } else { // Pengurus Cawangan
-            $this->pymSelection = DB::table('FMS_USERS as a')
-                            ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
-                            ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
-                            ->select('a.userid', 'b.officer_name', 'c.branch_name')
-                            ->where('a.userstatus', 1)
-                            ->where(DB::raw('substr(b.branch_code, 0, 2)'), $this->stateCode)
-                            ->whereIn('b.officer_group', [5,12])
-                            ->get()
-                            ->toArray();
-
-            $this->pmcSelection = DB::table('PMGI_JPOC as a')
-                            ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
-                            ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
-                            ->select('a.userid', 'b.officer_name', 'c.branch_name')
-                            ->get()
-                            ->toArray();
-        }
+        $this->pmcSelection = DB::table('PMGI_JPOC as a')
+                        ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
+                        ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
+                        ->select('a.userid', 'b.officer_name', 'c.branch_name')
+                        ->get()
+                        ->toArray();
     }
 
     private function emptySelection()
@@ -205,8 +176,10 @@ abstract class BasePmgi extends Component
         $pymImagePath = $this->generateImageFromHtml('pym');
         $pmcImagePath = $this->selectedPmc ? $this->generateImageFromHtml('pmc') : null;
 
-        $pymEmail = $this->getPymEmailAddress();
-        $pmcEmail = $this->getPmcEmailAddress();
+        $pymEmail = 'hafizah@tekun.gov.my'; //FAT purpose
+        // $pymEmail = $this->getPymEmailAddress();
+        $pmcEmail = 'hafizah@tekun.gov.my'; //FAT purpose
+        // $pmcEmail = $this->getPmcEmailAddress();
 
         $this->sendEmails(
             $pymEmail,

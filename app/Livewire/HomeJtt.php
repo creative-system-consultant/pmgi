@@ -106,10 +106,10 @@ class HomeJtt extends Component
         // $sessionDate = now()->format('Y-m-d');
 
         // uat jtt 1
-        // $sessionDate = Carbon::createFromFormat('d/m/Y', '01/09/2023')->addMonth()->format('Y-m-d'); //report_date
+        $sessionDate = Carbon::createFromFormat('d/m/Y', '30/11/2023')->addMonth()->format('Y-m-d'); //report_date
 
         // uat jtt 2
-        $sessionDate = Carbon::createFromFormat('d/m/Y', '1/05/2024')->format('Y-m-d');
+        // $sessionDate = Carbon::createFromFormat('d/m/Y', '1/05/2024')->format('Y-m-d');
 
         $jttOfficer = SettJtt::all();
 

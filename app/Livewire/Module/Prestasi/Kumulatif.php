@@ -77,13 +77,13 @@ class Kumulatif extends Component
             // prod use this
             // $report_date = now();
             // uat pmgi 1
-            $report_date = Carbon::createFromFormat('d/m/Y', '31/01/2023');
+            // $report_date = Carbon::createFromFormat('d/m/Y', '31/03/2023');
 
             // uat pmgi 2
-            // $report_date = Carbon::createFromFormat('d/m/Y', '30/04/2023');
+            // $report_date = Carbon::createFromFormat('d/m/Y', '30/06/2023');
 
             // uat pmgi 3
-            // $report_date = Carbon::createFromFormat('d/m/Y', '31/07/2023');
+            $report_date = Carbon::createFromFormat('d/m/Y', '30/11/2023');
 
             $this->fromReportDate = $report_date->copy()->subMonth(1)->endOfMonth()->format('Y-m-d');
             $this->toReportDate = $report_date->copy()->endOfMonth()->format('Y-m-d');
@@ -116,7 +116,7 @@ class Kumulatif extends Component
             $this->data = DB::table('PMGI_SUMM_MTH_OFFICER')
                             ->where('officer_id', $this->pydId)
                             ->whereBetween('report_date', [$this->fromReportDate, $this->toReportDate])
-                            ->whereNotIn('incl_pmgi_flag', ['G'])
+                            ->whereNotIn('incl_pmgi_flag', ['G', 'H'])
                             ->orderBy('report_date', 'asc')
                             ->get();
 

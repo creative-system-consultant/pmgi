@@ -87,14 +87,20 @@ class Login extends Component
         }
 
         // Check if the environment is not production
-        if (app()->environment('production')) {
-            $savedpassword = LoginService::decrypting($user->userpassword);
+        // if (app()->environment('production')) {
+            if ($user->encryptflag != 2) {
+                $savedpassword = LoginService::decrypting($user->userpassword);
+            } else {
+                // dump('sini');
+                $savedpassword = LoginService::of_decryptnew($user->userpassword);
+                // dd($savedpassword);
+            }
 
             if ($savedpassword !== $this->password) {
                 $this->addError('password', trans('auth.failed'));
                 return;
             }
-        }
+        // }
 
         Auth::login($user);
 

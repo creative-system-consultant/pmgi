@@ -30,6 +30,7 @@ use App\Livewire\Module\Tetapan\OfficerInfo\Index as OfficerInfoIndex;
 use App\Livewire\Module\Tetapan\PeratusanKriteria;
 use App\Livewire\Module\Tetapan\UserAccessLevel\Index as UserAccessLevelIndex;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\RestrictDuringSession;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,7 +87,7 @@ Route::middleware(['auth', 'check.role', 'restrict.session'])->group(function ()
 
     // rekod PMGi (individu)
     Route::get('/rekod-pmgi', RekodPmgi::class)->name('rekod-pmgi')->middleware('check.access:rekod-pmgi');
-    Route::get('/stream-pdf/{sessionId}', [RekodPmgi::class, 'streamRekodPmgi'])->name('stream.rekodPmgi');
+    Route::get('/stream-pdf/{sessionId}', [RekodPmgi::class, 'streamRekodPmgi'])->name('stream.rekodPmgi')->withoutMiddleware([RestrictDuringSession::class]);
 
     // prestasi
     Route::get('/prestasi/bulanan', Bulanan::class)->name('prestasi.bulanan')->middleware('check.access:prestasi-bulanan');

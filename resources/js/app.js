@@ -7,8 +7,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const currentPath = window.location.pathname;
 
     function showLoading() {
-        // Only show loading if not on excluded routes
-        if (!['/loading-pmgi', '/loading-perakuan', '/list-jtt'].includes(currentPath)) {
+        if (
+            !currentPath.startsWith('/loading-pmgi') &&
+            !currentPath.startsWith('/loading-perakuan') &&
+            !currentPath.startsWith('/list-jtt')
+        ) {
             loading.style.display = 'flex';
         }
     }

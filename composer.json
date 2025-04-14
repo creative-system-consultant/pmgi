@@ -14,7 +14,7 @@
         "livewire/livewire": "^3.4",
         "maatwebsite/excel": "^3.1",
         "wireui/wireui": "^1.19",
-        "yajra/laravel-oci8": "11"
+        "yajra/laravel-oci8": "^11.4"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",
