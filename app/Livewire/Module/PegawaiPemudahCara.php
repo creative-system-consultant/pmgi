@@ -21,6 +21,9 @@ class PegawaiPemudahCara extends Component
     public $pydName;
     public $pydPosition;
     public $pydStaffNo;
+    public $pydBranch;
+    public $pydState;
+    public $stateBranch;
     public $fairFlag;
     public $fairComment;
     public $undrstdFlag;
@@ -75,10 +78,13 @@ class PegawaiPemudahCara extends Component
 
         if ($this->sessionId) {
             $pyd = $this->sessionSetting->pyd_id;
-            $bankOfficer = BankOfficer::whereOfficerId($pyd)->first();
+            $bankOfficer = BankOfficer::with(['branch.bnmState'])->whereOfficerId($pyd)->first();
             $this->pydName = $bankOfficer->officer_name;
             $this->pydPosition = $bankOfficer->officer_position;
             $this->pydStaffNo = $bankOfficer->staffno;
+            $this->pydBranch = $bankOfficer->branch->branch_name ?? '-';
+            $this->pydState = $bankOfficer->branch->bnmState->description ?? '-';
+            $this->stateBranch = $this->pydState . ' - ' . $this->pydBranch;
 
             // used in perakuan
             $pmcRecordExists = SessionPmcInfo::where('session_id', $this->sessionId)->exists();

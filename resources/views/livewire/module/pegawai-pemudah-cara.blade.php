@@ -1,11 +1,11 @@
 <main x-data="{ showPrestasiKumulatif: @entangle('showPrestasiKumulatif') }">
     <div class="px-4 pt-6 2xl:px-0">
-        <div class="p-4 my-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 ">
+        <div class="p-4 my-4 bg-white rounded-lg border border-gray-200 shadow-sm sm:p-6">
             <!-- Card header -->
             <div class="items-center">
                 <div class="mb-4 lg:mb-0">
-                    <div class="flex items-center mb-2 ">
-                        <h3 class="text-xl font-bold text-gray-900 ">Ulasan Pegawai Pemudah Cara (PMC)</h3>
+                    <div class="flex items-center mb-2">
+                        <h3 class="text-xl font-bold text-gray-900">Ulasan Pegawai Pemudah Cara (PMC)</h3>
                         @if($perakuan && auth()->user()->userid == $sessionSetting->pmc_id)
                         <a href="{{ route('pegawai-pemudah-cara') }}" class="inline-flex items-center px-4 py-2 ml-4 font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800" wire:click="updates">
                             Kemaskini
@@ -14,20 +14,24 @@
                     </div>
 
                     @if(!$perakuan)
-                        <div class="p-6 mt-4 border rounded-lg shadow bg-primary-100 border-primary-200 dark:bg-gray-800 dark:border-gray-700">
+                        <div class="p-6 mt-4 rounded-lg border shadow bg-primary-100 border-primary-200 dark:bg-gray-800 dark:border-gray-700">
                             <div class="flex">
                                 <div class="grid w-[60%] grid-cols-3 gap-4">
                                     <p class="flex items-center font-semibold">Nama Pegawai Yang Dinilai</p>
-                                    <div class="block w-full col-span-2">
+                                    <div class="block col-span-2 w-full">
                                         <x-input placeholder="Nama" wire:model="pydName" disabled />
                                     </div>
                                     <p class="flex items-center font-semibold">Jawatan</p>
-                                    <div class="block w-full col-span-2">
+                                    <div class="block col-span-2 w-full">
                                         <x-input placeholder="Jawatan" wire:model="pydPosition" disabled />
                                     </div>
                                     <p class="flex items-center font-semibold">Nombor Pekerja</p>
-                                    <div class="block w-full col-span-2">
+                                    <div class="block col-span-2 w-full">
                                         <x-input placeholder="Staff No" wire:model="pydStaffNo" disabled />
+                                    </div>
+                                    <p class="flex items-center font-semibold">Negeri/Cawangan</p>
+                                    <div class="block col-span-2 w-full">
+                                        <x-input placeholder="Negeri/Cawangan" wire:model="stateBranch" disabled />
                                     </div>
                                 </div>
                             </div>
@@ -38,7 +42,7 @@
 
             @if(!$perakuan)
                 <div class="flex mt-8">
-                    <button wire:click="togglePrestasiKumulatif" class="inline-flex items-center py-2.5 px-4 font-medium text-center text-white bg-teal-700 rounded-lg focus:ring-4 focus:ring-teal-200 dark:focus:ring-teal-900 hover:bg-teal-800">
+                    <button wire:click="togglePrestasiKumulatif" class="inline-flex items-center px-4 py-2.5 font-medium text-center text-white bg-teal-700 rounded-lg focus:ring-4 focus:ring-teal-200 dark:focus:ring-teal-900 hover:bg-teal-800">
                         {{ $showPrestasiKumulatif ? 'Tutup' : 'Lihat' }} Prestasi Kumulatif
                     </button>
                 </div>
@@ -152,7 +156,7 @@
                         @error('exitFlag')<p class="mt-2 text-sm text-negative-600">{{ $message }}</p>@enderror
                     </div>
                     <div class="{{ $exitFlag == 1 ? 'block' : 'hidden'}}">
-                        <div class="flex items-center w-full my-4">
+                        <div class="flex items-center my-4 w-full">
                             @if($perakuan && auth()->user()->userid != $sessionSetting->pmc_id)
                                 <x-native-select label="Sila pilih jenis keluar senarai :" placeholder="Sila Pilih" :options="[
                                     ['name' => 'Tanpa Syarat',  'id' => 1],
@@ -185,7 +189,7 @@
                     <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true" x-on:livewire-upload-finish="uploading = false" x-on:livewire-upload-cancel="uploading = false" x-on:livewire-upload-error="uploading = false" x-on:livewire-upload-progress="progress = $event.detail.progress" class="mb-4">
                         <!-- File Input -->
                         <label for="muatnaik" class="block mb-2 font-medium text-gray-900 text-md dark:text-white">Muat Naik Fail (Jika berkaitan) :</label>
-                        <input class="block w-full mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none dark:bg-gray-700" id="default_size" type="file" wire:model="file">
+                        <input class="block mb-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none dark:bg-gray-700" id="default_size" type="file" wire:model="file">
 
                         <!-- Progress Bar -->
                         <div x-show="uploading">
@@ -198,7 +202,7 @@
                     @endif
 
                     <div class="flex">
-                        <button wire:click="submit" class="inline-flex items-center py-2.5 px-4 font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+                        <button wire:click="submit" class="inline-flex items-center px-4 py-2.5 font-medium text-center text-white rounded-lg bg-primary-700 focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
                             Hantar
                         </button>
                     </div>

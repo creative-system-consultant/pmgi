@@ -30,6 +30,9 @@ class PegawaiDinilai extends Component
     public $pydPosition;
     public $pydStaffNo;
     public $pydId;
+    public $pydBranch;
+    public $pydState;
+    public $stateBranch;
 
     #[Validate('required', message: 'Sila pilih masalah yang dihadapi.')]
     public $problem;
@@ -63,10 +66,13 @@ class PegawaiDinilai extends Component
         $this->sessionSetting = SettPymPmc::whereSessionId($this->sessionId)->first();
         if ($this->sessionId) {
             $this->pydId = $this->sessionSetting->pyd_id;
-            $bankOfficer = BankOfficer::whereOfficerId($this->pydId)->first();
+            $bankOfficer = BankOfficer::with(['branch.bnmState'])->whereOfficerId($this->pydId)->first();
             $this->pydName = $bankOfficer->officer_name;
             $this->pydPosition = $bankOfficer->officer_position;
             $this->pydStaffNo = $bankOfficer->staffno;
+            $this->pydBranch = $bankOfficer->branch->branch_name ?? '-';
+            $this->pydState = $bankOfficer->branch->bnmState->description ?? '-';
+            $this->stateBranch = $this->pydState . ' - ' . $this->pydBranch;
 
             // used in perakuan
             $pydRecordExists = SessionPydInfo::where('session_id', $this->sessionId)->exists();

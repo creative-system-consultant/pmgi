@@ -30,6 +30,10 @@
                                     <div class="block col-span-2 w-full">
                                         <x-input placeholder="Staff No" wire:model="pydStaffNo" disabled />
                                     </div>
+                                    <p class="flex items-center font-semibold">Negeri/Cawangan</p>
+                                    <div class="block col-span-2 w-full">
+                                        <x-input placeholder="Negeri/Cawangan" wire:model="stateBranch" disabled />
+                                    </div>
                                 </div>
                             </div>
                         </div>
