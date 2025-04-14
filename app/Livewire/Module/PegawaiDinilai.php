@@ -21,6 +21,7 @@ class PegawaiDinilai extends Component
     public $model;
     public $savedFile;
     public $showPrestasiKumulatif = false;
+    public $showRekodPmgi = false;
     public $infoModal = false;
     public $attachmentUrl = null;
     public $attachmentModal = false;
@@ -28,6 +29,7 @@ class PegawaiDinilai extends Component
     public $pydName;
     public $pydPosition;
     public $pydStaffNo;
+    public $pydId;
 
     #[Validate('required', message: 'Sila pilih masalah yang dihadapi.')]
     public $problem;
@@ -60,8 +62,8 @@ class PegawaiDinilai extends Component
         $this->sessionId = str_replace('-', '/', request()->query('session_id'));
         $this->sessionSetting = SettPymPmc::whereSessionId($this->sessionId)->first();
         if ($this->sessionId) {
-            $pyd = $this->sessionSetting->pyd_id;
-            $bankOfficer = BankOfficer::whereOfficerId($pyd)->first();
+            $this->pydId = $this->sessionSetting->pyd_id;
+            $bankOfficer = BankOfficer::whereOfficerId($this->pydId)->first();
             $this->pydName = $bankOfficer->officer_name;
             $this->pydPosition = $bankOfficer->officer_position;
             $this->pydStaffNo = $bankOfficer->staffno;
@@ -82,6 +84,11 @@ class PegawaiDinilai extends Component
     public function togglePrestasiKumulatif()
     {
         $this->showPrestasiKumulatif = !$this->showPrestasiKumulatif;
+    }
+
+    public function toggleRekodPmgi()
+    {
+        $this->showRekodPmgi = !$this->showRekodPmgi;
     }
 
     public function toggleDetail()
