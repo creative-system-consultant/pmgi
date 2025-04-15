@@ -31,7 +31,7 @@ class PrestasiBulananRingkasan implements FromView, WithStyles
     public function view(): View
     {
         $query = SummMthOfficer::with(['branch', 'officerBranch'])
-            ->whereBetween('report_date', [$this->reportDate->copy()->subMonth()->startOfMonth(), $this->reportDate->copy()->endOfMonth()]);
+            ->whereBetween('report_date', [$this->reportDate->copy()->subMonthNoOverflow()->startOfMonth(), $this->reportDate->copy()->endOfMonth()]);
 
         if(!$this->state) {
             $userData = SummMthOfficer::whereOfficerId(auth()->user()->userid)
