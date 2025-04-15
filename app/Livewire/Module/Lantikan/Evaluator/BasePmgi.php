@@ -127,33 +127,43 @@ abstract class BasePmgi extends Component
 
     public function getPym()
     {
+        $urusetiaNegeriRoleId = DB::table('PMGI_SETT_UAL_ROLE')->where('name', 'URUSETIA NEGERI')->value('id');
+
         $this->pymSelection = DB::table('FMS_USERS as a')
                         ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
                         ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
+                        ->leftJoin('PMGI_SETT_UAL_USER_HAS_ROLE as r', 'r.userid', '=', 'a.userid')
                         ->select('a.userid', 'b.officer_name', 'c.branch_name')
                         ->where('a.userstatus', 1)
                         ->where(DB::raw('substr(b.branch_code, 0, 2)'), $this->stateCode)
                         ->whereIn('b.officer_group', [5,12])
+                        ->whereRaw('NOT EXISTS (SELECT 1 FROM PMGI_SETT_UAL_USER_HAS_ROLE ur WHERE ur.userid = a.userid AND ur.role_id = ?)', [$urusetiaNegeriRoleId])
                         ->get()
                         ->toArray();
     }
 
     public function getPymPmc()
     {
+        $urusetiaNegeriRoleId = DB::table('PMGI_SETT_UAL_ROLE')->where('name', 'URUSETIA NEGERI')->value('id');
+
         $this->pymSelection = DB::table('FMS_USERS as a')
                         ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
                         ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
+                        ->leftJoin('PMGI_SETT_UAL_USER_HAS_ROLE as r', 'r.userid', '=', 'a.userid')
                         ->select('a.userid', 'b.officer_name', 'c.branch_name')
                         ->where('a.userstatus', 1)
                         ->where(DB::raw('substr(b.branch_code, 0, 2)'), $this->stateCode)
                         ->whereIn('b.officer_group', [5,12])
+                        ->whereRaw('NOT EXISTS (SELECT 1 FROM PMGI_SETT_UAL_USER_HAS_ROLE ur WHERE ur.userid = a.userid AND ur.role_id = ?)', [$urusetiaNegeriRoleId])
                         ->get()
                         ->toArray();
 
         $this->pmcSelection = DB::table('PMGI_JPOC as a')
                         ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
                         ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
+                        ->leftJoin('PMGI_SETT_UAL_USER_HAS_ROLE as r', 'r.userid', '=', 'a.userid')
                         ->select('a.userid', 'b.officer_name', 'c.branch_name')
+                        ->whereRaw('NOT EXISTS (SELECT 1 FROM PMGI_SETT_UAL_USER_HAS_ROLE ur WHERE ur.userid = a.userid AND ur.role_id = ?)', [$urusetiaNegeriRoleId])
                         ->get()
                         ->toArray();
     }
