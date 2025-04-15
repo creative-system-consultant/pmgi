@@ -46,8 +46,6 @@ class Kumulatif extends Component
     {
         if ($this->pmgiSessionId) {
             $this->populateDataForSession(); // Call for PMGI session users
-        } else {
-            $this->populateData(); // Call for regular users
         }
     }
 
@@ -64,7 +62,7 @@ class Kumulatif extends Component
         }
     }
 
-    protected function populateData()
+    public function search()
     {
         $role = [];
         foreach(auth()->user()->roles as $roles) {
@@ -73,36 +71,27 @@ class Kumulatif extends Component
 
         if (in_array('PYD', $role)) {
             $this->pydId = auth()->user()->userid;
+            // For PYD role, only validate from and to dates
+            $this->validate([
+                'from' => 'required',
+                'to' => 'required'
+            ], [
+                'from.required' => 'Dari diperlukan.',
+                'to.required' => 'Hingga diperlukan.'
+            ]);
+        } else {
+            // For other roles, validate all fields
+            $this->validate();
 
-            // prod use this
-            // $report_date = now();
-            // uat pmgi 1
-            // $report_date = Carbon::createFromFormat('d/m/Y', '31/03/2023');
+            $this->searchTerm = strtoupper($this->searchTerm);
 
-            // uat pmgi 2
-            // $report_date = Carbon::createFromFormat('d/m/Y', '30/06/2023');
-
-            // uat pmgi 3
-            $report_date = Carbon::createFromFormat('d/m/Y', '30/11/2023');
-
-            $this->fromReportDate = $report_date->copy()->subMonth(1)->endOfMonth()->format('Y-m-d');
-            $this->toReportDate = $report_date->copy()->endOfMonth()->format('Y-m-d');
-            $this->getData();
+            $this->pydId = BankOfficer::whereBranchCode($this->branch)
+                                        ->where(function($q) {
+                                            $q->where('officer_name', 'LIKE', '%' . $this->searchTerm . '%')
+                                            ->orWhere('staffno', 'LIKE', '%' . $this->searchTerm . '%');
+                                        })
+                                        ->value('officer_id');
         }
-    }
-
-    public function search()
-    {
-        $this->validate();
-
-        $this->searchTerm = strtoupper($this->searchTerm);
-
-        $this->pydId = BankOfficer::whereBranchCode($this->branch)
-                            ->where(function($q) {
-                                $q->where('officer_name', 'LIKE', '%' . $this->searchTerm . '%')
-                                ->orWhere('staffno', 'LIKE', '%' . $this->searchTerm . '%');
-                            })
-                            ->value('officer_id');
 
         $this->fromReportDate = Carbon::parse($this->from)->endOfMonth()->format('Y-m-d');
         $this->toReportDate = Carbon::parse($this->to)->endOfMonth()->format('Y-m-d');
