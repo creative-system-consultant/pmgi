@@ -87,7 +87,7 @@
                                                     {{ $loop->iteration }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
-                                                    {{ strtoupper($data->created_at->translatedFormat('F Y')) }}
+                                                    {{ strtoupper($data->created_at->translatedFormat('d/m/Y')) }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     @if($data->mntrSession->pmgi_result == 'CP1')
@@ -137,7 +137,7 @@
                                                     {{ $loop->iteration }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
-                                                    {{ strtoupper($data->created_at->translatedFormat('F Y')) }}
+                                                    {{ strtoupper($data->created_at->translatedFormat('d/m/Y')) }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     @if($data->mntrSession->pmgi_result == 'CP2')
@@ -187,7 +187,7 @@
                                                     {{ $loop->iteration }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
-                                                    {{ strtoupper($data->created_at->translatedFormat('F Y')) }}
+                                                    {{ strtoupper($data->created_at->translatedFormat('d/m/Y')) }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     @if($data->mntrSession->pmgi_result == 'PEX')
@@ -243,7 +243,7 @@
                                                     {{ $loop->iteration }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
-                                                    {{ strtoupper(\Carbon\Carbon::parse($data->sessionInfo->session_date)->translatedFormat('F Y')) }}
+                                                    {{ strtoupper(\Carbon\Carbon::parse($data->sessionInfo->session_date)->translatedFormat('d/m/Y')) }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     @if($data->mntrSession->pmgi_result == 'PDQ')
@@ -295,7 +295,7 @@
                                                     {{ $loop->iteration }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
-                                                    {{ strtoupper($data->created_at->translatedFormat('F Y')) }}
+                                                    {{ strtoupper($data->created_at->translatedFormat('d/m/Y')) }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     @if($data->mntrSession->pmgi_result == 'EXL')
