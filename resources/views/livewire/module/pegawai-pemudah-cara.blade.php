@@ -132,7 +132,7 @@
                 <hr>
                 <div class="my-8">
                     <div class="mb-2">
-                        <label for="syorKeluar" class="block mb-2 font-medium @if($perakuan && auth()->user()->userid != $sessionSetting->pmc_id) text-gray-700 opacity-60 @else text-gray-900 @endif text-md dark:text-white @error('exitFlag') text-red-700 @enderror">Disyorkan keluar senarai?</label>
+                        <label for="syorKeluar" class="block mb-2 font-medium @if($perakuan && auth()->user()->userid != $sessionSetting->pmc_id) text-gray-700 opacity-60 @else text-gray-900 @endif text-md dark:text-white @error('exitFlag') text-red-700 @enderror">Disyorkan penangguhan?</label>
                         <div class="flex">
                             <div class="flex items-center mr-4 border border-gray-200 rounded ps-4 @error('exitFlag') border-red-200 @enderror" style="padding-left: 2rem;padding-right: 2rem;">
                                 @if($perakuan && auth()->user()->userid != $sessionSetting->pmc_id)
@@ -158,13 +158,13 @@
                     <div class="{{ $exitFlag == 1 ? 'block' : 'hidden'}}">
                         <div class="flex items-center my-4 w-full">
                             @if($perakuan && auth()->user()->userid != $sessionSetting->pmc_id)
-                                <x-native-select label="Sila pilih jenis keluar senarai :" placeholder="Sila Pilih" :options="[
+                                <x-native-select label="Sila pilih jenis penangguhan :" placeholder="Sila Pilih" :options="[
                                     ['name' => 'Tanpa Syarat - Keluar Senarai',  'id' => 1],
                                     ['name' => 'Bersyarat (a) - Kembali ke PMG-i (2)', 'id' => 2],
                                     ['name' => 'Bersyarat (b) - Kekal di PMG-i (3)',   'id' => 3],
                                 ]" option-label="name" option-value="id" wire:model="exitTypeFlag" disabled />
                             @else
-                                <x-native-select label="Sila pilih jenis keluar senarai :" placeholder="Sila Pilih" :options="[
+                                <x-native-select label="Sila pilih jenis penangguhan :" placeholder="Sila Pilih" :options="[
                                     ['name' => 'Tanpa Syarat - Keluar Senarai',  'id' => 1],
                                     ['name' => 'Bersyarat (a) - Kembali ke PMG-i (2)', 'id' => 2],
                                     ['name' => 'Bersyarat (b) - Kekal di PMG-i (3)',   'id' => 3],
