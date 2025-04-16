@@ -141,7 +141,7 @@
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     @if($data->mntrSession->pmgi_result == 'CP2')
-                                                    <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-green-800 bg-green-100 rounded-md border-green-100">SELESAI SESI</div>
+                                                    <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-green-800 bg-green-100 rounded-md border-green-100">SELESAI DILAKSANA</div>
                                                     @endif
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
