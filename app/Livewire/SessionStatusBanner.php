@@ -5,14 +5,21 @@ namespace App\Livewire;
 use App\Models\SessionInfo;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class SessionStatusBanner extends Component
 {
+    use Actions;
     public $hasActiveSession = false;
     public $sessionInfo = null;
 
     public function mount()
     {
+        if (!Auth::check()) {
+            session()->flash('flash_error', 'Sila log masuk sebelum menggunakan sistem');
+            return redirect()->route('login');
+        }
+
         $this->checkSessionStatus();
     }
 
