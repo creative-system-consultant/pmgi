@@ -344,10 +344,10 @@
                                                     BILANGAN AKAUN NPF
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border-l border-black border-dashed border-y">
-                                                    {{ number_format($data->bil_pulih_npf_sblm) }}
+                                                    {{ number_format($data->bil_pulih_npf_sblm, 2) }}
                                                 </td>
                                                 <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border-l border-black border-dashed border-y">
-                                                    {{ number_format($data->bil_pulih_npf_pts) }}%
+                                                    {{ number_format($data->bil_pulih_npf_pts, 2) }}%
                                                 </td>
                                                 <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-l border-black border-dashed">
                                                     @if($data->bil_pulih_npf_capai_flag == 'Y')
