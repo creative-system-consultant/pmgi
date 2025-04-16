@@ -159,15 +159,15 @@
                         <div class="flex items-center my-4 w-full">
                             @if($perakuan && auth()->user()->userid != $sessionSetting->pmc_id)
                                 <x-native-select label="Sila pilih jenis keluar senarai :" placeholder="Sila Pilih" :options="[
-                                    ['name' => 'Tanpa Syarat',  'id' => 1],
-                                    ['name' => 'Bersyarat', 'id' => 2],
-                                    ['name' => 'Penangguhan',   'id' => 3],
+                                    ['name' => 'Tanpa Syarat - Keluar Senarai',  'id' => 1],
+                                    ['name' => 'Bersyarat (a) - Kembali ke PMG-i (2)', 'id' => 2],
+                                    ['name' => 'Bersyarat (b) - Kekal di PMG-i (3)',   'id' => 3],
                                 ]" option-label="name" option-value="id" wire:model="exitTypeFlag" disabled />
                             @else
                                 <x-native-select label="Sila pilih jenis keluar senarai :" placeholder="Sila Pilih" :options="[
-                                    ['name' => 'Tanpa Syarat',  'id' => 1],
-                                    ['name' => 'Bersyarat', 'id' => 2],
-                                    ['name' => 'Penangguhan',   'id' => 3],
+                                    ['name' => 'Tanpa Syarat - Keluar Senarai',  'id' => 1],
+                                    ['name' => 'Bersyarat (a) - Kembali ke PMG-i (2)', 'id' => 2],
+                                    ['name' => 'Bersyarat (b) - Kekal di PMG-i (3)',   'id' => 3],
                                 ]" option-label="name" option-value="id" wire:model="exitTypeFlag" />
                             @endif
                         </div>
