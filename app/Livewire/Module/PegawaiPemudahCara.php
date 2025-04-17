@@ -17,6 +17,7 @@ class PegawaiPemudahCara extends Component
 
     public $perakuan = false;
     public $showPrestasiKumulatif = false;
+    public $showRekodPmgi = false;
     public $sessionId;
     public $pydName;
     public $pydPosition;
@@ -34,6 +35,7 @@ class PegawaiPemudahCara extends Component
     public $file;
     public $attachment;
     public $sessionSetting;
+    public $pydId;
 
     protected function rules()
     {
@@ -77,8 +79,8 @@ class PegawaiPemudahCara extends Component
         $this->sessionSetting = SettPymPmc::whereSessionId($this->sessionId)->first();
 
         if ($this->sessionId) {
-            $pyd = $this->sessionSetting->pyd_id;
-            $bankOfficer = BankOfficer::with(['branch.bnmState'])->whereOfficerId($pyd)->first();
+            $this->pydId = $this->sessionSetting->pyd_id;
+            $bankOfficer = BankOfficer::whereOfficerId($this->pydId)->first();
             $this->pydName = $bankOfficer->officer_name;
             $this->pydPosition = $bankOfficer->officer_position;
             $this->pydStaffNo = $bankOfficer->staffno;
@@ -105,6 +107,11 @@ class PegawaiPemudahCara extends Component
     public function togglePrestasiKumulatif()
     {
         $this->showPrestasiKumulatif = !$this->showPrestasiKumulatif;
+    }
+
+    public function toggleRekodPmgi()
+    {
+        $this->showRekodPmgi = !$this->showRekodPmgi;
     }
 
     public function submit()

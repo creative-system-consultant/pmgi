@@ -1,4 +1,4 @@
-<main x-data="{ showPrestasiKumulatif: @entangle('showPrestasiKumulatif') }">
+<main x-data="{ showPrestasiKumulatif: @entangle('showPrestasiKumulatif'), showRekodPmgi: @entangle('showRekodPmgi') }">
     <div class="px-4 pt-6 2xl:px-0">
         <div class="p-4 my-4 bg-white rounded-lg border border-gray-200 shadow-sm sm:p-6">
             <!-- Card header -->
@@ -45,6 +45,9 @@
                     <button wire:click="togglePrestasiKumulatif" class="inline-flex items-center px-4 py-2.5 font-medium text-center text-white bg-teal-700 rounded-lg focus:ring-4 focus:ring-teal-200 dark:focus:ring-teal-900 hover:bg-teal-800">
                         {{ $showPrestasiKumulatif ? 'Tutup' : 'Lihat' }} Prestasi Kumulatif
                     </button>
+                    <button wire:click="toggleRekodPmgi" class="inline-flex items-center px-4 py-2.5 ml-4 font-medium text-center text-white bg-teal-700 rounded-lg focus:ring-4 focus:ring-teal-200 dark:focus:ring-teal-900 hover:bg-teal-800">
+                        {{ $showRekodPmgi ? 'Tutup' : 'Lihat' }} Rekod PMGi
+                    </button>
                 </div>
 
                 {{-- Prestasi Kumulatif --}}
@@ -54,6 +57,14 @@
                     @endif
                 </div>
                 {{-- end prestasi kumulatif --}}
+
+                {{-- Rekod PMGi --}}
+                <div x-show="showRekodPmgi" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95">
+                    @if($showRekodPmgi)
+                        <livewire:module.rekod-pmgi :pmgiSession="true" :pydIdOrigin=$pydId >
+                    @endif
+                </div>
+                {{-- end Rekod PMGi --}}
             @endif
 
             @if($perakuan)
