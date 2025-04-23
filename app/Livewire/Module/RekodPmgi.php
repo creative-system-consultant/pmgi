@@ -179,7 +179,10 @@ class RekodPmgi extends Component
             "{$settInfo->pyd_id}_{$fromReportDate}_to_{$toReportDate}"
         );
 
-        $pdf = Pdf::loadView('pdf.borang_jpoc', compact(
+        // Determine which template to use based on PMGI level
+        $template = $settInfo->pmgi_level == 'PM3' ? 'pdf.borang_jpoc_pm3' : 'pdf.borang_jpoc_pm12';
+        
+        $pdf = Pdf::loadView($template, compact(
                 'settInfo','bankOfficerPyd', 'state', 'branch', 'tempohBerkhidmat', 'alamat1', 'alamat2','summMthOfficer', 'accCount', 'osB1D', 'osAll', 'npfOs', 'sessionInfo', 'bankOfficerPym', 'bankOfficerPmc',
                 'pydInfo', 'pymInfo', 'pmcInfo', 'from', 'to', 'paths'
             ))->setPaper('A4', 'portrait');
@@ -281,7 +284,10 @@ class RekodPmgi extends Component
             "{$settInfo->pyd_id}_{$fromReportDate}_to_{$toReportDate}"
         );
 
-        $pdf = Pdf::loadView('pdf.borang_jpoc', compact(
+        // Determine which template to use based on PMGI level
+        $template = $settInfo->pmgi_level == 'PM3' ? 'pdf.borang_jpoc_pm3' : 'pdf.borang_jpoc_pm12';
+        
+        $pdf = Pdf::loadView($template, compact(
                 'settInfo','bankOfficerPyd', 'state', 'branch', 'tempohBerkhidmat', 'alamat1', 'alamat2','summMthOfficer', 'accCount', 'osB1D', 'osAll', 'npfOs', 'sessionInfo', 'bankOfficerPym', 'bankOfficerPmc',
                 'pydInfo', 'pymInfo', 'pmcInfo', 'from', 'to', 'paths'
             ))->setPaper('A4', 'portrait');
