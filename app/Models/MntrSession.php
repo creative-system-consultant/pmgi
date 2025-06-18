@@ -27,21 +27,21 @@ class MntrSession extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'officer_id', 'userid');
+        return $this->belongsTo(User::class, 'OFFICER_ID', 'USERID');
     }
 
     public function branch()
     {
-        return $this->hasOne(Branch::class, 'branch_code', 'branch_code');
+        return $this->hasOne(Branch::class, 'BRANCH_CODE', 'BRANCH_CODE');
     }
 
     public function state()
     {
-        return $this->hasOne(BnmStatecode::class, 'code', 'state_code');
+        return $this->hasOne(BnmStatecode::class, 'CODE', 'STATE_CODE');
     }
 
     public function settPymPmc()
     {
-        return $this->hasOne(SettPymPmc::class, 'report_date', 'report_date');
+        return $this->hasOne(SettPymPmc::class, 'REPORT_DATE', 'REPORT_DATE');
     }
 }

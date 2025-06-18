@@ -14,27 +14,27 @@ class SettPymPmc extends Model
 
     public function pyd()
     {
-        return $this->belongsTo(User::class, 'pyd_id', 'userid');
+        return $this->belongsTo(User::class, 'PYD_ID', 'USERID');
     }
 
     public function pym()
     {
-        return $this->belongsTo(User::class, 'pym_id', 'userid');
+        return $this->belongsTo(User::class, 'PYM_ID', 'USERID');
     }
 
     public function pmc()
     {
-        return $this->belongsTo(User::class, 'pmc_id', 'userid');
+        return $this->belongsTo(User::class, 'PMC_ID', 'USERID');
     }
 
     public function info()
     {
-        return $this->hasOne(SessionInfo::class, 'session_id', 'session_id');
+        return $this->hasOne(SessionInfo::class, 'SESSION_ID', 'SESSION_ID');
     }
 
     public function mntrSession()
     {
-        return $this->hasOne(MntrSession::class, 'report_date', 'report_date')
-                    ->where('officer_id', $this->pyd_id);
+        return $this->hasOne(MntrSession::class, 'REPORT_DATE', 'REPORT_DATE')
+                    ->where('OFFICER_ID', $this->PYD_ID);
     }
 }

@@ -15,11 +15,11 @@ class JttSessionParticipant extends Model
 
     public function sessionInfo()
     {
-        return $this->belongsTo(JttSessionInfo::class, 'session_id', 'session_id');
+        return $this->belongsTo(JttSessionInfo::class, 'SESSION_ID', 'SESSION_ID');
     }
 
     public function mntrSession()
     {
-        return $this->hasOne(MntrSession::class, 'report_date', 'report_date');
+        return $this->hasOne(MntrSession::class, 'REPORT_DATE', 'REPORT_DATE');
     }
 }

@@ -14,6 +14,6 @@ class RefEvalPctg extends Model
 
     public function bnmState()
     {
-        return $this->hasOne(BnmStatecode::class, 'code', 'state_code');
+        return $this->hasOne(BnmStatecode::class, 'CODE', 'STATE_CODE');
     }
 }

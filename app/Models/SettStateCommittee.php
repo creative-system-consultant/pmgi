@@ -15,6 +15,6 @@ class SettStateCommittee extends Model
 
     public function state()
     {
-        return $this->belongsTo(BnmStatecode::class, 'statecode', 'code');
+        return $this->belongsTo(BnmStatecode::class, 'STATECODE', 'CODE');
     }
 }

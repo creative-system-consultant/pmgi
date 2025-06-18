@@ -15,13 +15,13 @@ class User extends Authenticatable
     protected $guarded = [];
     public $timestamps = false;
 
-    protected $primaryKey = 'userid';
+    protected $primaryKey = 'USERID';
     public $incrementing = false;
     protected $keyType = 'string';
 
     public function bankOfficer()
     {
-        return $this->hasOne(BankOfficer::class, 'officer_id', 'userid');
+        return $this->hasOne(BankOfficer::class, 'OFFICER_ID', 'USERID');
     }
 
     protected function getBankOfficer()

@@ -15,7 +15,7 @@ class SettJtt extends Model
 
     public function bankOfficer()
     {
-        return $this->hasOne(BankOfficer::class, 'officer_id', 'officer_id');
+        return $this->hasOne(BankOfficer::class, 'OFFICER_ID', 'OFFICER_ID');
     }
 
     protected function getBankOfficer()

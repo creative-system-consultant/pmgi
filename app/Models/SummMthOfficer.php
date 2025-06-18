@@ -19,11 +19,11 @@ class SummMthOfficer extends Model
 
     public function branch()
     {
-        return $this->hasOne(Branch::class, 'branch_code', 'acct_branch_code');
+        return $this->hasOne(Branch::class, 'BRANCH_CODE', 'ACCT_BRANCH_CODE');
     }
 
     public function officerBranch()
     {
-        return $this->hasOne(Branch::class, 'branch_code', 'officer_branch_code');
+        return $this->hasOne(Branch::class, 'BRANCH_CODE', 'OFFICER_BRANCH_CODE');
     }
 }

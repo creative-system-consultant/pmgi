@@ -15,11 +15,11 @@ class SessionInfo extends Model
 
     public function setting()
     {
-        return $this->belongsTo(SettPymPmc::class, 'session_id', 'session_id');
+        return $this->belongsTo(SettPymPmc::class, 'SESSION_ID', 'SESSION_ID');
     }
 
     public function pydInfo()
     {
-        return $this->hasOne(SessionPydInfo::class, 'session_id', 'session_id');
+        return $this->hasOne(SessionPydInfo::class, 'SESSION_ID', 'SESSION_ID');
     }
 }

@@ -13,22 +13,22 @@ class BankOfficer extends Model
     protected $guarded = [];
     public $timestamps = false;
 
-    protected $primaryKey = 'officer_id';
+    protected $primaryKey = 'OFFICER_ID';
     public $incrementing = false;
     protected $keyType = 'string';
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'officer_id', 'userid');
+        return $this->belongsTo(User::class, 'OFFICER_ID', 'USERID');
     }
 
     public function branch()
     {
-        return $this->hasOne(Branch::class, 'branch_code', 'branch_code');
+        return $this->hasOne(Branch::class, 'BRANCH_CODE', 'BRANCH_CODE');
     }
 
     public function hrData()
     {
-        return $this->hasOne(HrdOfficer::class, 'no_kp', 'nokp');
+        return $this->hasOne(HrdOfficer::class, 'NO_KP', 'NOKP');
     }
 }

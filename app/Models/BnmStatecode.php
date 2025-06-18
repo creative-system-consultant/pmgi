@@ -13,17 +13,17 @@ class BnmStatecode extends Model
     protected $guarded = [];
     public $timestamps = false;
 
-    protected $primaryKey = 'code';
+    protected $primaryKey = 'CODE';
     public $incrementing = false;
     protected $keyType = 'string';
 
     public function branches()
     {
-        return $this->hasMany(Branch::class, 'state_code', 'code');
+        return $this->hasMany(Branch::class, 'STATE_CODE', 'CODE');
     }
 
     public function committee()
     {
-        return $this->hasOne(SettStateCommittee::class, 'statecode', 'code');
+        return $this->hasOne(SettStateCommittee::class, 'STATECODE', 'CODE');
     }
 }

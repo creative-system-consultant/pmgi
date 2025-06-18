@@ -15,11 +15,11 @@ class JttSessionInfo extends Model
 
     public function panelInfo()
     {
-        return $this->hasMany(JttSessionPanel::class, 'session_id', 'session_id');
+        return $this->hasMany(JttSessionPanel::class, 'SESSION_ID', 'SESSION_ID');
     }
 
     public function venueInfo()
     {
-        return $this->belongsTo(SettMeetingRoom::class, 'venue', 'id');
+        return $this->belongsTo(SettMeetingRoom::class, 'VENUE', 'ID');
     }
 }

@@ -24,6 +24,6 @@ class HrdOfficer extends Model
 
     public function bankOfficer()
     {
-        return $this->hasOne(BankOfficer::class, 'staffno', 'no_pekerja');
+        return $this->hasOne(BankOfficer::class, 'STAFFNO', 'NO_PEKERJA');
     }
 }

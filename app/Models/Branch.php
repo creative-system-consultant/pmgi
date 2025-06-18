@@ -13,17 +13,17 @@ class Branch extends Model
     protected $guarded = [];
     public $timestamps = false;
 
-    protected $primaryKey = 'branch_code';
+    protected $primaryKey = 'BRANCH_CODE';
     public $incrementing = false;
     protected $keyType = 'string';
 
     public function bankOfficer()
     {
-        return $this->hasMany(BankOfficer::class, 'branch_code', 'branch_code');
+        return $this->hasMany(BankOfficer::class, 'BRANCH_CODE', 'BRANCH_CODE');
     }
 
     public function bnmState()
     {
-        return $this->hasOne(BnmStatecode::class, 'code', 'state_code');
+        return $this->hasOne(BnmStatecode::class, 'CODE', 'STATE_CODE');
     }
 }
