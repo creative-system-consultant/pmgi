@@ -98,7 +98,7 @@ class ImportAllHrOfficerData extends Command
         // Get the file type argument
         $fileType = strtolower($this->argument('fileType')); // "zip" or "txt"
         $isProtected = $this->option('protected'); // Boolean: true if the ZIP files are password-protected
-        $zipPassword = $this->option('password') ?? env('FTP_PASSWORD'); // Use command line password or fallback to .env
+        $zipPassword = $this->option('password') ?? env('ZIP_PASSWORD'); // Use command line password or fallback to .env
         
         $logMessage = '';
         $status = 'Success'; // Default status
