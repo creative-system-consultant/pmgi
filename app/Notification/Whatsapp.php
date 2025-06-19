@@ -9,11 +9,13 @@ class Whatsapp
 {
     private $url;
     private $token;
+    private $secretKey;
 
     public function __construct()
     {
         $this->url = config('app.wablas_api_url');
         $this->token = config('app.wablas_api_token');
+        $this->secretKey = config('app.wablas_api_secret_key');
 
         \Log::info("WhatsApp URL: $this->url");  // Log to ensure URL is correct
         \Log::info("WhatsApp Token: $this->token"); // Log to ensure token is correct
@@ -37,11 +39,14 @@ class Whatsapp
         \Log::info("Sending WhatsApp message to: $contact with message: $message");
         \Log::info("Payload: ", ['payload' => $payload]); // Log the payload
 
+        // Build authorization header with new format: token.secret_key
+        $authToken = $this->secretKey ? $this->token . '.' . $this->secretKey : $this->token;
+        
         curl_setopt(
             $curl,
             CURLOPT_HTTPHEADER,
             array(
-                "Authorization: $this->token",
+                "Authorization: $authToken",
                 "Content-Type: application/json"
             )
         );

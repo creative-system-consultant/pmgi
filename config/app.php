@@ -113,6 +113,7 @@ return [
 
     'wablas_api_url' => env('WABLAS_API_URL', ''),
     'wablas_api_token' => env('WABLAS_API_TOKEN', ''),
+    'wablas_api_secret_key' => env('WABLAS_API_SECRET_KEY', ''),
 
     /*
     |--------------------------------------------------------------------------
