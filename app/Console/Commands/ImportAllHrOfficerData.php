@@ -495,8 +495,14 @@ class ImportAllHrOfficerData extends Command
      */
     protected function downloadFileFromFtp($ftpFilePath)
     {
+        // Ensure the hr directory exists
+        $hrDir = storage_path('app/hr');
+        if (!File::exists($hrDir)) {
+            File::makeDirectory($hrDir, 0755, true);
+        }
+        
         // Define local path to save the downloaded file
-        $localFilePath = storage_path('app/hr') . '/' . basename($ftpFilePath);
+        $localFilePath = $hrDir . '/' . basename($ftpFilePath);
 
         // Download the file from the FTPS server to the local path
         $fileContents = Storage::disk('ftps')->get($ftpFilePath);
