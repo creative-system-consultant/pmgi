@@ -35,7 +35,7 @@ class ImportHrOfficerData extends Command
      *
      * @var string
      */
-    protected $description = 'Import HR Officer data from a predefined TXT file inside a dynamic ZIP file or directly from a TXT file into the PMGI_IMP_HR_OFFICER table and execute a stored procedure with the extracted date.';
+    protected $description = 'Import LATEST HR Officer data file from FTP server. Checks against local archive to avoid reprocessing. Archives processed files LOCALLY in public folder.';
 
     /**
      * The phone numbers to which the WhatsApp notifications will be sent.
@@ -105,26 +105,37 @@ class ImportHrOfficerData extends Command
         // Get the file type argument
         $fileType = strtolower($this->argument('fileType')); // "zip" or "txt"
         $isProtected = $this->option('protected'); // Boolean: true if the ZIP file is password-protected
-        $zipPassword = $this->option('password'); // Optional: the password for the ZIP file if protected
+        $zipPassword = $this->option('password') ?? env('ZIP_PASSWORD'); // Use command line password or fallback to .env
         $logMessage = '';
         $status = 'Success'; // Default status
 
         // Initialize Whatsapp instance
         $whatsapp = new Whatsapp();
 
+        $this->info("🚀 Starting to process LATEST HR data file from FTP server...");
+        $logMessage .= "Starting to process LATEST HR data file from FTP server...\n";
+
         try {
             if ($fileType === 'zip') {
                 // Handle ZIP file logic and pass protection information
-                $logMessage .= $this->processZipFile($isProtected, $zipPassword);
+                $result = $this->processZipFile($isProtected, $zipPassword);
             } elseif ($fileType === 'txt') {
                 // Handle TXT file logic
-                $logMessage .= $this->processTxtFile();
+                $result = $this->processTxtFile();
             } else {
                 $errorMessage = "Invalid file type specified. Use 'zip' or 'txt'.";
                 $this->error($errorMessage);
                 $logMessage .= $errorMessage . "\n";
                 $status = 'Error';
+                $result = ['log' => $errorMessage, 'processed' => false];
             }
+            
+            $logMessage .= $result['log'];
+            
+            if (!$result['processed']) {
+                $status = 'Error';
+            }
+            
         } catch (\Exception $e) {
             $errorMessage = "An error occurred: " . $e->getMessage();
             $this->error($errorMessage);
@@ -132,87 +143,117 @@ class ImportHrOfficerData extends Command
             $status = 'Error';
         }
 
+        // Summary
+        $summaryMessage = "\n📊 SUMMARY:\n";
+        $summaryMessage .= "Final Status: $status\n";
+        
+        $this->info($summaryMessage);
+        $logMessage .= $summaryMessage;
+
         // Send the final log message to WhatsApp with the determined status
         $this->sendToWhatsapp($logMessage, $status);
 
-        return 0;
+        return $status === 'Error' ? 1 : 0;
     }
 
     /**
-     * Process the ZIP file as per the existing logic.
+     * Process the latest ZIP file from FTP server.
      *
      * @param bool $isProtected Indicates if the ZIP file is password-protected
      * @param string|null $password The password for the ZIP file if it is protected
-     * @return string
+     * @return array ['log' => string, 'processed' => bool]
      */
     protected function processZipFile($isProtected, $password = null)
     {
         $logMessage = '';
 
-        // Download the latest zip file from the FTP server
-        $zipFilePath = $this->downloadLatestZipFileFromFtp();
+        // Get the latest unprocessed zip file from FTP server
+        $latestFile = $this->getLatestUnprocessedZipFile();
 
-        if (!$zipFilePath) {
-            $errorMessage = "No matching zip file found on the FTP server.";
-            $this->error($errorMessage);
-            return $errorMessage . "\n";
+        if (!$latestFile) {
+            $infoMessage = "No new zip files found on the FTP server. Latest file may already be processed and archived locally.";
+            $this->info($infoMessage);
+            return ['log' => $infoMessage . "\n", 'processed' => false];
         }
 
-        $this->info("Downloaded zip file: $zipFilePath");
-        $logMessage .= "Downloaded zip file: $zipFilePath\n";
+        $this->info("📁 Processing latest file: " . basename($latestFile));
+        $logMessage .= "Processing latest file: " . basename($latestFile) . "\n";
 
-        // Extract the date portion from the file name (e.g., "20240930")
-        $fileName = pathinfo($zipFilePath, PATHINFO_FILENAME);
+        try {
+            $result = $this->processSingleZipFile($latestFile, $isProtected, $password);
+            $logMessage .= $result['log'];
+            
+            // Archive the file after successful processing using the local file path
+            $this->archiveFile($result['localFile']);
+            $logMessage .= "✅ File archived successfully: " . basename($latestFile) . "\n";
+            
+            $this->info("✅ Successfully processed and archived: " . basename($latestFile));
+            return ['log' => $logMessage, 'processed' => true];
+            
+        } catch (\Exception $e) {
+            $errorMessage = "❌ Failed to process " . basename($latestFile) . ": " . $e->getMessage();
+            $this->error($errorMessage);
+            $logMessage .= $errorMessage . "\n";
+            return ['log' => $logMessage, 'processed' => false];
+        }
+    }
+
+    /**
+     * Process a single ZIP file.
+     *
+     * @param string $ftpFilePath
+     * @param bool $isProtected
+     * @param string|null $password
+     * @return array ['log' => string, 'localFile' => string]
+     */
+    protected function processSingleZipFile($ftpFilePath, $isProtected, $password = null)
+    {
+        $logMessage = '';
+
+        // Extract the date from filename
+        $fileName = pathinfo($ftpFilePath, PATHINFO_FILENAME);
         $dateString = $this->extractDateFromFileName($fileName);
         if (!$dateString) {
-            $errorMessage = "Failed to extract date from the file name: $fileName";
-            $this->error($errorMessage);
-            return $errorMessage . "\n";
+            throw new \Exception("Failed to extract date from the file name: $fileName");
         }
 
-        $this->info("Extracted date from file name: $dateString");
-        $logMessage .= "Extracted date from file name: $dateString\n";
+        // Download the file
+        $localFilePath = $this->downloadFileFromFtp($ftpFilePath);
+        $logMessage .= "Downloaded zip file: $localFilePath\n";
 
         // Define the extraction path
-        $extractPath = storage_path('app/hr/temp_extracted');
+        $extractPath = storage_path('app/hr/temp_extracted_' . $dateString);
 
         // Ensure the extraction path exists
         if (!File::exists($extractPath)) {
             File::makeDirectory($extractPath, 0755, true);
         }
 
-        // Open the zip file using ZipArchive
+        // Open and extract the zip file
         $zip = new ZipArchive;
-        if ($zip->open($zipFilePath) === true) {
+        if ($zip->open($localFilePath) === true) {
             // If the ZIP is protected, set the password
             if ($isProtected) {
                 if ($password) {
                     $zip->setPassword($password);
                 } else {
-                    $errorMessage = "Password protected ZIP file detected, but no password provided.";
-                    $this->error($errorMessage);
-                    return $errorMessage . "\n";
+                    throw new \Exception("Password protected ZIP file detected, but no password provided.");
                 }
             }
 
             // Extract the file to the extraction path
             if (!$zip->extractTo($extractPath)) {
-                $errorMessage = 'Failed to extract the zip file. Check if the password is correct.';
-                $this->error($errorMessage);
-                return $errorMessage . "\n";
+                throw new \Exception('Failed to extract the zip file. Check if the password is correct.');
             }
 
             // Close the zip file
             $zip->close();
-            $this->info("Successfully extracted the zip file to: $extractPath");
             $logMessage .= "Successfully extracted the zip file to: $extractPath\n";
         } else {
-            $errorMessage = "Failed to open the zip file at path $zipFilePath";
-            $this->error($errorMessage);
-            return $errorMessage . "\n";
+            throw new \Exception("Failed to open the zip file at path $localFilePath");
         }
 
-        // Locate the extracted .txt file (assuming only one .txt file is present)
+        // Locate the extracted .txt file
         $extractedFiles = File::files($extractPath);
         $txtFile = null;
 
@@ -224,201 +265,228 @@ class ImportHrOfficerData extends Command
         }
 
         if (!$txtFile) {
-            $errorMessage = 'No .txt file found in the extracted contents.';
-            $this->error($errorMessage);
-            return $errorMessage . "\n";
+            throw new \Exception('No .txt file found in the extracted contents.');
         }
 
-        $logMessage .= $this->processAndInsertData($txtFile, $dateString);
+        // Process the data (ALWAYS truncate - data is intermediary)
+        $logMessage .= $this->processAndInsertData($txtFile, $dateString, true);
 
-        // Clean up extracted files
+        // Clean up extraction directory but keep the downloaded file for archiving
         File::deleteDirectory($extractPath);
+        $logMessage .= "Cleaned up temporary extraction directory.\n";
 
-        // Delete the downloaded zip file
-        if (File::exists($zipFilePath)) {
-            File::delete($zipFilePath);
-            $this->info("Deleted the zip file: $zipFilePath");
-            $logMessage .= "Deleted the zip file: $zipFilePath\n";
-        }
-
-        return $logMessage;
+        return ['log' => $logMessage, 'localFile' => $localFilePath];
     }
 
     /**
-     * Process the TXT file directly.
+     * Process the latest TXT file from FTP server.
      *
-     * @return string
+     * @return array ['log' => string, 'processed' => bool]
      */
     protected function processTxtFile()
     {
         $logMessage = '';
 
-        // Find the latest TXT file on the FTP server
-        $txtFilePath = $this->downloadLatestTxtFileFromFtp();
+        // Get the latest unprocessed txt file from FTP server
+        $latestFile = $this->getLatestUnprocessedTxtFile();
 
-        if (!$txtFilePath) {
-            $errorMessage = "No matching txt file found on the FTP server.";
+        if (!$latestFile) {
+            $infoMessage = "No new txt files found on the FTP server. Latest file may already be processed and archived locally.";
+            $this->info($infoMessage);
+            return ['log' => $infoMessage . "\n", 'processed' => false];
+        }
+
+        $this->info("📄 Processing latest file: " . basename($latestFile));
+        $logMessage .= "Processing latest file: " . basename($latestFile) . "\n";
+
+        try {
+            $result = $this->processSingleTxtFile($latestFile);
+            $logMessage .= $result['log'];
+            
+            // Archive the file after successful processing using the local file path
+            $this->archiveFile($result['localFile']);
+            $logMessage .= "✅ File archived successfully: " . basename($latestFile) . "\n";
+            
+            $this->info("✅ Successfully processed and archived: " . basename($latestFile));
+            return ['log' => $logMessage, 'processed' => true];
+            
+        } catch (\Exception $e) {
+            $errorMessage = "❌ Failed to process " . basename($latestFile) . ": " . $e->getMessage();
             $this->error($errorMessage);
-            return $errorMessage . "\n";
+            $logMessage .= $errorMessage . "\n";
+            return ['log' => $logMessage, 'processed' => false];
         }
-
-        $this->info("Downloaded txt file: $txtFilePath");
-        $logMessage .= "Downloaded txt file: $txtFilePath\n";
-
-        // Extract the date portion from the file name (e.g., "20240930")
-        $fileName = pathinfo($txtFilePath, PATHINFO_FILENAME);
-        $dateString = $this->extractDateFromFileName($fileName);
-        if (!$dateString) {
-            $errorMessage = "Failed to extract date from the file name: $fileName";
-            $this->error($errorMessage);
-            return $errorMessage . "\n";
-        }
-
-        $this->info("Extracted date from file name: $dateString");
-        $logMessage .= "Extracted date from file name: $dateString\n";
-
-        // Process and insert data from the TXT file
-        $logMessage .= $this->processAndInsertData($txtFilePath, $dateString);
-
-        // Delete the downloaded txt file
-        if (File::exists($txtFilePath)) {
-            File::delete($txtFilePath);
-            $this->info("Deleted the txt file: $txtFilePath");
-            $logMessage .= "Deleted the txt file: $txtFilePath\n";
-        }
-
-        return $logMessage;
     }
 
     /**
-     * Download the latest ZIP file from the FTP server.
+     * Process a single TXT file.
+     *
+     * @param string $ftpFilePath
+     * @return array ['log' => string, 'localFile' => string]
+     */
+    protected function processSingleTxtFile($ftpFilePath)
+    {
+        $logMessage = '';
+
+        // Extract the date from filename
+        $fileName = pathinfo($ftpFilePath, PATHINFO_FILENAME);
+        $dateString = $this->extractDateFromFileName($fileName);
+        if (!$dateString) {
+            throw new \Exception("Failed to extract date from the file name: $fileName");
+        }
+
+        // Download the file
+        $localFilePath = $this->downloadFileFromFtp($ftpFilePath);
+        $logMessage .= "Downloaded txt file: $localFilePath\n";
+
+        // Process the data (ALWAYS truncate - data is intermediary)
+        $logMessage .= $this->processAndInsertData($localFilePath, $dateString, true);
+
+        // Keep the downloaded file for archiving (don't delete it here)
+        $logMessage .= "File ready for archiving.\n";
+
+        return ['log' => $logMessage, 'localFile' => $localFilePath];
+    }
+
+    /**
+     * Get the latest unprocessed ZIP file from FTP server.
+     * Checks against local archive to avoid reprocessing.
      *
      * @return string|null
      */
-    protected function downloadLatestZipFileFromFtp()
+    protected function getLatestUnprocessedZipFile()
     {
-        // List all files in the FTPS directory
+        // List all files in the FTPS main directory
         $files = Storage::disk('ftps')->files();
 
-        // Filter and find the latest zip file that matches the pattern "Masterlist Wargakerja *.zip"
-        $matchingFiles = array_filter($files, function ($file) {
+        // Filter matching zip files in main directory
+        $ftpFiles = array_filter($files, function ($file) {
             return preg_match('/Masterlist Wargakerja \d{8}\.zip$/', basename($file));
         });
 
-        if (empty($matchingFiles)) {
-            $this->error("No matching zip files found on the FTP server.");
+        if (empty($ftpFiles)) {
             return null;
         }
 
         // Get the latest file based on modification time
-        $latestFile = collect($matchingFiles)->sortByDesc(function ($file) {
+        $latestFile = collect($ftpFiles)->sortByDesc(function ($file) {
             return Storage::disk('ftps')->lastModified($file);
         })->first();
 
         if (!$latestFile) {
-            $this->error("Failed to identify the latest zip file on the FTP server.");
             return null;
         }
 
-        $this->info("Latest zip file on the FTP server: $latestFile");
-
-        // Define local path to save the downloaded file
-        $localFilePath = storage_path('app/hr') . '/' . basename($latestFile);
-
-        // Download the file from the FTPS server to the local path
-        $fileContents = Storage::disk('ftps')->get($latestFile);
-        if ($fileContents === false) {
-            $this->error("Failed to download the file: $latestFile");
-            return null;
+        // Check if this file is already archived locally
+        $archivedFiles = $this->getLocalArchivedFiles('zip');
+        $fileName = basename($latestFile);
+        
+        if (in_array($fileName, $archivedFiles)) {
+            return null; // Latest file is already processed and archived
         }
 
-        // Save the downloaded contents to the local path
-        File::put($localFilePath, $fileContents);
-
-        $this->info("Successfully downloaded the file to: $localFilePath");
-
-        return $localFilePath;
+        return $latestFile;
     }
 
     /**
-     * Download the latest TXT file from the FTP server.
+     * Get the latest unprocessed TXT file from FTP server.
+     * Checks against local archive to avoid reprocessing.
      *
      * @return string|null
      */
-    protected function downloadLatestTxtFileFromFtp()
+    protected function getLatestUnprocessedTxtFile()
     {
-        // List all files in the FTPS directory
+        // List all files in the FTPS main directory
         $files = Storage::disk('ftps')->files();
 
-        // Filter and find the latest txt file that matches the pattern "Masterlist Wargakerja *.txt"
-        $matchingFiles = array_filter($files, function ($file) {
+        // Filter matching txt files in main directory
+        $ftpFiles = array_filter($files, function ($file) {
             return preg_match('/Masterlist Wargakerja \d{8}\.txt$/', basename($file));
         });
 
-        if (empty($matchingFiles)) {
-            $this->error("No matching txt files found on the FTP server.");
+        if (empty($ftpFiles)) {
             return null;
         }
 
         // Get the latest file based on modification time
-        $latestFile = collect($matchingFiles)->sortByDesc(function ($file) {
+        $latestFile = collect($ftpFiles)->sortByDesc(function ($file) {
             return Storage::disk('ftps')->lastModified($file);
         })->first();
 
         if (!$latestFile) {
-            $this->error("Failed to identify the latest txt file on the FTP server.");
             return null;
         }
 
-        $this->info("Latest txt file on the FTP server: $latestFile");
+        // Check if this file is already archived locally
+        $archivedFiles = $this->getLocalArchivedFiles('txt');
+        $fileName = basename($latestFile);
+        
+        if (in_array($fileName, $archivedFiles)) {
+            return null; // Latest file is already processed and archived
+        }
 
+        return $latestFile;
+    }
+
+    /**
+     * Download a file from FTP server to local storage.
+     *
+     * @param string $ftpFilePath
+     * @return string
+     */
+    protected function downloadFileFromFtp($ftpFilePath)
+    {
+        // Ensure the hr directory exists
+        $hrDir = storage_path('app/hr');
+        if (!File::exists($hrDir)) {
+            File::makeDirectory($hrDir, 0755, true);
+        }
+        
         // Define local path to save the downloaded file
-        $localFilePath = storage_path('app/hr') . '/' . basename($latestFile);
+        $localFilePath = $hrDir . '/' . basename($ftpFilePath);
 
         // Download the file from the FTPS server to the local path
-        $fileContents = Storage::disk('ftps')->get($latestFile);
+        $fileContents = Storage::disk('ftps')->get($ftpFilePath);
         if ($fileContents === false) {
-            $this->error("Failed to download the file: $latestFile");
-            return null;
+            throw new \Exception("Failed to download the file: $ftpFilePath");
         }
 
         // Save the downloaded contents to the local path
         File::put($localFilePath, $fileContents);
-
-        $this->info("Successfully downloaded the file to: $localFilePath");
 
         return $localFilePath;
     }
 
     /**
      * Process the data from the TXT file and insert it into the database.
-     *
+     * 
      * @param string $filePath
      * @param string $dateString
+     * @param bool $truncateTable
      * @return string
      */
-    protected function processAndInsertData($filePath, $dateString)
+    protected function processAndInsertData($filePath, $dateString, $truncateTable = true)
     {
         $logMessage = '';
 
         // Read the contents of the .txt file
         $contents = File::get($filePath);
 
-        // Truncate the table before inserting new data
-        try {
-            DB::table('PMGI_IMP_HR_OFFICER')->truncate();
-            $this->info("Truncated the PMGI_IMP_HR_OFFICER table successfully.");
-            $logMessage .= "Truncated the PMGI_IMP_HR_OFFICER table successfully.\n";
-        } catch (\Exception $e) {
-            $errorMessage = "Failed to truncate table: " . $e->getMessage();
-            $this->error($errorMessage);
-            return $errorMessage . "\n";
+        // Always truncate table (data is intermediary and moved by SP)
+        if ($truncateTable) {
+            try {
+                DB::table('PMGI_IMP_HR_OFFICER')->truncate();
+                $this->info("Truncated the PMGI_IMP_HR_OFFICER table (data is intermediary).");
+                $logMessage .= "Truncated the PMGI_IMP_HR_OFFICER table (data is intermediary).\n";
+            } catch (\Exception $e) {
+                throw new \Exception("Failed to truncate table: " . $e->getMessage());
+            }
         }
 
         // Process the file contents and insert data into the table
         $data = $this->processData($contents);
 
-        // Insert data into Oracle DB table
+        // Insert data into database table
         $insertedRows = 0;
         foreach ($data as $row) {
             try {
@@ -435,7 +503,7 @@ class ImportHrOfficerData extends Command
         $logMessage .= "Successfully inserted $insertedRows rows into the PMGI_IMP_HR_OFFICER table.\n";
 
         // Run the stored procedure
-        $this->runStoredProcedure($dateString);
+        $logMessage .= $this->runStoredProcedure($dateString);
 
         return $logMessage;
     }
@@ -519,18 +587,20 @@ class ImportHrOfficerData extends Command
      * Run the stored procedure `UP_PMGI_IMP_HR_OFFICER`.
      *
      * @param string $dateString
-     * @return void
+     * @return string
      */
     protected function runStoredProcedure($dateString)
     {
+        $logMessage = '';
+        
         try {
             $output = '';
 
             $procedureName = 'UP_PMGI_IMP_HR_OFFICER';
 
             $bindings = [
-                'pi_reportdt' => $dateString,
-                'pi_operated_by' => 'SYSTEM',
+                $dateString,
+                'SYSTEM',
                 'pi_ret_msg' => [
                     'value' => &$output,
                     'type' => PDO::PARAM_STR,
@@ -543,11 +613,72 @@ class ImportHrOfficerData extends Command
 
             if (substr($output, 0, 1) == '0') {
                 $this->info("Stored procedure `UP_PMGI_IMP_HR_OFFICER` executed successfully with date: $dateString and user ID: SYSTEM.");
+                $logMessage .= "Stored procedure executed successfully for date: $dateString. Output: $output\n";
             } else {
-                $this->error("Stored procedure `UP_PMGI_IMP_HR_OFFICER` executed successfully with errors. Check email.");
+                $this->error("Stored procedure `UP_PMGI_IMP_HR_OFFICER` executed with errors for date: $dateString. Output: $output");
+                $logMessage .= "Stored procedure executed with errors for date: $dateString. Output: $output\n";
             }
         } catch (\Exception $e) {
-            $this->error("Failed to execute stored procedure `UP_PMGI_IMP_HR_OFFICER`. Error: " . $e->getMessage());
+            $errorMessage = "Failed to execute stored procedure `UP_PMGI_IMP_HR_OFFICER` for date: $dateString. Error: " . $e->getMessage();
+            $this->error($errorMessage);
+            $logMessage .= $errorMessage . "\n";
+        }
+        
+        return $logMessage;
+    }
+
+    /**
+     * Get list of already archived files locally.
+     *
+     * @param string $fileType
+     * @return array
+     */
+    protected function getLocalArchivedFiles($fileType)
+    {
+        $archiveDir = storage_path('app/public/archived-hr-files');
+        
+        if (!File::exists($archiveDir)) {
+            return [];
+        }
+        
+        $files = File::files($archiveDir);
+        $archivedFiles = [];
+        
+        foreach ($files as $file) {
+            $fileName = $file->getFilename();
+            // Match files with the expected pattern and file type
+            if (preg_match('/Masterlist Wargakerja \d{8}\.' . $fileType . '$/', $fileName)) {
+                $archivedFiles[] = $fileName;
+            }
+        }
+        
+        return $archivedFiles;
+    }
+
+    /**
+     * Archive a processed file locally after successful processing.
+     *
+     * @param string $localFilePath The path to the downloaded file
+     * @return void
+     */
+    protected function archiveFile($localFilePath)
+    {
+        $fileName = basename($localFilePath);
+        
+        try {
+            // Ensure local archive directory exists (public folder)
+            $archiveDir = storage_path('app/public/archived-hr-files');
+            if (!File::exists($archiveDir)) {
+                File::makeDirectory($archiveDir, 0755, true);
+            }
+            
+            // Move file to local archive directory
+            $archivedPath = $archiveDir . '/' . $fileName;
+            File::move($localFilePath, $archivedPath);
+            
+            $this->info("📁 Archived file locally: $fileName → public/archived-hr-files/$fileName");
+        } catch (\Exception $e) {
+            throw new \Exception("Failed to archive file locally $fileName: " . $e->getMessage());
         }
     }
 
