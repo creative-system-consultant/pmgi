@@ -29,6 +29,16 @@ class LantikanUrusetiaNegeri extends Mailable
 
     public function content(): Content
     {
+        // Check if file exists before trying to read it
+        if (!file_exists($this->filepath)) {
+            throw new \Exception("Image file not found: {$this->filepath}");
+        }
+
+        // Check if file is readable
+        if (!is_readable($this->filepath)) {
+            throw new \Exception("Image file is not readable: {$this->filepath}");
+        }
+
         $imageData = file_get_contents($this->filepath);
         $imageName = basename($this->filepath);
         $imageMime = mime_content_type($this->filepath);

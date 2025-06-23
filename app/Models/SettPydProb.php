@@ -9,7 +9,7 @@ class SettPydProb extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_SETT_PYD_PROB";
+    protected $table="pmgi_sett_pyd_prob";
     protected $guarded = [];
     public $timestamps = false;
 }

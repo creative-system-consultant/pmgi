@@ -9,5 +9,5 @@ class Job extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_JOBS";
+    protected $table="pmgi_jobs";
 }

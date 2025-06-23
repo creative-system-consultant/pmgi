@@ -9,7 +9,7 @@ class HrdInfo extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_HRD_INFO";
+    protected $table="pmgi_hrd_info";
     protected $guarded = [];
 
     public $timestamps = false;

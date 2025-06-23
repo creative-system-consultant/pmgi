@@ -9,7 +9,7 @@ class SessionPmcInfo extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_SESSION_PMC_INFO";
+    protected $table="pmgi_session_pmc_info";
     protected $guarded = [];
     public $timestamps = false;
     protected $casts = [
@@ -18,11 +18,11 @@ class SessionPmcInfo extends Model
 
     public function setting()
     {
-        return $this->belongsTo(SettPymPmc::class, 'SESSION_ID', 'SESSION_ID');
+        return $this->belongsTo(SettPymPmc::class, 'session_id', 'session_id');
     }
 
     public function info()
     {
-        return $this->belongsTo(SessionInfo::class, 'SESSION_ID', 'SESSION_ID');
+        return $this->belongsTo(SessionInfo::class, 'session_id', 'session_id');
     }
 }

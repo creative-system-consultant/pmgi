@@ -9,7 +9,7 @@ class HrdOfficer extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_HRD_OFFICER";
+    protected $table="pmgi_hrd_officer";
     protected $guarded = [];
     public $timestamps = false;
 
@@ -24,6 +24,6 @@ class HrdOfficer extends Model
 
     public function bankOfficer()
     {
-        return $this->hasOne(BankOfficer::class, 'STAFFNO', 'NO_PEKERJA');
+        return $this->hasOne(BankOfficer::class, 'staffno', 'no_pekerja');
     }
 }

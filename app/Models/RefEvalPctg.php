@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class RefEvalPctg extends Model
 {
     use HasFactory;
-    protected $table = "PMGI_REF_EVAL_PCTG";
+    protected $table = "pmgi_ref_eval_pctg";
     protected $guarded = [];
     public $timestamps = false;
 
     public function bnmState()
     {
-        return $this->hasOne(BnmStatecode::class, 'CODE', 'STATE_CODE');
+        return $this->hasOne(BnmStatecode::class, 'code', 'state_code');
     }
 }

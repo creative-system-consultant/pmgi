@@ -9,21 +9,21 @@ class Branch extends Model
 {
     use HasFactory;
 
-    protected $table="BRANCHES";
+    protected $table="branches";
     protected $guarded = [];
     public $timestamps = false;
 
-    protected $primaryKey = 'BRANCH_CODE';
+    protected $primaryKey = 'branch_code';
     public $incrementing = false;
     protected $keyType = 'string';
 
     public function bankOfficer()
     {
-        return $this->hasMany(BankOfficer::class, 'BRANCH_CODE', 'BRANCH_CODE');
+        return $this->hasMany(BankOfficer::class, 'branch_code', 'branch_code');
     }
 
     public function bnmState()
     {
-        return $this->hasOne(BnmStatecode::class, 'CODE', 'STATE_CODE');
+        return $this->hasOne(BnmStatecode::class, 'code', 'state_code');
     }
 }

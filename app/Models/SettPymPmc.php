@@ -9,32 +9,32 @@ class SettPymPmc extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_SETT_PYM_PMC";
+    protected $table="pmgi_sett_pym_pmc";
     protected $guarded = [];
 
     public function pyd()
     {
-        return $this->belongsTo(User::class, 'PYD_ID', 'USERID');
+        return $this->belongsTo(User::class, 'pyd_id', 'userid');
     }
 
     public function pym()
     {
-        return $this->belongsTo(User::class, 'PYM_ID', 'USERID');
+        return $this->belongsTo(User::class, 'pym_id', 'userid');
     }
 
     public function pmc()
     {
-        return $this->belongsTo(User::class, 'PMC_ID', 'USERID');
+        return $this->belongsTo(User::class, 'pmc_id', 'userid');
     }
 
     public function info()
     {
-        return $this->hasOne(SessionInfo::class, 'SESSION_ID', 'SESSION_ID');
+        return $this->hasOne(SessionInfo::class, 'session_id', 'session_id');
     }
 
     public function mntrSession()
     {
-        return $this->hasOne(MntrSession::class, 'REPORT_DATE', 'REPORT_DATE')
-                    ->where('OFFICER_ID', $this->PYD_ID);
+        return $this->hasOne(MntrSession::class, 'report_date', 'report_date')
+                    ->where('officer_id', $this->pyd_id);
     }
 }

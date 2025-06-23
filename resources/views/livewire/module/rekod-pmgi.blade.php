@@ -90,7 +90,7 @@
                                                     {{ strtoupper($data->created_at->translatedFormat('d/m/Y')) }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
-                                                    @if($data->mntrSession->pmgi_result == 'CP1')
+                                                    @if($data->mntrSession && $data->mntrSession->pmgi_result == 'CP1')
                                                     <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-green-800 bg-green-100 rounded-md border-green-100">SELESAI DILAKSANA</div>
                                                     @endif
                                                 </td>
@@ -140,7 +140,7 @@
                                                     {{ strtoupper($data->created_at->translatedFormat('d/m/Y')) }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
-                                                    @if($data->mntrSession->pmgi_result == 'CP2')
+                                                    @if($data->mntrSession && $data->mntrSession->pmgi_result == 'CP2')
                                                     <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-green-800 bg-green-100 rounded-md border-green-100">SELESAI DILAKSANA</div>
                                                     @endif
                                                 </td>
@@ -190,11 +190,11 @@
                                                     {{ strtoupper($data->created_at->translatedFormat('d/m/Y')) }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
-                                                    @if($data->mntrSession->pmgi_result == 'PEX')
+                                                    @if($data->mntrSession && $data->mntrSession->pmgi_result == 'PEX')
                                                     <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-green-800 bg-green-100 rounded-md border-green-100">KELUAR SENARAI TANPA SYARAT</div>
-                                                    @elseif($data->mntrSession->pmgi_result == 'EXC')
+                                                    @elseif($data->mntrSession && $data->mntrSession->pmgi_result == 'EXC')
                                                     <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-yellow-800 bg-yellow-100 rounded-md border-yellow-100">KELUAR SENARAI DENGAN SYARAT</div>
-                                                    @elseif($data->mntrSession->pmgi_result == 'EXP')
+                                                    @elseif($data->mntrSession && $data->mntrSession->pmgi_result == 'EXP')
                                                     <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-yellow-800 bg-yellow-100 rounded-md border-yellow-100">PENANGGUHAN</div>
                                                     @else
                                                     <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-red-800 bg-red-100 rounded-md border-red-100">DIBAWA KE JKTT1</div>
@@ -246,7 +246,7 @@
                                                     {{ strtoupper(\Carbon\Carbon::parse($data->sessionInfo->session_date)->translatedFormat('d/m/Y')) }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
-                                                    @if($data->mntrSession->pmgi_result == 'PDQ')
+                                                    @if($data->mntrSession && $data->mntrSession->pmgi_result == 'PDQ')
                                                     <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-yellow-800 bg-yellow-100 rounded-md border-yellow-100">DIBERI TEMPOH</div>
                                                     @else
                                                     <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-red-800 bg-red-100 rounded-md border-red-100">TINDAKAN TATA TERTIB</div>
@@ -298,7 +298,7 @@
                                                     {{ strtoupper($data->created_at->translatedFormat('d/m/Y')) }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
-                                                    @if($data->mntrSession->pmgi_result == 'EXL')
+                                                    @if($data->mntrSession && $data->mntrSession->pmgi_result == 'EXL')
                                                     <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-green-800 bg-green-100 rounded-md border-green-100">KELUAR SENARAI</div>
                                                     @else
                                                     <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-red-800 bg-red-100 rounded-md border-red-100">TINDAKAN TATA TERTIB</div>

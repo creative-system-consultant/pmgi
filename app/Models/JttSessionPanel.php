@@ -9,7 +9,7 @@ class JttSessionPanel extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_JTT_SESSION_PANEL";
+    protected $table="pmgi_jtt_session_panel";
     protected $guarded = [];
     public $timestamps = false;
 }

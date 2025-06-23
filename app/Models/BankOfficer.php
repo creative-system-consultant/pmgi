@@ -9,26 +9,26 @@ class BankOfficer extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_FMS_BANK_OFFICERS";
+    protected $table="pmgi_fms_bank_officers";
     protected $guarded = [];
     public $timestamps = false;
 
-    protected $primaryKey = 'OFFICER_ID';
+    protected $primaryKey = 'officer_id';
     public $incrementing = false;
     protected $keyType = 'string';
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'OFFICER_ID', 'USERID');
+        return $this->belongsTo(User::class, 'officer_id', 'userid');
     }
 
     public function branch()
     {
-        return $this->hasOne(Branch::class, 'BRANCH_CODE', 'BRANCH_CODE');
+        return $this->hasOne(Branch::class, 'branch_code', 'branch_code');
     }
 
     public function hrData()
     {
-        return $this->hasOne(HrdOfficer::class, 'NO_KP', 'NOKP');
+        return $this->hasOne(HrdOfficer::class, 'no_kp', 'nokp');
     }
 }

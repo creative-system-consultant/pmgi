@@ -37,7 +37,7 @@ return [
         'database' => [
             'driver' => 'database',
             'connection' => env('DB_QUEUE_CONNECTION'),
-            'table' => env('DB_QUEUE_TABLE', 'PMGI_JOBS'),
+            'table' => env('DB_QUEUE_TABLE', 'pmgi_jobs'),
             'queue' => env('DB_QUEUE', 'default'),
             'retry_after' => (int) env('DB_QUEUE_RETRY_AFTER', 90),
             'after_commit' => false,
@@ -87,7 +87,7 @@ return [
 
     'batching' => [
         'database' => env('DB_CONNECTION', 'sqlite'),
-        'table' => 'PMGI_JOB_BATCHES',
+        'table' => 'pmgi_job_batches',
     ],
 
     /*
@@ -106,7 +106,7 @@ return [
     'failed' => [
         'driver' => env('QUEUE_FAILED_DRIVER', 'database-uuids'),
         'database' => env('DB_CONNECTION', 'sqlite'),
-        'table' => 'PMGI_FAILED_JOBS',
+        'table' => 'pmgi_failed_jobs',
     ],
 
 ];

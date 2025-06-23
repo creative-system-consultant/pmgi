@@ -9,17 +9,17 @@ class JttSessionParticipant extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_JTT_SESSION_PARTICIPANT";
+    protected $table="pmgi_jtt_session_participant";
     protected $guarded = [];
     public $timestamps = false;
 
     public function sessionInfo()
     {
-        return $this->belongsTo(JttSessionInfo::class, 'SESSION_ID', 'SESSION_ID');
+        return $this->belongsTo(JttSessionInfo::class, 'session_id', 'session_id');
     }
 
     public function mntrSession()
     {
-        return $this->hasOne(MntrSession::class, 'REPORT_DATE', 'REPORT_DATE');
+        return $this->hasOne(MntrSession::class, 'report_date', 'report_date');
     }
 }

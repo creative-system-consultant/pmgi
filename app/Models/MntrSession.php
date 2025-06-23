@@ -9,7 +9,7 @@ class MntrSession extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_MNTR_SESSION";
+    protected $table="pmgi_mntr_session";
     protected $guarded = [];
     public $timestamps = false;
     public $incrementing = false;
@@ -27,21 +27,21 @@ class MntrSession extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'OFFICER_ID', 'USERID');
+        return $this->belongsTo(User::class, 'officer_id', 'userid');
     }
 
     public function branch()
     {
-        return $this->hasOne(Branch::class, 'BRANCH_CODE', 'BRANCH_CODE');
+        return $this->hasOne(Branch::class, 'branch_code', 'branch_code');
     }
 
     public function state()
     {
-        return $this->hasOne(BnmStatecode::class, 'CODE', 'STATE_CODE');
+        return $this->hasOne(BnmStatecode::class, 'code', 'state_code');
     }
 
     public function settPymPmc()
     {
-        return $this->hasOne(SettPymPmc::class, 'REPORT_DATE', 'REPORT_DATE');
+        return $this->hasOne(SettPymPmc::class, 'report_date', 'report_date');
     }
 }

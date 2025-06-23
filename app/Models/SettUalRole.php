@@ -9,17 +9,17 @@ class SettUalRole extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_SETT_UAL_ROLE";
+    protected $table="pmgi_sett_ual_role";
     protected $guarded = [];
     public $timestamps = false;
 
     public function pages()
     {
-        return $this->belongsToMany(SettUalPage::class, 'PMGI_SETT_UAL_ROLE_HAS_PAGE', 'ROLE_ID', 'PAGE_ID');
+        return $this->belongsToMany(SettUalPage::class, 'pmgi_sett_ual_role_has_page', 'role_id', 'page_id');
     }
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'PMGI_SETT_UAL_USER_HAS_ROLE', 'ROLE_ID', 'USERID');
+        return $this->belongsToMany(User::class, 'pmgi_sett_ual_user_has_role', 'role_id', 'userid');
     }
 }

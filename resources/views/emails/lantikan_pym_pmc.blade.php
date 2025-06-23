@@ -13,8 +13,7 @@
     <meta name="format-detection" content="address=no" />
     <meta name="format-detection" content="email=no" />
     <meta name="x-apple-disable-message-reformatting" />
-    <link href="https://fonts.googleapis.com/css?family=Fraunces:ital,wght@0,400;0,700" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Rubik:ital,wght@0,400;0,700" rel="stylesheet" />
+    <!-- Google Fonts removed for wkhtmltoimage compatibility -->
     <title>Emel Lantikan</title>
     <style>
         html, body {
@@ -367,40 +366,7 @@
         }
 
     </style>
-    <!--[if !mso]><!-- -->
-    <style>
-        @media all {
-            @font-face {
-                font-family: 'Fraunces';
-                font-style: normal;
-                font-weight: 700;
-                src: url('https://fonts.gstatic.com/s/fraunces/v31/6NUh8FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0K7iN7hzFUPJH58nib1603gg7S2nfgRYIcUByTB_7V.woff') format('woff'), url('https://fonts.gstatic.com/s/fraunces/v31/6NUh8FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0K7iN7hzFUPJH58nib1603gg7S2nfgRYIcUByTB_7T.woff2') format('woff2');
-            }
-
-            @font-face {
-                font-family: 'Fraunces';
-                font-style: normal;
-                font-weight: 400;
-                src: url('https://fonts.gstatic.com/s/fraunces/v31/6NUh8FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0K7iN7hzFUPJH58nib1603gg7S2nfgRYIctxuTB_7V.woff') format('woff'), url('https://fonts.gstatic.com/s/fraunces/v31/6NUh8FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0K7iN7hzFUPJH58nib1603gg7S2nfgRYIctxuTB_7T.woff2') format('woff2');
-            }
-
-            @font-face {
-                font-family: 'Rubik';
-                font-style: normal;
-                font-weight: 700;
-                src: url('https://fonts.gstatic.com/s/rubik/v28/iJWZBXyIfDnIV5PNhY1KTN7Z-Yh-4I-FWUUz.woff') format('woff'), url('https://fonts.gstatic.com/s/rubik/v28/iJWZBXyIfDnIV5PNhY1KTN7Z-Yh-4I-FWUU1.woff2') format('woff2');
-            }
-
-            @font-face {
-                font-family: 'Rubik';
-                font-style: normal;
-                font-weight: 400;
-                src: url('https://fonts.gstatic.com/s/rubik/v28/iJWZBXyIfDnIV5PNhY1KTN7Z-Yh-B4iFWUUz.woff') format('woff'), url('https://fonts.gstatic.com/s/rubik/v28/iJWZBXyIfDnIV5PNhY1KTN7Z-Yh-B4iFWUU1.woff2') format('woff2');
-            }
-        }
-
-    </style>
-    <!--<![endif]-->
+    <!-- @font-face declarations removed for wkhtmltoimage compatibility -->
     <!--[if mso]>
     <style type="text/css">
         .pc-font-alt {
@@ -438,7 +404,7 @@
                                                                 <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
                                                                     <tr>
                                                                         <td align="center" valign="top" style="padding: 0px 0px 24px 0px;">
-                                                                            <img src="{{ asset('image/logo-tekun.png') }}" class="" width="100" height="100" alt="" style="display: block; outline: 0; line-height: 100%; -ms-interpolation-mode: bicubic; width:100px; height: auto; max-width: 100%; border-radius: 58px 58px 58px 58px; border: 0;" />
+                                                                            <img src="{{ public_path('image/logo-tekun.png') }}" class="" width="100" height="100" alt="" style="display: block; outline: 0; line-height: 100%; -ms-interpolation-mode: bicubic; width:100px; height: auto; max-width: 100%; border-radius: 58px 58px 58px 58px; border: 0;" />
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -448,7 +414,7 @@
                                                                             <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" align="center" style="border-collapse: separate; border-spacing: 0; margin-right: auto; margin-left: auto;">
                                                                                 <tr>
                                                                                     <td valign="top" align="center" style="padding: 0px 10px 0px 10px;">
-                                                                                        <div class="pc-font-alt pc-w620-fontSize-26px" style="line-height: 100%; letter-spacing: -0.04em; font-family: 'Fraunces', Arial, Helvetica, sans-serif; font-size: 40px; font-weight: bold; font-variant-ligatures: normal; color: #26392a; text-align: center; text-align-last: center;">
+                                                                                        <div class="pc-font-alt pc-w620-fontSize-26px" style="line-height: 100%; letter-spacing: -0.04em; font-family: Arial, Helvetica, sans-serif; font-size: 40px; font-weight: bold; font-variant-ligatures: normal; color: #26392a; text-align: center; text-align-last: center;">
                                                                                             <div><span>MAKLUMAN</span>
                                                                                             </div>
                                                                                             <div><span>&#xFEFF;</span>
@@ -466,7 +432,7 @@
                                                                             <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" align="center" style="border-collapse: separate; border-spacing: 0; margin-right: auto; margin-left: auto;">
                                                                                 <tr>
                                                                                     <td valign="top" align="center" style="padding: 0px 10px 0px 10px;">
-                                                                                        <div class="pc-font-alt pc-w620-fontSize-26px" style="line-height: 100%; letter-spacing: -0.04em; font-family: 'Fraunces', Arial, Helvetica, sans-serif; font-size: 30px; font-weight: bold; font-variant-ligatures: normal; color: #26392a; text-align: center; text-align-last: center;">
+                                                                                        <div class="pc-font-alt pc-w620-fontSize-26px" style="line-height: 100%; letter-spacing: -0.04em; font-family: Arial, Helvetica, sans-serif; font-size: 30px; font-weight: bold; font-variant-ligatures: normal; color: #26392a; text-align: center; text-align-last: center;">
                                                                                             <div><span>Anda telah dilantik sebagai {{ strtoupper($type) }} </span>
                                                                                             </div>
                                                                                             <div><span>bagi sesi PMGi {{ $session }}</span>
@@ -504,8 +470,8 @@
                                                                             <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="border-collapse: separate; border-spacing: 0; margin-right: auto; margin-left: auto;">
                                                                                 <tr>
                                                                                     <td valign="top" class="pc-w620-padding-0-0-0-0" align="center" style="padding: 0px 0px 0px 0px;">
-                                                                                        <div class="pc-font-alt pc-w620-fontSize-25px" style="line-height: 110%; letter-spacing: -0.04em; font-family: 'Rubik', Arial, Helvetica, sans-serif; font-size: 25px; font-weight: bold; font-variant-ligatures: normal; color: #26382a; text-align: center; text-align-last: center;">
-                                                                                            <div><span style="font-family: 'Rubik', Arial, Helvetica, sans-serif;">Salam Sejahtera</span>
+                                                                                                                                                                <div class="pc-font-alt pc-w620-fontSize-25px" style="line-height: 110%; letter-spacing: -0.04em; font-family: Arial, Helvetica, sans-serif; font-size: 25px; font-weight: bold; font-variant-ligatures: normal; color: #26382a; text-align: center; text-align-last: center;">
+                                                                            <div><span style="font-family: Arial, Helvetica, sans-serif;">Salam Sejahtera</span>
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>
@@ -536,7 +502,7 @@
                                                                             <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" align="left" style="border-collapse: separate; border-spacing: 0; margin-right: auto; margin-left: auto;">
                                                                                 <tr>
                                                                                     <td valign="top" align="left">
-                                                                                        <div class="pc-font-alt pc-w620-fontSize-15px" style="line-height: 21px; letter-spacing: -0.2px; font-family: 'Rubik', Arial, Helvetica, sans-serif; font-size: 18px; font-weight: normal; font-variant-ligatures: normal; color: #333333; text-align: left; text-align-last: left;">
+                                                                                        <div class="pc-font-alt pc-w620-fontSize-15px" style="line-height: 21px; letter-spacing: -0.2px; font-family: Arial, Helvetica, sans-serif; font-size: 18px; font-weight: normal; font-variant-ligatures: normal; color: #333333; text-align: left; text-align-last: left;">
                                                                                             <div><span>Tuan,</span>
                                                                                             </div>
                                                                                             <div><span><br />Sukacita dimaklumkan pihak tuan telah dilantik sebagai @if($type === 'pym') Pegawai Yang Menilai (PYM) @else Pegawai Mudah Cara (PMC) @endif bagi sesi PMGi {{ $session }}. Untuk makluman pelaksanaan PMG-I keatas PC / PP yang terlibat perlu dilaksanakan selewat-lewatnya pada {{ $lastDate }}. PYM / PMC perlu memastikan borang PMG-I dilengkap sebelum perakuan dibuat.</span>
@@ -575,7 +541,7 @@
                                                                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" align="center" style="border-collapse: separate; border-spacing: 0;">
                                                                     <tr>
                                                                         <td valign="top" class="pc-w620-padding-10-0-10-0" align="center" style="padding: 10px 0px 10px 0px;">
-                                                                            <div class="pc-font-alt" style="line-height: 21px; letter-spacing: -0.2px; font-family: 'Rubik', Arial, Helvetica, sans-serif; font-size: 15px; font-weight: normal; font-variant-ligatures: normal; color: #333333; text-align: center; text-align-last: center;">
+                                                                            <div class="pc-font-alt" style="line-height: 21px; letter-spacing: -0.2px; font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: normal; font-variant-ligatures: normal; color: #333333; text-align: center; text-align-last: center;">
                                                                                 <div>
                                                                                     <span>Muat turun senarai PYD didalam sesi anda pada lampiran emel ini.</span>
                                                                                 </div>
@@ -619,8 +585,8 @@
                                                                                                                             <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" align="center" style="border-collapse: separate; border-spacing: 0;">
                                                                                                                                 <tr>
                                                                                                                                     <td valign="top" align="center" style="padding: 30px 0px 0px 0px;">
-                                                                                                                                        <div class="pc-font-alt" style="line-height: 21px; letter-spacing: -0.2px; font-family: 'Fraunces', Arial, Helvetica, sans-serif; font-size: 20px; font-weight: normal; font-variant-ligatures: normal; color: #333333; text-align: center; text-align-last: center;">
-                                                                                                                                            <div><span style="font-family: 'Fraunces', Arial, Helvetica, sans-serif;font-weight: 700;font-style: normal;">Hadapi Masalah?</span>
+                                                                                                                                                                                                                                <div class="pc-font-alt" style="line-height: 21px; letter-spacing: -0.2px; font-family: Arial, Helvetica, sans-serif; font-size: 20px; font-weight: normal; font-variant-ligatures: normal; color: #333333; text-align: center; text-align-last: center;">
+                                                                                            <div><span style="font-family: Arial, Helvetica, sans-serif;font-weight: 700;font-style: normal;">Hadapi Masalah?</span>
                                                                                                                                             </div>
                                                                                                                                         </div>
                                                                                                                                     </td>
@@ -639,7 +605,7 @@
                                                                                                                             <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" align="center" style="border-collapse: separate; border-spacing: 0;">
                                                                                                                                 <tr>
                                                                                                                                     <td valign="top" class="pc-w620-padding-10-0-10-0" align="center" style="padding: 10px 0px 10px 0px;">
-                                                                                                                                        <div class="pc-font-alt" style="line-height: 21px; letter-spacing: -0.2px; font-family: 'Rubik', Arial, Helvetica, sans-serif; font-size: 15px; font-weight: normal; font-variant-ligatures: normal; color: #333333; text-align: center; text-align-last: center;">
+                                                                                                                                        <div class="pc-font-alt" style="line-height: 21px; letter-spacing: -0.2px; font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: normal; font-variant-ligatures: normal; color: #333333; text-align: center; text-align-last: center;">
                                                                                                                                             <div><span>Hubungi kami di Jabatan Operasi </span>
                                                                                                                                             </div>
                                                                                                                                             <div><span>TEKUN Nasional</span>
@@ -678,7 +644,7 @@
                                                                                                                 <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
                                                                                                                     <tr>
                                                                                                                         <td class="pc-w620-spacing-10-20-20-20" align="center" valign="top" style="padding: 20px 20px 20px 20px;">
-                                                                                                                            <img src="https://cloudfilesdm.com/postcards/image-1723111379958.jpg" class="" width="504" height="auto" alt="" style="display: block; outline: 0; line-height: 100%; -ms-interpolation-mode: bicubic; width:100%; height: auto; border-radius: 21px 21px 21px 21px; border: 0;" />
+                                                                                                                            <img src="{{ public_path('image/email/tekun-banner.jpg') }}" class="" width="504" height="auto" alt="TEKUN Banner" style="display: block; outline: 0; line-height: 100%; -ms-interpolation-mode: bicubic; width:100%; height: auto; border-radius: 21px 21px 21px 21px; border: 0;" />
                                                                                                                         </td>
                                                                                                                     </tr>
                                                                                                                 </table>

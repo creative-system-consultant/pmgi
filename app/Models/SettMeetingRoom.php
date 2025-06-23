@@ -9,6 +9,6 @@ class SettMeetingRoom extends Model
 {
     use HasFactory;
 
-    protected $table = "PMGI_SETT_MEETING_ROOM";
+    protected $table = "pmgi_sett_meeting_room";
     protected $guarded = [];
 }

@@ -9,12 +9,12 @@ class SettStateCommittee extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_SETT_STATE_COMMITTEE";
+    protected $table="pmgi_sett_state_committee";
     protected $guarded = [];
     public $timestamps = false;
 
     public function state()
     {
-        return $this->belongsTo(BnmStatecode::class, 'STATECODE', 'CODE');
+        return $this->belongsTo(BnmStatecode::class, 'statecode', 'code');
     }
 }

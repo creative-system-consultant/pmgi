@@ -11,9 +11,12 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class Kumulatif extends Component
 {
+    use Actions;
+    
     public $pmgiSession = false;
     public $pmgiSessionId;
     public $pydId;
@@ -102,13 +105,21 @@ class Kumulatif extends Component
     protected function getData()
     {
         if($this->pydId) {
-            $this->data = DB::table('PMGI_SUMM_MTH_OFFICER')
+            $this->data = DB::table('pmgi_summ_mth_officer')
                             ->where('officer_id', $this->pydId)
                             ->whereBetween('report_date', [$this->fromReportDate, $this->toReportDate])
                             ->whereNotIn('incl_pmgi_flag', ['G', 'H'])
                             ->orderBy('report_date', 'asc')
                             ->get();
 
+            // Show dialog if no data found
+            if ($this->data->count() === 0) {
+                $this->dialog()->info(
+                    $title = 'Tiada Data',
+                    $description = 'Tiada data prestasi ditemui untuk tempoh yang dipilih.'
+                );
+                return;
+            }
             // Calculate month names for each entry in the retrieved data
             $this->data->each(function ($item) {
                 $item->month_name = Carbon::parse($item->report_date)->translatedFormat('F Y');

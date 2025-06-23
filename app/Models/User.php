@@ -11,17 +11,17 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $table="FMS_USERS";
+    protected $table="fms_users";
     protected $guarded = [];
     public $timestamps = false;
 
-    protected $primaryKey = 'USERID';
+    protected $primaryKey = 'userid';
     public $incrementing = false;
     protected $keyType = 'string';
 
     public function bankOfficer()
     {
-        return $this->hasOne(BankOfficer::class, 'OFFICER_ID', 'USERID');
+        return $this->hasOne(BankOfficer::class, 'officer_id', 'userid');
     }
 
     protected function getBankOfficer()
@@ -71,6 +71,6 @@ class User extends Authenticatable
 
     public function roles()
     {
-        return $this->belongsToMany(SettUalRole::class, 'PMGI_SETT_UAL_USER_HAS_ROLE', 'USERID', 'ROLE_ID');
+        return $this->belongsToMany(SettUalRole::class, 'pmgi_sett_ual_user_has_role', 'userid', 'role_id');
     }
 }

@@ -9,17 +9,17 @@ class JttSessionInfo extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_JTT_SESSION_INFO";
+    protected $table="pmgi_jtt_session_info";
     protected $guarded = [];
     public $timestamps = false;
 
     public function panelInfo()
     {
-        return $this->hasMany(JttSessionPanel::class, 'SESSION_ID', 'SESSION_ID');
+        return $this->hasMany(JttSessionPanel::class, 'session_id', 'session_id');
     }
 
     public function venueInfo()
     {
-        return $this->belongsTo(SettMeetingRoom::class, 'VENUE', 'ID');
+        return $this->belongsTo(SettMeetingRoom::class, 'venue', 'id');
     }
 }

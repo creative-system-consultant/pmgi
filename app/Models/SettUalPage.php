@@ -9,12 +9,12 @@ class SettUalPage extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_SETT_UAL_PAGE";
+    protected $table="pmgi_sett_ual_page";
     protected $guarded = [];
     public $timestamps = false;
 
     public function roles()
     {
-        return $this->belongsToMany(SettUalRole::class, 'PMGI_SETT_UAL_ROLE_HAS_PAGE', 'PAGE_ID', 'ROLE_ID');
+        return $this->belongsToMany(SettUalRole::class, 'pmgi_sett_ual_role_has_page', 'page_id', 'role_id');
     }
 }

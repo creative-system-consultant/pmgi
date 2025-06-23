@@ -9,7 +9,7 @@ class SummMthOfficer extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_SUMM_MTH_OFFICER";
+    protected $table="pmgi_summ_mth_officer";
     protected $guarded = [];
     public $timestamps = false;
 
@@ -19,11 +19,11 @@ class SummMthOfficer extends Model
 
     public function branch()
     {
-        return $this->hasOne(Branch::class, 'BRANCH_CODE', 'ACCT_BRANCH_CODE');
+        return $this->hasOne(Branch::class, 'branch_code', 'acct_branch_code');
     }
 
     public function officerBranch()
     {
-        return $this->hasOne(Branch::class, 'BRANCH_CODE', 'OFFICER_BRANCH_CODE');
+        return $this->hasOne(Branch::class, 'branch_code', 'officer_branch_code');
     }
 }

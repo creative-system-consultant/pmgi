@@ -9,7 +9,7 @@ class JttMeetingInvitation extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_JTT_MEETING_INVITATIONS";
+    protected $table="pmgi_jtt_meeting_invitations";
     protected $guarded = [];
 
     protected $casts = [
@@ -18,6 +18,6 @@ class JttMeetingInvitation extends Model
 
     public function officer()
     {
-        return $this->belongsTo(BankOfficer::class, 'OFFICER_ID', 'OFFICER_ID');
+        return $this->belongsTo(BankOfficer::class, 'officer_id', 'officer_id');
     }
 }

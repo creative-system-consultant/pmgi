@@ -9,7 +9,7 @@ class SettUalRoleHasPage extends Model
 {
     use HasFactory;
 
-    protected $table = "PMGI_SETT_UAL_ROLE_HAS_PAGE";
+    protected $table = "pmgi_sett_ual_role_has_page";
     protected $guarded = [];
     public $timestamps = false;
 }

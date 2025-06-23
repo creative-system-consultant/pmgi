@@ -9,13 +9,13 @@ class SettJtt extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_SETT_JTT";
+    protected $table="pmgi_sett_jtt";
     protected $guarded = [];
     public $timestamps = false;
 
     public function bankOfficer()
     {
-        return $this->hasOne(BankOfficer::class, 'OFFICER_ID', 'OFFICER_ID');
+        return $this->hasOne(BankOfficer::class, 'officer_id', 'officer_id');
     }
 
     protected function getBankOfficer()

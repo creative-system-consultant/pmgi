@@ -9,7 +9,7 @@ class BahagianOperasi extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_JPOC";
+    protected $table="pmgi_jpoc";
     protected $guarded = [];
 
     public $timestamps = false;

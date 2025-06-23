@@ -106,12 +106,13 @@ class Index extends Component
             if ($userId && (!isset($this->originalSelectedUsers[$stateCode]) || $this->originalSelectedUsers[$stateCode] !== $userId)) {
                 // Generate emails image and send email only for updated entries
                 $path = $this->generateImageFromHtml($stateCode, $userId);
-                $email = 'hafizah@tekun.gov.my'; //FAT purpose
+                // $email = 'hafizah@tekun.gov.my'; //FAT purpose
+                $email = 'nazirul@csc.net.my'; //FAT purpose
                 // $email = BankOfficer::where('officer_id', $userId)->value('email');
                 $this->sendEmail($email, $path['image'], $path['html']);
 
-                // Add to the update list
-                $dataToUpdate[] = ['statecode' => $stateCode, 'userid' => $userId];
+                // Add to the update list with zero-padded statecode
+                $dataToUpdate[] = ['statecode' => str_pad($stateCode, 2, '0', STR_PAD_LEFT), 'userid' => $userId];
 
                 // Update the originalSelectedUsers array to reflect the new state after saving
                 $this->originalSelectedUsers[$stateCode] = $userId;
@@ -133,7 +134,14 @@ class Index extends Component
             }
         }
 
-        // Using batch insert/update
+        // Also handle records that weren't changed but might need statecode padding
+        foreach ($this->selectedUsers as $stateCode => $userId) {
+            if ($userId && !in_array(['statecode' => str_pad($stateCode, 2, '0', STR_PAD_LEFT), 'userid' => $userId], $dataToUpdate)) {
+                $dataToUpdate[] = ['statecode' => str_pad($stateCode, 2, '0', STR_PAD_LEFT), 'userid' => $userId];
+            }
+        }
+
+        // Using batch insert/update with zero-padded statecodes
         SettStateCommittee::upsert(
             $dataToUpdate,
             ['statecode'],

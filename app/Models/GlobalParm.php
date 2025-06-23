@@ -9,7 +9,7 @@ class GlobalParm extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_SYS_GLOBAL_PARM";
+    protected $table="pmgi_sys_global_parm";
     protected $guarded = [];
 
     public $timestamps = false;

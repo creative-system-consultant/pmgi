@@ -9,7 +9,7 @@ class SessionJttPydInfo extends Model
 {
     use HasFactory;
 
-    protected $table="PMGI_SESSION_JTT_PYD_INFO";
+    protected $table="pmgi_session_jtt_pyd_info";
     protected $guarded = [];
     public $timestamps = false;
 }

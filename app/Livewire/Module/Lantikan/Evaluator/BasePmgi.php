@@ -135,7 +135,7 @@ abstract class BasePmgi extends Component
                         ->leftJoin('PMGI_SETT_UAL_USER_HAS_ROLE as r', 'r.userid', '=', 'a.userid')
                         ->select('a.userid', 'b.officer_name', 'c.branch_name')
                         ->where('a.userstatus', 1)
-                        ->where(DB::raw('substr(b.branch_code, 0, 2)'), $this->stateCode)
+                        ->where(DB::raw('SUBSTRING(b.branch_code, 1, 2)'), $this->stateCode)
                         ->whereIn('b.officer_group', [5,12])
                         ->whereRaw('NOT EXISTS (SELECT 1 FROM PMGI_SETT_UAL_USER_HAS_ROLE ur WHERE ur.userid = a.userid AND ur.role_id = ?)', [$urusetiaNegeriRoleId])
                         ->get()
@@ -152,7 +152,7 @@ abstract class BasePmgi extends Component
                         ->leftJoin('PMGI_SETT_UAL_USER_HAS_ROLE as r', 'r.userid', '=', 'a.userid')
                         ->select('a.userid', 'b.officer_name', 'c.branch_name')
                         ->where('a.userstatus', 1)
-                        ->where(DB::raw('substr(b.branch_code, 0, 2)'), $this->stateCode)
+                        ->where(DB::raw('SUBSTRING(b.branch_code, 1, 2)'), $this->stateCode)
                         ->whereIn('b.officer_group', [5,12])
                         ->whereRaw('NOT EXISTS (SELECT 1 FROM PMGI_SETT_UAL_USER_HAS_ROLE ur WHERE ur.userid = a.userid AND ur.role_id = ?)', [$urusetiaNegeriRoleId])
                         ->get()
@@ -186,9 +186,11 @@ abstract class BasePmgi extends Component
         $pymImagePath = $this->generateImageFromHtml('pym');
         $pmcImagePath = $this->selectedPmc ? $this->generateImageFromHtml('pmc') : null;
 
-        $pymEmail = 'hafizah@tekun.gov.my'; //FAT purpose
+        // $pymEmail = 'hafizah@tekun.gov.my'; //FAT purpose
+        $pymEmail = 'nazirul@csc.net.my'; //FAT purpose
         // $pymEmail = $this->getPymEmailAddress();
-        $pmcEmail = 'hafizah@tekun.gov.my'; //FAT purpose
+        $pmcEmail = 'nazirul@csc.net.my'; //FAT purpose
+        // $pmcEmail = 'hafizah@tekun.gov.my'; //FAT purpose
         // $pmcEmail = $this->getPmcEmailAddress();
 
         $this->sendEmails(
@@ -320,7 +322,9 @@ abstract class BasePmgi extends Component
         }
 
         // Chain the cleanup job after the email jobs
-        $jobs[] = new CleanupTemporaryFiles([$pymImagePath, $pmcImagePath], [$pymHtmlPath, $pmcHtmlPath], $fileUrl);
+        $imagePaths = array_filter([$pymImagePath, $pmcImagePath]); // Remove null values
+        $htmlPaths = array_filter([$pymHtmlPath, $pmcHtmlPath]); // Remove null values
+        $jobs[] = new CleanupTemporaryFiles($imagePaths, $htmlPaths, $fileUrl);
 
         // Dispatch the jobs as a chain
         Bus::chain($jobs)->dispatch();
@@ -339,17 +343,17 @@ abstract class BasePmgi extends Component
 
     public function render()
     {
-        $this->datas = DB::table('PMGI_MNTR_SESSION as m')
-                            ->join('FMS_USERS as a', 'm.officer_id', '=', 'a.userid')
-                            ->join('BRANCHES as b', 'm.branch_code', '=', 'b.branch_code')
-                            ->join('PMGI_FMS_BANK_OFFICERS as c', 'c.officer_id', '=', 'a.userid')
-                            ->join('PMGI_HRD_OFFICER as d', 'd.no_pekerja', '=', 'c.staffno')
-                            ->leftJoin('PMGI_SETT_PYM_PMC as e', function ($join) {
-                                $join->on('e.PYD_ID', '=', 'm.officer_id')
-                                    ->whereDate('e.REPORT_DATE', $this->selectedDate->copy()->subMonthNoOverflow()->endOfMonth());
+        $this->datas = DB::table('pmgi_mntr_session as m')
+                            ->join('fms_users as a', 'm.officer_id', '=', 'a.userid')
+                            ->join('branches as b', 'm.branch_code', '=', 'b.branch_code')
+                            ->join('pmgi_fms_bank_officers as c', 'c.officer_id', '=', 'a.userid')
+                            ->join('pmgi_hrd_officer as d', 'd.no_pekerja', '=', 'c.staffno')
+                            ->leftJoin('pmgi_sett_pym_pmc as e', function ($join) {
+                                $join->on('e.pyd_id', '=', 'm.officer_id')
+                                    ->whereDate('e.report_date', $this->selectedDate->copy()->subMonthNoOverflow()->endOfMonth());
                             })
-                            ->leftJoin('FMS_USERS as pym_user', 'e.pym_id', '=', 'pym_user.userid')
-                            ->leftJoin('FMS_USERS as pmc_user', 'e.pmc_id', '=', 'pmc_user.userid')
+                            ->leftJoin('fms_users as pym_user', 'e.pym_id', '=', 'pym_user.userid')
+                            ->leftJoin('fms_users as pmc_user', 'e.pmc_id', '=', 'pmc_user.userid')
                             ->select(
                                 'a.userid',
                                 'a.username',
@@ -358,19 +362,17 @@ abstract class BasePmgi extends Component
                                 'b.branch_name',
                                 'm.pmgi_cycle',
                                 'm.pmgi_level',
-                                DB::raw('CASE WHEN e.PYD_ID IS NULL THEN 0 ELSE 1 END as status'),
+                                DB::raw('CASE WHEN e.pyd_id IS NULL THEN 0 ELSE 1 END as status'),
                                 'e.pym_id',
                                 'pym_user.username as pym_name',
                                 'e.pmc_id',
                                 'pmc_user.username as pmc_name'
                             )
-                            ->whereDate('SESSION_DATE_START', $this->selectedDate)
-                            ->where('m.STATE_CODE', $this->stateCode)
-                            ->where('m.PMGI_LEVEL', $this->getPmgiLevel())
+                            ->whereDate('session_date_start', $this->selectedDate)
+                            ->where('m.state_code', $this->stateCode)
+                            ->where('m.pmgi_level', $this->getPmgiLevel())
                             ->orderBy('b.branch_name', 'asc')
                             ->get();
-
-
 
         $pmgiValue = substr($this->getPmgiLevel(), -1);
 

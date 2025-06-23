@@ -9,21 +9,21 @@ class BnmStatecode extends Model
 {
     use HasFactory;
 
-    protected $table="BNM_STATECODES";
+    protected $table="bnm_statecodes";
     protected $guarded = [];
     public $timestamps = false;
 
-    protected $primaryKey = 'CODE';
+    protected $primaryKey = 'code';
     public $incrementing = false;
     protected $keyType = 'string';
 
     public function branches()
     {
-        return $this->hasMany(Branch::class, 'STATE_CODE', 'CODE');
+        return $this->hasMany(Branch::class, 'state_code', 'code');
     }
 
     public function committee()
     {
-        return $this->hasOne(SettStateCommittee::class, 'STATECODE', 'CODE');
+        return $this->hasOne(SettStateCommittee::class, 'statecode', 'code');
     }
 }
