@@ -25,7 +25,10 @@ class RestrictDuringSession
 
         // Check if there's an active session for today
         $session = SessionInfo::whereDate('session_date', now())
-                                ->where('status', 0) // Assuming status 0 means the session is active
+                                ->where(function ($query) {
+                                    $query->where('status', 0)
+                                          ->orWhereNull('status'); // Allow NULL status
+                                })
                                 ->whereHas('setting', function ($query) use ($user) {
                                     $query->where(function ($q) use ($user) {
                                         $q->where('pyd_id', $user->userid)

@@ -14,6 +14,8 @@
             padding: 0;
             font-size: 14px;
             color: #4A5568;
+            min-width: 1400px;
+            width: 100%;
             /* Tailwind's text-gray-900 */
         }
 
@@ -27,6 +29,7 @@
 
         .min-w-full {
             min-width: 100%;
+            width: 100%;
         }
 
         .align-middle {
@@ -200,26 +203,38 @@
             color: #60A5FA;
         }
 
+        /* Additional styles for wide tables */
+        table {
+            table-layout: auto;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-container {
+            width: 100%;
+            min-width: 1400px;
+        }
+
     </style>
 
 </head>
 
 <body>
     <main>
-        <div class="bg-white">
+        <div class="bg-white table-container">
             <div class="inline-block min-w-full align-middle">
-                <table class="min-w-full divide-y divide-gray-200 ">
-                    <thead class="bg-gray-50 ">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
                         <tr class="bg-gray-200">
                             <th class="bg-white"></th>
                             @foreach($datas as $data)
-                            <th scope="col" colspan="4" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border border-black border-dashed ">
+                            <th scope="col" colspan="4" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border border-black border-dashed">
                                 {{ $data->month_name }}
                             </th>
                             @endforeach
                         </tr>
                     </thead>
-                    <tbody class="bg-white ">
+                    <tbody class="bg-white">
                         {{-- kriteria 1 --}}
                         <tr class="bg-gray-100">
                             <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border border-black border-dashed border-y">
@@ -241,34 +256,34 @@
                             @endforeach
                         </tr>
                         <tr>
-                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 border border-black border-dashed border-y whitespace-nowrap">
+                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap border border-black border-dashed border-y">
                                 KUTIPAN TANPA KONTRAK I (Minimum {{ $percentage->get(0)->evaluation_percentage }}%)
                             </td>
                             @foreach($datas as $data)
-                            <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
+                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 PK (RM) P + C
                             </td>
-                            <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
+                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->rm_patut_kutip, 2) }}
                             </td>
-                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
+                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ $data->rm_dapat_kutip_pts }}%
                             </td>
-                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed whitespace-nowrap">
+                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed">
                                 @if($data->rm_dapat_kutip_capai_flag == 'Y')
-                                <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                <span class="px-2.5 py-0.5 mr-2 text-xs font-medium text-green-800 bg-green-100 rounded-md border-green-100">CAPAI</span>
                                 @else
-                                <span class="bg-pink-100 text-pink-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-pink-100 ">TAK CAPAI</span>
+                                <span class="px-2.5 py-0.5 mr-2 text-xs font-medium text-pink-800 bg-pink-100 rounded-md border-pink-100">TAK CAPAI</span>
                                 @endif
                             </td>
                             @endforeach
                         </tr>
                         <tr>
                             @foreach($datas as $data)
-                            <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
+                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 DK (RM)
                             </td>
-                            <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed whitespace-nowrap border-y">
+                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->rm_dapat_kutip, 2) }}
                             </td>
                             @endforeach
@@ -294,34 +309,34 @@
                             @endforeach
                         </tr>
                         <tr>
-                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 border border-black border-dashed border-y whitespace-nowrap">
+                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap border border-black border-dashed border-y">
                                 BILANGAN MEMBAYAR (Minimum {{ $percentage->get(1)->evaluation_percentage }}%)
                             </td>
                             @foreach($datas as $data)
-                            <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
+                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 BILANGAN SELIAAN
                             </td>
-                            <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
+                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->bil_patut_kutip) }}
                             </td>
-                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
+                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->bil_dapat_kutip_pts, 2) }}%
                             </td>
-                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed whitespace-nowrap">
+                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed">
                                 @if($data->bil_dapat_kutip_capai_flag == 'Y')
-                                <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                <span class="px-2.5 py-0.5 mr-2 text-xs font-medium text-green-800 bg-green-100 rounded-md border-green-100">CAPAI</span>
                                 @else
-                                <span class="bg-pink-100 text-pink-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-pink-100 ">TAK CAPAI</span>
+                                <span class="px-2.5 py-0.5 mr-2 text-xs font-medium text-pink-800 bg-pink-100 rounded-md border-pink-100">TAK CAPAI</span>
                                 @endif
                             </td>
                             @endforeach
                         </tr>
                         <tr>
                             @foreach($datas as $data)
-                            <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
+                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 BILANGAN MEMBAYAR
                             </td>
-                            <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed whitespace-nowrap border-y">
+                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->bil_dapat_kutip) }}
                             </td>
                             @endforeach
@@ -347,34 +362,34 @@
                             @endforeach
                         </tr>
                         <tr>
-                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 border border-black border-dashed border-y whitespace-nowrap">
+                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap border border-black border-dashed border-y">
                                 LAWATAN SELIAAN (Minimum {{ $percentage->get(2)->evaluation_percentage }}%)
                             </td>
                             @foreach($datas as $data)
-                            <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
+                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 BILANGAN SELIAAN
                             </td>
-                            <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
+                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->bil_selia) }}
                             </td>
-                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
+                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->bil_lawat_pts, 2) }}%
                             </td>
-                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed whitespace-nowrap">
+                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed">
                                 @if($data->bil_lawat_capai_flag == 'Y')
-                                <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                <span class="px-2.5 py-0.5 mr-2 text-xs font-medium text-green-800 bg-green-100 rounded-md border-green-100">CAPAI</span>
                                 @else
-                                <span class="bg-pink-100 text-pink-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-pink-100 ">TAK CAPAI</span>
+                                <span class="px-2.5 py-0.5 mr-2 text-xs font-medium text-pink-800 bg-pink-100 rounded-md border-pink-100">TAK CAPAI</span>
                                 @endif
                             </td>
                             @endforeach
                         </tr>
                         <tr>
                             @foreach($datas as $data)
-                            <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
+                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 JUMLAH LAWATAN
                             </td>
-                            <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed whitespace-nowrap border-y">
+                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->bil_lawat) }}
                             </td>
                             @endforeach
@@ -400,44 +415,44 @@
                             @endforeach
                         </tr>
                         <tr>
-                            <td rowspan="3" class="p-2 text-sm font-normal text-center text-gray-900 border border-black border-dashed border-y whitespace-nowrap">
+                            <td rowspan="3" class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap border border-black border-dashed border-y">
                                 PRESTASI NPF (KAWALAN) (Minimum {{ $percentage->get(3)->evaluation_percentage }}%)
                             </td>
                             @foreach($datas as $data)
-                            <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
+                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 BILANGAN AKAUN A3 (5.01-6)
                             </td>
-                            <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
+                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->bil_kawal_npf_sblm) }}
                             </td>
-                            <td rowspan="3" class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
+                            <td rowspan="3" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->bil_kawal_npf_pts, 2) }}%
                             </td>
-                            <td rowspan="3" class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed whitespace-nowrap">
+                            <td rowspan="3" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed">
                                 @if($data->bil_kawal_npf_capai_flag == 'Y')
-                                <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                <span class="px-2.5 py-0.5 mr-2 text-xs font-medium text-green-800 bg-green-100 rounded-md border-green-100">CAPAI</span>
                                 @else
-                                <span class="bg-pink-100 text-pink-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-pink-100 ">TAK CAPAI</span>
+                                <span class="px-2.5 py-0.5 mr-2 text-xs font-medium text-pink-800 bg-pink-100 rounded-md border-pink-100">TAK CAPAI</span>
                                 @endif
                             </td>
                             @endforeach
                         </tr>
                         <tr>
                             @foreach($datas as $data)
-                            <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
+                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 BERTUKAR B1
                             </td>
-                            <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed whitespace-nowrap border-y">
+                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->bil_kawal_npf_tukar) }}
                             </td>
                             @endforeach
                         </tr>
                         <tr>
                             @foreach($datas as $data)
-                            <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
+                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 BILANGAN KEKAL
                             </td>
-                            <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed whitespace-nowrap border-y">
+                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->bil_kawal_npf_kekal) }}
                             </td>
                             @endforeach
@@ -463,34 +478,34 @@
                             @endforeach
                         </tr>
                         <tr>
-                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 border border-black border-dashed border-y whitespace-nowrap">
+                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap border border-black border-dashed border-y">
                                 PRESTASI NPF PEMULIHAN (Minimum {{ $percentage->get(4)->evaluation_percentage }}%)
                             </td>
                             @foreach($datas as $data)
-                            <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
+                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 BILANGAN AKAUN NPF
                             </td>
-                            <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
+                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->bil_pulih_npf_sblm) }}
                             </td>
-                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
+                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->bil_pulih_npf_pts) }}%
                             </td>
-                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed whitespace-nowrap">
+                            <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed">
                                 @if($data->bil_pulih_npf_capai_flag == 'Y')
-                                <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-green-100 ">CAPAI</span>
+                                <span class="px-2.5 py-0.5 mr-2 text-xs font-medium text-green-800 bg-green-100 rounded-md border-green-100">CAPAI</span>
                                 @else
-                                <span class="bg-pink-100 text-pink-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border-pink-100 ">TAK CAPAI</span>
+                                <span class="px-2.5 py-0.5 mr-2 text-xs font-medium text-pink-800 bg-pink-100 rounded-md border-pink-100">TAK CAPAI</span>
                                 @endif
                             </td>
                             @endforeach
                         </tr>
                         <tr>
                             @foreach($datas as $data)
-                            <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed border-y whitespace-nowrap">
+                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 BERTUKAR SEMASA
                             </td>
-                            <td class="p-2 text-sm font-normal text-center text-gray-500 border border-black border-dashed whitespace-nowrap border-y">
+                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->bil_pulih_npf_tukar) }}
                             </td>
                             @endforeach

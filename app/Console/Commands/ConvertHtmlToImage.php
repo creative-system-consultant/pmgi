@@ -37,7 +37,7 @@ class ConvertHtmlToImage extends Command
             $wkhtmlPath,
             '--quality', $quality,
             '--format', $format,
-            '--width', '800',
+            '--width', '1400',
             '--disable-smart-width',
             '--enable-local-file-access',
             '--minimum-font-size', '12',

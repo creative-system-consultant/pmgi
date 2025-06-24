@@ -52,16 +52,16 @@ class Pyd extends Component
                 ->where('branch_code', auth()->user()->branchCode())
                 ->selectRaw('
                             count(*) as terima,
-                            sum(case when nvl(branchapproval,0) = 1 then 1 else 0 end) as lulus,
-                            sum(case when nvl(branchapproval,0) = 9 then 1 else 0 end) as tolak,
-                            sum(case when nvl(branchapproval,0) in (0,2) then 1 else 0 end) as baki,
-                            sum(case when nvl(branchapproval,0) = 8 then 1 else 0 end) as batal,
-                            sum(case when nvl(rs.cr_acct_flag,0) = 1 then 1 else 0 end) as jana,
+                            sum(case when ISNULL(branchapproval,0) = 1 then 1 else 0 end) as lulus,
+                            sum(case when ISNULL(branchapproval,0) = 9 then 1 else 0 end) as tolak,
+                            sum(case when ISNULL(branchapproval,0) in (0,2) then 1 else 0 end) as baki,
+                            sum(case when ISNULL(branchapproval,0) = 8 then 1 else 0 end) as batal,
+                            sum(case when ISNULL(rs.cr_acct_flag,0) = 1 then 1 else 0 end) as jana,
                             sum(apprvlimit) as jumterima,
-                            sum(case when nvl(branchapproval,0) = 1 then apprvlimit else 0 end) as jumlulus,
-                            sum(case when nvl(branchapproval,0) = 9 then apprvlimit else 0 end) as jumtolak,
-                            sum(case when nvl(branchapproval,0) in (0,2) then apprvlimit else 0 end) as jumbaki,
-                            sum(case when nvl(branchapproval,0) = 8 then apprvlimit else 0 end) as jumbatal
+                            sum(case when ISNULL(branchapproval,0) = 1 then apprvlimit else 0 end) as jumlulus,
+                            sum(case when ISNULL(branchapproval,0) = 9 then apprvlimit else 0 end) as jumtolak,
+                            sum(case when ISNULL(branchapproval,0) in (0,2) then apprvlimit else 0 end) as jumbaki,
+                            sum(case when ISNULL(branchapproval,0) = 8 then apprvlimit else 0 end) as jumbatal
                         ')
                 ->first();
         });
@@ -93,8 +93,8 @@ class Pyd extends Component
                     bilD as bild,
                     (bilA1+bilA2+bilA3+bilb1+bilB2+bilC1+bilC2+bilD) as jumlah,
                     bilNPF as bilnpf,
-                    round((bilNPF/bilALL)*100,2) as pctnpf,
-                    round((JUMNPF/JUMALL)*100,2) as pctjumnpf
+                    round((bilNPF*1.0/bilALL)*100,2) as pctnpf,
+                    round((JUMNPF*1.0/JUMALL)*100,2) as pctjumnpf
                 from
                 (
                     select
@@ -113,10 +113,10 @@ class Pyd extends Component
                     from account_master m
                     inner join account_position p on m.account_no = p.account_no
                     where m.account_status  not in  (1,2,6,9,13,15,16,19)
-                    AND    nvl(m.account_status2,0) <> '13'
-                    AND    nvl(m.seliaanowner, 'BRN') = 'BRN'
+                    AND    ISNULL(m.account_status2,'0') <> '13'
+                    AND    ISNULL(m.seliaanowner, 'BRN') = 'BRN'
                     AND    m.branch_code = ?
-                )
+                ) t
             ", [auth()->user()->branchCode()])[0] ?? null;
         });
 
@@ -124,23 +124,23 @@ class Pyd extends Component
 
         $this->pembiayaan = Cache::remember('pembiayaan_' . auth()->user()->branchCode() . '_' . $currentDate, 480, function () use ($currentDate) {
             $pembiayanData = DB::select("
-                                select nvl(uf_decode_prodcatg(product_catg), 0) as product_category,
+                                select ISNULL(product_catg, '0') as product_category,
                                     sum(bil) as bilakaun,
                                     sum(bilpeminjam) as bil_peminjam,
                                     sum(amt) as jumlah_pembiayaan
                                 from (
                                     SELECT count(*) AS bil,
                                         count(distinct m.cust_id) as bilpeminjam,
-                                        nvl(sum(m.approved_limit), 0) AS amt,
-                                        nvl(SUBSTR(UF_GET_PRODUCT_CATG(m.PRODUCT_CODE, m.PRODUCT_SUB_CODE), 1, 3), 0) AS PRODUCT_CATG
+                                        ISNULL(sum(m.approved_limit), 0) AS amt,
+                                        ISNULL(SUBSTRING(m.PRODUCT_CODE + '_' + m.PRODUCT_SUB_CODE, 1, 3), '0') AS PRODUCT_CATG
                                     FROM account_master m
                                     left outer join DISBURSEMENT_REQUEST d
                                     on m.account_no = d.account_no
-                                    where ((trunc(d.cheque_Date) <= to_Date(?, 'DD MON YYYY')  and disburse_mode = 'CH' AND d.disb_status not in ('X', 'R','S'))
-                                    or (trunc(d.autodebit_Date) <= to_Date(?, 'DD MON YYYY') and disburse_mode = 'AD' AND d.disb_status not in ('X', 'R','S') and (length(d.DEBIT_BANKACCT) > 0)))
+                                    where ((CAST(d.cheque_Date as date) <= CAST(? as date) and disburse_mode = 'CH' AND d.disb_status not in ('X', 'R','S'))
+                                    or (CAST(d.autodebit_Date as date) <= CAST(? as date) and disburse_mode = 'AD' AND d.disb_status not in ('X', 'R','S') and (LEN(ISNULL(d.DEBIT_BANKACCT,'')) > 0)))
                                     and m.account_status <> 2
                                     and m.branch_code = ?
-                                    group by SUBSTR(UF_GET_PRODUCT_CATG(m.PRODUCT_CODE, m.PRODUCT_SUB_CODE), 1, 3)
+                                    group by SUBSTRING(m.PRODUCT_CODE + '_' + m.PRODUCT_SUB_CODE, 1, 3)
                                     union
                                     SELECT count(*) AS bil,
                                         count(distinct M.Nokpbaru) as bilpeminjam,
@@ -148,8 +148,8 @@ class Pyd extends Component
                                         M.Produk_Category AS PRODUCT_CATG
                                     FROM Migration_New M
                                     group by M.Produk_Category
-                                )
-                                group by nvl(uf_decode_prodcatg(product_catg), 0)
+                                ) t
+                                group by ISNULL(product_catg, '0')
                             ", [$currentDate, $currentDate, auth()->user()->branchCode()]);
 
             $pivotData = [
@@ -245,8 +245,8 @@ class Pyd extends Component
             ->select(
                 'b.pmgi_result',
                 'b.pmgi_level',
-                DB::raw("TO_CHAR(b.session_date_start, 'YYYY-MM') as session_start_month"),
-                DB::raw("TO_CHAR(b.session_date_end, 'YYYY-MM') as session_end_month"),
+                DB::raw("FORMAT(b.session_date_start, 'yyyy-MM') as session_start_month"),
+                DB::raw("FORMAT(b.session_date_end, 'yyyy-MM') as session_end_month"),
                 'b.wait_period'
             )
             ->get();
