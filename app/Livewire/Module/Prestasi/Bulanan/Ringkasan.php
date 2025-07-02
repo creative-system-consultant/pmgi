@@ -13,6 +13,7 @@ class Ringkasan extends Component
     public $role;
     public $state;
     public $branch;
+    public $pydId;
     public $date;
     public $reportDate;
 
@@ -60,6 +61,11 @@ class Ringkasan extends Component
             $query->where('acct_branch_code', $this->branch);
         }
 
+        // Filter by specific staff if pydId is provided, otherwise show all staff in the branch/state
+        if ($this->pydId) {
+            $query->where('officer_id', $this->pydId);
+        }
+
         return $query->orderBy('report_date', 'asc')
                     ->orderBy('branch_state_code', 'asc')
                     ->orderBy('cawangan', 'asc')
@@ -80,6 +86,7 @@ class Ringkasan extends Component
         }
 
         return SummMthOfficer::whereAcctBranchCode($branch_code)
+            ->whereOfficerId(auth()->user()->userid) // PYD only sees their own data
             ->whereBetween('report_date', [$this->reportDate->copy()->subMonthNoOverflow()->startOfMonth(), $this->reportDate->copy()->endOfMonth()])
             ->orderBy('report_date', 'asc')
             ->orderBy('incl_pmgi_flag', 'asc') // Ensure branch totals (N) come after individual records

@@ -13,6 +13,7 @@ class Keseluruhan extends Component
     public $role;
     public $state;
     public $branch;
+    public $pydId;
     public $date;
     public $percentage;
     private $reportDate;
@@ -56,6 +57,11 @@ class Keseluruhan extends Component
             $query->where('acct_branch_code', $this->branch);
         }
 
+        // Filter by specific staff if pydId is provided, otherwise show all staff in the branch/state
+        if ($this->pydId) {
+            $query->where('officer_id', $this->pydId);
+        }
+
         return $query->orderBy('branch_state_code', 'asc')
             ->orderBy('cawangan', 'asc')
             ->orderBy('incl_pmgi_flag', 'asc')
@@ -75,6 +81,7 @@ class Keseluruhan extends Component
         }
 
         return SummMthOfficer::whereAcctBranchCode($branch_code)
+            ->whereOfficerId(auth()->user()->userid) // PYD only sees their own data
             ->whereDate('report_date', $this->reportDate->copy()->endOfMonth()->format('Y-m-d'))
             ->orderBy('incl_pmgi_flag', 'asc')
             ->get();

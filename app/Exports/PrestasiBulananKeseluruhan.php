@@ -18,13 +18,15 @@ class PrestasiBulananKeseluruhan implements FromView, WithStyles
     protected $reportDate;
     protected $state;
     protected $branch;
+    protected $pydId;
     protected $groupedData;
 
-    public function __construct($date, $state, $branch)
+    public function __construct($date, $state, $branch, $pydId = null)
     {
         $this->reportDate = Carbon::parse($date);
         $this->state = $state;
         $this->branch = $branch;
+        $this->pydId = $pydId;
     }
 
     public function view(): View
@@ -48,7 +50,8 @@ class PrestasiBulananKeseluruhan implements FromView, WithStyles
                 ]);
             }
 
-            $query->whereAcctBranchCode($branch_code);
+            $query->whereAcctBranchCode($branch_code)
+                  ->whereOfficerId(auth()->user()->userid); // PYD only sees their own data
         } else {
             if ($this->state && $this->state != '%') {
                 $query->where('branch_state_code', $this->state);
@@ -56,6 +59,11 @@ class PrestasiBulananKeseluruhan implements FromView, WithStyles
 
             if ($this->branch && $this->branch != '%%') {
                 $query->where('acct_branch_code', $this->branch);
+            }
+
+            // Filter by specific staff if pydId is provided, otherwise show all staff in the branch/state
+            if ($this->pydId) {
+                $query->where('officer_id', $this->pydId);
             }
         }
 

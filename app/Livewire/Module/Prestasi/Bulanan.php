@@ -4,6 +4,7 @@ namespace App\Livewire\Module\Prestasi;
 
 use App\Exports\PrestasiBulananKeseluruhan;
 use App\Exports\PrestasiBulananRingkasan;
+use App\Models\BankOfficer;
 use App\Models\BnmStatecode;
 use App\Models\Branch;
 use Illuminate\Validation\Rule;
@@ -16,26 +17,30 @@ class Bulanan extends Component
     public $type;
     public $state;
     public $branch;
+    public $staffName;
+    public $pydId;
     public $date;
     public $role;
     public $result = false;
 
     protected function rules()
     {
-        return [
+        $rules = [
             'type' => 'required',
-            'state' => [
-                Rule::requiredIf(function () {
-                    return $this->role == 'admin';
-                }),
-            ],
-            'branch' => [
-                Rule::requiredIf(function () {
-                    return $this->role == 'admin' && $this->state;
-                }),
-            ],
             'date' => 'required',
         ];
+
+        if ($this->role != 'pyd') {
+            $rules['state'] = 'required';
+            $rules['branch'] = [
+                Rule::requiredIf(function () {
+                    return $this->state;
+                }),
+            ];
+            // staffName is optional - if provided, filter by specific staff; if empty, show all staff
+        }
+
+        return $rules;
     }
 
     protected function messages()
@@ -52,24 +57,47 @@ class Bulanan extends Component
     {
         if (hasRoles('PYD')) {
             $this->role = 'pyd';
+            $this->pydId = auth()->user()->userid;
+        } else {
+            $this->role = 'admin';
         }
     }
 
     public function updatedType()
     {
         $this->result = false;
-        $this->reset('state','branch', 'date');
+        $this->reset('state','branch', 'staffName', 'date');
     }
 
     public function updatedState()
     {
         $this->result = false;
-        $this->reset('branch');
+        $this->reset('branch', 'staffName');
     }
 
     public function updatedBranch()
     {
         $this->result = false;
+        $this->reset('staffName');
+    }
+
+    public function updatedStaffName()
+    {
+        $this->result = false;
+        
+        if ($this->staffName) {
+            $this->staffName = strtoupper($this->staffName);
+            
+            $this->pydId = BankOfficer::whereBranchCode($this->branch)
+                                      ->where(function($q) {
+                                          $q->where('officer_name', 'LIKE', '%' . $this->staffName . '%')
+                                            ->orWhere('staffno', 'LIKE', '%' . $this->staffName . '%');
+                                      })
+                                      ->value('officer_id');
+        } else {
+            // If staff name is empty, clear pydId to show all staff data
+            $this->pydId = null;
+        }
     }
 
     public function generate(): void
@@ -82,9 +110,9 @@ class Bulanan extends Component
     public function download()
     {
         if ($this->type == 1) {
-            return Excel::download(new PrestasiBulananRingkasan($this->date, $this->state, $this->branch), 'PRESTASI_BULANAN_RINGKASAN.xlsx');
+            return Excel::download(new PrestasiBulananRingkasan($this->date, $this->state, $this->branch, $this->pydId), 'PRESTASI_BULANAN_RINGKASAN.xlsx');
         } else {
-            return Excel::download(new PrestasiBulananKeseluruhan($this->date, $this->state, $this->branch), 'PRESTASI_BULANAN_KESELURUHAN.xlsx');
+            return Excel::download(new PrestasiBulananKeseluruhan($this->date, $this->state, $this->branch, $this->pydId), 'PRESTASI_BULANAN_KESELURUHAN.xlsx');
         }
     }
 
