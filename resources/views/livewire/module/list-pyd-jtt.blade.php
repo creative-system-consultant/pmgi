@@ -1,54 +1,54 @@
 <div wire:poll.500ms>
-    <div class="flex items-start px-4 pt-6 2xl:px-0 gap-x-4">
+    <div class="flex gap-x-4 items-start px-4 pt-6 2xl:px-0">
         {{-- ringkasan --}}
-        <div class="w-9/12 p-4 my-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 ">
+        <div class="p-4 my-4 w-9/12 bg-white rounded-lg border border-gray-200 shadow-sm sm:p-6">
             <!-- Card header -->
             <div class="items-center lg:flex">
                 <div class="mb-4 lg:mb-0">
-                    <h3 class="mb-2 text-xl font-bold text-gray-900 ">Senarai PYD</h3>
-                    <span class="text-base font-normal text-gray-500 ">Senarai PYD untuk dinilai JKTT</span>
+                    <h3 class="mb-2 text-xl font-bold text-gray-900">Senarai PYD</h3>
+                    <span class="text-base font-normal text-gray-500">Senarai PYD untuk dinilai JKPI</span>
                 </div>
             </div>
             <div class="flex flex-col mt-6">
                 <div class="overflow-x-auto">
                     <div class="inline-block min-w-full align-middle">
                         <div class="overflow-hidden">
-                            <table class="min-w-full divide-y divide-gray-200 ">
-                                <thead class="bg-gray-50 ">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
                                     <tr class="bg-gray-200">
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-left text-gray-500 uppercase border-black border-dashed border-x ">
+                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-left text-gray-500 uppercase border-black border-dashed border-x">
                                             NAMA
                                         </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x ">
+                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x">
                                             CAWANGAN
                                         </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x ">
-                                            JKTT
+                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x">
+                                            JKPI
                                         </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x ">
+                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x">
                                             TINDAKAN
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody class="bg-white ">
+                                <tbody class="bg-white">
                                     @forelse ($datas as $index => $data)
                                     <tr class="{{ $index % 2 != 0 ? 'bg-gray-50' : '' }}">
-                                        <td class="p-2 text-xs font-normal text-left text-gray-900 uppercase border-black border-dashed border-x whitespace-nowrap">
+                                        <td class="p-2 text-xs font-normal text-left text-gray-900 uppercase whitespace-nowrap border-black border-dashed border-x">
                                             {{ $data->user->username }}
                                         </td>
-                                        <td class="p-2 text-xs font-normal text-center text-gray-900 uppercase border-black border-dashed border-x whitespace-nowrap">
+                                        <td class="p-2 text-xs font-normal text-center text-gray-900 uppercase whitespace-nowrap border-black border-dashed border-x">
                                             {{ $data->user->branchName() }}
                                         </td>
-                                        <td class="p-2 text-xs font-normal text-center text-gray-900 uppercase border-black border-dashed border-x whitespace-nowrap">
+                                        <td class="p-2 text-xs font-normal text-center text-gray-900 uppercase whitespace-nowrap border-black border-dashed border-x">
                                             {{ substr($data->pmgi_level, -1) }}
                                         </td>
-                                        <td class="p-2 text-xs font-normal text-center text-gray-900 uppercase border-black border-dashed border-x whitespace-nowrap">
+                                        <td class="p-2 text-xs font-normal text-center text-gray-900 uppercase whitespace-nowrap border-black border-dashed border-x">
                                             <x-badge rounded primary label="Mulakan sesi" class="cursor-pointer" wire:click="startSession('{{ $data->user->userid }}', '{{ $data->report_date }}')" />
                                         </td>
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="4" class="p-2 text-xs font-normal text-center text-gray-900 uppercase border border-black border-dashed whitespace-nowrap">
+                                        <td colspan="4" class="p-2 text-xs font-normal text-center text-gray-900 uppercase whitespace-nowrap border border-black border-dashed">
                                             NO DATA
                                         </td>
                                     </tr>
@@ -61,12 +61,12 @@
             </div>
         </div>
 
-        <div class="w-3/12 p-4 my-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6">
+        <div class="p-4 my-4 w-3/12 bg-white rounded-lg border border-gray-200 shadow-sm sm:p-6">
             <!-- Card header -->
             <div class="items-center lg:flex">
                 <div class="mb-4 lg:mb-0">
-                    <h3 class="mb-2 text-xl font-bold text-gray-900 ">Senarai Panel</h3>
-                    <span class="text-base font-normal text-gray-500 ">Senarai Panel Penilai JkTT</span>
+                    <h3 class="mb-2 text-xl font-bold text-gray-900">Senarai Panel</h3>
+                    <span class="text-base font-normal text-gray-500">Senarai Panel Penilai JKPI</span>
                 </div>
             </div>
             <div class="flex flex-col mt-12">
