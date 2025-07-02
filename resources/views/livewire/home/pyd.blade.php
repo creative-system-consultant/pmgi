@@ -525,36 +525,21 @@
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr class="bg-gray-100">
-                                        <th class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase"></th>
-                                        @foreach ($pembiayaan['product_categories'] as $category)
-                                        <th class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">{{ $category }}</th>
-                                        @endforeach
+                                        <th class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">PRODUK</th>
+                                        <th class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">BIL PEMINJAM</th>
+                                        <th class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">BIL AKAUN</th>
+                                        <th class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">AMAUN (RM)</th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white">
-                                    <!-- Row for BIL PEMINJAM -->
-                                    <tr>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap bg-gray-100">BIL PEMINJAM</td>
-                                        @foreach ($pembiayaan['bil_peminjam'] as $bilPeminjam)
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ $bilPeminjam }}</td>
-                                        @endforeach
-                                    </tr>
-
-                                    <!-- Row for BIL AKAUN -->
-                                    <tr>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap bg-gray-100">BIL AKAUN</td>
-                                        @foreach ($pembiayaan['bil_akaun'] as $bilAkaun)
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ $bilAkaun }}</td>
-                                        @endforeach
-                                    </tr>
-
-                                    <!-- Row for AMAUN (RM) -->
-                                    <tr>
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap bg-gray-100">AMAUN (RM)</td>
-                                        @foreach ($pembiayaan['jumlah_pembiayaan'] as $jumlahPembiayaan)
-                                        <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">{{ $jumlahPembiayaan }}</td>
-                                        @endforeach
-                                    </tr>
+                                    @foreach ($pembiayaan as $category)
+                                        <tr>
+                                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap bg-white">{{ $category->PRODUCT_DESC }}</td>
+                                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap bg-white">{{ $category->bil_peminjam }}</td>
+                                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap bg-white">{{ $category->bilakaun }}</td>
+                                            <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap bg-white">{{ number_format($category->jumlah_pembiayaan, 2) }}</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

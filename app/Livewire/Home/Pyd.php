@@ -2,6 +2,10 @@
 
 namespace App\Livewire\Home;
 
+use App\Models\PmgiSummMiaAppl;
+use App\Models\PmgiSummPembiayaanProduk;
+use App\Models\PmgiSummRescheduleInfo;
+use App\Models\PmgiSummWilma;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
@@ -32,8 +36,11 @@ class Pyd extends Component
         if ($this->userId) {
             $this->user = $this->userId;
         } else {
-            $this->user = auth()->user()->userid;
+            $authUser = auth()->user();
+            $this->user = $authUser->userid;
         }
+
+        $authUser = auth()->user();
 
         $this->data = User::find($this->user);
         $this->username = $this->data->username;
@@ -45,129 +52,33 @@ class Pyd extends Component
         $tempoh = $this->data->bankOfficer->hrData->tempoh_penempatan_semasa;
         $this->tempohBerkhidmat = str_replace(['Y', 'M', 'D'], [' Tahun ', ' Bulan ', ' Hari'], $tempoh);
 
-        $this->penjadualanSemula = Cache::remember('penjadualan_semula_' . auth()->user()->branchCode(), 480, function () {
-            return DB::table('RESCHEDULE_INFO2 as rs')
-                ->join('account_master as m', 'rs.accountno', '=', 'm.account_no')
-                ->where('activestatus', '>=', 0)
-                ->where('branch_code', auth()->user()->branchCode())
-                ->selectRaw('
-                            count(*) as terima,
-                            sum(case when ISNULL(branchapproval,0) = 1 then 1 else 0 end) as lulus,
-                            sum(case when ISNULL(branchapproval,0) = 9 then 1 else 0 end) as tolak,
-                            sum(case when ISNULL(branchapproval,0) in (0,2) then 1 else 0 end) as baki,
-                            sum(case when ISNULL(branchapproval,0) = 8 then 1 else 0 end) as batal,
-                            sum(case when ISNULL(rs.cr_acct_flag,0) = 1 then 1 else 0 end) as jana,
-                            sum(apprvlimit) as jumterima,
-                            sum(case when ISNULL(branchapproval,0) = 1 then apprvlimit else 0 end) as jumlulus,
-                            sum(case when ISNULL(branchapproval,0) = 9 then apprvlimit else 0 end) as jumtolak,
-                            sum(case when ISNULL(branchapproval,0) in (0,2) then apprvlimit else 0 end) as jumbaki,
-                            sum(case when ISNULL(branchapproval,0) = 8 then apprvlimit else 0 end) as jumbatal
-                        ')
+        $this->penjadualanSemula = (function () use ($authUser) {
+            $maxDate = PmgiSummRescheduleInfo::max('report_date');
+            return PmgiSummRescheduleInfo::where('report_date', $maxDate)
+                ->where('branch_code', $authUser->branchCode())
                 ->first();
-        });
+        })();
 
-        $this->mia = Cache::remember('mia_' . auth()->user()->branchCode(), 480, function () {
-            return DB::table('mia_appl_list as ma')
-                ->join('account_master as m', 'ma.custid', '=', 'm.cust_id')
-                ->where('branch_code', auth()->user()->branchCode())
-                ->selectRaw('
-                            count(*) as jumlah,
-                            sum(case when ma.status = 1 then 1 else 0 end) as lulus,
-                            sum(case when ma.status = 0 then 1 else 0 end) as proses,
-                            sum(case when ma.status = -1 then 1 else 0 end) as tolak,
-                            sum(case when ma.status = -2 then 1 else 0 end) as dikembalikan
-                        ')
+        $this->mia = (function () use ($authUser) {
+            $maxDate = PmgiSummMiaAppl::max('report_date');
+            return PmgiSummMiaAppl::where('report_date', $maxDate)
+                ->where('branch_code', $authUser->branchCode())
                 ->first();
-        });
+        })();
 
-        $this->wilma = Cache::remember('wilma_' . auth()->user()->branchCode(), 480, function () {
-            return DB::select("
-                select
-                    bilA1 as bila1,
-                    bilA2 as bila2,
-                    bilA3 as bila3,
-                    bilb1,
-                    bilB2 as bilb2,
-                    bilC1 as bilc1,
-                    bilC2 as bilc2,
-                    bilD as bild,
-                    (bilA1+bilA2+bilA3+bilb1+bilB2+bilC1+bilC2+bilD) as jumlah,
-                    bilNPF as bilnpf,
-                    round((bilNPF*1.0/bilALL)*100,2) as pctnpf,
-                    round((JUMNPF*1.0/JUMALL)*100,2) as pctjumnpf
-                from
-                (
-                    select
-                        SUM((CASE WHEN p.npl_category = 'A1'  THEN 1 ELSE 0 END)) AS bilA1,
-                        SUM((CASE WHEN p.npl_category = 'A2'  THEN 1 ELSE 0 END)) AS bilA2,
-                        SUM((CASE WHEN p.npl_category = 'A3'  THEN 1 ELSE 0 END)) AS bilA3,
-                        SUM((CASE WHEN p.npl_category = 'B1'  THEN 1 ELSE 0 END)) AS bilb1,
-                        SUM((CASE WHEN p.npl_category = 'B2'  THEN 1 ELSE 0 END)) AS bilB2,
-                        SUM((CASE WHEN p.npl_category = 'C1'  THEN 1 ELSE 0 END)) AS bilC1,
-                        SUM((CASE WHEN p.npl_category = 'C2'  THEN 1 ELSE 0 END)) AS bilC2,
-                        SUM((CASE WHEN p.npl_category = 'D'  THEN 1 ELSE 0 END)) AS bilD,
-                        SUM((CASE WHEN p.npl_category in ('B1','B2','C1','C2','D')  THEN 1 ELSE 0 END)) AS bilNPF,
-                        SUM((CASE WHEN p.npl_category in ('A1','A2','A3','B1','B2','C1','C2','D')  THEN 1 ELSE 0 END)) AS bilALL,
-                        SUM((CASE WHEN p.npl_category in ('B1','B2','C1','C2','D') THEN p.bal_outstanding ELSE 0 END)) AS JUMNPF,
-                        SUM((CASE WHEN p.npl_category in ('A1','A2','A3','B1','B2','C1','C2','D') THEN p.bal_outstanding ELSE 0 END)) AS JUMALL
-                    from account_master m
-                    inner join account_position p on m.account_no = p.account_no
-                    where m.account_status  not in  (1,2,6,9,13,15,16,19)
-                    AND    ISNULL(m.account_status2,'0') <> '13'
-                    AND    ISNULL(m.seliaanowner, 'BRN') = 'BRN'
-                    AND    m.branch_code = ?
-                ) t
-            ", [auth()->user()->branchCode()])[0] ?? null;
-        });
+        $this->wilma = (function () use ($authUser) {
+            $maxDate = PmgiSummWilma::max('report_date');
+            return PmgiSummWilma::where('report_date', $maxDate)
+                ->where('branch_code', $authUser->branchCode())
+                ->first();
+        })();
 
-        $currentDate = now()->format('d M Y');
-
-        $this->pembiayaan = Cache::remember('pembiayaan_' . auth()->user()->branchCode() . '_' . $currentDate, 480, function () use ($currentDate) {
-            $pembiayanData = DB::select("
-                                select ISNULL(product_catg, '0') as product_category,
-                                    sum(bil) as bilakaun,
-                                    sum(bilpeminjam) as bil_peminjam,
-                                    sum(amt) as jumlah_pembiayaan
-                                from (
-                                    SELECT count(*) AS bil,
-                                        count(distinct m.cust_id) as bilpeminjam,
-                                        ISNULL(sum(m.approved_limit), 0) AS amt,
-                                        ISNULL(SUBSTRING(m.PRODUCT_CODE + '_' + m.PRODUCT_SUB_CODE, 1, 3), '0') AS PRODUCT_CATG
-                                    FROM account_master m
-                                    left outer join DISBURSEMENT_REQUEST d
-                                    on m.account_no = d.account_no
-                                    where ((CAST(d.cheque_Date as date) <= CAST(? as date) and disburse_mode = 'CH' AND d.disb_status not in ('X', 'R','S'))
-                                    or (CAST(d.autodebit_Date as date) <= CAST(? as date) and disburse_mode = 'AD' AND d.disb_status not in ('X', 'R','S') and (LEN(ISNULL(d.DEBIT_BANKACCT,'')) > 0)))
-                                    and m.account_status <> 2
-                                    and m.branch_code = ?
-                                    group by SUBSTRING(m.PRODUCT_CODE + '_' + m.PRODUCT_SUB_CODE, 1, 3)
-                                    union
-                                    SELECT count(*) AS bil,
-                                        count(distinct M.Nokpbaru) as bilpeminjam,
-                                        sum(M.Jumlahpinjaman) AS amt,
-                                        M.Produk_Category AS PRODUCT_CATG
-                                    FROM Migration_New M
-                                    group by M.Produk_Category
-                                ) t
-                                group by ISNULL(product_catg, '0')
-                            ", [$currentDate, $currentDate, auth()->user()->branchCode()]);
-
-            $pivotData = [
-                'product_categories' => [],
-                'bil_peminjam' => [],
-                'bil_akaun' => [],
-                'jumlah_pembiayaan' => [],
-            ];
-
-            foreach ($pembiayanData as $result) {
-                $pivotData['product_categories'][] = $result->product_category;
-                $pivotData['bil_peminjam'][] = $result->bil_peminjam;
-                $pivotData['bil_akaun'][] = $result->bilakaun;
-                $pivotData['jumlah_pembiayaan'][] = number_format($result->jumlah_pembiayaan, 2);
-            }
-
-            return $pivotData;
-        });
+        $this->pembiayaan = (function () use ($authUser) {
+            $maxDate = PmgiSummPembiayaanProduk::max('report_date');
+            return PmgiSummPembiayaanProduk::where('report_date', $maxDate)
+                ->where('branch_code', $authUser->branchCode())
+                ->get();
+        })();
 
         $this->pmgiLevels = [
             'PM1' => 'PMG-i (1)',
