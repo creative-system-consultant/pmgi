@@ -7,7 +7,7 @@
             <!-- Card header -->
             <div class="items-center lg:flex">
                 <div class="mb-4 lg:mb-0">
-                    <h3 class="mb-2 text-lg font-bold text-gray-900">Urusetia Jawatankuasa Timbang Tara (JTT)</h3>
+                    <h3 class="mb-2 text-lg font-bold text-gray-900">Urusetia Jawatankuasa Penilaian PMGi (JKPI)</h3>
                 </div>
             </div>
             <div class="mt-6">

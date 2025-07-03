@@ -47,7 +47,7 @@ class JttOfficer extends Component
 
         $this->dialog()->success(
             $title = 'Berjaya!',
-            $description = 'Ahli JTT berjaya ditambah'
+            $description = 'Ahli JKPI berjaya ditambah'
         );
     }
 
@@ -55,7 +55,7 @@ class JttOfficer extends Component
     {
         $this->dialog()->confirm([
             'title'       => 'Andakah anda pasti?',
-            'description' => 'Padam ahli JTT?',
+            'description' => 'Padam ahli JKPI?',
             'icon'        => 'question',
             'accept'      => [
                 'label'  => 'Ya, pasti',
@@ -74,7 +74,7 @@ class JttOfficer extends Component
 
         $this->dialog()->success(
             $title = 'Berjaya!',
-            $description = 'Ahli JTT berjaya dipadam'
+            $description = 'Ahli JKPI berjaya dipadam'
         );
     }
 

@@ -84,8 +84,8 @@ class Pyd extends Component
             'PM1' => 'PMG-i (1)',
             'PM2' => 'PMG-i (2)',
             'PM3' => 'PMG-i (3)',
-            'JT1' => 'JTT (1)',
-            'JT2' => 'JTT (2)',
+            'JT1' => 'JKPI (1)',
+            'JT2' => 'JKPI (2)',
         ];
 
         $this->pmgiResults = [
