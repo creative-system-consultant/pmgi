@@ -25,7 +25,7 @@ class JttOfficer extends Component
     {
         $this->dialog()->confirm([
             'title'       => 'Andakah anda pasti?',
-            'description' => 'Tambah sebagai ahli JTT?',
+            'description' => 'Tambah sebagai ahli JKPI?',
             'icon'        => 'question',
             'accept'      => [
                 'label'  => 'Ya, pasti',

@@ -411,7 +411,7 @@
                                                                 <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
                                                                     <tr>
                                                                         <td align="center" valign="top" style="padding: 0px 0px 24px 0px;">
-                                                                            <img src="{{ public_path('image/logo-tekun.png') }}" class="" width="100" height="100" alt="" style="display: block; outline: 0; line-height: 100%; -ms-interpolation-mode: bicubic; width:100px; height: auto; max-width: 100%; border-radius: 58px 58px 58px 58px; border: 0;" />
+                                                                            <img src="file:///{{ str_replace('\\', '/', public_path('image/logo-tekun.png')) }}" class="" width="100" height="100" alt="" style="display: block; outline: 0; line-height: 100%; -ms-interpolation-mode: bicubic; width:100px; height: auto; max-width: 100%; border-radius: 58px 58px 58px 58px; border: 0;" />
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -629,7 +629,7 @@
                                                                                                                 <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
                                                                                                                     <tr>
                                                                                                                         <td class="pc-w620-spacing-10-20-20-20" align="center" valign="top" style="padding: 20px 20px 20px 20px;">
-                                                                                                                            <img src="{{ public_path('image/email/tekun-banner.jpg') }}" alt="TEKUN Banner" style="max-width: 100%; height: auto; border-radius: 8px;">
+                                                                                                                            <img src="file:///{{ str_replace('\\', '/', public_path('image/email/tekun-banner.jpg')) }}" alt="TEKUN Banner" style="max-width: 100%; height: auto; border-radius: 8px;">
                                                                                                                         </td>
                                                                                                                     </tr>
                                                                                                                 </table>

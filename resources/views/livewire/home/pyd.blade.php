@@ -385,19 +385,19 @@
                                 <tbody class="bg-white">
                                     <tr>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">
-                                            {{ number_format($mia->jumlah) ?? 0 }}
+                                            {{ number_format($mia?->jumlah) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">
-                                            {{ number_format($mia->lulus) ?? 0 }}
+                                            {{ number_format($mia?->lulus) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">
-                                            {{ number_format($mia->proses) ?? 0 }}
+                                            {{ number_format($mia?->proses) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">
-                                            {{ number_format($mia->tolak) ?? 0 }}
+                                            {{ number_format($mia?->tolak) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">
-                                            {{ number_format($mia->dikembalikan) ?? 0 }}
+                                            {{ number_format($mia?->dikembalikan) ?? 0 }}
                                         </td>
                                     </tr>
                                 </tbody>
@@ -465,40 +465,40 @@
                                 <tbody class="bg-white">
                                     <tr>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">
-                                            {{ number_format($wilma->bila1) ?? 0 }}
+                                            {{ number_format($wilma?->bila1) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border-black border-dashed border-x">
-                                            {{ number_format($wilma->bila2) ?? 0 }}
+                                            {{ number_format($wilma?->bila2) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border-black border-dashed border-x">
-                                            {{ number_format($wilma->bila3) ?? 0 }}
+                                            {{ number_format($wilma?->bila3) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border-black border-dashed border-x">
-                                            {{ number_format($wilma->bilb1) ?? 0 }}
+                                            {{ number_format($wilma?->bilb1) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border-black border-dashed border-x">
-                                            {{ number_format($wilma->bilb2) ?? 0 }}
+                                            {{ number_format($wilma?->bilb2) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border-black border-dashed border-x">
-                                            {{ number_format($wilma->bilc1) ?? 0 }}
+                                            {{ number_format($wilma?->bilc1) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border-black border-dashed border-x">
-                                            {{ number_format($wilma->bilc2) ?? 0 }}
+                                            {{ number_format($wilma?->bilc2) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border-black border-dashed border-x">
-                                            {{ number_format($wilma->bild) ?? 0 }}
+                                            {{ number_format($wilma?->bild) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border-black border-dashed border-x">
-                                            {{ number_format($wilma->jumlah) ?? 0 }}
+                                            {{ number_format($wilma?->jumlah) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border-black border-dashed border-x">
-                                            {{ number_format($wilma->bilnpf) ?? 0 }}
+                                            {{ number_format($wilma?->bilnpf) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border-black border-dashed border-x">
-                                            {{ number_format($wilma->pctnpf, 2) ?? 0 }}
+                                            {{ number_format($wilma?->pctnpf, 2) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap">
-                                            {{ number_format($wilma->pctjumnpf, 2) ?? 0 }}
+                                            {{ number_format($wilma?->pctjumnpf, 2) ?? 0 }}
                                         </td>
                                     </tr>
                                 </tbody>

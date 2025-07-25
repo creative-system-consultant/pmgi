@@ -182,26 +182,92 @@ class RekodPmgi extends Component
         // Determine which template to use based on PMGI level
         $template = $settInfo->pmgi_level == 'PM3' ? 'pdf.borang_jpoc_pm3' : 'pdf.borang_jpoc_pm12';
         
+        // Copy attachment files to the same temp directory as the chart image (which works)
+        $attachmentPaths = [];
+        $tempAttachmentFiles = []; // Keep track of copied files for cleanup
+        
+        // Get the directory where the chart image is stored (this directory works)
+        $tempDirectory = dirname($paths['image_path']);
+        
+        if ($pydInfo && $pydInfo->attachment) {
+            $originalPath = storage_path('app/public/' . $pydInfo->attachment);
+            
+            if (file_exists($originalPath)) {
+                // Copy to temp directory where chart image is stored
+                $tempFileName = 'pyd_attachment_' . time() . '_' . basename($originalPath);
+                $tempPath = $tempDirectory . DIRECTORY_SEPARATOR . $tempFileName;
+                
+                if (copy($originalPath, $tempPath)) {
+                    $attachmentPaths['pyd_attachment'] = $tempPath;
+                    $tempAttachmentFiles[] = $tempPath; // Track for cleanup
+                }
+            }
+        }
+        
+        if ($pymInfo && $pymInfo->attachment) {
+            $originalPath = storage_path('app/public/' . $pymInfo->attachment);
+            
+            if (file_exists($originalPath)) {
+                // Copy to temp directory where chart image is stored
+                $tempFileName = 'pym_attachment_' . time() . '_' . basename($originalPath);
+                $tempPath = $tempDirectory . DIRECTORY_SEPARATOR . $tempFileName;
+                
+                if (copy($originalPath, $tempPath)) {
+                    $attachmentPaths['pym_attachment'] = $tempPath;
+                    $tempAttachmentFiles[] = $tempPath; // Track for cleanup
+                }
+            }
+        }
+        
+        if ($pmcInfo && $pmcInfo->attachment) {
+            $originalPath = storage_path('app/public/' . $pmcInfo->attachment);
+            
+            if (file_exists($originalPath)) {
+                // Copy to temp directory where chart image is stored
+                $tempFileName = 'pmc_attachment_' . time() . '_' . basename($originalPath);
+                $tempPath = $tempDirectory . DIRECTORY_SEPARATOR . $tempFileName;
+                
+                if (copy($originalPath, $tempPath)) {
+                    $attachmentPaths['pmc_attachment'] = $tempPath;
+                    $tempAttachmentFiles[] = $tempPath; // Track for cleanup
+                }
+            }
+        }
+        
         $pdf = Pdf::loadView($template, compact(
                 'settInfo','bankOfficerPyd', 'state', 'branch', 'tempohBerkhidmat', 'alamat1', 'alamat2','summMthOfficer', 'accCount', 'osB1D', 'osAll', 'npfOs', 'sessionInfo', 'bankOfficerPym', 'bankOfficerPmc',
-                'pydInfo', 'pymInfo', 'pmcInfo', 'from', 'to', 'paths'
+                'pydInfo', 'pymInfo', 'pmcInfo', 'from', 'to', 'paths', 'attachmentPaths'
             ))->setPaper('A4', 'portrait');
 
-        // Use output buffering to ensure the file is streamed before cleanup
-        ob_start();
-        $output = $pdf->stream('borang_jpoc_12.pdf');
-        ob_end_clean();
+        // Store the PDF content in a variable before cleanup
+        $pdfContent = $pdf->output();
 
-        // Clean up the temporary files after the PDF has been streamed
-        if (file_exists($paths['html'])) {
-            unlink($paths['html']);
+        // Clean up the temporary files after the PDF has been generated
+        if (file_exists($paths['html_path'])) {
+            unlink($paths['html_path']);
         }
 
-        if (file_exists($paths['image'])) {
-            unlink($paths['image']);
+        if (file_exists($paths['image_path'])) {
+            unlink($paths['image_path']);
+        }
+        
+        // Clean up temporary attachment files
+        foreach ($tempAttachmentFiles as $tempFile) {
+            if (file_exists($tempFile)) {
+                unlink($tempFile);
+            }
+        }
+        
+        // Also clean up compressed email image if it exists
+        if (isset($paths['email_image_path']) && file_exists($paths['email_image_path'])) {
+            unlink($paths['email_image_path']);
         }
 
-        return $output;
+        // Return the PDF response
+        return response($pdfContent, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="borang_jpoc_12.pdf"'
+        ]);
     }
 
     public function saveRekodPmgi($sessionId, $level)

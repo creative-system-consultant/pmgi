@@ -80,7 +80,20 @@
 
                 @if($result == 'Diberi Tempoh')
                     <div class="flex items-center justify-center mt-2">
-                        <x-input class="block p-1 text-center " wire:model="mthDelay" />
+                        <x-select
+                            placeholder="Sila Pilih"
+                            :options="[
+                                ['name' => '1',  'id' => 1],
+                                ['name' => '2', 'id' => 2],
+                                ['name' => '3', 'id' => 3],
+                                ['name' => '4', 'id' => 4],
+                                ['name' => '5', 'id' => 5],
+                                ['name' => '6', 'id' => 6],
+                            ]"
+                            option-label="name"
+                            option-value="id"
+                            wire:model.live="mthDelay"
+                        />
                         <label for="negeri" class="block ml-4 font-medium text-gray-900 dark:text-white">Bulan</label>
                     </div>
                 @endif

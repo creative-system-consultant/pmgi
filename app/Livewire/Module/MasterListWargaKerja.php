@@ -17,7 +17,7 @@ class MasterListWargaKerja extends Component
     public function search()
     {
         // Update the filterTerm to match the searchTerm
-        $this->filterTerm = $this->searchTerm;
+        $this->filterTerm = BankOfficer::whereOfficerName($this->searchTerm)->whereFmsUserstatus(1)->value('nokp');
         // Reset pagination to page 1 when a new search is performed
         $this->resetPage();
     }
@@ -29,7 +29,7 @@ class MasterListWargaKerja extends Component
         })
             ->when($this->filterTerm, function ($query) {
                 $query->where(function ($q) {
-                    $q->where('nama', 'like', '%' . strtoupper($this->filterTerm) . '%');
+                    $q->whereNoKp($this->filterTerm);
                 });
             })
             ->orderBy('negeri', 'ASC')

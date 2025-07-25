@@ -49,6 +49,17 @@ class RestrictDuringSession
             $settPymPmc = SettPymPmc::where('session_id', $session->session_id)->first();
 
             if ($settPymPmc) {
+                // Allow kemaskini (update) access for edit pages even if session is locked
+                $currentRoute = $request->route()->getName();
+                $updateRoutes = [
+                    'pegawai-dinilai',
+                    'pegawai-menilai',
+                    'pegawai-pemudah-cara',
+                ];
+                
+                if (in_array($currentRoute, $updateRoutes)) {
+                    return $next($request);
+                }
                 // Define the possible routes for the users with encoded session_id
                 $pydUrl = route('pegawai-dinilai', ['session_id' => $encodedSessionId]);
                 $pymUrl = route('pegawai-menilai', ['session_id' => $encodedSessionId]);

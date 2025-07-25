@@ -11,25 +11,21 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
-class LantikanPymPmc extends Mailable
+class LantikanPymPmcAttachment extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $fileUrl;
     public $type;
-    protected $base64ImageData;
-    protected $fileName;
-    protected $mimeType;
+    protected $imagePath;
 
-    public function __construct($fileUrl, $type, $base64ImageData, $fileName, $mimeType)
+    public function __construct($fileUrl, $type, $imagePath)
     {
         $this->fileUrl = $fileUrl;
         $this->type = $type;
-        $this->base64ImageData = $base64ImageData;
-        $this->fileName = $fileName;
-        $this->mimeType = $mimeType;
+        $this->imagePath = $imagePath;
         
-        Log::info("LantikanPymPmc Mail created with image data length: " . strlen($base64ImageData));
+        Log::info("LantikanPymPmcAttachment Mail created with image: {$imagePath}");
     }
 
     public function envelope(): Envelope
@@ -43,22 +39,28 @@ class LantikanPymPmc extends Mailable
 
     public function content(): Content
     {
-        Log::info("LantikanPymPmc Mail content() called - MIME: {$this->mimeType}, Image size: " . strlen($this->base64ImageData) . " chars");
-        
         return new Content(
-            view: 'emails.image_email_base',
-            with: [
-                'imageData' => $this->base64ImageData,
-                'imageName' => $this->fileName,
-                'imageMime' => $this->mimeType,
-            ]
+            html: '
+                <h2>Lantikan PMGi</h2>
+                <p>Sila lihat lampiran untuk maklumat lantikan anda.</p>
+                <p>Terima kasih.</p>
+            '
         );
     }
 
     public function attachments(): array
     {
-        return [
+        $attachments = [
             Attachment::fromPath(public_path($this->fileUrl)),
         ];
+        
+        // Add image as attachment if it exists
+        if (file_exists($this->imagePath)) {
+            $attachments[] = Attachment::fromPath($this->imagePath)
+                ->as('Lantikan_Details.jpg')
+                ->withMime('image/jpeg');
+        }
+        
+        return $attachments;
     }
-}
+} 

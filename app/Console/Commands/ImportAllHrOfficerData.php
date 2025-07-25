@@ -649,7 +649,7 @@ class ImportAllHrOfficerData extends Command
      */
     protected function getLocalArchivedFiles($fileType)
     {
-        $archiveDir = storage_path('app/archived-hr-files');
+        $archiveDir = storage_path('app/public/archived-hr-files');
         
         if (!File::exists($archiveDir)) {
             return [];

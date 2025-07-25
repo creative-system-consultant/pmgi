@@ -130,6 +130,7 @@ abstract class BasePmgi extends Component
         $urusetiaNegeriRoleId = DB::table('PMGI_SETT_UAL_ROLE')->where('name', 'URUSETIA NEGERI')->value('id');
 
         $this->pymSelection = DB::table('FMS_USERS as a')
+                        ->distinct()
                         ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
                         ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
                         ->leftJoin('PMGI_SETT_UAL_USER_HAS_ROLE as r', 'r.userid', '=', 'a.userid')
@@ -147,6 +148,7 @@ abstract class BasePmgi extends Component
         $urusetiaNegeriRoleId = DB::table('PMGI_SETT_UAL_ROLE')->where('name', 'URUSETIA NEGERI')->value('id');
 
         $this->pymSelection = DB::table('FMS_USERS as a')
+                        ->distinct()
                         ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
                         ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
                         ->leftJoin('PMGI_SETT_UAL_USER_HAS_ROLE as r', 'r.userid', '=', 'a.userid')
@@ -159,6 +161,7 @@ abstract class BasePmgi extends Component
                         ->toArray();
 
         $this->pmcSelection = DB::table('PMGI_JPOC as a')
+                        ->distinct()
                         ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
                         ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
                         ->leftJoin('PMGI_SETT_UAL_USER_HAS_ROLE as r', 'r.userid', '=', 'a.userid')
@@ -197,10 +200,10 @@ abstract class BasePmgi extends Component
             $pymEmail,
             $pmcEmail,
             $fileUrl,
-            $pymImagePath['image'],
-            $pymImagePath['html'],
-            $pmcImagePath ? $pmcImagePath['image'] : null,
-            $pmcImagePath ? $pmcImagePath['html'] : null,
+            $pymImagePath['email_image_path'] ?? $pymImagePath['image_path'], // Use compressed version
+            $pymImagePath['html_path'],
+            $pmcImagePath ? ($pmcImagePath['email_image_path'] ?? $pmcImagePath['image_path']) : null, // Use compressed version
+            $pmcImagePath ? $pmcImagePath['html_path'] : null,
         );
 
         $this->resetAfterSave();
@@ -313,16 +316,34 @@ abstract class BasePmgi extends Component
     {
         $jobs = [];
 
-        if ($pymEmail) {
+        if ($pymEmail && $pymImagePath) {
             $jobs[] = new SendLantikanPymPmcEmail($pymEmail, $pmcEmail, $fileUrl, 'pym', $pymImagePath, $pymHtmlPath);
         }
 
-        if ($pmcEmail) {
+        if ($pmcEmail && $pmcImagePath) {
             $jobs[] = new SendLantikanPymPmcEmail($pymEmail, $pmcEmail, $fileUrl, 'pmc', $pmcImagePath, $pmcHtmlPath);
         }
 
         // Chain the cleanup job after the email jobs
-        $imagePaths = array_filter([$pymImagePath, $pmcImagePath]); // Remove null values
+        // Include both original and compressed image paths for cleanup
+        $imagePaths = [];
+        if ($pymImagePath) {
+            $imagePaths[] = $pymImagePath;
+            // Also add original PNG if we used compressed version
+            $originalPng = str_replace('_email.jpg', '.png', $pymImagePath);
+            if (file_exists($originalPng) && $originalPng !== $pymImagePath) {
+                $imagePaths[] = $originalPng;
+            }
+        }
+        if ($pmcImagePath) {
+            $imagePaths[] = $pmcImagePath;
+            // Also add original PNG if we used compressed version
+            $originalPng = str_replace('_email.jpg', '.png', $pmcImagePath);
+            if (file_exists($originalPng) && $originalPng !== $pmcImagePath) {
+                $imagePaths[] = $originalPng;
+            }
+        }
+        
         $htmlPaths = array_filter([$pymHtmlPath, $pmcHtmlPath]); // Remove null values
         $jobs[] = new CleanupTemporaryFiles($imagePaths, $htmlPaths, $fileUrl);
 

@@ -198,7 +198,7 @@
             </div>
             
             <div class="input-container">
-                <img src="{{ $paths['image'] }}" alt="Generated Image" style="margin-top: 250px; width: 100%; object-fit: contain;">
+                <img src="{{ $paths['image_path'] }}" alt="Generated Image" style="margin-top: 250px; width: 100%; object-fit: contain;">
             </div>
         </div>
     </div>
@@ -436,42 +436,30 @@
         </div>
     </div>
 
-    @if ($pydInfo->attachment)
+    @if (isset($attachmentPaths['pyd_attachment']))
     <div class="page_break"></div>
     <!--------------------------------------------------------------- page 7 ----------------------------------------------------------------------------->    
-    <div class="centered">
-        {{-- <img src="image/borang/jpoc/BorangJpocPmgi12-6.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900"> --}}
-        <div class="content-overlay">
-            <div class="input-container">
-                <img src="{{ storage_path('app/public/' . $pydInfo->attachment) }}" alt="Generated Image" style="margin-top: 150px; width: 100%; object-fit: contain;">
-            </div>
-        </div>
+    <div style="text-align: center; padding: 50px;">
+        <h3>PYD Attachment</h3>
+        <img src="{{ $attachmentPaths['pyd_attachment'] }}" alt="PYD Attachment" style="width: 90%; max-height: 800px; object-fit: contain; border: 1px solid #ccc;">
     </div>
     @endif
 
-    @if ($pymInfo->attachment)
+    @if (isset($attachmentPaths['pym_attachment']))
     <div class="page_break"></div>
     <!--------------------------------------------------------------- page 8 ----------------------------------------------------------------------------->    
-    <div class="centered">
-        {{-- <img src="image/borang/jpoc/BorangJpocPmgi12-7.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900"> --}}
-        <div class="content-overlay">
-            <div class="input-container">
-                <img src="{{ storage_path('app/public/' . $pymInfo->attachment) }}" alt="Generated Image" style="margin-top: 150px; width: 100%; object-fit: contain;">
-            </div>
-        </div>
+    <div style="text-align: center; padding: 50px;">
+        <h3>PYM Attachment</h3>
+        <img src="{{ $attachmentPaths['pym_attachment'] }}" alt="PYM Attachment" style="width: 90%; max-height: 800px; object-fit: contain; border: 1px solid #ccc;">
     </div>
     @endif
 
-    @if ($pmcInfo->attachment)
+    @if (isset($attachmentPaths['pmc_attachment']))
     <div class="page_break"></div>
     <!--------------------------------------------------------------- page 9 ----------------------------------------------------------------------------->    
-    <div class="centered">
-        {{-- <img src="image/borang/jpoc/BorangJpocPmgi3-7.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900"> --}}
-        <div class="content-overlay">
-            <div class="input-container">
-                <img src="{{ storage_path('app/public/' . $pmcInfo->attachment) }}" alt="Generated Image" style="margin-top: 150px; width: 100%; object-fit: contain;">
-            </div>
-        </div>
+    <div style="text-align: center; padding: 50px;">
+        <h3>PMC Attachment</h3>
+        <img src="{{ $attachmentPaths['pmc_attachment'] }}" alt="PMC Attachment" style="width: 90%; max-height: 800px; object-fit: contain; border: 1px solid #ccc;">
     </div>
     @endif
 

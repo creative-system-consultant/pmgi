@@ -49,14 +49,13 @@ class Index extends Component
         $this->userId = $userid;
 
         $data = DB::select('
-            SELECT ms.*, u.username, bo.staffno, s.description as state_description, b.branch_name
+            SELECT TOP 1 ms.*, u.username, bo.staffno, s.description as state_description, b.branch_name
             FROM PMGI_MNTR_SESSION ms
             JOIN fms_users u ON ms.officer_id = u.userid
             JOIN bank_officers bo ON u.userid = bo.officer_id
             JOIN bnm_statecodes s ON ms.state_code = s.code
             JOIN branches b ON ms.branch_code = b.branch_code
             WHERE ms.officer_id = :officer_id AND ms.pmgi_level = :pmgi_level
-            AND ROWNUM = 1
         ', ['officer_id' => $userid, 'pmgi_level' => 'HRD']);
 
         if (!empty($data)) {

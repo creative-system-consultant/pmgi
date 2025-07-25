@@ -3,21 +3,27 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class LantikanUrusetiaNegeri extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $filepath;
+    protected $base64ImageData;
+    protected $fileName;
+    protected $mimeType;
 
-    public function __construct($filepath)
+    public function __construct($base64ImageData, $fileName, $mimeType)
     {
-        $this->filepath = $filepath;
+        $this->base64ImageData = $base64ImageData;
+        $this->fileName = $fileName;
+        $this->mimeType = $mimeType;
+        
+        Log::info("LantikanUrusetiaNegeri Mail created with image data length: " . strlen($base64ImageData));
     }
 
     public function envelope(): Envelope
@@ -29,26 +35,14 @@ class LantikanUrusetiaNegeri extends Mailable
 
     public function content(): Content
     {
-        // Check if file exists before trying to read it
-        if (!file_exists($this->filepath)) {
-            throw new \Exception("Image file not found: {$this->filepath}");
-        }
-
-        // Check if file is readable
-        if (!is_readable($this->filepath)) {
-            throw new \Exception("Image file is not readable: {$this->filepath}");
-        }
-
-        $imageData = file_get_contents($this->filepath);
-        $imageName = basename($this->filepath);
-        $imageMime = mime_content_type($this->filepath);
-
+        Log::info("LantikanUrusetiaNegeri Mail content() called");
+        
         return new Content(
             view: 'emails.image_email_base',
             with: [
-                'imageData' => base64_encode($imageData),
-                'imageName' => $imageName,
-                'imageMime' => $imageMime,
+                'imageData' => $this->base64ImageData,
+                'imageName' => $this->fileName,
+                'imageMime' => $this->mimeType,
             ]
         );
     }

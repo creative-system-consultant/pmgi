@@ -81,7 +81,7 @@
 
         <div class="grid grid-cols-1 gap-4 mt-4">
             <x-input class="uppercase" label="ID Pengguna" placeholder="ID Pengguna Anda" wire:model="userId" />
-            <x-input label="Kata Laluan" placeholder="Kata Laluan Anda" wire:model="password" />
+            <x-inputs.password label="Kata Laluan" placeholder="Kata Laluan Anda" wire:model="password" />
         </div>
 
         <x-slot name="footer">

@@ -58,7 +58,7 @@ class ListPydJtt extends Component
                             ->wherePmgiResult(NULL)
                             ->get();
 
-        $panels = JttMeetingInvitation::with('officer')->get();
+        $panels = JttMeetingInvitation::with('officer')->where('session_id', $this->sessionId)->get();
 
         return view('livewire.module.list-pyd-jtt', [
             'datas' => $data,

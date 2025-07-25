@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use PDO;
 use WireUi\Traits\Actions;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use App\Mail\LantikanUrusetiaNegeri;
 
 class Index extends Component
 {
@@ -109,7 +112,7 @@ class Index extends Component
                 // $email = 'hafizah@tekun.gov.my'; //FAT purpose
                 $email = 'nazirul@csc.net.my'; //FAT purpose
                 // $email = BankOfficer::where('officer_id', $userId)->value('email');
-                $this->sendEmail($email, $path['image'], $path['html']);
+                $this->sendEmail($email, $path['email_image_path'], $path['html_path']);
 
                 // Add to the update list with zero-padded statecode
                 $dataToUpdate[] = ['statecode' => str_pad($stateCode, 2, '0', STR_PAD_LEFT), 'userid' => $userId];
@@ -168,17 +171,61 @@ class Index extends Component
 
     private function sendEmail($email, $imagePath, $htmlPath)
     {
-        $jobs = [];
-
-        if ($email) {
-            $jobs[] = new SendLantikanUrusetiaNegeriEmail($email, $imagePath);
+        try {
+            // Read image data immediately
+            $imageData = base64_encode(file_get_contents($imagePath));
+            $imageName = basename($imagePath);
+            
+            // Explicitly set MIME type based on file extension for better compatibility
+            $extension = strtolower(pathinfo($imagePath, PATHINFO_EXTENSION));
+            if ($extension === 'jpg' || $extension === 'jpeg') {
+                $imageMime = 'image/jpeg';
+            } elseif ($extension === 'png') {
+                $imageMime = 'image/png';
+            } else {
+                $imageMime = mime_content_type($imagePath) ?: 'image/jpeg'; // Default to JPEG
+            }
+            
+            // Send email synchronously
+            Mail::to($email)->send(new LantikanUrusetiaNegeri($imageData, $imageName, $imageMime));
+            
+            // Clean up files after successful email send
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+            
+            // Also clean up original PNG if we used compressed version
+            $originalPng = str_replace('_email.jpg', '.png', $imagePath);
+            if (file_exists($originalPng) && $originalPng !== $imagePath) {
+                unlink($originalPng);
+            }
+            
+            if (file_exists($htmlPath)) {
+                unlink($htmlPath);
+            }
+            
+            Log::info("Email sent successfully to: {$email} (using compressed image)");
+            
+        } catch (\Exception $e) {
+            Log::error("Failed to send email to {$email}: " . $e->getMessage());
+            
+            // Clean up files even if email failed
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+            
+            // Also clean up original PNG if we used compressed version
+            $originalPng = str_replace('_email.jpg', '.png', $imagePath);
+            if (file_exists($originalPng) && $originalPng !== $imagePath) {
+                unlink($originalPng);
+            }
+            
+            if (file_exists($htmlPath)) {
+                unlink($htmlPath);
+            }
+            
+            throw $e;
         }
-
-        // Chain the cleanup job after the email jobs
-        $jobs[] = new CleanupTemporaryFiles([$imagePath], [$htmlPath]);
-
-        // Dispatch the jobs as a chain
-        Bus::chain($jobs)->dispatch();
     }
 
     public function render()

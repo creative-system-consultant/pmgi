@@ -17,9 +17,9 @@ class PeratusanKriteria extends Component
     public $titles = [
         1 => 'Patut Kutip (RM) vs Dapat Kutip (RM)',
         2 => 'Patut Kutip (BIL) vs Dapat Kutip (BIL)',
-        3 => 'Lawatan Seliaan',
-        4 => 'Prestasi NPF (KAWALAN)',
-        5 => 'Prestasi NPF (Pemulihan)'
+        3 => 'Lawatan Seliaan (BIL)',
+        4 => 'Prestasi NPF (Kawalan BIL)',
+        5 => 'Prestasi NPF (Pemulihan BIL)'
     ];
     public $differentStateCodes = [];
     public $nextDifferentStateCodes = [];
