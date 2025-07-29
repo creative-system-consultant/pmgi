@@ -14,6 +14,14 @@ class MeetingRoom extends Component
 
     public function add()
     {
+        if($this->room_name == null) {
+            $this->dialog()->error(
+                $title = 'Ralat',
+                $description = 'Sila isi nama bilik mesyuarat'
+            );
+            return;
+        }
+
         SettMeetingRoom::create([
             'ROOM_NAME' => $this->room_name,
             'CREATED_BY' => auth()->user()->userid,
