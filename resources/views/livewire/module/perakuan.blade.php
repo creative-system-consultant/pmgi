@@ -71,7 +71,7 @@
     {{-- verify modal --}}
     <x-modal.card title="Verifikasi Perakuan" blur align="center" max-width="md" hide-close=true wire:model="verifyModal">
         <div class="grid grid-rows-2 gap-1 text-sm font-semibold ">
-            <p>NAMA: <span class="text-indigo-500">{{ auth()->user()->username }}</span></p>
+            <p>NAMA: <span class="text-indigo-500">{{ auth()->user()->USERNAME }}</span></p>
             <p>NO. KAD PENGENALAN: <span class="text-indigo-500">{{ substr(auth()->user()->icNo(), 0, 6) . '-' . substr(auth()->user()->icNo(), 6, 2) . '-' . substr(auth()->user()->icNo(), 8, 4) }}</span></p>
         </div>
 

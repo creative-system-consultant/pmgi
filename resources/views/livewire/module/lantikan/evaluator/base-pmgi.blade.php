@@ -40,7 +40,7 @@
                                 {{ $loop->iteration }}
                             </td>
                             <td class="p-2 text-sm font-normal text-left text-gray-900 whitespace-nowrap border border-black">
-                                {{ $data->username }}
+                                {{ $data->USERNAME }}
                             </td>
                             <td class="p-2 text-sm font-normal text-left text-gray-900 whitespace-nowrap border border-black">
                                 {{ $data->branch_name }}

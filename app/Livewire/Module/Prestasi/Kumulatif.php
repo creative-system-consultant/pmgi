@@ -73,7 +73,7 @@ class Kumulatif extends Component
         }
 
         if (in_array('PYD', $role)) {
-            $this->pydId = auth()->user()->userid;
+            $this->pydId = auth()->user()->USERID;
             // For PYD role, only validate from and to dates
             $this->validate([
                 'from' => 'required',

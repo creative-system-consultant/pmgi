@@ -33,7 +33,7 @@
                                     @forelse ($datas as $index => $data)
                                     <tr class="{{ $index % 2 != 0 ? 'bg-gray-50' : '' }}">
                                         <td class="p-2 text-xs font-normal text-left text-gray-900 uppercase border-black border-dashed border-x whitespace-nowrap">
-                                            {{ $data->user->username }}
+                                            {{ $data->user->USERNAME }}
                                         </td>
                                         <td class="p-2 text-xs font-normal text-center text-gray-900 uppercase border-black border-dashed border-x whitespace-nowrap">
                                             {{ $data->user->branchName() }}

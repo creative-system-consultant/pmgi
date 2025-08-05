@@ -75,7 +75,7 @@ class Ringkasan extends Component
 
     private function getBranchData(): Collection
     {
-        $userData = SummMthOfficer::whereOfficerId(auth()->user()->userid)
+        $userData = SummMthOfficer::whereOfficerId(auth()->user()->USERID)
             ->orderBy('report_date', 'desc')
             ->first();
 
@@ -86,7 +86,7 @@ class Ringkasan extends Component
         }
 
         return SummMthOfficer::whereAcctBranchCode($branch_code)
-            ->whereOfficerId(auth()->user()->userid) // PYD only sees their own data
+            ->whereOfficerId(auth()->user()->USERID) // PYD only sees their own data
             ->whereBetween('report_date', [$this->reportDate->copy()->subMonthNoOverflow()->startOfMonth(), $this->reportDate->copy()->endOfMonth()])
             ->orderBy('report_date', 'asc')
             ->orderBy('incl_pmgi_flag', 'asc') // Ensure branch totals (N) come after individual records

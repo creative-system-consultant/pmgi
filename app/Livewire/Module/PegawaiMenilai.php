@@ -111,7 +111,7 @@ class PegawaiMenilai extends Component
             'comments' => $this->comment,
             'action' => $this->actionPlan,
             'attachment' => $path,
-            'created_by' => auth()->user()->userid,
+            'created_by' => auth()->user()->USERID,
         ]);
 
         $sessionId  = str_replace('/', '-', $this->sessionId);

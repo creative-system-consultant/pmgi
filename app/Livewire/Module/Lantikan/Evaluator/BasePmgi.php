@@ -89,7 +89,7 @@ abstract class BasePmgi extends Component
     {
         if ($value) {
             // Select only the users with status 0 (not already in PMGI_SETT_PYM_PMC)
-            $this->selection = $this->datas->where('status', 0)->pluck('userid')->toArray();
+            $this->selection = $this->datas->where('status', 0)->pluck('USERID')->toArray();
         } else {
             $this->reset('selection');
         }
@@ -242,7 +242,7 @@ abstract class BasePmgi extends Component
 
     private function giveRoles()
     {
-        $userPym = User::where('userid', $this->selectedPym)->first();
+        $userPym = User::where('USERID', $this->selectedPym)->first();
 
         $pymRoleId = SettUalRole::where('name', 'PYM')->value('id');
         if ($pymRoleId) {
@@ -251,7 +251,7 @@ abstract class BasePmgi extends Component
         }
 
         if ($this->selectedPmc) {
-            $userPmc = User::where('userid', $this->selectedPmc)->first();
+            $userPmc = User::where('USERID', $this->selectedPmc)->first();
 
             $pmcRoleId = SettUalRole::where('name', 'PMC')->value('id');
             if ($pmcRoleId) {
@@ -276,9 +276,9 @@ abstract class BasePmgi extends Component
             'pyd_id' => $pyd,
             'pym_id' => $this->selectedPym,
             'pmc_id' => $this->selectedPmc,
-            'created_by' => $existingRecord ? $existingRecord->created_by : auth()->user()->userid,
+            'created_by' => $existingRecord ? $existingRecord->created_by : auth()->user()->USERID,
             'created_at' => $existingRecord ? $existingRecord->created_at : now(),
-            'updated_by' => auth()->user()->userid,
+            'updated_by' => auth()->user()->USERID,
             'updated_at' => now(),
             'report_date' => $pydInfo->report_date,
             'branch_code' => $pydInfo->branch_code,
@@ -365,19 +365,19 @@ abstract class BasePmgi extends Component
     public function render()
     {
         $this->datas = DB::table('pmgi_mntr_session as m')
-                            ->join('fms_users as a', 'm.officer_id', '=', 'a.userid')
+                            ->join('NEWFMS_PROD.DBO.dbo.FMS_USERS as a', 'm.officer_id', '=', 'a.USERID')
                             ->join('branches as b', 'm.branch_code', '=', 'b.branch_code')
-                            ->join('pmgi_fms_bank_officers as c', 'c.officer_id', '=', 'a.userid')
+                            ->join('pmgi_fms_bank_officers as c', 'c.officer_id', '=', 'a.USERID')
                             ->join('pmgi_hrd_officer as d', 'd.no_pekerja', '=', 'c.staffno')
                             ->leftJoin('pmgi_sett_pym_pmc as e', function ($join) {
                                 $join->on('e.pyd_id', '=', 'm.officer_id')
                                     ->whereDate('e.report_date', $this->selectedDate->copy()->subMonthNoOverflow()->endOfMonth());
                             })
-                            ->leftJoin('fms_users as pym_user', 'e.pym_id', '=', 'pym_user.userid')
-                            ->leftJoin('fms_users as pmc_user', 'e.pmc_id', '=', 'pmc_user.userid')
+                            ->leftJoin('NEWFMS_PROD.DBO.dbo.FMS_USERS as pym_user', 'e.pym_id', '=', 'pym_user.USERID')
+                            ->leftJoin('NEWFMS_PROD.DBO.dbo.FMS_USERS as pmc_user', 'e.pmc_id', '=', 'pmc_user.USERID')
                             ->select(
-                                'a.userid',
-                                'a.username',
+                                'a.USERID',
+                                'a.USERNAME',
                                 'm.branch_code',
                                 'd.jawatan',
                                 'b.branch_name',
@@ -385,9 +385,9 @@ abstract class BasePmgi extends Component
                                 'm.pmgi_level',
                                 DB::raw('CASE WHEN e.pyd_id IS NULL THEN 0 ELSE 1 END as status'),
                                 'e.pym_id',
-                                'pym_user.username as pym_name',
+                                'pym_user.USERNAME as pym_name',
                                 'e.pmc_id',
-                                'pmc_user.username as pmc_name'
+                                'pmc_user.USERNAME as pmc_name'
                             )
                             ->whereDate('session_date_start', $this->selectedDate)
                             ->where('m.state_code', $this->stateCode)

@@ -91,8 +91,10 @@ class Login extends Component
     {
         $this->validate();
 
-        $user = User::where('userid', strtoupper($this->userId))
-                        ->where('userstatus', 1)
+        $upperUserId = strtoupper($this->userId);
+
+        $user = User::where('USERID', $upperUserId)
+                        ->where('USERSTATUS', 1)
                         ->first();
 
         if (!$user) {

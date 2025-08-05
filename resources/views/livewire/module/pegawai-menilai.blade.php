@@ -6,7 +6,7 @@
                 <div class="mb-4 lg:mb-0">
                     <div class="flex items-center mb-2">
                         <h3 class="mb-2 text-xl font-bold text-gray-900">Ulasan Pegawai Yang Menilai (PYM)</h3>
-                        @if($perakuan && auth()->user()->userid == $sessionSetting->pym_id)
+                        @if($perakuan && auth()->user()->USERID == $sessionSetting->pym_id)
                             <button class="inline-flex items-center px-4 py-2 ml-4 font-medium text-center text-white bg-indigo-700 rounded-lg cursor-pointer focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800" wire:click="updates">
                                 Kemaskini
                             </button>
@@ -74,7 +74,7 @@
             <div class="mt-4 w-[70%]">
             @endif
                 <div class="my-4">
-                    @if($perakuan && auth()->user()->userid != $sessionSetting->pym_id)
+                    @if($perakuan && auth()->user()->USERID != $sessionSetting->pym_id)
                         <x-textarea label="Ulasan Pegawai Yang Menilai (PYM) :" placeholder="Tuliskan ulasan anda" wire:model="comment" disabled />
                     @else
                         <x-textarea label="Ulasan Pegawai Yang Menilai (PYM) :" placeholder="Tuliskan ulasan anda" wire:model="comment" />
@@ -86,7 +86,7 @@
                         <x-icon name="information-circle" class="w-6 h-6 cursor-pointer text-primary-600" wire:click="openInfo" />
                     </div>
 
-                    @if($perakuan && auth()->user()->userid != $sessionSetting->pym_id)
+                    @if($perakuan && auth()->user()->USERID != $sessionSetting->pym_id)
                         <x-textarea placeholder="Tuliskan pelan tindakan anda" wire:model="actionPlan" disabled />
                     @else
                         <x-textarea placeholder="Tuliskan pelan tindakan anda" wire:model="actionPlan" />

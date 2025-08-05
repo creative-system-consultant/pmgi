@@ -16,8 +16,8 @@ class JttOfficer extends Component
 
     public function find(): void
     {
-        $this->results = User::where('username', 'like', '%' . strtoupper($this->name) . '%')
-                                ->where('userstatus', 1)
+        $this->results = User::where('USERNAME', 'like', '%' . strtoupper($this->name) . '%')
+                                ->where('USERSTATUS', 1)
                                 ->get();
     }
 
@@ -42,7 +42,7 @@ class JttOfficer extends Component
     {
         SettJtt::create([
             'officer_id' => $id,
-            'created_by' => auth()->user()->userid
+            'created_by' => auth()->user()->USERID
         ]);
 
         $this->dialog()->success(

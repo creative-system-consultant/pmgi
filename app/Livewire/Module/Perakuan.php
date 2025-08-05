@@ -118,13 +118,13 @@ class Perakuan extends Component
     public function save() {
         $this->validate();
 
-        if (strtoupper($this->userId) != auth()->user()->userid) {
+        if (strtoupper($this->userId) != auth()->user()->USERID) {
             $this->addError('userId', 'User ID yang dimasukkan tidak sama dengan User yang login untuk sesi ini.');
             return;
         }
 
-        $user = User::where('userid', strtoupper($this->userId))
-                        ->where('userstatus', 1)
+        $user = User::where('USERID', strtoupper($this->userId))
+                        ->where('USERSTATUS', 1)
                         ->first();
 
         // Check if the environment is not production

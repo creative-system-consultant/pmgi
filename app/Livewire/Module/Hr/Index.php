@@ -49,10 +49,10 @@ class Index extends Component
         $this->userId = $userid;
 
         $data = DB::select('
-            SELECT TOP 1 ms.*, u.username, bo.staffno, s.description as state_description, b.branch_name
+            SELECT TOP 1 ms.*, u.USERNAME, bo.staffno, s.description as state_description, b.branch_name
             FROM PMGI_MNTR_SESSION ms
-            JOIN fms_users u ON ms.officer_id = u.userid
-            JOIN bank_officers bo ON u.userid = bo.officer_id
+            JOIN NEWFMS_PROD.DBO.dbo.FMS_USERS u ON ms.officer_id = u.USERID
+            JOIN bank_officers bo ON u.USERID = bo.officer_id
             JOIN bnm_statecodes s ON ms.state_code = s.code
             JOIN branches b ON ms.branch_code = b.branch_code
             WHERE ms.officer_id = :officer_id AND ms.pmgi_level = :pmgi_level
@@ -63,7 +63,7 @@ class Index extends Component
             $this->staffNo = $this->mntrData->staffno;
             $this->state = $this->mntrData->state_description;
             $this->branch = $this->mntrData->branch_name;
-            $this->staffName = $this->mntrData->username;
+            $this->staffName = $this->mntrData->USERNAME;
         }
     }
 
@@ -88,7 +88,7 @@ class Index extends Component
             'effective_date' => $this->effectiveDate,
             'di_result' => $this->result,
             'date_until' => $this->dateUntil,
-            'created_by' => auth()->user()->userid,
+            'created_by' => auth()->user()->USERID,
             'created_at' => now(),
         ]);
 

@@ -100,7 +100,7 @@ class MaklumatWargaKerja extends Component
             'type' => $this->meetingType,
             'venue' => $this->venue,
             'session_date' => now(),
-            'created_by' => auth()->user()->userid
+            'created_by' => auth()->user()->USERID
         ]);
 
         $sessionId = str_replace('/', '-', $this->sessionId);

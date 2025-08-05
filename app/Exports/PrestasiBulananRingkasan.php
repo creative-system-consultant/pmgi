@@ -36,7 +36,7 @@ class PrestasiBulananRingkasan implements FromView, WithStyles
             ->whereBetween('report_date', [$this->reportDate->copy()->subMonthNoOverflow()->startOfMonth(), $this->reportDate->copy()->endOfMonth()]);
 
         if(!$this->state) {
-            $userData = SummMthOfficer::whereOfficerId(auth()->user()->userid)
+            $userData = SummMthOfficer::whereOfficerId(auth()->user()->USERID)
                                         ->orderBy('report_date', 'desc')
                                         ->first();
 
@@ -53,7 +53,7 @@ class PrestasiBulananRingkasan implements FromView, WithStyles
             }
 
             $query->whereAcctBranchCode($branch_code)
-                  ->whereOfficerId(auth()->user()->userid); // PYD only sees their own data
+                  ->whereOfficerId(auth()->user()->USERID); // PYD only sees their own data
         } else {
             if ($this->state && $this->state != '%') {
                 $query->where('branch_state_code', $this->state);

@@ -35,7 +35,7 @@
                                     {{ $loop->iteration }}
                                 </td>
                                 <td class="p-2 text-sm font-normal text-left text-gray-900 border border-black whitespace-nowrap">
-                                    {{ $data->username }}
+                                    {{ $data->USERNAME }}
                                 </td>
                                 <td class="p-2 text-sm font-normal text-left text-gray-900 border border-black whitespace-nowrap">
                                     {{ $data->branch_name }}

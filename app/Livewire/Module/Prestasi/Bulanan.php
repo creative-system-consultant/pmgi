@@ -57,7 +57,7 @@ class Bulanan extends Component
     {
         if (hasRoles('PYD')) {
             $this->role = 'pyd';
-            $this->pydId = auth()->user()->userid;
+            $this->pydId = auth()->user()->USERID;
         } else {
             $this->role = 'admin';
         }
