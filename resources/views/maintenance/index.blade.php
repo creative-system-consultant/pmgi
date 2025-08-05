@@ -1,3 +1,4 @@
+@extends('layouts.base')
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +77,7 @@
         
         <x-button 
             primary 
-            class="bg-primary-700 hover:bg-primary-800 focus:ring-primary-300"
+            class="bg-primary-700 hover:bg-primary-800 focus:ring-primary-300 mt-2 rounded-lg"
             label="Check Status" 
             id="checkStatusBtn"
             wire:click="checkSystemStatus"
