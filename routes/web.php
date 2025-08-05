@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Maintenance\MaintenanceController;
 use App\Http\Controllers\SearchController;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Passwords\Email;
@@ -45,89 +46,95 @@ use App\Http\Middleware\RestrictDuringSession;
 
 // Route::view('/', 'welcome')->name('home');
 
-Route::middleware('guest')->group(function () {
-    Route::get('/', function () {
-        return redirect()->route('login');
+// Maintenance routes (should be outside middleware group)
+Route::get('/maintenance', [MaintenanceController::class, 'index'])->name('maintenance');
+Route::get('/maintenance/status', [MaintenanceController::class, 'checkStatus'])->name('maintenance.status');
+
+Route::middleware(['check.sysAvailable'])->group(function () {
+    Route::middleware('guest')->group(function () {
+        Route::get('/', function () {
+            return redirect()->route('login');
+        });
+
+        Route::get('login', Login::class)->name('login');
+
+        // Route::get('register', Register::class)
+        //     ->name('register');
+
+        // update JTT attendance
+        Route::get('/confirm-attendance/{token}', [HomeJtt::class, 'confirmAttendance'])->name('confirm.attendance');
+        // success landing page for jtt session
+        Route::get('/jtt-attendance/{status}', JttAttendance::class)->name('jtt.attendance');
     });
 
-    Route::get('login', Login::class)->name('login');
+    Route::get('password/reset', Email::class)
+        ->name('password.request');
 
-    // Route::get('register', Register::class)
-    //     ->name('register');
+    Route::get('password/reset/{token}', Reset::class)
+        ->name('password.reset');
 
-    // update JTT attendance
-    Route::get('/confirm-attendance/{token}', [HomeJtt::class, 'confirmAttendance'])->name('confirm.attendance');
-    // success landing page for jtt session
-    Route::get('/jtt-attendance/{status}', JttAttendance::class)->name('jtt.attendance');
-});
+    // Route::middleware(['auth', 'check.sys.availability', 'check.role', 'restrict.session'])->group(function () {
+    Route::middleware(['auth', 'check.role', 'restrict.session'])->group(function () {
+        Route::get('/', Home::class)->name('home');
 
-Route::get('password/reset', Email::class)
-    ->name('password.request');
+        Route::post('logout', LogoutController::class)
+            ->name('logout');
 
-Route::get('password/reset/{token}', Reset::class)
-    ->name('password.reset');
+        // maklumat warga kerja
+        Route::get('/maklumat-warga-kerja', MaklumatWargaKerja::class)->name('maklumat-warga-kerja')->middleware('check.access:maklumat-warga-kerja');
 
-// Route::middleware(['auth', 'check.sys.availability', 'check.role', 'restrict.session'])->group(function () {
-Route::middleware(['auth', 'check.role', 'restrict.session'])->group(function () {
-    Route::get('/', Home::class)->name('home');
+        //  JTT.
+        Route::get('/dashboard-jtt', HomeJtt::class)->name('dashboard-jtt');
+        Route::get('/list-jtt', ListPydJtt::class)->name('list-pyd-jtt');
+        Route::get('/mesyuarat-jtt', MesyuaratJtt::class)->name('mesyuarat-jtt');
 
-    Route::post('logout', LogoutController::class)
-        ->name('logout');
+        // MastErlist
+        Route::get('/master-list-warga-kerja', MasterListWargaKerja::class)->name('master-list-warga-kerja')->middleware('check.access:masterlist-warga-kerja');
 
-    // maklumat warga kerja
-    Route::get('/maklumat-warga-kerja', MaklumatWargaKerja::class)->name('maklumat-warga-kerja')->middleware('check.access:maklumat-warga-kerja');
+        // rekod PMGi (individu)
+        Route::get('/rekod-pmgi', RekodPmgi::class)->name('rekod-pmgi')->middleware('check.access:rekod-pmgi');
+        Route::get('/stream-pdf/{sessionId}', [RekodPmgi::class, 'streamRekodPmgi'])->name('stream.rekodPmgi')->withoutMiddleware([RestrictDuringSession::class]);
 
-    //  JTT.
-    Route::get('/dashboard-jtt', HomeJtt::class)->name('dashboard-jtt');
-    Route::get('/list-jtt', ListPydJtt::class)->name('list-pyd-jtt');
-    Route::get('/mesyuarat-jtt', MesyuaratJtt::class)->name('mesyuarat-jtt');
+        // prestasi
+        Route::get('/prestasi/bulanan', Bulanan::class)->name('prestasi.bulanan')->middleware('check.access:prestasi-bulanan');
+        Route::get('/prestasi/kumulatif', Kumulatif::class)->name('prestasi.kumulatif')->middleware('check.access:prestasi-kumulatif');
 
-    // MastErlist
-    Route::get('/master-list-warga-kerja', MasterListWargaKerja::class)->name('master-list-warga-kerja')->middleware('check.access:masterlist-warga-kerja');
+        // lantikan
+        Route::get('/lantikan/urusetia-negeri', StateCommitteeIndex::class)->name('lantikan.urusetia-negeri')->middleware('check.access:lantikan-urusetia-negeri');
+        Route::get('/lantikan/penilai', EvaluatorIndex::class)->name('lantikan.penilai')->middleware('check.access:lantikan-pym-mc');
 
-    // rekod PMGi (individu)
-    Route::get('/rekod-pmgi', RekodPmgi::class)->name('rekod-pmgi')->middleware('check.access:rekod-pmgi');
-    Route::get('/stream-pdf/{sessionId}', [RekodPmgi::class, 'streamRekodPmgi'])->name('stream.rekodPmgi')->withoutMiddleware([RestrictDuringSession::class]);
+        // tetapan
+        Route::get('/tetapan/user-access', UserAccessLevelIndex::class)->name('tetapan.user-access')->middleware('check.access:tetapan-akses-pengguna');
+        Route::get('/tetapan/info-pegawai', OfficerInfoIndex::class)->name('tetapan.info-pegawai')->middleware('check.access:tetapan-info-pyd-pym-pmc');
+        Route::get('/tetapan/ahli-jtt', JttOfficer::class)->name('tetapan.ahli-jtt')->middleware('check.access:tetapan-ahli-jtt');
+        Route::get('/tetapan/meeting-room', MeetingRoom::class)->name('tetapan.meeting-room')->middleware('check.access:tetapan-bilik-meeting');
+        Route::get('/tetapan/peratusan-kriteria', PeratusanKriteria::class)->name('tetapan.peratusan-kriteria')->middleware('check.access:tetapan-peratusan-kriteria');
 
-    // prestasi
-    Route::get('/prestasi/bulanan', Bulanan::class)->name('prestasi.bulanan')->middleware('check.access:prestasi-bulanan');
-    Route::get('/prestasi/kumulatif', Kumulatif::class)->name('prestasi.kumulatif')->middleware('check.access:prestasi-kumulatif');
+        // HR
+        Route::get('/hr/{userid}', HrIndex::class)->name('hr.index');
 
-    // lantikan
-    Route::get('/lantikan/urusetia-negeri', StateCommitteeIndex::class)->name('lantikan.urusetia-negeri')->middleware('check.access:lantikan-urusetia-negeri');
-    Route::get('/lantikan/penilai', EvaluatorIndex::class)->name('lantikan.penilai')->middleware('check.access:lantikan-pym-mc');
+        // search purpose
+        Route::get('/staff-search', [SearchController::class, 'staffName'])->name('staff-name-search');
+        Route::get('/staff-search-by-branch', [SearchController::class, 'staffNameByBranch'])->name('staff-name-search-by-branch');
+    });
 
-    // tetapan
-    Route::get('/tetapan/user-access', UserAccessLevelIndex::class)->name('tetapan.user-access')->middleware('check.access:tetapan-akses-pengguna');
-    Route::get('/tetapan/info-pegawai', OfficerInfoIndex::class)->name('tetapan.info-pegawai')->middleware('check.access:tetapan-info-pyd-pym-pmc');
-    Route::get('/tetapan/ahli-jtt', JttOfficer::class)->name('tetapan.ahli-jtt')->middleware('check.access:tetapan-ahli-jtt');
-    Route::get('/tetapan/meeting-room', MeetingRoom::class)->name('tetapan.meeting-room')->middleware('check.access:tetapan-bilik-meeting');
-    Route::get('/tetapan/peratusan-kriteria', PeratusanKriteria::class)->name('tetapan.peratusan-kriteria')->middleware('check.access:tetapan-peratusan-kriteria');
+    Route::middleware(['auth', 'check.role', 'ensure.session'])->group(function () {
+        // PYD
+        Route::get('/pegawai-dinilai', PegawaiDinilai::class)->name('pegawai-dinilai');
 
-    // HR
-    Route::get('/hr/{userid}', HrIndex::class)->name('hr.index');
+        // PYM
+        Route::get('/pegawai-menilai', PegawaiMenilai::class)->name('pegawai-menilai');
 
-    // search purpose
-    Route::get('/staff-search', [SearchController::class, 'staffName'])->name('staff-name-search');
-    Route::get('/staff-search-by-branch', [SearchController::class, 'staffNameByBranch'])->name('staff-name-search-by-branch');
-});
+        // PMC
+        Route::get('/pegawai-pemudah-cara', PegawaiPemudahCara::class)->name('pegawai-pemudah-cara');
 
-Route::middleware(['auth', 'check.role', 'ensure.session'])->group(function () {
-    // PYD
-    Route::get('/pegawai-dinilai', PegawaiDinilai::class)->name('pegawai-dinilai');
+        //loading pmgi
+        Route::get('/loading-pmgi', LoadingPmgi::class)->name('loading-pmgi');
 
-    // PYM
-    Route::get('/pegawai-menilai', PegawaiMenilai::class)->name('pegawai-menilai');
+        // perakuan
+        Route::get('/perakuan', Perakuan::class)->name('perakuan');
 
-    // PMC
-    Route::get('/pegawai-pemudah-cara', PegawaiPemudahCara::class)->name('pegawai-pemudah-cara');
-
-    //loading pmgi
-    Route::get('/loading-pmgi', LoadingPmgi::class)->name('loading-pmgi');
-
-    // perakuan
-    Route::get('/perakuan', Perakuan::class)->name('perakuan');
-
-    //loading perakuan
-    Route::get('/loading-perakuan', LoadingPerakuan::class)->name('loading-perakuan');
+        //loading perakuan
+        Route::get('/loading-perakuan', LoadingPerakuan::class)->name('loading-perakuan');
+    });
 });
