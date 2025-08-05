@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Constants\JTT\JTTRoles;
 use App\Mail\JttMeetingInvitation as MailJttMeetingInvitation;
 use App\Models\JttMeetingInvitation;
 use App\Models\JttSessionInfo;
@@ -119,10 +120,12 @@ class HomeJtt extends Component
                                 ->count();
 
         $rooms = SettMeetingRoom::orderBy('ID', 'asc')->get();
+        $jttRoleList = JTTRoles::getRoleName();
 
         return view('livewire.home-jtt', [
             'rooms' => $rooms,
             'jttOfficers' => $jttOfficer,
+            'jttRoleList' => $jttRoleList,
             'dataCount' => $dataCount,
         ])->extends('layouts.main');
     }

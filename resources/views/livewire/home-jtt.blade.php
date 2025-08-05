@@ -50,14 +50,9 @@
                                             <td class="p-1 text-sm font-normal text-center text-gray-500 whitespace-nowrap">
                                                 <select id="small" class="flex-1 block w-full p-1 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" wire:model="jttRoles.{{ $jttOfficer->id }}">
                                                     <option value="">Sila Pilih</option>
-                                                    <option value="1">PENGERUSI</option>
-                                                    <option value="2">PENGERUSI GANTIAN</option>
-                                                    <option value="3">AHLI-AHLI</option>
-                                                    <option value="4">AHLI-AHLI GANTIAN</option>
-                                                    <option value="5">PEMBENTANG</option>
-                                                    <option value="6">URUSETIA</option>
-                                                    <option value="7">PENGERUSI BERSAMA (PERHEBAT)</option>
-                                                    <option value="8">AHLI (PERHEBAT)</option>
+                                                    @foreach ($jttRoleList as $id => $name)
+                                                        <option value="{{ $id }}">{{ $name }}</option>
+                                                    @endforeach
                                                 </select>
                                             </td>
                                         </tr>
