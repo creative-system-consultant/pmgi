@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Auth;
 
+use App\Models\ExcludeUserLogin;
 use App\Models\SettUalPage;
 use App\Models\SettUalRoleHasPage;
 use App\Models\User;
@@ -32,6 +33,13 @@ class Login extends Component
 
     public $tnc2Modal = false;
 
+    public $disableButton = false;
+
+    // User checking states
+    public $excludeUser = null;
+    public $canProceedToPassword = false;
+    public $userMessage = null;
+
     protected function rules()
     {
         $rules = [
@@ -61,6 +69,41 @@ class Login extends Component
                 $description = session('flash_success')
             );
         }
+    }
+
+    public function updatedUserId()
+    {
+        $this->resetUserValidation();
+        
+        if (empty($this->userId)) {
+            return;
+        }
+
+        $this->checkUserId();
+    }
+
+    private function resetUserValidation()
+    {
+        $this->excludeUser = null;
+        $this->userMessage = '';
+        $this->canProceedToPassword = false;
+        $this->password = ''; // Clear password when user ID changes
+    }
+
+    // Approach 1
+    private function checkUserId()
+    {
+        $excludeUserLogin = ExcludeUserLogin::where('userid', strtoupper($this->userId))
+            ->first();
+
+        if ($excludeUserLogin) {
+            $this->addError('userId', trans('auth.notFound'));
+            $this->disableButton = true;
+            return;
+        }
+
+        $this->excludeUser = $excludeUserLogin !== null;
+        $this->canProceedToPassword = !$this->excludeUser;
     }
 
     public function updatedTnc($value)

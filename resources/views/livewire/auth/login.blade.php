@@ -19,7 +19,7 @@
         <form class="mt-8 space-y-6" wire:submit.prevent="authenticate">
             <div>
                 <label for="text" class="block mb-2 text-sm font-medium text-gray-900 ">User ID</label>
-                <input wire:model="userId" type="text" name="text" id="text" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 @error('userId') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror" placeholder="ABCD1234" required>
+                <input wire:model.lazy="userId" type="text" name="text" id="text" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 @error('userId') border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 focus:ring-red @enderror" placeholder="ABCD1234" required>
 
                 @error('userId')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -85,9 +85,9 @@
             <div class="flex justify-center">
                 <button type="submit"
                         class="w-full px-5 py-3 text-base text-center text-white rounded-lg font-xs
-                        @if($tnc && $tnc2) bg-primary-700 hover:bg-primary-800 focus:ring-primary-300
+                        @if($tnc && $tnc2 && !$disableButton) bg-primary-700 hover:bg-primary-800 focus:ring-primary-300
                         @else bg-gray-400 cursor-not-allowed @endif focus:ring-4 sm:w-auto"
-                        @if(!$tnc || !$tnc2) disabled @endif>
+                        @if(!$tnc || !$tnc2 || $disableButton) disabled @endif>
                     Log Masuk
                 </button>
             </div>
