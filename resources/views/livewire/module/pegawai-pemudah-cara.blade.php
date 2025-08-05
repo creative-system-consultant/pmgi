@@ -6,7 +6,7 @@
                 <div class="mb-4 lg:mb-0">
                     <div class="flex items-center mb-2">
                         <h3 class="text-xl font-bold text-gray-900">Ulasan Pegawai Pemudah Cara (PMC)</h3>
-                        @if($perakuan && auth()->user()->userid == $sessionSetting->pmc_id)
+                        @if($perakuan && auth()->user()->USERID == $sessionSetting->pmc_id)
                         <a href="{{ route('pegawai-pemudah-cara') }}" class="inline-flex items-center px-4 py-2 ml-4 font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800" wire:click="updates">
                             Kemaskini
                         </a>
@@ -74,10 +74,10 @@
             @endif
                 <div class="mt-4 mb-8">
                     <div class="mb-2">
-                        <label for="punca" class="block mb-2 font-medium @if($perakuan && auth()->user()->userid != $sessionSetting->pmc_id) text-gray-700 opacity-60 @else text-gray-900 @endif text-md dark:text-white @error('fairFlag') text-red-700 @enderror">Adakah sesi ini telah dilaksanakan dengan adil dan saksama bagi kedua-dua belah pihak?</label>
+                        <label for="punca" class="block mb-2 font-medium @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id) text-gray-700 opacity-60 @else text-gray-900 @endif text-md dark:text-white @error('fairFlag') text-red-700 @enderror">Adakah sesi ini telah dilaksanakan dengan adil dan saksama bagi kedua-dua belah pihak?</label>
                         <div class="flex">
                             <div class="flex items-center mr-4 border border-gray-200 rounded ps-4 @error('fairFlag') border-red-200 @enderror" style="padding-left: 2rem;padding-right: 2rem;">
-                                @if($perakuan && auth()->user()->userid != $sessionSetting->pmc_id)
+                                @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id)
                                     <input id="adilYa" type="radio" value="1" name="bordered-radio" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 @error('fairFlag') border-red-300 text-red-600 focus:ring-red-500 @enderror" wire:model="fairFlag" disabled>
                                     <label for="adilYa" class="w-full py-4 text-sm font-medium text-gray-700 opacity-60 ms-2 @error('fairFlag') text-red-700 @enderror">YA</label>
                                 @else
@@ -86,7 +86,7 @@
                                 @endif
                             </div>
                             <div class="flex items-center mr-4 border border-gray-200 rounded ps-4 @error('fairFlag') border-red-200 @enderror" style="padding-left: 2rem;padding-right: 2rem;">
-                                @if($perakuan && auth()->user()->userid != $sessionSetting->pmc_id)
+                                @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id)
                                     <input checked id="adilTidak" type="radio" value="2" name="bordered-radio" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 @error('fairFlag') border-red-300 text-red-600 focus:ring-red-500 @enderror" wire:model="fairFlag" disabled>
                                     <label for="adilTidak" class="w-full py-4 text-sm font-medium text-gray-700 opacity-60 ms-2  @error('fairFlag') text-red-700 @enderror">TIDAK</label>
                                 @else
@@ -98,7 +98,7 @@
                         @error('fairFlag')<p class="mt-2 text-sm text-negative-600">{{ $message }}</p>@enderror
                     </div>
                     <div>
-                        @if($perakuan && auth()->user()->userid != $sessionSetting->pmc_id)
+                        @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id)
                             <x-textarea label="Sila tuliskan ulasan anda :" placeholder="Tuliskan ulasan anda" wire:model="fairComment" disabled />
                         @else
                             <x-textarea label="Sila tuliskan ulasan anda :" placeholder="Tuliskan ulasan anda" wire:model="fairComment" />
@@ -108,10 +108,10 @@
                 <hr>
                 <div class="my-8">
                     <div class="mb-2">
-                        <label for="pyd" class="block mb-2 font-medium @if($perakuan && auth()->user()->userid != $sessionSetting->pmc_id) text-gray-700 opacity-60 @else text-gray-900 @endif text-md dark:text-white @error('undrstdFlag') text-red-700 @enderror">PYD memahami dengan jelas prestasi semasa dan bersetuju dengan pelan tindakan yang perlu dilaksanakan?</label>
+                        <label for="pyd" class="block mb-2 font-medium @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id) text-gray-700 opacity-60 @else text-gray-900 @endif text-md dark:text-white @error('undrstdFlag') text-red-700 @enderror">PYD memahami dengan jelas prestasi semasa dan bersetuju dengan pelan tindakan yang perlu dilaksanakan?</label>
                         <div class="flex">
                             <div class="flex items-center mr-4 border border-gray-200 rounded ps-4 @error('undrstdFlag') border-red-200 @enderror" style="padding-left: 2rem;padding-right: 2rem;">
-                                @if($perakuan && auth()->user()->userid != $sessionSetting->pmc_id)
+                                @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id)
                                     <input id="pydYa" type="radio" value="1" name="bordered-radio2" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 @error('undrstdFlag') border-red-300 text-red-600 focus:ring-red-500 @enderror" wire:model="undrstdFlag" disabled>
                                     <label for="pydYa" class="w-full py-4 text-sm font-medium text-gray-700 opacity-60 ms-2 @error('undrstdFlag') text-red-700 @enderror">YA</label>
                                 @else
@@ -120,7 +120,7 @@
                                 @endif
                             </div>
                             <div class="flex items-center mr-4 border border-gray-200 rounded ps-4 @error('undrstdFlag') border-red-200 @enderror" style="padding-left: 2rem;padding-right: 2rem;">
-                                @if($perakuan && auth()->user()->userid != $sessionSetting->pmc_id)
+                                @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id)
                                     <input checked id="pydTidak" type="radio" value="2" name="bordered-radio2" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 @error('undrstdFlag') border-red-300 text-red-600 focus:ring-red-500 @enderror" wire:model="undrstdFlag" disabled>
                                     <label for="pydTidak" class="w-full py-4 text-sm font-medium text-gray-700 opacity-60 ms-2  @error('undrstdFlag') text-red-700 @enderror">TIDAK</label>
                                 @else
@@ -134,7 +134,7 @@
                 </div>
                 <hr>
                 <div class="my-8">
-                    @if($perakuan && auth()->user()->userid != $sessionSetting->pmc_id)
+                    @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id)
                         <x-textarea label="Lain-lain perkara (Jika ada) :" wire:model="others" disabled />
                     @else
                         <x-textarea label="Lain-lain perkara (Jika ada) :" wire:model="others" />
@@ -143,10 +143,10 @@
                 <hr>
                 <div class="my-8">
                     <div class="mb-2">
-                        <label for="syorKeluar" class="block mb-2 font-medium @if($perakuan && auth()->user()->userid != $sessionSetting->pmc_id) text-gray-700 opacity-60 @else text-gray-900 @endif text-md dark:text-white @error('exitFlag') text-red-700 @enderror">Disyorkan penangguhan?</label>
+                        <label for="syorKeluar" class="block mb-2 font-medium @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id) text-gray-700 opacity-60 @else text-gray-900 @endif text-md dark:text-white @error('exitFlag') text-red-700 @enderror">Disyorkan penangguhan?</label>
                         <div class="flex">
                             <div class="flex items-center mr-4 border border-gray-200 rounded ps-4 @error('exitFlag') border-red-200 @enderror" style="padding-left: 2rem;padding-right: 2rem;">
-                                @if($perakuan && auth()->user()->userid != $sessionSetting->pmc_id)
+                                @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id)
                                     <input id="syorKeluarYa" type="radio" value="1" name="bordered-radio3" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 @error('exitFlag') border-red-300 text-red-600 focus:ring-red-500 @enderror" wire:model.live="exitFlag" disabled>
                                     <label for="syorKeluarYa" class="w-full py-4 text-sm font-medium text-gray-700 opacity-60 ms-2  @error('exitFlag') text-red-700 @enderror">YA</label>
                                 @else
@@ -155,7 +155,7 @@
                                 @endif
                             </div>
                             <div class="flex items-center mr-4 border border-gray-200 rounded ps-4 @error('exitFlag') border-red-200 @enderror" style="padding-left: 2rem;padding-right: 2rem;">
-                                @if($perakuan && auth()->user()->userid != $sessionSetting->pmc_id)
+                                @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id)
                                     <input id="syorKeluarTidak" type="radio" value="0" name="bordered-radio3" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 @error('exitFlag') border-red-300 text-red-600 focus:ring-red-500 @enderror" wire:model.live="exitFlag" disabled>
                                     <label for="syorKeluarTidak" class="w-full py-4 text-sm font-medium text-gray-700 opacity-60 ms-2  @error('exitFlag') text-red-700 @enderror">TIDAK</label>
                                 @else
@@ -168,7 +168,7 @@
                     </div>
                     <div class="{{ $exitFlag == 1 ? 'block' : 'hidden'}}">
                         <div class="flex items-center my-4 w-full">
-                            @if($perakuan && auth()->user()->userid != $sessionSetting->pmc_id)
+                            @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id)
                                 <x-native-select label="Sila pilih jenis penangguhan :" placeholder="Sila Pilih" :options="[
                                     ['name' => 'Tanpa Syarat - Keluar Senarai',  'id' => 1],
                                     ['name' => 'Bersyarat (a) - Kembali ke PMG-i (2)', 'id' => 2],
@@ -184,7 +184,7 @@
                         </div>
                     </div>
                     <div>
-                        @if($perakuan && auth()->user()->userid != $sessionSetting->pmc_id)
+                        @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id)
                             <x-textarea label="Ulasan :" wire:model="comment" disabled />
                         @else
                             <x-textarea label="Ulasan :" wire:model="comment" />

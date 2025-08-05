@@ -24,7 +24,7 @@ class MeetingRoom extends Component
 
         SettMeetingRoom::create([
             'ROOM_NAME' => $this->room_name,
-            'CREATED_BY' => auth()->user()->userid,
+            'CREATED_BY' => auth()->user()->USERID,
         ]);
 
         $this->reset('room_name');

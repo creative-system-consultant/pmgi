@@ -14,17 +14,17 @@ class SettPymPmc extends Model
 
     public function pyd()
     {
-        return $this->belongsTo(User::class, 'pyd_id', 'userid');
+        return $this->belongsTo(User::class, 'pyd_id', 'USERID');
     }
 
     public function pym()
     {
-        return $this->belongsTo(User::class, 'pym_id', 'userid');
+        return $this->belongsTo(User::class, 'pym_id', 'USERID');
     }
 
     public function pmc()
     {
-        return $this->belongsTo(User::class, 'pmc_id', 'userid');
+        return $this->belongsTo(User::class, 'pmc_id', 'USERID');
     }
 
     public function info()

@@ -21,7 +21,7 @@ class Pym extends BasePymPmc
         // uat pmgi 3
         // $lastMonthEnd = Carbon::createFromFormat('d/m/Y', '30/11/2023')->format('Y-m-d');
 
-        return SettPymPmc::wherePymId(auth()->user()->userid)
+        return SettPymPmc::wherePymId(auth()->user()->USERID)
                         ->whereDate('report_date', $lastMonthEnd)
                         ->orderBy('status', 'ASC');
     }

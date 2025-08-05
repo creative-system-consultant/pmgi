@@ -26,17 +26,17 @@ class UserAccess extends Component
 
     public function find(): void
     {
-        $this->results = User::where('username', 'like', '%' . strtoupper($this->name) . '%')
-                                ->where('userstatus', 1)
+        $this->results = User::where('USERNAME', 'like', '%' . strtoupper($this->name) . '%')
+                                ->where('USERSTATUS', 1)
                                 ->get();
     }
 
     public function showModal($userId)
     {
-        $this->user = User::where('userid', $userId)
-                            ->where('userstatus', 1)
+        $this->user = User::where('USERID', $userId)
+                            ->where('USERSTATUS', 1)
                             ->first();
-        $this->name = $this->user->username;
+        $this->name = $this->user->USERNAME;
         $this->role = $this->user->roles->pluck('id')->toArray();
         $this->userAccessModal = true;
     }
@@ -44,12 +44,12 @@ class UserAccess extends Component
     public function save()
     {
         // Delete existing role relationships
-        SettUalUserHasRole::where('userid', $this->user->userid)->delete();
+        SettUalUserHasRole::where('userid', $this->user->USERID)->delete();
 
         // Attach new roles
         foreach ($this->role as $roleId) {
             SettUalUserHasRole::create([
-                'USERID' => $this->user->userid,
+                'USERID' => $this->user->USERID,
                 'ROLE_ID' => $roleId
             ]);
         }
@@ -60,7 +60,7 @@ class UserAccess extends Component
         // Show success notification
         $this->dialog()->success(
             $title = 'Berjaya dikemaskini',
-            $description = '"' . $this->user->username . '" telah diberi akses sebagai "' . $roleNames . '"'
+            $description = '"' . $this->user->USERNAME . '" telah diberi akses sebagai "' . $roleNames . '"'
         );
 
         // Close modal and reset properties

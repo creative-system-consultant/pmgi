@@ -70,7 +70,7 @@ class Keseluruhan extends Component
 
     private function getBranchData(): Collection
     {
-        $userData = SummMthOfficer::whereOfficerId(auth()->user()->userid)
+        $userData = SummMthOfficer::whereOfficerId(auth()->user()->USERID)
             ->orderBy('report_date', 'desc')
             ->first();
 
@@ -81,7 +81,7 @@ class Keseluruhan extends Component
         }
 
         return SummMthOfficer::whereAcctBranchCode($branch_code)
-            ->whereOfficerId(auth()->user()->userid) // PYD only sees their own data
+            ->whereOfficerId(auth()->user()->USERID) // PYD only sees their own data
             ->whereDate('report_date', $this->reportDate->copy()->endOfMonth()->format('Y-m-d'))
             ->orderBy('incl_pmgi_flag', 'asc')
             ->get();

@@ -2,10 +2,18 @@
 
 namespace App\Livewire\Module;
 
+use App\Jobs\CleanupTemporaryFiles;
+use App\Jobs\SendJttHrEmail;
+use App\Models\BankOfficer;
 use App\Models\MntrSession;
+use App\Models\SessionJttPydInfo;
+use App\Models\SettUalRole;
+use App\Models\SettUalUserHasRole;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use PDO;
 use WireUi\Traits\Actions;
 
 class MesyuaratJtt extends Component
@@ -49,7 +57,7 @@ class MesyuaratJtt extends Component
         $this->staffNo = $data->user->bankOfficer->staffno;
         $this->state = $data->state->description;
         $this->branch = $data->branch->branch_name;
-        $this->staffName = $data->user->username;
+        $this->staffName = $data->user->USERNAME;
     }
 
     public function getPmgiData($cycle)
@@ -82,14 +90,14 @@ class MesyuaratJtt extends Component
                 $result = [
                     'seq' => $data->seq_no,
                     'lvl' => $data->pmgi_level,
-                    'pym' => $data->settPymPmc->pym->username,
+                    'pym' => $data->settPymPmc->pym->USERNAME,
                     'date_session' => $data->settPymPmc->created_at->format('d/m/Y'),
                     'result' => $pmgiResult,
                 ];
 
                 // Add 'pmc' field conditionally if pmgi_level is 'PM3'
                 if ($data->pmgi_level == 'PM3') {
-                    $result['pmc'] = $data->settPymPmc->pmc->username;
+                    $result['pmc'] = $data->settPymPmc->pmc->USERNAME;
                 }
 
                 return $result;

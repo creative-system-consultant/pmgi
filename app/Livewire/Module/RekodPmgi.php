@@ -58,7 +58,7 @@ class RekodPmgi extends Component
         }
 
         if (in_array('PYD', $role)) {
-            $this->pydId = auth()->user()->userid;
+            $this->pydId = auth()->user()->USERID;
             $this->isAdmin = false;
             $this->getData();
         }

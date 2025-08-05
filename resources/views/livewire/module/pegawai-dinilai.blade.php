@@ -6,7 +6,7 @@
                 <div class="mb-4 lg:mb-0">
                     <div class="flex items-center mb-2">
                         <h3 class="mb-2 text-xl font-bold text-gray-900">Ulasan Pegawai Yang Dinilai (PYD)</h3>
-                        @if($perakuan && auth()->user()->userid == $sessionSetting->pyd_id)
+                        @if($perakuan && auth()->user()->USERID == $sessionSetting->pyd_id)
                             <button class="inline-flex items-center px-4 py-2 ml-4 font-medium text-center text-white bg-indigo-700 rounded-lg cursor-pointer focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800" wire:click="updates">
                                 Kemaskini
                             </button>
@@ -75,7 +75,7 @@
             @endif
                 <div class="flex items-center px-4 py-2 w-full bg-lime-300 rounded-lg">
                     <h3 class="mr-4 text-lg font-medium text-gray-900">Masalah yang dihadapi :</h3>
-                    @if($perakuan && auth()->user()->userid != $sessionSetting->pyd_id)
+                    @if($perakuan && auth()->user()->USERID != $sessionSetting->pyd_id)
                         <x-select class="flex-1 mr-4" placeholder="Sila Pilih" :options="$problemSelection" option-label="description" option-value="id" wire:model="problem" disabled />
                     @else
                         <x-select class="flex-1 mr-4" placeholder="Sila Pilih" :options="$problemSelection" option-label="description" option-value="id" wire:model="problem" />
@@ -84,21 +84,21 @@
                 </div>
 
                 <div class="my-4">
-                    @if($perakuan && auth()->user()->userid != $sessionSetting->pyd_id)
+                    @if($perakuan && auth()->user()->USERID != $sessionSetting->pyd_id)
                         <x-textarea label="Nyatakan punca bagi masalah tersebut :" placeholder="Tuliskan masalah anda" wire:model="reason" disabled />
                     @else
                         <x-textarea label="Nyatakan punca bagi masalah tersebut :" placeholder="Tuliskan masalah anda" wire:model="reason"/>
                     @endif
                 </div>
                 <div class="mb-4">
-                    @if($perakuan && auth()->user()->userid != $sessionSetting->pyd_id)
+                    @if($perakuan && auth()->user()->USERID != $sessionSetting->pyd_id)
                         <x-textarea label="Pelan tindakan untuk meningkatkan prestasi :" placeholder="Tuliskan pelan tindakan anda" wire:model="actionPlan" disabled />
                     @else
                         <x-textarea label="Pelan tindakan untuk meningkatkan prestasi :" placeholder="Tuliskan pelan tindakan anda" wire:model="actionPlan"/>
                     @endif
                 </div>
                 <div class="mb-4">
-                    @if($perakuan && auth()->user()->userid != $sessionSetting->pyd_id)
+                    @if($perakuan && auth()->user()->USERID != $sessionSetting->pyd_id)
                         <x-textarea label="Ulasan (Jika ada) :" placeholder="" wire:model="comment" disabled />
                     @else
                         <x-textarea label="Ulasan (Jika ada) :" placeholder="" wire:model="comment" />

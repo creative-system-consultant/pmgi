@@ -123,7 +123,7 @@ class PegawaiDinilai extends Component
             'action' => $this->actionPlan,
             'comments' => $this->comment,
             'attachment' => $path,
-            'created_by' => auth()->user()->userid,
+            'created_by' => auth()->user()->USERID,
         ]);
 
         $sessionId  = str_replace('/', '-', $this->sessionId);

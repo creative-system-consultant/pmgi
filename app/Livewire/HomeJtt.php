@@ -45,7 +45,7 @@ class HomeJtt extends Component
             'session_id' => $sessionId,
             'venue' => $this->room,
             'session_date' => now(),
-            'created_by' => auth()->user()->userid,
+            'created_by' => auth()->user()->USERID,
         ]);
 
         foreach ($selectedOfficers as $officerId => $role) {

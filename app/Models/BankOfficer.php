@@ -19,7 +19,7 @@ class BankOfficer extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'officer_id', 'userid');
+        return $this->belongsTo(User::class, 'officer_id', 'USERID');
     }
 
     public function branch()

@@ -148,7 +148,7 @@
 
                     <div class="hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow" id="userMenuDropdown" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(1712px, 58px);" data-popper-placement="bottom">
                         <div class="px-4 py-3">
-                            <span class="block text-sm font-semibold text-gray-900">{{ auth()->user()->username }}</span>
+                            <span class="block text-sm font-semibold text-gray-900">{{ auth()->user()->USERNAME }}</span>
                             <span class="block text-sm font-light text-gray-500 truncate">{{ auth()->user()->bankOfficer->email }}</span>
                         </div>
                         <ul class="py-1 font-light text-gray-500" aria-labelledby="dropdown">

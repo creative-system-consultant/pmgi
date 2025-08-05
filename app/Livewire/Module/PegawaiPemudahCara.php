@@ -130,7 +130,7 @@ class PegawaiPemudahCara extends Component
             'exit_type_flag' => $this->exitTypeFlag,
             'comments' => $this->comment,
             'attachment' => $path,
-            'created_by' => auth()->user()->userid,
+            'created_by' => auth()->user()->USERID,
         ]);
 
         $sessionId  = str_replace('/', '-', $this->sessionId);

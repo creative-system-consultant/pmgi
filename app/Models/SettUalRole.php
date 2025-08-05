@@ -20,6 +20,6 @@ class SettUalRole extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'pmgi_sett_ual_user_has_role', 'role_id', 'userid');
+        return $this->belongsToMany(User::class, 'pmgi_sett_ual_user_has_role', 'role_id', 'USERID');
     }
 }

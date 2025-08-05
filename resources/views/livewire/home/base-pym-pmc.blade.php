@@ -36,7 +36,7 @@
                                     @forelse ($datas as $index => $data)
                                     <tr class="{{ $index % 2 != 0 ? 'bg-gray-50' : '' }}">
                                         <td class="p-2 text-xs font-normal text-left text-gray-900 uppercase border-black border-dashed border-x whitespace-nowrap">
-                                            {{ $data->pyd->username }}
+                                            {{ $data->pyd->USERNAME }}
                                         </td>
                                         <td class="p-2 text-xs font-normal text-center text-gray-900 uppercase border-black border-dashed border-x whitespace-nowrap">
                                             {{ $data->pyd->branchName() }}
@@ -46,9 +46,9 @@
                                         </td>
                                         <td class="p-2 text-xs font-normal text-center text-gray-900 uppercase border-black border-dashed border-x whitespace-nowrap">
                                             @if ($data->status == 0)
-                                                @if(substr($data->pmgi_level, -1) != 3 && $data->pym_id == auth()->user()->userid)
+                                                @if(substr($data->pmgi_level, -1) != 3 && $data->pym_id == auth()->user()->USERID)
                                                     <x-badge rounded primary label="Mulakan sesi" class="cursor-pointer" wire:click="startSession('{{ $data->session_id }}')" />
-                                                @elseif(substr($data->pmgi_level, -1) == 3 && $data->pmc_id == auth()->user()->userid)
+                                                @elseif(substr($data->pmgi_level, -1) == 3 && $data->pmc_id == auth()->user()->USERID)
                                                     <x-badge rounded primary label="Mulakan sesi" class="cursor-pointer" wire:click="startSession('{{ $data->session_id }}')" />
                                                 @else
                                                     <x-badge rounded warning label="Menunggu PMC mulakan sesi" class="cursor-not-allowed" />

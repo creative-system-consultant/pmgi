@@ -41,10 +41,10 @@
                                                     <tbody class="bg-white">
                                                         @forelse ($results as $user)
                                                         <tr class="even:bg-gray-50"">
-                                                            <td class="p-2 text-sm font-normal tracking-tight text-left text-gray-800 whitespace-nowrap">{{ $user->username }}</td>
+                                                            <td class="p-2 text-sm font-normal tracking-tight text-left text-gray-800 whitespace-nowrap">{{ $user->USERNAME }}</td>
                                                             <td class="p-2 text-sm font-normal tracking-tight text-left text-gray-800 whitespace-nowrap">{{ $user->position() }}</td>
                                                             <td class="p-2 text-sm font-normal tracking-tight text-center text-gray-800 whitespace-nowrap">
-                                                                <x-button sm icon="pencil" positive label="Tambah" wire:click="addJtt('{{ $user->userid }}')" />
+                                                                <x-button sm icon="pencil" positive label="Tambah" wire:click="addJtt('{{ $user->USERID }}')" />
                                                             </td>
                                                         </tr>
                                                         @empty

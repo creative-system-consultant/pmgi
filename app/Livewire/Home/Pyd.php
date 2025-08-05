@@ -37,13 +37,13 @@ class Pyd extends Component
             $this->user = $this->userId;
         } else {
             $authUser = auth()->user();
-            $this->user = $authUser->userid;
+            $this->user = $authUser->USERID;
         }
 
         $authUser = auth()->user();
 
         $this->data = User::find($this->user);
-        $this->username = $this->data->username;
+        $this->username = $this->data->USERNAME;
         $this->staffno = $this->data->staffNo();
         $this->jawatan = $this->data->bankOfficer->hrData->jawatan;
         $this->stateName = $this->data->stateName();

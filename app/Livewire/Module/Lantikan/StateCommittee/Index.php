@@ -32,7 +32,8 @@ class Index extends Component
     protected $originalSelectedUsers = [];
 
     protected $rules = [
-        'selectedUsers.*' => 'nullable|exists:FMS_USERS,userid',
+        // 'selectedUsers.*' => 'nullable|exists:FMS_USERS,userid',
+        'selectedUsers.*' => 'nullable|exists:NEWFMS_PROD.DBO.dbo.fms_users,USERID',
     ];
 
     public function __construct()
@@ -53,8 +54,8 @@ class Index extends Component
                             ->whereHas('bankOfficer', function ($query) {
                                 $query->whereIn('roles', ['542', '634']);
                             })
-                            ->where('userstatus', 1)
-                            ->get(['userid', 'username']);
+                            ->where('USERSTATUS', 1)
+                            ->get(['USERID', 'USERNAME']);
 
         $this->initializeSelectedUsers();
         $this->initializeFilteredOptions();
@@ -94,8 +95,8 @@ class Index extends Component
             return optional($option->bankOfficer)->branch_code && substr($option->bankOfficer->branch_code, 0, 2) == $stateCode;
         })->map(function ($option) {
             return [
-                'userid' => $option->userid,
-                'username' => $option->username,
+                'userid' => $option->USERID,
+                'username' => $option->USERNAME,
             ];
         })->values()->toArray();
     }

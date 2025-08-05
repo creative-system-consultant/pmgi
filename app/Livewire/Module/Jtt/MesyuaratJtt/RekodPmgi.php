@@ -95,7 +95,7 @@ class RekodPmgi extends Component
         $this->staffNo = $data->user->bankOfficer->staffno;
         $this->state = $data->state->description;
         $this->branch = $data->branch->branch_name;
-        $this->staffName = $data->user->username;
+        $this->staffName = $data->user->USERNAME;
         $this->staffIc = $data->user->bankOfficer->nokp;
         $this->pmgiLevel = $data->pmgi_level;
         $this->getPmgiData($data->pmgi_cycle);
