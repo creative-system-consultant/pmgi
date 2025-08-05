@@ -129,16 +129,16 @@ abstract class BasePmgi extends Component
     {
         $urusetiaNegeriRoleId = DB::table('PMGI_SETT_UAL_ROLE')->where('name', 'URUSETIA NEGERI')->value('id');
 
-        $this->pymSelection = DB::table('FMS_USERS as a')
+        $this->pymSelection = DB::table('NEWFMS_PROD.DBO.dbo.FMS_USERS as a')
                         ->distinct()
-                        ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
+                        ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.USERID')
                         ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
-                        ->leftJoin('PMGI_SETT_UAL_USER_HAS_ROLE as r', 'r.userid', '=', 'a.userid')
-                        ->select('a.userid', 'b.officer_name', 'c.branch_name')
-                        ->where('a.userstatus', 1)
+                        ->leftJoin('PMGI_SETT_UAL_USER_HAS_ROLE as r', 'r.userid', '=', 'a.USERID')
+                        ->select('a.USERID', 'b.officer_name', 'c.branch_name')
+                        ->where('a.USERSTATUS', 1)
                         ->where(DB::raw('SUBSTRING(b.branch_code, 1, 2)'), $this->stateCode)
                         ->whereIn('b.officer_group', [5,12])
-                        ->whereRaw('NOT EXISTS (SELECT 1 FROM PMGI_SETT_UAL_USER_HAS_ROLE ur WHERE ur.userid = a.userid AND ur.role_id = ?)', [$urusetiaNegeriRoleId])
+                        ->whereRaw('NOT EXISTS (SELECT 1 FROM PMGI_SETT_UAL_USER_HAS_ROLE ur WHERE ur.userid = a.USERID AND ur.role_id = ?)', [$urusetiaNegeriRoleId])
                         ->get()
                         ->toArray();
     }
@@ -147,16 +147,16 @@ abstract class BasePmgi extends Component
     {
         $urusetiaNegeriRoleId = DB::table('PMGI_SETT_UAL_ROLE')->where('name', 'URUSETIA NEGERI')->value('id');
 
-        $this->pymSelection = DB::table('FMS_USERS as a')
+        $this->pymSelection = DB::table('NEWFMS_PROD.DBO.dbo.FMS_USERS as a')
                         ->distinct()
-                        ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
+                        ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.USERID')
                         ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
-                        ->leftJoin('PMGI_SETT_UAL_USER_HAS_ROLE as r', 'r.userid', '=', 'a.userid')
-                        ->select('a.userid', 'b.officer_name', 'c.branch_name')
-                        ->where('a.userstatus', 1)
+                        ->leftJoin('PMGI_SETT_UAL_USER_HAS_ROLE as r', 'r.userid', '=', 'a.USERID')
+                        ->select('a.USERID', 'b.officer_name', 'c.branch_name')
+                        ->where('a.USERSTATUS', 1)
                         ->where(DB::raw('SUBSTRING(b.branch_code, 1, 2)'), $this->stateCode)
                         ->whereIn('b.officer_group', [5,12])
-                        ->whereRaw('NOT EXISTS (SELECT 1 FROM PMGI_SETT_UAL_USER_HAS_ROLE ur WHERE ur.userid = a.userid AND ur.role_id = ?)', [$urusetiaNegeriRoleId])
+                        ->whereRaw('NOT EXISTS (SELECT 1 FROM PMGI_SETT_UAL_USER_HAS_ROLE ur WHERE ur.userid = a.USERID AND ur.role_id = ?)', [$urusetiaNegeriRoleId])
                         ->get()
                         ->toArray();
 
