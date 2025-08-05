@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CheckSysAvailableFlag;
 use App\Http\Middleware\CheckUserAccess;
 use App\Http\Middleware\CheckUserRole;
 use App\Http\Middleware\EnsureHasSession;
@@ -22,6 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'restrict.session' => RestrictDuringSession::class,
             'restrict.loading' => RestrictLoadingAccess::class,
             'ensure.session' => EnsureHasSession::class,
+            'check.sysAvailable' => CheckSysAvailableFlag::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
