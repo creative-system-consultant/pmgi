@@ -9,6 +9,7 @@ class PmgiSummMiaAppl extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table = 'pmgi_summ_mia_appl';
     protected $guarded = [];
     public $timestamps = false;

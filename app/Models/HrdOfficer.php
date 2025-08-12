@@ -9,6 +9,7 @@ class HrdOfficer extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table="pmgi_hrd_officer";
     protected $guarded = [];
     public $timestamps = false;

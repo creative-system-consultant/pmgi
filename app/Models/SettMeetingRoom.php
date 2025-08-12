@@ -9,6 +9,7 @@ class SettMeetingRoom extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table = "pmgi_sett_meeting_room";
     protected $guarded = [];
 }

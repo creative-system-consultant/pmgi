@@ -9,6 +9,7 @@ class JttSessionParticipant extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table="pmgi_jtt_session_participant";
     protected $guarded = [];
     public $timestamps = false;

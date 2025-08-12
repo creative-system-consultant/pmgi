@@ -9,6 +9,7 @@ class Branch extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table="branches";
     protected $guarded = [];
     public $timestamps = false;

@@ -9,6 +9,7 @@ class SettPymPmc extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table="pmgi_sett_pym_pmc";
     protected $guarded = [];
 

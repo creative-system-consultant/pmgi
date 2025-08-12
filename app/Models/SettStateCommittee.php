@@ -9,6 +9,7 @@ class SettStateCommittee extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table="pmgi_sett_state_committee";
     protected $guarded = [];
     public $timestamps = false;

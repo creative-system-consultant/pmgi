@@ -9,6 +9,7 @@ class JttMeetingInvitation extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table="pmgi_jtt_meeting_invitations";
     protected $guarded = [];
 

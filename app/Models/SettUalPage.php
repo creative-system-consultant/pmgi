@@ -9,6 +9,7 @@ class SettUalPage extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table="pmgi_sett_ual_page";
     protected $guarded = [];
     public $timestamps = false;

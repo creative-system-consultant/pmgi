@@ -9,6 +9,7 @@ class BnmStatecode extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table="bnm_statecodes";
     protected $guarded = [];
     public $timestamps = false;

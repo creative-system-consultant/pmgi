@@ -9,6 +9,7 @@ class PmgiSummPembiayaanProduk extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table = 'pmgi_summ_pembiayaan_produk';
     protected $guarded = [];
     public $timestamps = false;

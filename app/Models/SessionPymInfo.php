@@ -9,6 +9,7 @@ class SessionPymInfo extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table="pmgi_session_pym_info";
     protected $guarded = [];
     public $timestamps = false;

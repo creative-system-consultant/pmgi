@@ -32,8 +32,7 @@ class Index extends Component
     protected $originalSelectedUsers = [];
 
     protected $rules = [
-        // 'selectedUsers.*' => 'nullable|exists:FMS_USERS,userid',
-        'selectedUsers.*' => 'nullable|exists:NEWFMS_PROD.DBO.dbo.fms_users,USERID',
+        'selectedUsers.*' => 'nullable|exists:FMS_USERS,userid',
     ];
 
     public function __construct()
