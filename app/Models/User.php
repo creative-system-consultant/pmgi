@@ -11,9 +11,8 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $connection = 'sqlsrv';
-    // protected $table="fms_users";
-    protected $table="NEWFMS_PROD.DBO.dbo.FMS_USERS";
+    protected $connection = 'sqlsrv_linked';
+    protected $table="FMS_USERS";
     protected $guarded = [];
     public $timestamps = false;
 
