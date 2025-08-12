@@ -9,6 +9,7 @@ class SummMthOfficer extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table="pmgi_summ_mth_officer";
     protected $guarded = [];
     public $timestamps = false;

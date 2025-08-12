@@ -9,6 +9,7 @@ class SettJtt extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table="pmgi_sett_jtt";
     protected $guarded = [];
     public $timestamps = false;

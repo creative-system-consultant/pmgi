@@ -9,5 +9,6 @@ class Job extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table="pmgi_jobs";
 }

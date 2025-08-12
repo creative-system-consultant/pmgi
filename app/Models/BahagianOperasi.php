@@ -9,6 +9,7 @@ class BahagianOperasi extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table="pmgi_jpoc";
     protected $guarded = [];
 

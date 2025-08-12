@@ -9,6 +9,7 @@ class BankOfficer extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table="pmgi_fms_bank_officers";
     protected $guarded = [];
     public $timestamps = false;

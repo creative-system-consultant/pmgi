@@ -9,6 +9,7 @@ class HrdInfo extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table="pmgi_hrd_info";
     protected $guarded = [];
 

@@ -9,6 +9,7 @@ class GlobalParm extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table="pmgi_sys_global_parm";
     protected $guarded = [];
 

@@ -9,6 +9,7 @@ class SessionPmcInfo extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table="pmgi_session_pmc_info";
     protected $guarded = [];
     public $timestamps = false;

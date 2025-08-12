@@ -9,6 +9,7 @@ class PmgiSummWilma extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table = 'pmgi_summ_wilma';
     protected $guarded = [];
     public $timestamps = false;

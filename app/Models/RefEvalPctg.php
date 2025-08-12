@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class RefEvalPctg extends Model
 {
     use HasFactory;
+    
+    protected $connection = 'sqlsrv';
     protected $table = "pmgi_ref_eval_pctg";
     protected $guarded = [];
     public $timestamps = false;

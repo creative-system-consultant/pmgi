@@ -9,6 +9,7 @@ class MntrSession extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table="pmgi_mntr_session";
     protected $guarded = [];
     public $timestamps = false;

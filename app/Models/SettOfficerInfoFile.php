@@ -9,6 +9,7 @@ class SettOfficerInfoFile extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table="pmgi_sett_officer_info_file";
     protected $guarded = [];
     public $timestamps = false;

@@ -9,6 +9,7 @@ class SettUalRole extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table="pmgi_sett_ual_role";
     protected $guarded = [];
     public $timestamps = false;

@@ -9,6 +9,7 @@ class PmgiSummRescheduleInfo extends Model
 {
     use HasFactory;
 
+    protected $connection = 'sqlsrv';
     protected $table = 'pmgi_summ_reschedule_info';
     protected $guarded = [];
     public $timestamps = false;
