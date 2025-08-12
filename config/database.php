@@ -109,6 +109,18 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
+        'sqlsrv_linked' => [
+            'driver' => 'sqlsrv',
+            'host' => env('LINKED_DB_HOST', 'localhost'),
+            'port' => env('LINKED_DB_PORT', '1433'),
+            'database' => env('LINKED_DB_DATABASE', 'forge'),
+            'username' => env('LINKED_DB_USERNAME', 'forge'),
+            'password' => env('LINKED_DB_PASSWORD', ''),
+            'charset' => env('DB_CHARSET', 'utf8'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
+
     ],
 
     /*
