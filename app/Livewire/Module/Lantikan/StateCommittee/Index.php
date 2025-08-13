@@ -32,7 +32,7 @@ class Index extends Component
     protected $originalSelectedUsers = [];
 
     protected $rules = [
-        'selectedUsers.*' => 'nullable|exists:FMS_USERS,userid',
+        'selectedUsers.*' => 'nullable|exists:FMS_USERS,USERID',
     ];
 
     public function __construct()

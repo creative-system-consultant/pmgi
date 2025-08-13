@@ -43,7 +43,7 @@
                                             {{ substr($data->pmgi_level, -1) }}
                                         </td>
                                         <td class="p-2 text-xs font-normal text-center text-gray-900 uppercase whitespace-nowrap border-black border-dashed border-x">
-                                            <x-badge rounded primary label="Mulakan sesi" class="cursor-pointer" wire:click="startSession('{{ $data->user->userid }}', '{{ $data->report_date }}')" />
+                                            <x-badge rounded primary label="Mulakan sesi" class="cursor-pointer" wire:click="startSession('{{ $data->user->USERID }}', '{{ $data->report_date }}')" />
                                         </td>
                                     </tr>
                                     @empty

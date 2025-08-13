@@ -51,7 +51,7 @@ class RestrictLoadingAccess
                 $pmcRecordExists = SessionPmcInfo::where('session_id', $sessionId)->exists();
 
                 // Check if the user is the PYD and redirect if necessary
-                if ($user->userid === $settPymPmc->pyd_id) {
+                if ($user->USERID === $settPymPmc->pyd_id) {
                     if ($pmgiLvl != 3) {
                         if ($pydRecordExists && !$pymRecordExists) {
                             return redirect($loadingRoute)->with('flash_error', $loadingMessage);
@@ -72,7 +72,7 @@ class RestrictLoadingAccess
                 }
 
                 // Check if the user is the PYM and redirect if necessary
-                if ($user->userid === $settPymPmc->pym_id) {
+                if ($user->USERID === $settPymPmc->pym_id) {
                     if ($pmgiLvl != 3) {
                         if (!$pydRecordExists && $pymRecordExists) {
                             return redirect($loadingRoute)->with('flash_error', $loadingMessage);
@@ -93,7 +93,7 @@ class RestrictLoadingAccess
                 }
 
                 // Check if the user is the PMC and redirect if necessary
-                if ($settPymPmc->pmgi_level === 'PM3' && $user->userid === $settPymPmc->pmc_id) {
+                if ($settPymPmc->pmgi_level === 'PM3' && $user->USERID === $settPymPmc->pmc_id) {
                     if ((!$pydRecordExists || !$pymRecordExists) && $pmcRecordExists) {
                         return redirect($loadingRoute)->with('flash_error', $loadingMessage);
                     } elseif ($pydRecordExists && $pymRecordExists && $pmcRecordExists) {

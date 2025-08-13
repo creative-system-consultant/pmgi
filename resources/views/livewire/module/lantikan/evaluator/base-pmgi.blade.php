@@ -51,7 +51,7 @@
                             <td class="p-1 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                 <div class="flex justify-center">
                                     @if($data->status == 0)
-                                        <x-checkbox id="checkbox-{{ $data->userid }}" value="{{ $data->userid }}" wire:model="selection" />
+                                        <x-checkbox id="checkbox-{{ $data->USERID }}" value="{{ $data->USERID }}" wire:model="selection" />
                                     @else
                                         <div class="text-gray-900">
                                             <span class="block">PYM: {{ $data->pym_name ?? 'N/A' }}</span>
@@ -80,7 +80,7 @@
                 placeholder="Sila Pilih"
                 :options="$pym"
                 option-label="officer_name"
-                option-value="userid"
+                option-value="USERID"
                 option-description="branch_name"
                 wire:model="selectedPym" />
 
@@ -91,7 +91,7 @@
                     placeholder="Sila Pilih"
                     :options="$pmc"
                     option-label="officer_name"
-                    option-value="userid"
+                    option-value="USERID"
                     option-description="branch_name"
                     wire:model="selectedPmc" />
             @endif

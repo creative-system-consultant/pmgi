@@ -31,9 +31,9 @@ class RestrictDuringSession
                                 })
                                 ->whereHas('setting', function ($query) use ($user) {
                                     $query->where(function ($q) use ($user) {
-                                        $q->where('pyd_id', $user->userid)
-                                        ->orWhere('pym_id', $user->userid)
-                                        ->orWhere('pmc_id', $user->userid);
+                                        $q->where('pyd_id', $user->USERID)
+                                        ->orWhere('pym_id', $user->USERID)
+                                        ->orWhere('pmc_id', $user->USERID);
                                     });
                                 })
                                 ->first();
@@ -72,7 +72,7 @@ class RestrictDuringSession
                 $pmcRecordExists = SessionPmcInfo::where('session_id', $sessionId)->exists();
 
                 // Check if the user is the PYD and redirect if necessary
-                if ($user->userid === $settPymPmc->pyd_id) {
+                if ($user->USERID === $settPymPmc->pyd_id) {
                     if ($pmgiLvl != 3) {
                         if ($pydRecordExists && $pymRecordExists) {
                             return redirect(route('perakuan', ['session_id' => $encodedSessionId, 'source' => 'pyd']))->with('flash_error', 'Sila tunggu sehingga sesi ini selesai.');
@@ -93,7 +93,7 @@ class RestrictDuringSession
                 }
 
                 // Check if the user is the PYM and redirect if necessary
-                if ($user->userid === $settPymPmc->pym_id) {
+                if ($user->USERID === $settPymPmc->pym_id) {
                     if ($pmgiLvl != 3) {
                         if ($pydRecordExists && $pymRecordExists) {
                             return redirect(route('perakuan', ['session_id' => $encodedSessionId, 'source' => 'pym']))->with('flash_error', 'Sila tunggu sehingga sesi ini selesai.');
@@ -114,7 +114,7 @@ class RestrictDuringSession
                 }
 
                 // Check if the user is the PMC and redirect if necessary
-                if ($settPymPmc->pmgi_level === 'PM3' && $user->userid === $settPymPmc->pmc_id) {
+                if ($settPymPmc->pmgi_level === 'PM3' && $user->USERID === $settPymPmc->pmc_id) {
                     if ($pydRecordExists && $pymRecordExists && $pmcRecordExists) {
                         return redirect(route('perakuan', ['session_id' => $encodedSessionId, 'source' => 'pmc']))->with('flash_error', 'Sila tunggu sehingga sesi ini selesai.');
                     } elseif ((!$pydRecordExists || !$pymRecordExists) && $pmcRecordExists) {
