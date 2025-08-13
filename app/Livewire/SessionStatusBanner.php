@@ -31,9 +31,9 @@ class SessionStatusBanner extends Component
             ->where('status', 0)
             ->whereHas('setting', function ($query) use ($user) {
                 $query->where(function ($q) use ($user) {
-                    $q->where('pyd_id', $user->userid)
-                        ->orWhere('pym_id', $user->userid)
-                        ->orWhere('pmc_id', $user->userid);
+                    $q->where('pyd_id', $user->USERID)
+                        ->orWhere('pym_id', $user->USERID)
+                        ->orWhere('pmc_id', $user->USERID);
                 });
             })
             ->first();
