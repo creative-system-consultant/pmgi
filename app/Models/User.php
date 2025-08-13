@@ -72,6 +72,6 @@ class User extends Authenticatable
 
     public function roles()
     {
-        return $this->belongsToMany(SettUalRole::class, 'pmgi_sett_ual_user_has_role', 'USERID', 'role_id');
+        return $this->belongsToMany(SettUalRole::class, 'pmgi_sett_ual_user_has_role', 'userid', 'role_id');
     }
 }
