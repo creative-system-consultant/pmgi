@@ -42,19 +42,27 @@ class Index extends Component
 
     public function mount()
     {
-        $this->options = User::with([
-                                'bankOfficer' => function ($query) {
-                                    $query->select('officer_id', 'branch_code', 'officer_position');
-                                },
-                                'bankOfficer.branch' => function ($query) {
-                                    $query->select('branch_code', 'branch_name');
-                                },
-                            ])
-                            ->whereHas('bankOfficer', function ($query) {
-                                $query->whereIn('roles', ['542', '634']);
-                            })
-                            ->where('USERSTATUS', 1)
-                            ->get(['USERID', 'USERNAME']);
+        // Step 1: Get user IDs from linked server
+        $userIds = User::where('USERSTATUS', 1)->pluck('USERID');
+
+        // Step 2: Get bank officers with branches from local DB
+        $bankOfficers = BankOfficer::query()
+            ->with(['branch' => function ($query) {
+                $query->select('branch_code', 'branch_name');
+            }])
+            ->whereIn('officer_id', $userIds)
+            ->whereIn('roles', ['542', '634'])
+            ->get()
+            ->keyBy('officer_id');
+
+        // Step 3: Get linked server users and attach bank officer data
+        $this->options = User::query()
+            ->whereIn('USERID', $bankOfficers->keys())
+            ->get(['USERID', 'USERNAME'])
+            ->map(function ($user) use ($bankOfficers) {
+                $user->bankOfficer = $bankOfficers->get($user->USERID);
+                return $user;
+            });
 
         $this->initializeSelectedUsers();
         $this->initializeFilteredOptions();
