@@ -148,9 +148,9 @@ class Login extends Component
         // Check if the environment is not production
         if (app()->environment('production')) {
             if ($user->encryptflag != 2) {
-                $savedpassword = LoginService::decrypting($user->userpassword);
+                $savedpassword = LoginService::decrypting($user->USERPASSWORD);
             } else {
-                $savedpassword = LoginService::of_decryptnew($user->userpassword);
+                $savedpassword = LoginService::of_decryptnew($user->USERPASSWORD);
             }
 
             if ($savedpassword !== $this->password) {

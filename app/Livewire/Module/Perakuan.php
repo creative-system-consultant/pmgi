@@ -129,7 +129,7 @@ class Perakuan extends Component
 
         // Check if the environment is not production
         if (app()->environment('production')) {
-            $savedpassword = LoginService::decrypting($user->userpassword);
+            $savedpassword = LoginService::decrypting($user->USERPASSWORD);
 
             if ($savedpassword !== $this->password) {
                 $this->addError('password', trans('auth.failed'));
