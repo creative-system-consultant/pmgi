@@ -17,8 +17,8 @@ class SearchController extends Controller
         // Try to retrieve the data from the cache
         $data = Cache::remember($cacheKey, now()->addDay(), function () use ($request) {
             return BankOfficer::query()
-                ->join('NEWFMS_PROD.DBO.dbo.FMS_USERS', 'PMGI_FMS_BANK_OFFICERS.officer_id', '=', 'NEWFMS_PROD.DBO.dbo.FMS_USERS.USERID')
-                ->where('NEWFMS_PROD.DBO.dbo.FMS_USERS.USERSTATUS', 1)
+                ->join('NEWFMS_PROD.DBO.dbo.FMS_USERS', 'PMGI_FMS_BANK_OFFICERS.officer_id', '=', 'FMS_USERS.USERID')
+                ->where('FMS_USERS.USERSTATUS', 1)
                 ->when($request->search, fn (Builder $query) =>
                     $query->whereRaw('UPPER(officer_name) LIKE ?', ['%' . strtoupper($request->search) . '%'])
                 )
@@ -34,8 +34,8 @@ class SearchController extends Controller
     public function staffNameByBranch(Request $request)
     {
         return BankOfficer::query()
-            ->join('NEWFMS_PROD.DBO.dbo.FMS_USERS', 'PMGI_FMS_BANK_OFFICERS.officer_id', '=', 'NEWFMS_PROD.DBO.dbo.FMS_USERS.USERID')
-            ->where('NEWFMS_PROD.DBO.dbo.FMS_USERS.USERSTATUS', 1)
+            ->join('NEWFMS_PROD.DBO.dbo.FMS_USERS', 'PMGI_FMS_BANK_OFFICERS.officer_id', '=', 'FMS_USERS.USERID')
+            ->where('FMS_USERS.USERSTATUS', 1)
             ->when($request->branch_code, fn(Builder $query) =>
                 $query->where('PMGI_FMS_BANK_OFFICERS.branch_code', $request->branch_code)
             )

@@ -72,8 +72,8 @@ class RekodPmgi extends Component
 
     public function search()
     {
-        $this->pydId = BankOfficer::join('NEWFMS_PROD.DBO.dbo.FMS_USERS', 'pmgi_fms_bank_officers.officer_id', '=', 'NEWFMS_PROD.DBO.dbo.FMS_USERS.USERID')
-            ->where('NEWFMS_PROD.DBO.dbo.FMS_USERS.USERSTATUS', 1)
+        $this->pydId = BankOfficer::join('NEWFMS_PROD.DBO.dbo.FMS_USERS', 'pmgi_fms_bank_officers.officer_id', '=', 'FMS_USERS.USERID')
+            ->where('FMS_USERS.USERSTATUS', 1)
             ->where(function($q) {
                 $q->where('pmgi_fms_bank_officers.officer_name', 'LIKE', '%' . $this->searchTerm . '%')
                     ->orWhere('pmgi_fms_bank_officers.staffno', 'LIKE', '%' . $this->searchTerm . '%');
