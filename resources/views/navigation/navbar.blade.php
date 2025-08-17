@@ -105,26 +105,26 @@
                                         <ul class="py-1 text-sm text-gray-700" aria-labelledby="dropdownLargeButton">
                                             @if(hasAccess('tetapan-akses-pengguna'))
                                                 <li>
-                                                    <a href="{{ route('tetapan.user-access') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.user-access' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Akses Pengguna</a>
+                                                    <a href="{{ route('tetapan.user-access') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.user-access' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Tetapan Akses Pengguna</a>
                                                 </li>
                                             @endif
 
                                             @if(hasAccess('tetapan-info-pyd-pym-pmc'))
                                                 <li>
-                                                    <a href="{{ route('tetapan.info-pegawai') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.info-pegawai' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Info PYD, PYM & PMC</a>
+                                                    <a href="{{ route('tetapan.info-pegawai') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.info-pegawai' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Tetapan Info PYD, PYM & PMC</a>
                                                 </li>
                                             @endif
 
                                             @if(hasAccess('tetapan-ahli-jtt'))
                                                 <li>
-                                                    <a href="{{ route('tetapan.ahli-jtt') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.ahli-jtt' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Ahli JKPI</a>
+                                                    <a href="{{ route('tetapan.ahli-jtt') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.ahli-jtt' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Tetapan Ahli JKPI</a>
                                                 </li>
                                             @endif
                                             <li>
-                                                <a href="{{ route('tetapan.meeting-room') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.meeting-room' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Bilik Mesyuarat</a>
+                                                <a href="{{ route('tetapan.meeting-room') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.meeting-room' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Tetapan Bilik Mesyuarat</a>
                                             </li>
                                             <li>
-                                                <a href="{{ route('tetapan.peratusan-kriteria') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.peratusan-kriteria' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Peratusan PMGi</a>
+                                                <a href="{{ route('tetapan.peratusan-kriteria') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Route::currentRouteName() === 'tetapan.peratusan-kriteria' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Tetapan Peratusan PMGi</a>
                                             </li>
                                         </ul>
                                     </div>

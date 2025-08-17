@@ -384,7 +384,7 @@
 
             {{-- keputusan PMC--}}
             <div class="input-container" style="top: 633px; left: 170px; font-size: 11px;">
-                <strong>{{ $pmcInfo->exit_flag == 1 ? 'DISYORKAN PENANGGUHAN' : 'TIDAK DISYORKAN PENANGGUHAN' }}</strong>
+                <strong>{{ $pmcInfo->exit_flag == 1 ? 'PENILAIAN SEMULA' : 'TANPA PENILAIAN SEMULA' }}</strong>
             </div>
             
             {{-- kategori penangguhan--}}

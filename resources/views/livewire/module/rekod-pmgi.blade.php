@@ -14,7 +14,7 @@
                                         <x-select
                                             label="Nama Pegawai"
                                             wire:model="searchTerm"
-                                            placeholder="Sila Taip Nama"
+                                            placeholder="Sila Taip Nama dan Klik Butang Cari"
                                             :async-data="route('staff-name-search')"
                                             option-label="officer_name"
                                             option-value="officer_name"
@@ -50,12 +50,12 @@
                     </li>
                     <li class="me-2">
                         <div @click="tab = 'JTT1'" :class="{ 'bg-primary-600 text-white': tab === 'JTT1', 'hover:text-gray-900 hover:bg-gray-100': tab !== 'JTT1' }" class="inline-block px-4 py-3 rounded-lg cursor-pointer">
-                            Timbang Tara 1
+                            JKPi 1
                         </div>
                     </li>
                     <li class="me-2">
                         <div @click="tab = 'JTT2'" :class="{ 'bg-primary-600 text-white': tab === 'JTT2', 'hover:text-gray-900 hover:bg-gray-100': tab !== 'JTT2' }" class="inline-block px-4 py-3 rounded-lg cursor-pointer">
-                            Timbang Tara 2
+                            JKPi 2
                         </div>
                     </li>
                 </ul>
@@ -195,7 +195,7 @@
                                                     @elseif($data->mntrSession && $data->mntrSession->pmgi_result == 'EXC')
                                                     <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-yellow-800 bg-yellow-100 rounded-md border-yellow-100">KELUAR SENARAI DENGAN SYARAT</div>
                                                     @elseif($data->mntrSession && $data->mntrSession->pmgi_result == 'EXP')
-                                                    <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-yellow-800 bg-yellow-100 rounded-md border-yellow-100">PENANGGUHAN</div>
+                                                    <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-yellow-800 bg-yellow-100 rounded-md border-yellow-100">PENILAIAN SEMULA</div>
                                                     @else
                                                     <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-red-800 bg-red-100 rounded-md border-red-100">DIBAWA KE JKTT1</div>
                                                     @endif

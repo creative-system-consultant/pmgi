@@ -25,7 +25,7 @@
                             <th scope="col" class="p-2 text-xs font-medium tracking-wider text-left text-gray-500 uppercase border border-black">BIL</th>
                             <th scope="col" class="p-2 text-xs font-medium tracking-wider text-left text-gray-500 uppercase border border-black">PEGAWAI</th>
                             <th scope="col" class="p-2 text-xs font-medium tracking-wider text-left text-gray-500 uppercase border border-black">CAWANGAN</th>
-                            <th scope="col" class="p-2 text-xs font-medium tracking-wider text-left text-gray-500 uppercase border border-black">JAWATAN</th>
+                            <th scope="col" class="p-2 text-xs font-medium tracking-wider text-left text-gray-500 uppercase border border-black">GELARAN</th>
                             <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                 <div class="flex justify-center">
                                     <x-checkbox id="checkbox-select-all" wire:model.live="selectAll" />
