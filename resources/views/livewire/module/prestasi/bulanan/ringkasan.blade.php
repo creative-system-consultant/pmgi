@@ -14,9 +14,9 @@
                         @foreach ($months as $month)
                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase whitespace-nowrap border-black border-dashed border-x">1<br>(PK / DK)</th>
                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase whitespace-nowrap border-black border-dashed border-x">2<br>(BILANGAN)</th>
-                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase whitespace-nowrap border-black border-dashed border-x">3<br>(LAWATAN)</th>
-                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase whitespace-nowrap border-black border-dashed border-x">4<br>(NPF KAWALAN)</th>
-                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase whitespace-nowrap border-black border-dashed border-x">5<br>(NPF PEMULIHAN)</th>
+                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase whitespace-nowrap border-black border-dashed border-x">3<br>(BIL LAWATAN)</th>
+                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase whitespace-nowrap border-black border-dashed border-x">4<br>(BIL NPF KAWALAN)</th>
+                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase whitespace-nowrap border-black border-dashed border-x">5<br>(BIL NPF PEMULIHAN)</th>
                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase whitespace-nowrap border-black border-dashed border-x">STATUS</th>
                         @endforeach
                     </tr>

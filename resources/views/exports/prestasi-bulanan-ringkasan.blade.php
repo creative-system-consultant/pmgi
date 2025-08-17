@@ -55,9 +55,9 @@
                             @foreach ($months as $month)
                             <th valign="middle" align="center">1<br>(PK / DK)</th>
                             <th valign="middle" align="center">2<br>(BILANGAN)</th>
-                            <th valign="middle" align="center">3<br>(LAWATAN)</th>
-                            <th valign="middle" align="center">4<br>(NPF KAWALAN)</th>
-                            <th valign="middle" align="center">5<br>(NPF PEMULIHAN)</th>
+                            <th valign="middle" align="center">3<br>(BIL LAWATAN)</th>
+                            <th valign="middle" align="center">4<br>(BIL NPF KAWALAN)</th>
+                            <th valign="middle" align="center">5<br>(BIL NPF PEMULIHAN)</th>
                             <th valign="middle" align="center">STATUS</th>
                             @endforeach
                         </tr>
