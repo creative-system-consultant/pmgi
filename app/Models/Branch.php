@@ -10,7 +10,7 @@ class Branch extends Model
     use HasFactory;
 
     protected $connection = 'sqlsrv';
-    protected $table="branches";
+    protected $table="pmgi_fms_branches";
     protected $guarded = [];
     public $timestamps = false;
 
