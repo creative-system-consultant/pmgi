@@ -200,8 +200,8 @@ abstract class BasePmgi extends Component
             $pymEmail,
             $pmcEmail,
             $fileUrl,
-            $pymImagePath['email_image_path'] ?? $pymImagePath['image_path'], // Use compressed version
-            $pymImagePath['html_path'],
+            $pymImagePath['email_image_path'] ?? $pymImagePath['image'], // Use compressed version
+            $pymImagePath['html'],
             $pmcImagePath ? ($pmcImagePath['email_image_path'] ?? $pmcImagePath['image_path']) : null, // Use compressed version
             $pmcImagePath ? $pmcImagePath['html_path'] : null,
         );

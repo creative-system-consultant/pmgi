@@ -187,7 +187,7 @@ class RekodPmgi extends Component
         $tempAttachmentFiles = []; // Keep track of copied files for cleanup
         
         // Get the directory where the chart image is stored (this directory works)
-        $tempDirectory = dirname($paths['image_path']);
+        $tempDirectory = dirname($paths['image']);
         
         if ($pydInfo && $pydInfo->attachment) {
             $originalPath = storage_path('app/public/' . $pydInfo->attachment);
@@ -243,12 +243,12 @@ class RekodPmgi extends Component
         $pdfContent = $pdf->output();
 
         // Clean up the temporary files after the PDF has been generated
-        if (file_exists($paths['html_path'])) {
-            unlink($paths['html_path']);
+        if (file_exists($paths['html'])) {
+            unlink($paths['html']);
         }
 
-        if (file_exists($paths['image_path'])) {
-            unlink($paths['image_path']);
+        if (file_exists($paths['image'])) {
+            unlink($paths['image']);
         }
         
         // Clean up temporary attachment files
