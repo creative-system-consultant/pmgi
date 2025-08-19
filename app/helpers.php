@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\SettUalPage;
 use App\Models\SettUalRole;
 use App\Models\SettUalRoleHasPage;
+use Carbon\Carbon;
 
 if (!function_exists('hasAccess')) {
     function hasAccess($pageKey)
@@ -30,5 +31,16 @@ if (!function_exists('hasRoles')) {
 
         // Check if any of the specified roles match the user's roles
         return !empty(array_intersect($userRoles, $roleIds));
+    }
+}
+
+if (! function_exists('evaluationMonth')) {
+    function evaluationMonth($reportDate): string
+    {
+        $formatReportDate = Carbon::parse($reportDate);
+        $startMonth = $formatReportDate->copy()->subMonthsNoOverflow(2)->translatedFormat('F Y');
+        $endMonth   = $formatReportDate->copy()->subMonthsNoOverflow(1)->translatedFormat('F Y');
+
+        return "$startMonth - $endMonth";
     }
 }

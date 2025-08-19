@@ -1,3 +1,7 @@
+@php
+    use App\helpers;
+@endphp
+
 <main>
     <div class="px-4 pt-6 2xl:px-0">
         <div class="p-4 my-4 bg-white rounded-lg border border-gray-200 shadow-sm sm:p-6">
@@ -72,6 +76,9 @@
                                                     BIL
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
+                                                    BULAN DINILAI
+                                                </th>
+                                                <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                                     TARIKH
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
@@ -85,6 +92,9 @@
                                             <tr>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     {{ $loop->iteration }}
+                                                </td>
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
+                                                    {{ evaluationMonth($data->report_date) }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     {{ strtoupper($data->created_at->translatedFormat('d/m/Y')) }}
@@ -122,6 +132,9 @@
                                                     BIL
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
+                                                    BULAN DINILAI
+                                                </th>
+                                                <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                                     TARIKH
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
@@ -135,6 +148,9 @@
                                             <tr>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     {{ $loop->iteration }}
+                                                </td>
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
+                                                    {{ evaluationMonth($data->report_date) }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     {{ strtoupper($data->created_at->translatedFormat('d/m/Y')) }}
@@ -172,6 +188,9 @@
                                                     BIL
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
+                                                    BULAN DINILAI
+                                                </th>
+                                                <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                                     TARIKH
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
@@ -185,6 +204,9 @@
                                             <tr>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     {{ $loop->iteration }}
+                                                </td>
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
+                                                    {{ evaluationMonth($data->report_date) }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     {{ strtoupper($data->created_at->translatedFormat('d/m/Y')) }}
@@ -228,6 +250,9 @@
                                                     BIL
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
+                                                    BULAN DINILAI
+                                                </th>
+                                                <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                                     TARIKH
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
@@ -241,6 +266,9 @@
                                             <tr>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     {{ $loop->iteration }}
+                                                </td>
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
+                                                    {{ evaluationMonth($data->report_date) }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     {{ strtoupper(\Carbon\Carbon::parse($data->sessionInfo->session_date)->translatedFormat('d/m/Y')) }}
@@ -280,6 +308,9 @@
                                                     BIL
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
+                                                    BULAN DINILAI
+                                                </th>
+                                                <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                                     TARIKH
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
@@ -293,6 +324,9 @@
                                             <tr>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     {{ $loop->iteration }}
+                                                </td>
+                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
+                                                    {{ evaluationMonth($data->report_date) }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     {{ strtoupper($data->created_at->translatedFormat('d/m/Y')) }}
