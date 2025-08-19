@@ -45,11 +45,11 @@ class Pyd extends Component
         $this->data = User::find($this->user);
         $this->username = $this->data->USERNAME;
         $this->staffno = $this->data->staffNo();
-        $this->jawatan = $this->data->bankOfficer->hrData->jawatan;
+        $this->jawatan = $this->data->bankOfficer->hrData?->jawatan;
         $this->stateName = $this->data->stateName();
         $this->branchName = $this->data->branchName();
-        $this->tarikhLantikan = Carbon::parse($this->data->bankOfficer->hrData->tarikh_lantikan)->translatedFormat('d F Y');
-        $tempoh = $this->data->bankOfficer->hrData->tempoh_penempatan_semasa;
+        $this->tarikhLantikan = Carbon::parse($this->data->bankOfficer->hrData?->tarikh_lantikan)->translatedFormat('d F Y');
+        $tempoh = $this->data->bankOfficer->hrData?->tempoh_penempatan_semasa;
         $this->tempohBerkhidmat = str_replace(['Y', 'M', 'D'], [' Tahun ', ' Bulan ', ' Hari'], $tempoh);
 
         $this->penjadualanSemula = (function () use ($authUser) {
@@ -138,7 +138,9 @@ class Pyd extends Component
                 'a.rm_dapat_kutip',
                 'a.rm_dapat_kutip_pts',
                 'a.bil_lawat',
-                'a.bil_lawat_pts'
+                'a.bil_lawat_pts',
+                'a.rm_dapat_kutip_nilai_pts',
+                'a.bil_dapat_kutip_nilai_pts',
             )
             ->orderBy('a.report_date', $order)
             ->take($limit)

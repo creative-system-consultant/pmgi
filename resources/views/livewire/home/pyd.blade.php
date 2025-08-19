@@ -199,10 +199,10 @@
                                             {{ number_format($officerData->rm_dapat_kutip_pts, 2) ?? 0 }}%
                                         </td>
                                         <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap">
-                                            -
+                                            {{ number_format($officerData->bil_dapat_kutip_nilai_pts) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap border-r border-black border-dashed">
-                                            -
+                                            {{ number_format($officerData->rm_dapat_kutip_nilai_pts) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap">
                                             {{ number_format($officerData->bil_lawat) ?? 0 }}
