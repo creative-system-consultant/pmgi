@@ -4,8 +4,8 @@
             <!-- Card header -->
             <div class="items-center">
                 <div class="mb-4 lg:mb-0">
-                    <h3 class="mb-2 text-xl font-bold text-gray-900 ">Info Pegawai</h3>
-                    <span class="text-base font-normal text-gray-500 ">Info Pegawai PYD, PYM & PMC</span>
+                    <h3 class="mb-2 text-xl font-bold text-gray-900 ">Tetapan Info Pegawai</h3>
+                    <span class="text-base font-normal text-gray-500 ">Tetapan Info Pegawai PYD, PYM & PMC</span>
                     <div class="mt-6">
                         <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500">
                             <li class="me-2">
