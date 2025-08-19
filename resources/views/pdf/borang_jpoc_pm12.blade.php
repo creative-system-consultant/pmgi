@@ -199,7 +199,7 @@
             </div>
             
             <div class="input-container">
-                <img src="{{ $paths['image_path'] }}" alt="Generated Image" style="margin-top: 250px; width: 100%; object-fit: contain;">
+                <img src="{{ $paths['image'] }}" alt="Generated Image" style="margin-top: 250px; width: 100%; object-fit: contain;">
             </div>
         </div>
     </div>
