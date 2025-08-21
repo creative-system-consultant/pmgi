@@ -129,10 +129,10 @@ abstract class BasePmgi extends Component
     {
         $urusetiaNegeriRoleId = DB::table('PMGI_SETT_UAL_ROLE')->where('name', 'URUSETIA NEGERI')->value('id');
 
-        $this->pymSelection = DB::table('NEWFMS_PROD.DBO.dbo.FMS_USERS as a')
+        $this->pymSelection = DB::table('pmgi_fms_users as a')
                         ->distinct()
                         ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.USERID')
-                        ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
+                        ->join('PMGI_FMS_BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
                         ->leftJoin('PMGI_SETT_UAL_USER_HAS_ROLE as r', 'r.userid', '=', 'a.USERID')
                         ->select('a.USERID', 'b.officer_name', 'c.branch_name')
                         ->where('a.USERSTATUS', 1)
@@ -147,10 +147,10 @@ abstract class BasePmgi extends Component
     {
         $urusetiaNegeriRoleId = DB::table('PMGI_SETT_UAL_ROLE')->where('name', 'URUSETIA NEGERI')->value('id');
 
-        $this->pymSelection = DB::table('NEWFMS_PROD.DBO.dbo.FMS_USERS as a')
+        $this->pymSelection = DB::table('pmgi_fms_users as a')
                         ->distinct()
                         ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.USERID')
-                        ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
+                        ->join('PMGI_FMS_BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
                         ->leftJoin('PMGI_SETT_UAL_USER_HAS_ROLE as r', 'r.userid', '=', 'a.USERID')
                         ->select('a.USERID', 'b.officer_name', 'c.branch_name')
                         ->where('a.USERSTATUS', 1)
@@ -163,7 +163,7 @@ abstract class BasePmgi extends Component
         $this->pmcSelection = DB::table('PMGI_JPOC as a')
                         ->distinct()
                         ->join('PMGI_FMS_BANK_OFFICERS as b', 'b.officer_id', '=', 'a.userid')
-                        ->join('BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
+                        ->join('PMGI_FMS_BRANCHES as C', 'C.branch_code', '=', 'b.branch_code')
                         ->leftJoin('PMGI_SETT_UAL_USER_HAS_ROLE as r', 'r.userid', '=', 'a.userid')
                         ->select('a.userid', 'b.officer_name', 'c.branch_name')
                         ->whereRaw('NOT EXISTS (SELECT 1 FROM PMGI_SETT_UAL_USER_HAS_ROLE ur WHERE ur.userid = a.userid AND ur.role_id = ?)', [$urusetiaNegeriRoleId])
@@ -365,21 +365,22 @@ abstract class BasePmgi extends Component
     public function render()
     {
         $this->datas = DB::table('pmgi_mntr_session as m')
-                            ->join('NEWFMS_PROD.DBO.dbo.FMS_USERS as a', 'm.officer_id', '=', 'a.USERID')
-                            ->join('branches as b', 'm.branch_code', '=', 'b.branch_code')
+                            ->join('pmgi_fms_users as a', 'm.officer_id', '=', 'a.USERID')
+                            ->join('pmgi_fms_branches as b', 'm.branch_code', '=', 'b.branch_code')
                             ->join('pmgi_fms_bank_officers as c', 'c.officer_id', '=', 'a.USERID')
                             ->join('pmgi_hrd_officer as d', 'd.no_pekerja', '=', 'c.staffno')
                             ->leftJoin('pmgi_sett_pym_pmc as e', function ($join) {
                                 $join->on('e.pyd_id', '=', 'm.officer_id')
                                     ->whereDate('e.report_date', $this->selectedDate->copy()->subMonthNoOverflow()->endOfMonth());
                             })
-                            ->leftJoin('NEWFMS_PROD.DBO.dbo.FMS_USERS as pym_user', 'e.pym_id', '=', 'pym_user.USERID')
-                            ->leftJoin('NEWFMS_PROD.DBO.dbo.FMS_USERS as pmc_user', 'e.pmc_id', '=', 'pmc_user.USERID')
+                            ->leftJoin('pmgi_fms_users as pym_user', 'e.pym_id', '=', 'pym_user.USERID')
+                            ->leftJoin('pmgi_fms_users as pmc_user', 'e.pmc_id', '=', 'pmc_user.USERID')
                             ->select(
                                 'a.USERID',
                                 'a.USERNAME',
                                 'm.branch_code',
                                 'd.jawatan',
+                                'd.gelaran',
                                 'b.branch_name',
                                 'm.pmgi_cycle',
                                 'm.pmgi_level',

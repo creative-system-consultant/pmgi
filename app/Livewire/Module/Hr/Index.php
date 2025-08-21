@@ -51,10 +51,10 @@ class Index extends Component
         $data = DB::select('
             SELECT TOP 1 ms.*, u.USERNAME, bo.staffno, s.description as state_description, b.branch_name
             FROM PMGI_MNTR_SESSION ms
-            JOIN NEWFMS_PROD.DBO.dbo.FMS_USERS u ON ms.officer_id = u.USERID
-            JOIN bank_officers bo ON u.USERID = bo.officer_id
+            JOIN pmgi_fms_users u ON ms.officer_id = u.USERID
+            JOIN pmgi_fms_bank_officers bo ON u.USERID = bo.officer_id
             JOIN bnm_statecodes s ON ms.state_code = s.code
-            JOIN branches b ON ms.branch_code = b.branch_code
+            JOIN pmgi_fms_branches b ON ms.branch_code = b.branch_code
             WHERE ms.officer_id = :officer_id AND ms.pmgi_level = :pmgi_level
         ', ['officer_id' => $userid, 'pmgi_level' => 'HRD']);
 
