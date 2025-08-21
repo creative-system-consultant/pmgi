@@ -72,7 +72,7 @@ class RekodPmgi extends Component
 
     public function search()
     {
-        $this->pydId = BankOfficer::join('NEWFMS_PROD.DBO.dbo.FMS_USERS', 'pmgi_fms_bank_officers.officer_id', '=', 'FMS_USERS.USERID')
+        $this->pydId = BankOfficer::join('pmgi_fms_users', 'pmgi_fms_bank_officers.officer_id', '=', 'pmgi_fms_users.USERID')
             ->where('FMS_USERS.USERSTATUS', 1)
             ->where(function($q) {
                 $q->where('pmgi_fms_bank_officers.officer_name', 'LIKE', '%' . $this->searchTerm . '%')
@@ -159,7 +159,7 @@ class RekodPmgi extends Component
                     ->orderBy('report_date', 'asc')
                     ->get();
 
-        $percentage = RefEvalPctg::where('state_code', $data->first()->branch_state_code)
+        $percentage = RefEvalPctg::where('state_code', $data->first()?->branch_state_code)
                 ->whereDate('effective_date', '<=', $toReportDate)
                 ->orderBy('evaluation_id', 'ASC')
                 ->get();
