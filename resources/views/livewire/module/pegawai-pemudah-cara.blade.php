@@ -7,9 +7,9 @@
                     <div class="flex items-center mb-2">
                         <h3 class="text-xl font-bold text-gray-900">Ulasan Pegawai Pemudah Cara (PMC)</h3>
                         @if($perakuan && auth()->user()->USERID == $sessionSetting->pmc_id)
-                        <a href="{{ route('pegawai-pemudah-cara') }}" class="inline-flex items-center px-4 py-2 ml-4 font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800" wire:click="updates">
+                        <button class="inline-flex items-center px-4 py-2 ml-4 font-medium text-center text-white bg-indigo-700 rounded-lg cursor-pointer focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800" wire:click="updates">
                             Kemaskini
-                        </a>
+                        </button>
                         @endif
                     </div>
 
