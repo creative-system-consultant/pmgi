@@ -34,6 +34,8 @@ class PegawaiPemudahCara extends Component
     public $comment;
     public $file;
     public $attachment;
+    public $attachmentUrl = null;
+    public $attachmentModal = false;
     public $sessionSetting;
     public $pydId;
 
@@ -112,6 +114,16 @@ class PegawaiPemudahCara extends Component
     public function toggleRekodPmgi()
     {
         $this->showRekodPmgi = !$this->showRekodPmgi;
+    }
+
+    public function toggleDetail()
+    {
+        if ($this->file) {
+            $this->attachmentUrl = $this->file->temporaryUrl();
+        } else if($this->attachment) {
+            $this->attachmentUrl = asset('storage/' . $this->attachment);
+        }
+        $this->attachmentModal = true;
     }
 
     public function submit()

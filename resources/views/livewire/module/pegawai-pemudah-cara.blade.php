@@ -193,7 +193,21 @@
                 </div>
 
                 @if($perakuan && $attachment)
-                <img class="mb-5 w-60" src="{{ asset('storage/' . $attachment) }}" alt="Attachment Preview">
+                    @php
+                        $fileExtension = pathinfo($attachment, PATHINFO_EXTENSION);
+                    @endphp
+
+                    @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
+                        <img class="mb-5 w-60" src="{{ asset('storage/' . $attachment) }}" alt="Attachment Preview">
+                    @elseif($fileExtension === 'pdf')
+                        <button type="button" class="cursor-pointer text-blue-500 hover:underline" wire:click="toggleDetail">
+                            {{ basename($attachment) }}
+                        </button>
+                    @elseif($fileExtension === 'docx')
+                        <a href="{{ asset('storage/' . $attachment) }}" target="_blank" class="cursor-pointer text-blue-500 hover:underline">
+                            {{ basename($attachment) }}
+                        </a>
+                    @endif
                 @endif
 
                 @if(!$perakuan)
@@ -209,7 +223,21 @@
                     </div>
 
                     @if($file)
-                    <img class="mb-5 w-60" src="{{ $file->temporaryUrl() }}">
+                        @php
+                            $fileExtension = $file->getClientOriginalExtension();
+                        @endphp
+
+                        @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
+                            <img class="mb-5 w-60" src="{{ $file->temporaryUrl() }}" alt="Attachment Preview">
+                        @elseif($fileExtension === 'pdf')
+                            <button type="button" class="cursor-pointer text-blue-500 hover:underline" wire:click="toggleDetail">
+                                {{ $file->getClientOriginalName() }}
+                            </button>
+                        @else
+                            <a href="{{ $file->temporaryUrl() }}" target="_blank" class="cursor-pointer text-blue-500 hover:underline">
+                                {{ $file->getClientOriginalName() }}
+                            </a>
+                        @endif
                     @endif
 
                     <div class="flex">
@@ -221,4 +249,11 @@
             </div>
         </div>
     </div>
+    
+    {{-- attachment modal --}}
+    <x-modal.card blur align="center" max-width="7xl" hide-close=false wire:model="attachmentModal">
+        @if($attachmentUrl)
+        <iframe src="{{ $attachmentUrl }}" frameborder="0" width="100%" height="700px"></iframe>
+        @endif
+    </x-modal.card>
 </main>

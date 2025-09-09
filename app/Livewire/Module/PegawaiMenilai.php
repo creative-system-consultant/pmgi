@@ -91,6 +91,8 @@ class PegawaiMenilai extends Component
     {
         if ($this->file) {
             $this->attachmentUrl = $this->file->temporaryUrl();
+        } else if($this->attachment) {
+            $this->attachmentUrl = asset('storage/' . $this->attachment);
         }
         $this->attachmentModal = true;
     }
