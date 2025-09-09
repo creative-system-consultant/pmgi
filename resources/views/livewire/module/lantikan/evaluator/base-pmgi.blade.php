@@ -91,7 +91,7 @@
                     placeholder="Sila Pilih"
                     :options="$pmc"
                     option-label="officer_name"
-                    option-value="USERID"
+                    option-value="userid"
                     option-description="branch_name"
                     wire:model="selectedPmc" />
             @endif
