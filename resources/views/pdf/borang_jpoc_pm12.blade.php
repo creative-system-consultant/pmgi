@@ -117,8 +117,8 @@
                 <strong>{{ $alamat2 }}</strong>
             </div>
 
-            {{-- NPF Cawangan --}}
             @if ($bankOfficerPyd->hr_mgr_flag == 'Y')
+                {{-- NPF Cawangan --}}
                 {{-- bil seliaan --}}
                 <div class="input-container" style="top: 487px; left: 270px;">
                     <strong>{{ $accCount }}</strong>
@@ -154,6 +154,7 @@
                     <strong>{{ $summMthOfficer->bil_d ?? 0 }}</strong>
                 </div>
             @else
+                {{-- NPF PP --}}
                 {{-- bil seliaan --}}
                 <div class="input-container" style="top: 568px; left: 270px;">
                     <strong>{{ $accCount }}</strong>
