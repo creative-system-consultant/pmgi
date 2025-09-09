@@ -192,8 +192,8 @@
                     </div>
                 </div>
 
-                @if($perakuan)
-                <img class="mb-5 w-60" src="{{ asset('storage/' . $attachment) }}" alt="Logo">
+                @if($perakuan && $attachment)
+                <img class="mb-5 w-60" src="{{ asset('storage/' . $attachment) }}" alt="Attachment Preview">
                 @endif
 
                 @if(!$perakuan)
