@@ -76,7 +76,7 @@
                                                     BIL
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
-                                                    BULAN DINILAI
+                                                    BULAN DIPANTAU
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                                     TARIKH
@@ -110,7 +110,7 @@
                                             </tr>
                                             @empty
                                             <tr>
-                                                <td colspan="4" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
+                                                <td colspan="5" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
                                             </tr>
                                             @endforelse
                                         </tbody>
@@ -132,7 +132,7 @@
                                                     BIL
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
-                                                    BULAN DINILAI
+                                                    BULAN DIPANTAU
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                                     TARIKH
@@ -166,7 +166,7 @@
                                             </tr>
                                             @empty
                                             <tr>
-                                                <td colspan="4" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
+                                                <td colspan="5" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
                                             </tr>
                                             @endforelse
                                         </tbody>
@@ -188,7 +188,7 @@
                                                     BIL
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
-                                                    BULAN DINILAI
+                                                    BULAN DIPANTAU
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                                     TARIKH
@@ -228,7 +228,7 @@
                                             </tr>
                                             @empty
                                             <tr>
-                                                <td colspan="4" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
+                                                <td colspan="5" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
                                             </tr>
                                             @endforelse
                                         </tbody>
@@ -250,7 +250,7 @@
                                                     BIL
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
-                                                    BULAN DINILAI
+                                                    BULAN DIPANTAU
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                                     TARIKH
@@ -286,7 +286,7 @@
                                             </tr>
                                             @empty
                                             <tr>
-                                                <td colspan="4" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
+                                                <td colspan="5" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
                                             </tr>
                                             @endforelse
                                         </tbody>
@@ -308,7 +308,7 @@
                                                     BIL
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
-                                                    BULAN DINILAI
+                                                    BULAN DIPANTAU
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                                     TARIKH
@@ -344,7 +344,7 @@
                                             </tr>
                                             @empty
                                             <tr>
-                                                <td colspan="4" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
+                                                <td colspan="5" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
                                             </tr>
                                             @endforelse
                                         </tbody>
