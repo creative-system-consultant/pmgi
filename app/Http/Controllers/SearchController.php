@@ -34,7 +34,7 @@ class SearchController extends Controller
     public function staffNameByBranch(Request $request)
     {
         return BankOfficer::query()
-            ->join('pmgi_fms_users', 'PMGI_FMS_BANK_OFFICERS.officer_id', '=', 'FMS_USERS.USERID')
+            ->join('pmgi_fms_users', 'PMGI_FMS_BANK_OFFICERS.officer_id', '=', 'pmgi_fms_users.USERID')
             ->where('pmgi_fms_users.USERSTATUS', 1)
             ->when($request->branch_code, fn(Builder $query) =>
                 $query->where('PMGI_FMS_BANK_OFFICERS.branch_code', $request->branch_code)
