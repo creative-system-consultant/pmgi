@@ -38,8 +38,8 @@ if (! function_exists('evaluationMonth')) {
     function evaluationMonth($reportDate): string
     {
         $formatReportDate = Carbon::parse($reportDate);
-        $startMonth = $formatReportDate->copy()->subMonthsNoOverflow(2)->translatedFormat('F Y');
-        $endMonth   = $formatReportDate->copy()->subMonthsNoOverflow(1)->translatedFormat('F Y');
+        $startMonth = $formatReportDate->copy()->subMonthNoOverflow()->translatedFormat('F Y');
+        $endMonth   = $formatReportDate->copy()->endOfMonth()->translatedFormat('F Y');
 
         return "$startMonth - $endMonth";
     }
