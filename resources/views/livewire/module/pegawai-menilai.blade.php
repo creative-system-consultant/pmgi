@@ -93,23 +93,21 @@
                     @endif
                 </div>
 
-                @if($perakuan)
-                    @if($attachment)
-                        @php
-                            $fileExtension = pathinfo($attachment, PATHINFO_EXTENSION);
-                        @endphp
+                @if($perakuan && $attachment)
+                    @php
+                        $fileExtension = pathinfo($attachment, PATHINFO_EXTENSION);
+                    @endphp
 
-                        @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
-                            <img class="mb-5 w-60" src="{{ asset('storage/' . $attachment) }}" alt="Attachment Preview">
-                        @elseif($fileExtension === 'pdf')
-                            <button type="button" class="text-blue-500 hover:underline" wire:click="toggleDetail">
-                                {{ basename($attachment) }}
-                            </button>
-                        @elseif($fileExtension === 'docx')
-                            <a href="{{ asset('storage/' . $attachment) }}" target="_blank" class="text-blue-500 hover:underline">
-                                {{ basename($attachment) }}
-                            </a>
-                        @endif
+                    @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
+                        <img class="mb-5 w-60" src="{{ asset('storage/' . $attachment) }}" alt="Attachment Preview">
+                    @elseif($fileExtension === 'pdf')
+                        <button type="button" class="cursor-pointer text-blue-500 hover:underline" wire:click="toggleDetail">
+                            {{ basename($attachment) }}
+                        </button>
+                    @elseif($fileExtension === 'docx')
+                        <a href="{{ asset('storage/' . $attachment) }}" target="_blank" class="cursor-pointer text-blue-500 hover:underline">
+                            {{ basename($attachment) }}
+                        </a>
                     @endif
                 @endif
 
@@ -141,11 +139,11 @@
                         @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
                             <img class="mb-5 w-60" src="{{ $file->temporaryUrl() }}" alt="Attachment Preview">
                         @elseif($fileExtension === 'pdf')
-                            <button type="button" class="text-blue-500 hover:underline" wire:click="toggleDetail">
+                            <button type="button" class="cursor-pointer text-blue-500 hover:underline" wire:click="toggleDetail">
                                 {{ $file->getClientOriginalName() }}
                             </button>
                         @else
-                            <a href="{{ $file->temporaryUrl() }}" target="_blank" class="text-blue-500 hover:underline">
+                            <a href="{{ $file->temporaryUrl() }}" target="_blank" class="cursor-pointer text-blue-500 hover:underline">
                                 {{ $file->getClientOriginalName() }}
                             </a>
                         @endif
