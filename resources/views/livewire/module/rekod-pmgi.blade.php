@@ -76,7 +76,7 @@
                                                     BIL
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
-                                                    BULAN DIPANTAU
+                                                    BULAN DINILAI
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                                     TARIKH
@@ -132,7 +132,7 @@
                                                     BIL
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
-                                                    BULAN DIPANTAU
+                                                    BULAN DINILAI
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                                     TARIKH
@@ -188,7 +188,7 @@
                                                     BIL
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
-                                                    BULAN DIPANTAU
+                                                    BULAN DINILAI
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                                     TARIKH
@@ -219,7 +219,7 @@
                                                     @elseif($data->mntrSession && $data->mntrSession->pmgi_result == 'EXP')
                                                     <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-yellow-800 bg-yellow-100 rounded-md border-yellow-100">PENILAIAN SEMULA</div>
                                                     @else
-                                                    <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-red-800 bg-red-100 rounded-md border-red-100">DIBAWA KE JKTT1</div>
+                                                    <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-red-800 bg-red-100 rounded-md border-red-100">DIBAWA KE JKPI 1</div>
                                                     @endif
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
@@ -250,7 +250,7 @@
                                                     BIL
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
-                                                    BULAN DIPANTAU
+                                                    BULAN DINILAI
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                                     TARIKH
@@ -308,7 +308,7 @@
                                                     BIL
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
-                                                    BULAN DIPANTAU
+                                                    BULAN DINILAI
                                                 </th>
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                                     TARIKH
