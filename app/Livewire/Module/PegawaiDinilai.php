@@ -139,7 +139,7 @@ class PegawaiDinilai extends Component
             $extension = $this->file->getClientOriginalExtension();
             $userid = substr($this->sessionId, 11); //get userid from sessionId
             $folder = str_replace('/', '-', $this->sessionId);
-            $filename = 'attachment_PYD_' . now()->format('YmdHis') . '.' . $extension;
+            $filename = 'PYD_'. $this->pydId . '_' . $folder . '_' . now()->format('YmdHis') . '.' . $extension;
             $store_path = 'public/pmgi_session/' . $userid . '/' . $folder;
             $db_path = 'pmgi_session/' . $userid . '/' . $folder . '/' . $filename;
             $this->file->storeAs($store_path, $filename);

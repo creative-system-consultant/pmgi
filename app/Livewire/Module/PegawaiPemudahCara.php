@@ -38,6 +38,7 @@ class PegawaiPemudahCara extends Component
     public $attachmentModal = false;
     public $sessionSetting;
     public $pydId;
+    public $pmcId;
 
     protected function rules()
     {
@@ -89,6 +90,7 @@ class PegawaiPemudahCara extends Component
             $this->pydBranch = $bankOfficer->branch->branch_name ?? '-';
             $this->pydState = $bankOfficer->branch->bnmState->description ?? '-';
             $this->stateBranch = $this->pydState . ' - ' . $this->pydBranch;
+            $this->pmcId = $this->sessionSetting->pmc_id;
 
             // used in perakuan
             $pmcRecordExists = SessionPmcInfo::where('session_id', $this->sessionId)->exists();
@@ -156,7 +158,7 @@ class PegawaiPemudahCara extends Component
             $extension = $this->file->getClientOriginalExtension();
             $userid = substr($this->sessionId, 11); //get userid from sessionId
             $folder = str_replace('/', '-', $this->sessionId);
-            $filename = 'attachment_PMC_' . now()->format('YmdHis') . '.' . $extension;
+            $filename = 'PMC_'. $this->pmcId . '_' . $folder . '_' .now()->format('YmdHis') . '.' . $extension;
             $store_path = 'public/pmgi_session/' . $userid . '/' . $folder;
             $db_path = 'pmgi_session/' . $userid . '/' . $folder . '/' . $filename;
             $this->file->storeAs($store_path, $filename);
