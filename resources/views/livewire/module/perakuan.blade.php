@@ -23,7 +23,7 @@
                             :class="{ 'bg-primary-600 text-white': tab === 'PYD', 'hover:text-gray-900 hover:bg-gray-100': tab !== 'PYD' }"
                             class="inline-block px-4 py-3 rounded-lg cursor-pointer" aria-current="page"
                         >
-                            Pegawai Yang Dinilai
+                            Pegawai Yang Dinilai (PYD)
                         </div>
                     </li>
                     <li class="me-2">
@@ -32,7 +32,7 @@
                             :class="{ 'bg-primary-600 text-white': tab === 'PYM', 'hover:text-gray-900 hover:bg-gray-100': tab !== 'PYM' }"
                             class="inline-block px-4 py-3 rounded-lg cursor-pointer"
                         >
-                            Pegawai Yang Menilai
+                            Pegawai Yang Menilai (PYM)
                         </div>
                     </li>
                     @if($setting->pmgi_level == 'PM3')
@@ -42,7 +42,7 @@
                                 :class="{ 'bg-primary-600 text-white': tab === 'PMC', 'hover:text-gray-900 hover:bg-gray-100': tab !== 'PMC' }"
                                 class="inline-block px-4 py-3 rounded-lg cursor-pointer"
                             >
-                                Pegawai Pemudah Cara
+                                Pegawai Pemudah Cara (PMC)
                             </div>
                         </li>
                     @endif
