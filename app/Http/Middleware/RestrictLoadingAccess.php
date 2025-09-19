@@ -44,7 +44,7 @@ class RestrictLoadingAccess
                 $loadingMessage = 'Sila tunggu sehingga semua peserta sesi membuat penilaian.';
 
                 $perakuanRoute = route('perakuan', ['session_id' => $encodedSessionId]);
-                $perakuanMessage = 'Tidak dibernarkan ke halaman sebelum ini. Sila buat perakuan.';
+                $perakuanMessage = 'Tidak dibenarkan ke halaman sebelum ini. Sila buat perakuan.';
 
                 $pydRecordExists = SessionPydInfo::where('session_id', $sessionId)->exists();
                 $pymRecordExists = SessionPymInfo::where('session_id', $sessionId)->exists();

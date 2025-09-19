@@ -118,6 +118,14 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="mt-4 flex justify-end">
+                    <x-button
+                        negative
+                        label="Padam Peratusan (Belum Aktif)"
+                        wire:click="deleteNextEffective"
+                        icon="trash"
+                    />
+                </div>
             </div>
             @endif
 

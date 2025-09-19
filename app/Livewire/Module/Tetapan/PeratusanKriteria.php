@@ -394,6 +394,74 @@ class PeratusanKriteria extends Component
         }
     }
 
+    public function deleteNextEffective()
+    {
+        $this->validate([
+            'type' => 'required|in:1,2',
+        ]);
+        if ($this->type == 2) {
+            $this->validate(['negeri' => 'required']);
+        }
+
+        // Only allow deletion for the next effective date (future)
+        $nextEffectiveData = RefEvalPctg::query()
+            ->select('effective_date')
+            ->where('effective_date', '>=', now())
+            ->distinct()
+            ->orderBy('effective_date', 'asc')
+            ->first();
+
+        if (!$nextEffectiveData) {
+            $this->dialog()->error(
+                $title = 'Ralat',
+                $description = 'Tiada data tarikh kuatkuasa akan datang untuk dipadam.'
+            );
+            return;
+        }
+
+        $nextEffectiveDate = $nextEffectiveData->effective_date;
+        if (Carbon::parse($nextEffectiveDate)->lte(now())) {
+            $this->dialog()->error(
+                $title = 'Ralat',
+                $description = 'Data hanya boleh dipadam sebelum tarikh kuatkuasa bermula.'
+            );
+            return;
+        }
+
+        try {
+            DB::beginTransaction();
+            if ($this->type == 1) {
+                // Delete all states for the next effective date
+                RefEvalPctg::whereNotIn('state_code', ['00', '15', '16', '99'])
+                    ->where('effective_date', $nextEffectiveDate)
+                    ->delete();
+            } else {
+                // Delete only for the selected state for the next effective date
+                RefEvalPctg::where('state_code', $this->negeri)
+                    ->where('effective_date', $nextEffectiveDate)
+                    ->delete();
+            }
+            DB::commit();
+            $this->dialog()->success(
+                $title = 'Berjaya Dipadam',
+                $description = 'Peratusan kriteria penilaian untuk tarikh kuatkuasa akan datang telah dipadam.'
+            );
+            $this->reset(['type', 'negeri', 'result', 'noPreviousData']);
+            $this->mount(); // Refresh the data
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("Error in deleteNextEffective: " . $e->getMessage(), [
+                'type' => $this->type,
+                'negeri' => $this->negeri ?? 'All',
+                'effective_date' => $nextEffectiveDate,
+            ]);
+            $this->dialog()->error(
+                $title = 'Ralat',
+                $description = 'Terdapat ralat semasa memadam data. Sila cuba lagi.'
+            );
+        }
+    }
+
     public function render()
     {
         $stateSelection = BnmStatecode::whereNotIn('code', ['00', '15', '16', '99'])

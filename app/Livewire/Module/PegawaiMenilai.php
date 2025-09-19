@@ -29,6 +29,7 @@ class PegawaiMenilai extends Component
     public $pydStaffNo;
     public $pydBranch;
     public $pydState;
+    public $pymId;
     public $stateBranch;
 
     #[Validate('required', message: 'Sila tuliskan ulasan bagi PYD dinilai.')]
@@ -65,6 +66,7 @@ class PegawaiMenilai extends Component
             $this->pydBranch = $bankOfficer->branch->branch_name ?? '-';
             $this->pydState = $bankOfficer->branch->bnmState->description ?? '-';
             $this->stateBranch = $this->pydState . ' - ' . $this->pydBranch;
+            $this->pymId = $this->sessionSetting->pym_id;
 
             // used in perakuan
             $pymRecordExists = SessionPymInfo::where('session_id', $this->sessionId)->exists();
@@ -91,6 +93,8 @@ class PegawaiMenilai extends Component
     {
         if ($this->file) {
             $this->attachmentUrl = $this->file->temporaryUrl();
+        } else if($this->attachment) {
+            $this->attachmentUrl = asset('storage/' . $this->attachment);
         }
         $this->attachmentModal = true;
     }
@@ -125,7 +129,7 @@ class PegawaiMenilai extends Component
             $extension = $this->file->getClientOriginalExtension();
             $userid = substr($this->sessionId, 11); //get userid from sessionId
             $folder = str_replace('/', '-', $this->sessionId);
-            $filename = 'attachment_PYM_' . now()->format('YmdHis') . '.' . $extension;
+            $filename = 'PYM_'. $this->pymId . '_' . $folder . '_' . now()->format('YmdHis') . '.' . $extension;
             $store_path = 'public/pmgi_session/' . $userid . '/' . $folder;
             $db_path = 'pmgi_session/' . $userid . '/' . $folder . '/' . $filename;
             $this->file->storeAs($store_path, $filename);

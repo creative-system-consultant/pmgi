@@ -110,7 +110,7 @@
                                             </tr>
                                             @empty
                                             <tr>
-                                                <td colspan="4" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
+                                                <td colspan="5" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
                                             </tr>
                                             @endforelse
                                         </tbody>
@@ -166,7 +166,7 @@
                                             </tr>
                                             @empty
                                             <tr>
-                                                <td colspan="4" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
+                                                <td colspan="5" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
                                             </tr>
                                             @endforelse
                                         </tbody>
@@ -219,7 +219,7 @@
                                                     @elseif($data->mntrSession && $data->mntrSession->pmgi_result == 'EXP')
                                                     <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-yellow-800 bg-yellow-100 rounded-md border-yellow-100">PENILAIAN SEMULA</div>
                                                     @else
-                                                    <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-red-800 bg-red-100 rounded-md border-red-100">DIBAWA KE JKTT1</div>
+                                                    <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-red-800 bg-red-100 rounded-md border-red-100">DIBAWA KE JKPI 1</div>
                                                     @endif
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
@@ -228,7 +228,7 @@
                                             </tr>
                                             @empty
                                             <tr>
-                                                <td colspan="4" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
+                                                <td colspan="5" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
                                             </tr>
                                             @endforelse
                                         </tbody>
@@ -286,7 +286,7 @@
                                             </tr>
                                             @empty
                                             <tr>
-                                                <td colspan="4" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
+                                                <td colspan="5" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
                                             </tr>
                                             @endforelse
                                         </tbody>
@@ -344,7 +344,7 @@
                                             </tr>
                                             @empty
                                             <tr>
-                                                <td colspan="4" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
+                                                <td colspan="5" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">TIADA DATA</td>
                                             </tr>
                                             @endforelse
                                         </tbody>

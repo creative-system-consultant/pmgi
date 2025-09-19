@@ -4,7 +4,7 @@
             <!-- Card header -->
             <div class="items-center">
                 <div class="mb-4 lg:mb-0">
-                    <h3 class="mb-2 text-xl font-bold text-gray-900 ">Mesyuarat Jawatankuasa Timbang Tara</h3>
+                    <h3 class="mb-2 text-xl font-bold text-gray-900 ">Mesyuarat Jawatankuasa Penilaian PMGi</h3>
                     <div class="p-6 mt-4 border rounded-lg shadow bg-primary-100 border-primary-200 dark:bg-gray-800 dark:border-gray-700">
                         <div class="flex justify-between">
                             <div class="grid w-full grid-cols-6 gap-x-4 gap-y-2">
@@ -41,6 +41,7 @@
                     </div>
                     <div x-show="tab === 'rekodPrestasi'" x-transition>
                         <livewire:home.pyd :userId=$userId />
+                        {{-- <livewire:module.prestasi.kumulatif :pmgiSession="true" :pmgiSessionId=$sessionId > --}}
                     </div>
                 </div>
             </div>

@@ -53,7 +53,7 @@ class Index extends Component
             FROM PMGI_MNTR_SESSION ms
             JOIN pmgi_fms_users u ON ms.officer_id = u.USERID
             JOIN pmgi_fms_bank_officers bo ON u.USERID = bo.officer_id
-            JOIN bnm_statecodes s ON ms.state_code = s.code
+            JOIN pmgi_fms_bnm_statecodes s ON ms.state_code = s.code
             JOIN pmgi_fms_branches b ON ms.branch_code = b.branch_code
             WHERE ms.officer_id = :officer_id AND ms.pmgi_level = :pmgi_level
         ', ['officer_id' => $userid, 'pmgi_level' => 'HRD']);

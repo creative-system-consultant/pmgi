@@ -117,40 +117,74 @@
                 <strong>{{ $alamat2 }}</strong>
             </div>
 
-            {{-- bil seliaan --}}
-            <div class="input-container" style="top: 487px; left: 270px;">
-                <strong>{{ $accCount }}</strong>
-            </div>
+            @if ($bankOfficerPyd->hr_mgr_flag == 'Y')
+                {{-- NPF Cawangan --}}
+                {{-- bil seliaan --}}
+                <div class="input-container" style="top: 487px; left: 270px;">
+                    <strong>{{ $accCount }}</strong>
+                </div>
 
-            {{-- npf os % --}}
-            <div class="input-container" style="top: 487px; left: 460px;">
-                <strong>{{ $npfOs }}</strong>
-            </div>
+                {{-- npf os % --}}
+                <div class="input-container" style="top: 487px; left: 460px;">
+                    <strong>{{ $npfOs }}</strong>
+                </div>
 
-            {{-- b1 --}}
-            <div class="input-container" style="top: 515px; left: 290px;">
-                <strong>{{ $summMthOfficer->bil_b1 ?? 0 }}</strong>
-            </div>
+                {{-- b1 --}}
+                <div class="input-container" style="top: 515px; left: 290px;">
+                    <strong>{{ $summMthOfficer->bil_b1 ?? 0 }}</strong>
+                </div>
 
-            {{-- b2 --}}
-            <div class="input-container" style="top: 515px; left: 350px;">
-                <strong>{{ $summMthOfficer->bil_b1 ?? 0 }}</strong>
-            </div>
+                {{-- b2 --}}
+                <div class="input-container" style="top: 515px; left: 350px;">
+                    <strong>{{ $summMthOfficer->bil_b1 ?? 0 }}</strong>
+                </div>
 
-            {{-- c1 --}}
-            <div class="input-container" style="top: 515px; left: 408px;">
-                <strong>{{ $summMthOfficer->bil_c1 ?? 0 }}</strong>
-            </div>
+                {{-- c1 --}}
+                <div class="input-container" style="top: 515px; left: 408px;">
+                    <strong>{{ $summMthOfficer->bil_c1 ?? 0 }}</strong>
+                </div>
 
-            {{-- c2 --}}
-            <div class="input-container" style="top: 515px; left: 465px;">
-                <strong>{{ $summMthOfficer->bil_c2 ?? 0 }}</strong>
-            </div>
+                {{-- c2 --}}
+                <div class="input-container" style="top: 515px; left: 465px;">
+                    <strong>{{ $summMthOfficer->bil_c2 ?? 0 }}</strong>
+                </div>
 
-            {{-- d --}}
-            <div class="input-container" style="top: 515px; left: 515px;">
-                <strong>{{ $summMthOfficer->bil_d ?? 0 }}</strong>
-            </div>
+                {{-- d --}}
+                <div class="input-container" style="top: 515px; left: 515px;">
+                    <strong>{{ $summMthOfficer->bil_d ?? 0 }}</strong>
+                </div>
+            @else
+                {{-- NPF PP --}}
+                {{-- bil seliaan --}}
+                <div class="input-container" style="top: 568px; left: 270px;">
+                    <strong>{{ $accCount }}</strong>
+                </div>
+
+                {{-- b1 --}}
+                <div class="input-container" style="top: 596px; left: 290px;">
+                    <strong>{{ $summMthOfficer->bil_b1 ?? 0 }}</strong>
+                </div>
+
+                {{-- b2 --}}
+                <div class="input-container" style="top: 596px; left: 350px;">
+                    <strong>{{ $summMthOfficer->bil_b1 ?? 0 }}</strong>
+                </div>
+
+                {{-- c1 --}}
+                <div class="input-container" style="top: 596px; left: 408px;">
+                    <strong>{{ $summMthOfficer->bil_c1 ?? 0 }}</strong>
+                </div>
+
+                {{-- c2 --}}
+                <div class="input-container" style="top: 596px; left: 465px;">
+                    <strong>{{ $summMthOfficer->bil_c2 ?? 0 }}</strong>
+                </div>
+
+                {{-- d --}}
+                <div class="input-container" style="top: 596px; left: 515px;">
+                    <strong>{{ $summMthOfficer->bil_d ?? 0 }}</strong>
+                </div>
+            @endif
 
             {{-- tarikh --}}
             <div class="input-container" style="top: 661px; left: 270px;">

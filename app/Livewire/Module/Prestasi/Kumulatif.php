@@ -93,6 +93,7 @@ class Kumulatif extends Component
                                             $q->where('officer_name', 'LIKE', '%' . $this->searchTerm . '%')
                                             ->orWhere('staffno', 'LIKE', '%' . $this->searchTerm . '%');
                                         })
+                                        ->where('fms_userstatus', 1)
                                         ->value('officer_id');
         }
 
