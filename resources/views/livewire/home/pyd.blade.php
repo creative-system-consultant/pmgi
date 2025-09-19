@@ -27,7 +27,7 @@
                     </div>
                 </div>
 
-                @if ($data->bankOfficer->hrData->jawatan != 'PEMBANTU PEGAWAI')
+                @if ($data->bankOfficer->hr_mgr_flag == 'Y')
                     <div class="items-center">
                         <div class="overflow-hidden shadow-md sm:rounded-lg">
                             <table class="min-w-full divide-y divide-gray-200">
