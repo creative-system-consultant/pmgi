@@ -130,7 +130,13 @@
                                     </div>
                                 </li>
                             @endif
-                        </ul>
+
+                            @if(hasRoles('ADMINISTRATOR'))
+                                <li>
+                                    <a href="{{ route('maintenance.admin.ref_mgr_desc') }}" class="block {{ Route::currentRouteName() === 'maintenance.ref_mgr_desc' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Penyelenggaraan</a>
+                                </li>
+                            @endif                                
+                        </ul>                    
                     </div>
                 @endauth
             </div>
