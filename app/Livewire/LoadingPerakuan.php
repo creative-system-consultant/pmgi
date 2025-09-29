@@ -2,13 +2,17 @@
 
 namespace App\Livewire;
 
+use App\Jobs\CleanupTemporaryFiles;
+use App\Jobs\SendKeputusanPmgiPyd;
 use App\Models\MntrSession;
 use App\Models\SessionInfo;
 use App\Models\SessionPmcInfo;
 use App\Models\SessionPydInfo;
 use App\Models\SessionPymInfo;
 use App\Models\SettPymPmc;
+use App\Services\HtmlToImageService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use PDO;
@@ -22,7 +26,15 @@ class LoadingPerakuan extends Component
     public $title;
     public $subtitle;
     public $pmgiLevel;
+    public $pmgiType;
+    public $pydId;
     public $hasRedirected = false;
+    private $htmlToImageService;
+
+    public function __construct()
+    {
+        $this->htmlToImageService = new HtmlToImageService();
+    }
 
     public function mount()
     {
@@ -30,6 +42,8 @@ class LoadingPerakuan extends Component
         $this->fetchQueryString();
         $this->setText();
         $this->pmgiLevel = substr($this->sessionId, 3, 1);
+        $this->pmgiType = substr($this->sessionId, 0, 2);
+        $this->pydId = substr($this->sessionId, 11);
     }
 
     protected function showError()
@@ -75,6 +89,9 @@ class LoadingPerakuan extends Component
                 // Redirect to the next page or do whatever action you need
                 if (substr($resultSp, 0, 1) == '0') {
                     $this->hasRedirected = true;
+
+                    // send email to PYD
+                    $this->sendEmailToPyd();
                     return redirect()->route('home')->with('flash_success', 'Sesi selesai dilaksanakan.');
                 } else {
                     $this->dialog()->error(
@@ -98,6 +115,9 @@ class LoadingPerakuan extends Component
                 // Redirect to the next page or do whatever action you need
                 if (substr($resultSp, 0, 1) == '0') {
                     $this->hasRedirected = true;
+                    
+                    // send email to PYD
+                    $this->sendEmailToPyd();
                     return redirect()->route('home')->with('flash_success', 'Sesi selesai dilaksanakan.');
                 } else {
                     $this->dialog()->error(
@@ -139,7 +159,7 @@ class LoadingPerakuan extends Component
         $procedureName = 'dbo.UP_PMGI_UPD_MNTR_SESSION';
 
         $bindings = [
-            'pi_reportdt'    => Carbon::parse($data->report_date)->format('Y-m-d'),
+            'pi_reportdt'    => $pmgiResult == 'NEX' ? Carbon::parse($data->report_date)->addMonthNoOverflow()->format('Y-m-d') : Carbon::parse($data->report_date)->format('Y-m-d'),
             'pi_state_code'  => $data->state_code,
             'pi_branch_code' => $data->branch_code,
             'pi_officer_id'  => $data->officer_id,
@@ -157,6 +177,54 @@ class LoadingPerakuan extends Component
         DB::executeProcedure($procedureName, $bindings);
 
         return $output;
+    }
+
+    private function sendEmailToPyd()
+    {
+        $setting = SettPymPmc::whereSessionId($this->sessionId)->first();
+        $pyd_data = MntrSession::with('user', 'state', 'branch', 'bankOfficer')
+                            ->whereOfficerId($this->pydId)
+                            ->whereDate('report_date', $setting->report_date)
+                            ->first();
+
+        $path = $this->generateImageFromHtml($pyd_data);
+        $email = $pyd_data->bankOfficer?->email;
+
+        $this->sendEmail($email, $path['image'], $path['html']);
+    }
+
+    private function generateImageFromHtml($data)
+    {
+        $pmgi_description = substr($data->pmgi_level, 0, 2) == 'PM' ? 'PMGI' : (substr($data->pmgi_level, 0, 2) == 'JT' ? 'JKPI' : (substr($data->pmgi_level, 0, 2) == 'HR' ? 'HR' : 'undefined'));
+        return $this->htmlToImageService->generate(
+            'emails.keputusan_pmgi',
+            [
+                'pmgi_session_date' => now()->format('d/m/Y'),
+                'pyd_name' => $data->bankOfficer?->officer_name,
+                'pyd_ic' => $data->bankOfficer?->nokp,
+                'pyd_state' => $data->state->description,
+                'pyd_branch' => $data->branch->branch_name,
+                'pmgi_type' => $pmgi_description,
+                'pmgi_level' => $this->pmgiLevel,
+            ],
+            'emails/pyd/',
+            "email_pyd_{$this->pydId}"
+        );
+    }
+
+    private function sendEmail($email, $imagePath, $htmlPath)
+    {
+        $jobs = [];
+
+        if ($email) {
+            $jobs[] = new SendKeputusanPmgiPyd($email, $imagePath, $htmlPath);
+        }
+
+        // Chain the cleanup job after the email jobs
+        $jobs[] = new CleanupTemporaryFiles([$imagePath], [$htmlPath]);
+
+        // Dispatch the jobs as a chain
+        Bus::chain($jobs)->dispatch();
     }
 
     public function render()

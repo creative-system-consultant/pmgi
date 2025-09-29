@@ -45,4 +45,9 @@ class MntrSession extends Model
     {
         return $this->hasOne(SettPymPmc::class, 'report_date', 'report_date');
     }
+
+    public function bankOfficer()
+    {
+        return $this->hasOne(BankOfficer::class, 'officer_id', 'officer_id');
+    }
 }
