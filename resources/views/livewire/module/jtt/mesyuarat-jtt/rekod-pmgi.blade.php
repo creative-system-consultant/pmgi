@@ -5,18 +5,21 @@
         pmgiSessionIds: { PM1: null, PM2: null, PM3: null },
 
         // Function to update the activePmgi when the tab changes
-        setActivePmgi(lvl) {
-            this.tab = lvl;
-            this.activePmgi = this.pmgiData.find(pmgi => pmgi.lvl === lvl) || {};
-            this.pmgiSessionIds[lvl] = this.activePmgi.session_id;
+        setActivePmgi(seq) {
+            this.tab = seq;
+            this.activePmgi = this.pmgiData.find(pmgi => pmgi.seq === seq) || {};
+            this.pmgiSessionIds[seq] = this.activePmgi.session_id;
         },
 
         // Initialize the first tab's data when the component is mounted
         init() {
             this.pmgiData.forEach(pmgi => {
-                this.pmgiSessionIds[pmgi.lvl] = pmgi.session_id;
+                this.pmgiSessionIds[pmgi.seq] = pmgi.session_id;
             });
-            this.setActivePmgi('PM1'); // Default to PM1 on mount
+            // Default to the first PMGi on mount
+            if (this.pmgiData.length > 0) {
+                this.setActivePmgi(this.pmgiData[0].seq);
+            }
         }
     }" x-init="init()">
 
@@ -25,7 +28,7 @@
         <ul class="flex flex-wrap mb-4 text-sm font-medium text-center text-gray-500">
             @foreach ($pmgiData as $pmgi)
             <li class="me-2">
-                <div @click="setActivePmgi('{{ $pmgi['lvl'] }}')" :class="{ 'bg-primary-600 text-white': tab === '{{ $pmgi['lvl'] }}', 'hover:text-gray-900 hover:bg-gray-100': tab !== '{{ $pmgi['lvl'] }}' }" class="inline-block px-4 py-3 rounded-lg cursor-pointer" aria-current="page">
+                <div @click="setActivePmgi('{{ $pmgi['seq'] }}')" :class="{ 'bg-primary-600 text-white': tab === '{{ $pmgi['seq'] }}', 'hover:text-gray-900 hover:bg-gray-100': tab !== '{{ $pmgi['seq'] }}' }" class="inline-block px-4 py-3 rounded-lg cursor-pointer" aria-current="page">
                     {{ 'PMGi ' . substr($pmgi['lvl'], -1) }}
                 </div>
             </li>
@@ -67,7 +70,7 @@
                         ? [
                             ['name' => 'Keluar Senarai', 'id' => 'Keluar Senarai'],
                             ['name' => 'Diberi Tempoh', 'id' => 'Diberi Tempoh'],
-                            ['name' => 'Tindakan Tatatertib', 'id' => 'Tindakan Tatatertib']
+                            ['name' => 'Dibawa ke JKPI 2', 'id' => 'Tindakan Tatatertib']
                         ]
                         : [
                             ['name' => 'Keluar Senarai', 'id' => 'Keluar Senarai'],
