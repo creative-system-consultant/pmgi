@@ -344,7 +344,7 @@
                                                     BILANGAN AKAUN NPF
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border-l border-black border-dashed border-y">
-                                                    {{ number_format($data->bil_pulih_npf_sblm, 2) }}
+                                                    {{ number_format($data->bil_pulih_npf_sblm) }}
                                                 </td>
                                                 <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border-l border-black border-dashed border-y">
                                                     {{ number_format($data->bil_pulih_npf_pts, 2) }}%
