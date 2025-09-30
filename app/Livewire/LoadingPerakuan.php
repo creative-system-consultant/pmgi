@@ -159,7 +159,7 @@ class LoadingPerakuan extends Component
         $procedureName = 'dbo.UP_PMGI_UPD_MNTR_SESSION';
 
         $bindings = [
-            'pi_reportdt'    => $pmgiResult == 'NEX' ? Carbon::parse($data->report_date)->addMonthNoOverflow()->format('Y-m-d') : Carbon::parse($data->report_date)->format('Y-m-d'),
+            'pi_reportdt'    => $pmgiResult == 'NEX' ? Carbon::parse($data->report_date)->addMonthNoOverflow()->endOfMonth()->format('Y-m-d') : Carbon::parse($data->report_date)->format('Y-m-d'),
             'pi_state_code'  => $data->state_code,
             'pi_branch_code' => $data->branch_code,
             'pi_officer_id'  => $data->officer_id,
