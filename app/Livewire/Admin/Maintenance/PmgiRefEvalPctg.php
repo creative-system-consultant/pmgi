@@ -74,7 +74,7 @@ class pmgiRefEvalPctg extends Component
 
         // Livewire v3 event (name + payload)
         $this->dispatch('swal', title: 'Berjaya', text: 'Berjaya Tamba Peratusan Penilaian.', icon: 'success');
-        redirect()->route('maintenance.ref_eval_pctg');
+        redirect()->route('maintenance.admin.ref_eval_pctg');
     }
 
     public function edit($id)
@@ -118,7 +118,7 @@ class pmgiRefEvalPctg extends Component
 
         // Livewire v3 event (name + payload)
         $this->dispatch('swal', title: 'Berjaya', text: 'Peratus Penilaian Berjaya Dikemas Kini.', icon: 'success');
-        redirect()->route('maintenance.ref_eval_pctg');      
+        redirect()->route('maintenance.admin.ref_eval_pctg');      
     }
 
     public function close()

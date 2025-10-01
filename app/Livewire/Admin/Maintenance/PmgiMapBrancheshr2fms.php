@@ -140,7 +140,7 @@ class PmgiMapBrancheshr2fms extends Component
 
         // Livewire v3 event (name + payload)
         $this->dispatch('swal', title: 'Berjaya', text: 'Berjaya Tambah Senarai Cawangan.', icon: 'success');
-        redirect()->route('maintenance.map_brances_hr2fms');
+        redirect()->route('maintenance.admin.map_brances_hr2fms');
     }
 
     public function edit($branch)
@@ -179,14 +179,14 @@ class PmgiMapBrancheshr2fms extends Component
 
         // Livewire v3 event (name + payload)
         $this->dispatch('swal', title: 'Berjaya', text: 'Nama Negeri dan Nama Cawagan Dalam Sistem HR Berjaya Dikemas Kini.', icon: 'success');
-        redirect()->route('maintenance.map_brances_hr2fms');      
+        redirect()->route('maintenance.admin.map_brances_hr2fms');      
     }
 
     public function confirmDelete($branch)
     {
         $data = Map_Branches_hr2fms::where('seq_no', $branch)->first();    
 
-        $this->dispatch('swal:confirm', title: 'Adakah anda pasti mahu menghapuskan senarai cawangan ini?', icon: 'warning', param1:$data->fms_state_name, param2:$data->fms_branch_name, param3:$data->fms_branch_code, param4:$data->hr_state_name, param5:$data->hr_branch_name, key:'branch', param:$branch);
+        $this->dispatch('swal:confirm', title: 'Adakah anda pasti mahu menghapuskan senarai cawangan ini?', icon: 'warning', label1:'Negeri (FMS)', label2:'Cawangan (FMS)', label3:'Kod Cawangan FMS', label4:'Negeri (HR)', label5:'Cawangan (HR)', param1:$data->fms_state_name, param2:$data->fms_branch_name, param3:$data->fms_branch_code, param4:$data->hr_state_name, param5:$data->hr_branch_name, key:'branch', param:$branch);
     }
     
     #[On('delete')]
@@ -199,7 +199,7 @@ class PmgiMapBrancheshr2fms extends Component
         ]);
 
         $this->dispatch('swal', title: 'Berjaya', text: 'Senarai Cawangan Ini Berjaya Dihapuskan.', icon: 'success');
-        redirect()->route('maintenance.map_brances_hr2fms');
+        redirect()->route('maintenance.admin.map_brances_hr2fms');
     }
 
     public function close()

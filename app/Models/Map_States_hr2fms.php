@@ -15,5 +15,7 @@ class Map_States_hr2fms extends Model
 
     protected $fillable = [
         'hr_state_name',
+        'updated_at',
+        'updated_by',
     ];
 }

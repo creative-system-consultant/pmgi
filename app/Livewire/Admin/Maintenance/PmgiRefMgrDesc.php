@@ -46,7 +46,7 @@ class pmgiRefMgrDesc extends Component
 
         // Livewire v3 event (name + payload)
         $this->dispatch('swal', title: 'Berjaya', text: 'Berjaya Tambah Deskripsi Pengurus.', icon: 'success');
-        redirect()->route('maintenance.ref_mgr_desc');
+        redirect()->route('maintenance.admin.ref_mgr_desc');
     }
 
     public function edit($mgr)
@@ -78,14 +78,14 @@ class pmgiRefMgrDesc extends Component
 
         // Livewire v3 event (name + payload)
         $this->dispatch('swal', title: 'Berjaya', text: 'Deskripsi Pengurus Berjaya Dikemas Kini.', icon: 'success');
-        redirect()->route('maintenance.ref_mgr_desc');      
+        redirect()->route('maintenance.admin.ref_mgr_desc');      
     }
 
     public function confirmDelete($mgr)
     {
         $data = Ref_Mgr_Desc::where('seq_no', $mgr)->first();
         
-        $this->dispatch('swal:confirm', title: 'Adakah anda pasti mahu menghapuskan deskripsi pengurus ini?', icon: 'warning', param1:$data->mgr_desc, key:'mgr', param:$mgr);
+        $this->dispatch('swal:confirm', title: 'Adakah anda pasti mahu menghapuskan deskripsi pengurus ini?', icon: 'warning', label1:'Deskripsi Pengurus', param1:$data->mgr_desc, key:'mgr', param:$mgr);
     }
     
     #[On('delete')]
@@ -98,7 +98,7 @@ class pmgiRefMgrDesc extends Component
         ]);
         
         $this->dispatch('swal', title: 'Berjaya', text: 'Deskripsi Pengurus Ini Berjaya Dihapuskan.', icon: 'success');
-        redirect()->route('maintenance.ref_mgr_desc');
+        redirect()->route('maintenance.admin.ref_mgr_desc');
     }
 
     public function close()

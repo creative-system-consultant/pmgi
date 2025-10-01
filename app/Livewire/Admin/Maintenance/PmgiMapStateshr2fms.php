@@ -40,14 +40,16 @@ class pmgiMapStateshr2fms extends Component
         ]);
 
         Map_States_hr2fms::where('fms_state_name', $this->state_name)->update([
-            'hr_state_name'  => Str::squish(strtoupper($this->hr_state_name)),            
+            'hr_state_name'  => Str::squish(strtoupper($this->hr_state_name)),
+            'updated_at'      => \Carbon\Carbon::now('Asia/Kuala_Lumpur'),
+            'updated_by'      => $this->user,                                    
         ]);
  
         $this->edits = false; // close modal only
 
         // Livewire v3 event (name + payload)
         $this->dispatch('swal', title: 'Berjaya', text: 'Nama Negeri Dalam Sistem HR Berjaya Dikemas Kini.', icon: 'success');
-        redirect()->route('maintenance.map_state_hr2fms');      
+        redirect()->route('maintenance.admin.map_state_hr2fms');      
     }
 
     public function close()

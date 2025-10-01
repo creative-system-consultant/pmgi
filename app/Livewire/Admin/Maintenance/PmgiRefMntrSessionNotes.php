@@ -50,7 +50,7 @@ class pmgiRefMntrSessionNotes extends Component
 
         // Livewire v3 event (name + payload)
         $this->dispatch('swal', title: 'Berjaya', text: 'Deskripsi Nota Sesi Berjaya Dikemas Kini', icon: 'success');    
-        redirect()->route('maintenance.monitor_session_notes');  
+        redirect()->route('maintenance.admin.monitor_session_notes');  
     }    
 
     public function close()

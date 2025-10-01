@@ -50,7 +50,7 @@ class pmgiRefpmgiLevel extends Component
 
         // Livewire v3 event (name + payload)
         $this->dispatch('swal', title: 'Berjaya', text: 'Deskripsi peringkat PMGi Berjaya Dikemas Kini', icon: 'success');    
-        redirect()->route('maintenance.ref_pmgi_level');  
+        redirect()->route('maintenance.admin.ref_pmgi_level');  
     }    
 
     public function close()

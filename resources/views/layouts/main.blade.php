@@ -48,13 +48,19 @@
     Livewire.on('swal:confirm', (e) => {
         let swalHtml = '';  // Initialize the variable for HTML content
 
-        // List of all parameter names you want to check
+        // List of all parameter and label names
+        const labels = ['label1','label2', 'label3', 'label4', 'label5'];
         const params = ['param1', 'param2', 'param3', 'param4', 'param5'];
 
-        // Loop through each parameter and add its HTML if not null
-        params.forEach(pr => {
-            if (e[pr] != null) {
-                swalHtml += `<input type="text" class="w-96 p-2 border bg-gray-100 border-gray-500 rounded-md mb-2" value="${e[pr]}" readonly/>`;
+        // Loop through each parameter and label, add its HTML if not null
+        labels.forEach((lb, index) => {
+            if (e[lb] != null) {
+                swalHtml += `
+                <div class="mb-4">
+                    <label class="w-80 text-start block text-base font-medium text-gray-600 ml-10">${e[lb]}:</label>
+                    <input type="text" class="w-96 p-2 border bg-gray-100 border-gray-500 rounded-md mb-2" value="${e[params[index]]}" readonly/>
+                </div>
+                `;
             }
         });
 

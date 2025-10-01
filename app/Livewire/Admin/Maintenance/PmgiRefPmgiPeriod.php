@@ -62,7 +62,7 @@ class pmgiRefpmgiPeriod extends Component
 
         // Livewire v3 event (name + payload)
         $this->dispatch('swal', title: 'Berjaya', text: 'Berjaya Tambah Tempoh pmgi.', icon: 'success');
-        redirect()->route('maintenance.ref_pmgi_period');
+        redirect()->route('maintenance.admin.ref_pmgi_period');
     }
 
     public function close()

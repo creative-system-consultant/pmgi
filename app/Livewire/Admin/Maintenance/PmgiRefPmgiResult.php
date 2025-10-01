@@ -50,7 +50,7 @@ class pmgiRefpmgiResult extends Component
 
         // Livewire v3 event (name + payload)
         $this->dispatch('swal', title: 'Berjaya', text: 'Deskripsi Keputusan PMGi Berjaya Dikemas Kini', icon: 'success');    
-        redirect()->route('maintenance.ref_pmgi_result');  
+        redirect()->route('maintenance.admin.ref_pmgi_result');  
     }    
 
     public function close()
