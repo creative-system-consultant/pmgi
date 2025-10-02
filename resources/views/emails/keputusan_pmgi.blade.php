@@ -417,7 +417,7 @@
                                                                                     <td valign="top" align="left" style="padding: 0px 10px 0px 10px;">
                                                                                         <div class="pc-font-alt pc-w620-fontSize-26px" style="line-height: 100%; letter-spacing: -0.04em; font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: bold; font-variant-ligatures: normal; color: #26392a; text-align: left; text-align-last: left;">
                                                                                             <div>
-                                                                                                <span> pyd_name / {{ $pyd_ic }}</span>
+                                                                                                <span> {{ $pyd_name }} / {{ $pyd_ic }}</span>
                                                                                             </div>
                                                                                             <div>
                                                                                                 <span>JABATAN / UNIT / {{ $pyd_branch }}</span>

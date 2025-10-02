@@ -70,7 +70,7 @@ class KeputusanPmgi extends Mailable
         $imageMime = mime_content_type($this->filepath);
 
         return new Content(
-            view: 'emails.keputusan_pmgi',
+            view: 'emails.image_email_base',
             with: [
                 'imageData' => base64_encode($imageData),
                 'imageName' => $imageName,
@@ -81,8 +81,12 @@ class KeputusanPmgi extends Mailable
 
     public function attachments(): array
     {
-        return [
-            Attachment::fromPath(public_path($this->filepath)),
-        ];
+        if (file_exists($this->filepath)) {
+            return [
+                Attachment::fromPath($this->filepath), // ✅ no public_path() here
+            ];
+        }
+
+        return [];
     }
 }

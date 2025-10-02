@@ -187,15 +187,16 @@ class LoadingPerakuan extends Component
                             ->whereDate('report_date', $setting->report_date)
                             ->first();
 
-        $path = $this->generateImageFromHtml($pyd_data);
+        $pmgi_description = substr($pyd_data->pmgi_level, 0, 2) == 'PM' ? 'PMGI' : (substr($pyd_data->pmgi_level, 0, 2) == 'JT' ? 'JKPI' : (substr($pyd_data->pmgi_level, 0, 2) == 'HR' ? 'HR' : 'undefined'));
+
+        $path = $this->generateImageFromHtml($pyd_data, $pmgi_description);
         $email = $pyd_data->bankOfficer?->email;
 
         $this->sendEmail($email, $path['image'], $path['html']);
     }
 
-    private function generateImageFromHtml($data)
+    private function generateImageFromHtml($data, $pmgi_type)
     {
-        $pmgi_description = substr($data->pmgi_level, 0, 2) == 'PM' ? 'PMGI' : (substr($data->pmgi_level, 0, 2) == 'JT' ? 'JKPI' : (substr($data->pmgi_level, 0, 2) == 'HR' ? 'HR' : 'undefined'));
         return $this->htmlToImageService->generate(
             'emails.keputusan_pmgi',
             [
@@ -204,7 +205,7 @@ class LoadingPerakuan extends Component
                 'pyd_ic' => $data->bankOfficer?->nokp,
                 'pyd_state' => $data->state->description,
                 'pyd_branch' => $data->branch->branch_name,
-                'pmgi_type' => $pmgi_description,
+                'pmgi_type' => $pmgi_type,
                 'pmgi_level' => $this->pmgiLevel,
             ],
             'emails/pyd/',
