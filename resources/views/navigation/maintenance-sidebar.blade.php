@@ -23,17 +23,17 @@
             <a href="{{ route('maintenance.admin.ref_pmgi_period') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
                 Tempoh PMGi
             </a>           
-            
-            <a href="{{ route('maintenance.admin.map_state_hr2fms') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
-                Senarai Negeri HR kepada FMS
-            </a>                           
-
+                    
             <a href="{{ route('maintenance.admin.ref_eval_pctg') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
                 Peratusan Penilaian
             </a>
+
+            <a href="{{ route('maintenance.admin.map_state_hr2fms') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                Pemetaan Negeri - HR ke FMS
+            </a>                           
             
             <a href="{{ route('maintenance.admin.map_brances_hr2fms') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
-                Senarai Cawangan HR kepada FMS
+                Pemetaan Cawangan - HR ke FMS
             </a>                                         
         </nav>
     </aside>

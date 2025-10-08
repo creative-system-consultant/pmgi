@@ -11,14 +11,18 @@
         <col>
         <col>
         <col>
+        <col>
+        <col>
         <col class="w-px">
       </colgroup>
   
       <thead>
         <tr class="bg-gray-300 dark:bg-gray-800 text-sm text-gray-600 dark:text-gray-300">
           <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Keputusan PMGi</th>
-          <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Deskripsi Keputusan PMGi</th>
-          <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Deskripsi Sistem PMGi</th>
+          <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Deskripsi Keputusan PMGi (Pengguna)</th>
+          <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Deskripsi Keputusan PMGi (Sistem)</th>
+          <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Dikemas Kini Pada</th>
+          <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Dikemas Kini Oleh</th>
           <th class="py-2 px-2 text-left border border-gray-400 dark:border-gray-700 w-px whitespace-nowrap">Tindakan</th>
         </tr>
       </thead>
@@ -29,6 +33,8 @@
             <td class="py-2 px-4 border border-gray-400 dark:border-gray-700">{{ $item->pmgi_result }}</td>
             <td class="py-2 px-4 bg-white hover:bg-gray-100 border border-gray-300 dark:bg-gray-500 dark:border-gray-700">{{ $item->pmgi_result_desc }}</td>
             <td class="py-2 px-4 border border-gray-400 dark:border-gray-700">{{ $item->pmgi_sys_result_desc}}</td>
+            <td class="py-2 px-4 border border-gray-400 dark:border-gray-700">{{ $item->updated_at}}</td>
+            <td class="py-2 px-4 border border-gray-400 dark:border-gray-700">{{ $item->updated_by}}</td>
   
             {{-- Action (tight, no wrap) --}}
             <td class="py-2 px-2 border border-gray-400 dark:border-gray-700 w-px whitespace-nowrap">
@@ -56,41 +62,60 @@
   
     @if ($edits)
         {{-- Modal Background --}}
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50"
-                wire:keydown.escape="$set('edits', true)"
-                wire:click.self="$set('edits', true)">
-            <div class="bg-white p-6 rounded-lg w-full max-w-lg shadow-xl">
-                <h3 class="text-xl font-semibold mb-4"> Kemas Kini Deskripsi Keputusan PMGi</h3>
-    
-                <form wire:submit.prevent="update" method="POST">
-                    <div class="mb-4">
-                        <label class="block text-base font-medium text-gray-600">Keputusan PMGi:</label>
-                        <input type="text" name="pmgi_result" wire:model='pmgi_result' class="w-full p-2 bg-gray-100 border border-gray-500 rounded-md" readonly/>
-                    </div>                  
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50
+                    px-4 sm:px-6 lg:px-8"
+            wire:keydown.escape="$set('edits', false)"
+            wire:click.self="$set('edits', false)">
 
-                    <div class="mb-4">
-                        <label class="block text-base font-medium text-gray-600">Deskripsi Keputusan PMGi:</label>
-                        <input type="text" name="pmgi_result_desc" wire:model='pmgi_result_desc' class="w-full p-2 border border-gray-500 rounded-md" />
+            {{-- Modal Content --}}
+            <div class="bg-white p-4 sm:p-6 rounded-lg w-full max-w-md sm:max-w-lg lg:max-w-2xl shadow-xl">
+                <h3 class="text-lg sm:text-xl font-semibold mb-4 text-center sm:text-left">
+                    Kemas Kini Deskripsi Keputusan PMGi
+                </h3>
+
+                <form wire:submit.prevent="update" method="POST" class="space-y-4">
+                    {{-- Field 1 --}}
+                    <div>
+                        <label class="block text-sm sm:text-base font-medium text-gray-600">
+                            Keputusan PMGi:
+                        </label>
+                        <input type="text"
+                              name="pmgi_result"
+                              wire:model="pmgi_result"
+                              class="w-full p-2 sm:p-3 bg-gray-100 border border-gray-500 rounded-md text-sm sm:text-base"
+                              readonly />
+                    </div>
+
+                    {{-- Field 2 --}}
+                    <div>
+                        <label class="block text-sm sm:text-base font-medium text-gray-600">
+                            Deskripsi Keputusan PMGi:
+                        </label>
+                        <input type="text"
+                              name="pmgi_result_desc"
+                              wire:model="pmgi_result_desc"
+                              class="w-full p-2 sm:p-3 border border-gray-500 rounded-md text-sm sm:text-base" />
                         @error('pmgi_result_desc')
-                            <span class="error text-red-600">{{ $message }}</span>
+                            <span class="error text-red-600 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
-  
-                    <div class="flex justify-end gap-3">                        
+
+                    {{-- Actions --}}
+                    <div class="flex flex-col sm:flex-row justify-end gap-3 pt-2">
                         <button type="button"
                                 wire:click="close()"
-                                class="py-2 px-4 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400">
-                        Cancel
+                                class="w-full sm:w-auto py-2 px-4 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 text-sm sm:text-base">
+                            Cancel
                         </button>
-    
+
                         <button type="submit"
-                                class="py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                                class="w-full sm:w-auto py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm sm:text-base">
                             Simpan
                         </button>
-                    </div>                  
+                    </div>
                 </form>
             </div>
         </div>
-    @endif  
+    @endif
   </div>
 </div>

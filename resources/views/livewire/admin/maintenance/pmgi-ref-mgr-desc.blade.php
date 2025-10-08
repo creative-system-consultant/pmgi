@@ -77,64 +77,76 @@
         {{ $data->links() }}
       </div>
 
-      {{-- Insert Modal --}}
-      @if ($insert)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-             wire:keydown.escape="close" wire:click.self="close">
-          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg w-full max-w-lg shadow-xl">
-              <h3 class="text-lg font-semibold mb-4">Tambah Deskripsi Pengurus</h3>
-              <form wire:submit.prevent="store">
-                  <div class="mb-4">
-                      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Deskripsi Pengurus:</label>
-                      <input type="text" name="mgr_desc" wire:model='mgr_desc'
-                             class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600" />
-                      @error('mgr_desc')
-                          <span class="text-red-600 text-sm">{{ $message }}</span>
-                      @enderror
-                  </div>
-                  <div class="flex justify-end gap-3">
-                      <button type="button" wire:click="close"
-                              class="py-2 px-4 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-400 dark:hover:bg-gray-500">
-                          Cancel
-                      </button>
-                      <button type="submit"
-                              class="py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                          Simpan
-                      </button>
-                  </div>
-              </form>
-          </div>
-        </div>
-      @endif
+    {{-- Insert Modal --}}
+    @if ($insert)
+      <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 sm:px-6 lg:px-8"
+          wire:keydown.escape="close" wire:click.self="close">
+        <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg w-full max-w-md sm:max-w-lg lg:max-w-2xl shadow-xl overflow-y-auto max-h-[90vh]">
+            <h3 class="text-base sm:text-lg font-semibold mb-4 text-center sm:text-left">
+                Tambah Deskripsi Pengurus
+            </h3>
 
-      {{-- Edit Modal --}}
-      @if ($edits)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-             wire:keydown.escape="close" wire:click.self="close">
-          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg w-full max-w-lg shadow-xl">
-              <h3 class="text-lg font-semibold mb-4">Kemas Kini Deskripsi Pengurus</h3>
-              <form wire:submit.prevent="update">
-                  <div class="mb-4">
-                      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Deskripsi Pengurus:</label>
-                      <input type="text" name="mgr_desc" wire:model='mgr_desc'
-                             class="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600" />
-                      @error('mgr_desc')
-                          <span class="text-red-600 text-sm">{{ $message }}</span>
-                      @enderror
-                  </div>
-                  <div class="flex justify-end gap-3">
-                      <button type="button" wire:click="close"
-                              class="py-2 px-4 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-400 dark:hover:bg-gray-500">
-                          Cancel
-                      </button>
-                      <button type="submit"
-                              class="py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                          Simpan
-                      </button>
-                  </div>
-              </form>
-          </div>
+            <form wire:submit.prevent="store" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Deskripsi Pengurus:
+                    </label>
+                    <input type="text" name="mgr_desc" wire:model='mgr_desc'
+                          class="w-full p-2 sm:p-3 border rounded-md text-sm sm:text-base dark:bg-gray-700 dark:border-gray-600" />
+                    @error('mgr_desc')
+                        <span class="text-red-600 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-end gap-3 pt-2">
+                    <button type="button" wire:click="close"
+                            class="w-full sm:w-auto py-2 px-4 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-400 dark:hover:bg-gray-500 text-sm sm:text-base">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                            class="w-full sm:w-auto py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm sm:text-base">
+                        Simpan
+                    </button>
+                </div>
+            </form>
         </div>
-      @endif
+      </div>
+    @endif
+
+    {{-- Edit Modal --}}
+    @if ($edits)
+      <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 sm:px-6 lg:px-8"
+          wire:keydown.escape="close" wire:click.self="close">
+        <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg w-full max-w-md sm:max-w-lg lg:max-w-2xl shadow-xl overflow-y-auto max-h-[90vh]">
+            <h3 class="text-base sm:text-lg font-semibold mb-4 text-center sm:text-left">
+                Kemas Kini Deskripsi Pengurus
+            </h3>
+
+            <form wire:submit.prevent="update" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Deskripsi Pengurus:
+                    </label>
+                    <input type="text" name="mgr_desc" wire:model='mgr_desc'
+                          class="w-full p-2 sm:p-3 border rounded-md text-sm sm:text-base dark:bg-gray-700 dark:border-gray-600" />
+                    @error('mgr_desc')
+                        <span class="text-red-600 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-end gap-3 pt-2">
+                    <button type="button" wire:click="close"
+                            class="w-full sm:w-auto py-2 px-4 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-400 dark:hover:bg-gray-500 text-sm sm:text-base">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                            class="w-full sm:w-auto py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm sm:text-base">
+                        Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+      </div>
+    @endif
   </div>
 </div>

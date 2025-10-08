@@ -29,6 +29,9 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Livewire\Module\Tetapan\PeratusanKriteria;
 use App\Livewire\Module\Tetapan\MeetingRoom\MeetingRoom;
 use App\Http\Controllers\Maintenance\MaintenanceController;
+use App\Livewire\Admin\ExceptionReport\PmgiExclBranch;
+use App\Livewire\Admin\ExceptionReport\PmgiExcpMissingBranch;
+use App\Livewire\Admin\ExceptionReport\PmgiExcpMissingMgr;
 use App\Livewire\Admin\Maintenance\pmgiRefMgrDesc;
 use App\Livewire\Admin\Maintenance\PmgiMapBrancheshr2fms;
 use App\Livewire\Admin\Maintenance\pmgiMapStateshr2fms;
@@ -37,6 +40,7 @@ use App\Livewire\Admin\Maintenance\pmgiRefMntrSessionNotes;
 use App\Livewire\Admin\Maintenance\pmgiRefpmgiLevel;
 use App\Livewire\Admin\Maintenance\pmgiRefpmgiPeriod;
 use App\Livewire\Admin\Maintenance\pmgiRefpmgiResult;
+use App\Livewire\Admin\Report\PmgiSysMsgLog;
 use App\Livewire\Module\Lantikan\Evaluator\Index as EvaluatorIndex;
 use App\Livewire\Module\Tetapan\OfficerInfo\Index as OfficerInfoIndex;
 use App\Livewire\Module\Lantikan\StateCommittee\Index as StateCommitteeIndex;
@@ -137,6 +141,16 @@ Route::middleware(['check.sysAvailable'])->group(function () {
             Route::get('/eval-percentage', pmgiRefEvalPctg::class)->name('ref_eval_pctg');
             Route::get('/map-branches-hr2fms', PmgiMapBrancheshr2fms::class)->name('map_brances_hr2fms');
         });
+
+        Route::prefix('admin-exception-report')->name('exceptionReport.admin.')->group(function () {
+            Route::get('/excl-branch', PmgiExclBranch::class)->name('excl_branch');
+            Route::get('/excp-misssing-branch', PmgiExcpMissingBranch::class)->name('excp_missing_branch');
+            Route::get('/excp-missing-mgr', PmgiExcpMissingMgr::class)->name('excp_missing_mgr');            
+        });
+
+        Route::prefix('admin-report')->name('report.admin.')->group(function () {
+            Route::get('/sys-msg-log', PmgiSysMsgLog::class)->name('sys_msg_log');         
+        });        
 
     });
 

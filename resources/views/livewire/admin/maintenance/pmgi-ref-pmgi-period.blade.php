@@ -1,4 +1,9 @@
 <div class="ml-4">
+  <style>
+    .x-datetime-picker .error-message {
+        display: none;
+    }
+  </style>
   <h2 class="mt-6 text-2xl font-semibold text-gray-800 mb-4 border-b border-gray-300 pb-2 dark:text-gray-100">
     Penyelenggaraan Tempoh PMGi
   </h2>
@@ -18,6 +23,8 @@
         <col>
         <col>
         <col>
+        <col>
+        <col>
       </colgroup>
   
       <thead>
@@ -25,6 +32,8 @@
           <th class="py-2 px-4 text-left border border-gray-300 dark:border-gray-700">Tarikh Kuat Kuasa</th>
           <th class="py-2 px-4 text-left border border-gray-300 dark:border-gray-700">Peringkat PMGi</th>
           <th class="py-2 px-4 text-left border border-gray-300 dark:border-gray-700">Tempoh Menunggu (Bulan)</th>
+          <th class="py-2 px-4 text-left border border-gray-300 dark:border-gray-700">Dicipta Pada</th>
+          <th class="py-2 px-4 text-left border border-gray-300 dark:border-gray-700">Dicipta Oleh</th>
         </tr>
       </thead>
   
@@ -34,6 +43,8 @@
             <td class="py-2 px-4 border border-gray-300 dark:border-gray-700">{{ $item->effective_date }}</td>
             <td class="py-2 px-4 border border-gray-300 dark:border-gray-700">{{ $item->level->pmgi_level }}</td>
             <td class="py-2 px-4 border border-gray-300 dark:border-gray-700">{{ $item->wait_period }}</td>
+            <td class="py-2 px-4 border border-gray-300 dark:border-gray-700">{{ $item->created_at }}</td>
+            <td class="py-2 px-4 border border-gray-300 dark:border-gray-700">{{ $item->created_by }}</td>
           </tr>
         @empty
           <tr>
@@ -60,7 +71,21 @@
                 <form wire:submit.prevent="store" method="POST">
                     <div class="mb-4">
                         <label class="block text-base font-medium text-gray-600">Tarikh Kuat Kuasa:</label>
-                        <input type="date" name="effective_date" wire:model='effective_date' class="w-full p-2 border border-gray-500 rounded-md">
+                        <x-datetime-picker 
+                            wire:model="effective_date"
+                            placeholder="dd/mm/yyyy"
+                            without-time
+                            :clearable="false"          
+                            display-format="DD/MM/YYYY"  
+                            min="{{ \Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString() }}"  
+                            errorless                                              
+                            style="
+                            padding: 0.5rem;
+                            font-size: 1rem;
+                            line-height: 1.5rem; 
+                             border-color: rgb(107 114 128 / 1);            
+                            "          
+                        />
                         @error('effective_date')
                             <span class="error text-red-600">{{ $message }}</span>
                         @enderror

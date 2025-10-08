@@ -7,7 +7,6 @@ use App\Models\RefEvalPctg;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\WithPagination;
-use Illuminate\Validation\Rule;
 
 class pmgiRefEvalPctg extends Component
 {
@@ -23,7 +22,25 @@ class pmgiRefEvalPctg extends Component
     public $evaluation_id;
     public $evaluation_percentage;
 
+    public $state_name;
+    public $search_term;
+
     public $user;
+
+    public function searchState()
+    {
+        $state_name = Str::squish(strtoupper($this->state_name));
+
+        $state_code = BnmStatecode::where('description', 'like', "%{$state_name}%")->value('code');
+
+        $this->search_term = str_pad($state_code, '2', '0', STR_PAD_LEFT);        
+    }
+
+    public function resetSearch()
+    {
+        $this->state_name = '';
+        $this->dispatch('refreshPage');
+    }    
 
     public function add()
     {
@@ -139,7 +156,11 @@ class pmgiRefEvalPctg extends Component
 
     public function render()
     {
-        $data   = RefEvalPctg::with('bnmState')->paginate(15);
+        $search = $this->search_term;
+
+        $data   = RefEvalPctg::with('bnmState')
+                  ->when($search, fn($q) => $q->where('state_code', $search))
+                  ->paginate(15);
         $states = BnmStatecode::select(['code', 'description'])->get();
         
         return view('livewire.admin.maintenance.pmgi-ref-eval-pctg', compact('data', 'states'))->extends('layouts.main');

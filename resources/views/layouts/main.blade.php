@@ -6,14 +6,26 @@
 
     <div class="flex flex-col pt-16 bg-gray-50">
 
-        <!-- Conditionally render sidebar for maintenance route -->
-        @if (request()->routeIs('maintenance.*')) <!-- Replace 'maintenance' with your actual route name -->
-        <div class="flex h-full">
-            <!-- Include the sidebar partial -->
-            @include('navigation.maintenance-sidebar')
+        <!-- Define Sidebar based on route -->
+        @php
+            $sidebar = null;
 
-            <!-- Main Content (with left margin to avoid overlap with the sidebar) -->
-            <div class="relative px-2 mx-auto w-full max-w-screen-2xl h-full bg-gray-50">
+            if (request()->routeIs('maintenance.*')) {
+                $sidebar = 'navigation.maintenance-sidebar';
+            } elseif (request()->routeIs('exceptionReport.*')) {
+                $sidebar = 'navigation.exception-report-sidebar';
+            } elseif (request()->routeIs('report.admin.*')) {
+                $sidebar = 'navigation.report-sidebar';
+            }
+        @endphp
+
+        @if ($sidebar)
+        <div class="flex h-full">
+            <!-- Include the sidebar based on the route -->
+            @include($sidebar)
+
+            <!-- Main Content with left margin to avoid overlap with the sidebar -->
+            <div class="relative px-4 mx-auto w-full max-w-screen-2xl h-full bg-gray-50">
                 @livewire('session-status-banner')
                 <div id="main-content">
                     @yield('content')
@@ -77,6 +89,12 @@
                 Livewire.dispatch('delete', { [key]: e.param });
             }
         });
-    });              
+    });      
+    
+        Livewire.on('refreshPage', () => {
+        setTimeout(() => {
+            location.reload();        
+        }, 700);
+    });
 </script>    
 @endsection

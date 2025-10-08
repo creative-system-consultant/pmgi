@@ -24,7 +24,7 @@ class pmgiRefpmgiPeriod extends Component
     {
         $this->insert = true;
 
-        $this->effective_date = \Carbon\Carbon::yesterday('Asia/Kuala_Lumpur')->toDateString();
+        $this->effective_date = \Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString();
         $this->wait_period    = '';
         $this->pmgi_level     = '';
     }

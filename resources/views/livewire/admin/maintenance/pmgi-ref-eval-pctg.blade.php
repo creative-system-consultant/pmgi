@@ -4,6 +4,30 @@
   </h2>
   
   <div class="overflow-x-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-inner mt-6 text-gray-900 dark:text-gray-100">
+    <form wire:submit.prevent="searchState" class="flex items-center gap-2 mb-2">
+        <label class="px-3 py-2 whitespace-nowrap">
+            Cari Negeri:
+        </label>
+
+        <input type="text"
+               wire:model="state_name"
+               placeholder="Nama Negeri"
+               class="px-2 py-2 border w-64 border-gray-300 rounded-md shadow-sm" />          
+
+        <!-- Search Button -->
+        <button type="submit"
+                class="ml-4 px-3 py-2 text-white inline-flex items-center rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300">
+            Cari
+            <x-icon name="search" class="w-4 h-4 ms-2" />            
+        </button>
+
+          <!-- Reset Button -->
+        <button type="button" wire:click='resetSearch'
+                class="ml-4 px-3 py-2 text-gray-800 bg-gray-200 rounded-md hover:bg-gray-300">
+            Set Semula Carian
+        </button>
+    </form>
+
       {{-- Insert New Column --}}
       <div class="flex justify-end mb-4">
           <button type="button" wire:click="add()"
@@ -20,6 +44,8 @@
         <col>
         <col>
         <col>
+        <col>
+        <col>
         <col class="w-px">
       </colgroup>
   
@@ -30,11 +56,13 @@
             <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Negeri</th>
             {{-- <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Penilaian</th> --}}
             <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Peratus Penilaian (%)</th>
+            <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Dikemas Kini Pada</th>
+            <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Dikemas Kini Oleh</th>
             <th class="py-2 px-2 text-left border border-gray-400 dark:border-gray-700 w-px whitespace-nowrap">Tindakan</th>
         </tr>
       </thead>
 
-    @php
+    {{-- @php
         $evaluation_labels = [
             1 => 'Kriteria 1 - Kutipan',
             2 => 'Kriteria 2 - Bilangan membayar',
@@ -42,7 +70,7 @@
             4 =>'Kriteria 4 - Prestasi NPF (Kawalan)',
             5 =>'Kriteria 5 - Prestasi NPF (Pemulihan)',
         ];
-    @endphp
+    @endphp --}}
     
       <tbody class="text-sm text-gray-700 dark:text-gray-200">
         @forelse ($data as $item)
@@ -56,6 +84,8 @@
             <td class="py-2 px-4 bg-white hover:bg-gray-100 border dark:hover:bg-gray-800/70 border-gray-300 dark:bg-gray-500 dark:border-gray-700">
                 {{ $item->evaluation_percentage }}
             </td>
+            <td class="py-2 px-4 border border-gray-400 dark:border-gray-700">{{ $item->updated_at }}</td>
+            <td class="py-2 px-4 border border-gray-400 dark:border-gray-700">{{ $item->updated_by }}</td>            
   
             {{-- Action --}}
             <td class="py-2 px-2 border border-gray-400 dark:border-gray-700 w-px whitespace-nowrap">
@@ -93,7 +123,21 @@
                 <form wire:submit.prevent="store" method="POST">
                     <div class="mb-4">
                         <label class="block text-base font-medium text-gray-600">Tarikh Kuatkuasa:</label>
-                        <input type="date" name="effective_date" wire:model='effective_date' class="w-full p-2 border border-gray-500 rounded-md" min="{{ \Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString() }}">
+                        <x-datetime-picker 
+                            wire:model="effective_date"
+                            placeholder="dd/mm/yyyy"
+                            without-time
+                            :clearable="false"          
+                            display-format="DD/MM/YYYY"  
+                            min="{{ \Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString() }}"  
+                            errorless                                              
+                            style="
+                            padding: 0.5rem;
+                            font-size: 1rem;
+                            line-height: 1.5rem; 
+                             border-color: rgb(107 114 128 / 1);            
+                            "            
+                        />            
                         @error('effective_date')
                             <span class="error text-red-600">{{ $message }}</span>
                         @enderror

@@ -1,12 +1,14 @@
 <div class="ml-4">
   <h2 class="mt-6 text-2xl font-semibold text-gray-800 mb-4 border-b border-gray-300 pb-2 dark:text-gray-100">
-    Penyelenggaraan Senarai Negeri HR to FMS
+    Penyelenggaraan Pemetaan Negeri - HR ke FMS
   </h2>
   
   <div class="overflow-x-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-inner mt-6 text-gray-900 dark:text-gray-100">
     <table class="w-full border border-gray-200 dark:border-gray-700 rounded-lg text-sm">
       {{-- Keep Action column tight --}}
       <colgroup>
+        <col>
+        <col>
         <col>
         <col>
         <col>
@@ -18,6 +20,8 @@
           <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Nama Negeri Dalam Sistem HR</th>
           <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Kod Negeri Dalam Sistem FMS</th>
           <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Nama Negeri Dalam Sistem FMS</th>
+          <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Dikemas Kini Pada</th>
+          <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Dikemas Kini Oleh</th>
           <th class="py-2 px-2 text-left border border-gray-400 dark:border-gray-700 w-px whitespace-nowrap">Tindakan</th>
         </tr>
       </thead>
@@ -30,6 +34,8 @@
             </td>
             <td class="py-2 px-4 border border-gray-400 dark:border-gray-700">{{ $item->fms_state_code }}</td>
             <td class="py-2 px-4 border border-gray-400 dark:border-gray-700">{{ $item->fms_state_name }}</td>
+            <td class="py-2 px-4 border border-gray-400 dark:border-gray-700">{{ $item->updated_at }}</td>
+            <td class="py-2 px-4 border border-gray-400 dark:border-gray-700">{{ $item->updated_by }}</td>
   
             {{-- Action --}}
             <td class="py-2 px-2 border border-gray-400 dark:border-gray-700 w-px whitespace-nowrap">
