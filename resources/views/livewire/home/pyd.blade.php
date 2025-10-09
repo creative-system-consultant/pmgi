@@ -53,19 +53,19 @@
                                 <tbody class="bg-white">
                                     <tr>
                                         <td class="p-4 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                            2
+                                            {{ $ringkasan?->bil_pegawai ?? 0 }}
                                         </td>
                                         <td class="p-4 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                            293
+                                            {{ $ringkasan?->bil_status_semasa ?? 0 }}
                                         </td>
                                         <td class="p-4 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                            327
+                                            {{ $ringkasan?->bil_npf ?? 0 }}
                                         </td>
                                         <td class="p-4 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                            620
+                                            {{ $ringkasan?->tot_akaun ?? 0 }}
                                         </td>
                                         <td class="p-4 text-sm font-normal text-center text-gray-900 whitespace-nowrap">
-                                            310
+                                            {{ $ringkasan?->ratio_kpd_pegawai ?? 0 }}
                                         </td>
                                     </tr>
                                 </tbody>
@@ -90,9 +90,9 @@
                                         <th scope="col" colspan="3" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x">
                                             KUTIPAN TANPA KONTRAK-I
                                         </th>
-                                        <th scope="col" colspan="2" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x">
+                                        {{-- <th scope="col" colspan="2" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x">
                                             KUTIPAN KONTRAK-I
-                                        </th>
+                                        </th> --}}
                                         <th scope="col" colspan="2" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-black border-dashed border-x">
                                             LAWATAN
                                         </th>
@@ -130,12 +130,12 @@
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-r border-black border-dashed">
                                             % DK
                                         </th>
-                                        <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase">
+                                        {{-- <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase">
                                             BIL
                                         </th>
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase border-r border-black border-dashed">
                                             RM
-                                        </th>
+                                        </th> --}}
                                         <th scope="col" class="p-2 text-xs font-medium tracking-tight text-center text-gray-500 uppercase">
                                             BIL<br>LAWATAN
                                         </th>
@@ -198,12 +198,12 @@
                                         <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap border-r border-black border-dashed">
                                             {{ number_format($officerData->rm_dapat_kutip_pts, 2) ?? 0 }}%
                                         </td>
-                                        <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap">
+                                        {{-- <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap">
                                             {{ number_format($officerData->bil_dapat_kutip_nilai_pts) ?? 0 }}
                                         </td>
                                         <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap border-r border-black border-dashed">
                                             {{ number_format($officerData->rm_dapat_kutip_nilai_pts) ?? 0 }}
-                                        </td>
+                                        </td> --}}
                                         <td class="p-2 text-xs font-normal text-center text-gray-500 whitespace-nowrap">
                                             {{ number_format($officerData->bil_lawat) ?? 0 }}
                                         </td>

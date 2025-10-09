@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Home;
 
+use App\Models\PmgiSummAcctRatio;
 use App\Models\PmgiSummMiaAppl;
 use App\Models\PmgiSummPembiayaanProduk;
 use App\Models\PmgiSummRescheduleInfo;
@@ -30,6 +31,7 @@ class Pyd extends Component
     public $branchName;
     public $tarikhLantikan;
     public $tempohBerkhidmat;
+    public $ringkasan;
 
     public function mount()
     {
@@ -78,6 +80,13 @@ class Pyd extends Component
             return PmgiSummPembiayaanProduk::where('report_date', $maxDate)
                 ->where('branch_code', $authUser->branchCode())
                 ->get();
+        })();
+
+        $this->ringkasan = (function () use ($authUser) {
+            $maxDate = PmgiSummAcctRatio::max('report_date');
+            return PmgiSummAcctRatio::where('report_date', $maxDate)
+                ->where('branch_code', $authUser->branchCode())
+                ->first();
         })();
 
         $this->pmgiLevels = [
