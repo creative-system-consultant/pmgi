@@ -6,6 +6,7 @@ use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\WithPagination;
 use App\Models\Ref_pmgi_Result;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class pmgiRefpmgiResult extends Component
 {
@@ -18,6 +19,20 @@ class pmgiRefpmgiResult extends Component
 
     public $result = null;
     public $user;
+
+    public function exportPDF()
+    {
+        $data = Ref_pmgi_Result::select(['pmgi_result','pmgi_result_desc', 'pmgi_sys_result_desc', 'updated_at', 'updated_by'])->get();
+
+        // Generate PDF
+        $pdf = Pdf::loadView('pdf.admin.maintenance.ref_pmgi_result', compact('data'))->setPaper('A4', 'landscape');
+
+        // Stream the PDF to the browser or download it
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, 'penyelengaraan_deskripsi_keputusan_PMGi.pdf');       
+    }
+
 
     public function edit($result)
     {    

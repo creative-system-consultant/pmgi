@@ -6,6 +6,7 @@ use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\WithPagination;
 use App\Models\Ref_pmgi_Level;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class pmgiRefpmgiLevel extends Component
 {
@@ -18,6 +19,19 @@ class pmgiRefpmgiLevel extends Component
     
     public $seqno = null;
     public $user;
+
+    public function exportPDF()
+    {
+        $data = Ref_pmgi_Level::select(['seq_no', 'pmgi_level', 'pmgi_level_desc', 'pmgi_sys_level_desc', 'updated_at', 'updated_by'])->get();
+
+        // Generate PDF
+        $pdf = Pdf::loadView('pdf.admin.maintenance.ref_pmgi_level', compact('data'))->setPaper('A4', 'landscape');
+
+        // Stream the PDF to the browser or download it
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, 'penyelengaraan_peringkat_PMGi.pdf');       
+    }       
 
     public function edit($seqno)
     {        

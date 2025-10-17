@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\BnmStatecode;
 use App\Models\RefEvalPctg;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\WithPagination;
@@ -26,6 +27,23 @@ class pmgiRefEvalPctg extends Component
     public $search_term;
 
     public $user;
+
+    public function exportPDF()
+    {
+        $search = $this->search_term;
+
+        $data   = RefEvalPctg::with('bnmState')
+                  ->when($search, fn($q) => $q->where('state_code', $search))
+                  ->get();
+
+        // Generate PDF
+        $pdf = Pdf::loadView('pdf.admin.maintenance.ref_eval_pctg', compact('data'))->setPaper('A4', 'landscape');
+
+        // Stream the PDF to the browser or download it
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, 'penyelengaraan_peratusan_penilaian_PMGi.pdf');       
+    }        
 
     public function searchState()
     {

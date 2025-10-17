@@ -32,14 +32,18 @@ use App\Http\Controllers\Maintenance\MaintenanceController;
 use App\Livewire\Admin\ExceptionReport\PmgiExclBranch;
 use App\Livewire\Admin\ExceptionReport\PmgiExcpMissingBranch;
 use App\Livewire\Admin\ExceptionReport\PmgiExcpMissingMgr;
+use App\Livewire\Admin\Maintenance\PmgiExclUserLogin;
 use App\Livewire\Admin\Maintenance\pmgiRefMgrDesc;
 use App\Livewire\Admin\Maintenance\PmgiMapBrancheshr2fms;
 use App\Livewire\Admin\Maintenance\pmgiMapStateshr2fms;
 use App\Livewire\Admin\Maintenance\pmgiRefEvalPctg;
+use App\Livewire\Admin\Maintenance\PmgiRefJttRoles;
 use App\Livewire\Admin\Maintenance\pmgiRefMntrSessionNotes;
 use App\Livewire\Admin\Maintenance\pmgiRefpmgiLevel;
 use App\Livewire\Admin\Maintenance\pmgiRefpmgiPeriod;
 use App\Livewire\Admin\Maintenance\pmgiRefpmgiResult;
+use App\Livewire\Admin\Report\PmgiFMSBankOfficers;
+use App\Livewire\Admin\Report\PmgiHrdOfficer;
 use App\Livewire\Admin\Report\PmgiSysMsgLog;
 use App\Livewire\Module\Lantikan\Evaluator\Index as EvaluatorIndex;
 use App\Livewire\Module\Tetapan\OfficerInfo\Index as OfficerInfoIndex;
@@ -139,17 +143,23 @@ Route::middleware(['check.sysAvailable'])->group(function () {
             Route::get('/pmgi-period', pmgiRefpmgiPeriod::class)->name('ref_pmgi_period');
             Route::get('/map-states-hr2fms', pmgiMapStateshr2fms::class)->name('map_state_hr2fms');
             Route::get('/eval-percentage', pmgiRefEvalPctg::class)->name('ref_eval_pctg');
-            Route::get('/map-branches-hr2fms', PmgiMapBrancheshr2fms::class)->name('map_brances_hr2fms');
+            Route::get('/map-branches-hr2fms', PmgiMapBrancheshr2fms::class)->name('map_branches_hr2fms');
+            Route::get('/pmgi-excl-user-login', PmgiExclUserLogin::class)->name('excl_user_login');
+            Route::get('/jtt-roles', PmgiRefJttRoles::class)->name('ref_jtt_roles');
         });
 
+        // Laporan Pengecualian (Admin Only)
         Route::prefix('admin-exception-report')->name('exceptionReport.admin.')->group(function () {
             Route::get('/excl-branch', PmgiExclBranch::class)->name('excl_branch');
             Route::get('/excp-misssing-branch', PmgiExcpMissingBranch::class)->name('excp_missing_branch');
             Route::get('/excp-missing-mgr', PmgiExcpMissingMgr::class)->name('excp_missing_mgr');            
         });
 
+        // Laporan (Admin Only)
         Route::prefix('admin-report')->name('report.admin.')->group(function () {
             Route::get('/sys-msg-log', PmgiSysMsgLog::class)->name('sys_msg_log');         
+            Route::get('/fms-bank-officer', PmgiFMSBankOfficers::class)->name('fms_bank_officer');         
+            Route::get('/fms-hrd-officer', PmgiHrdOfficer::class)->name('fms_hrd_officer');         
         });        
 
     });

@@ -2,10 +2,11 @@
 
 namespace App\Livewire\Admin\Maintenance;
 
-use App\Models\Ref_Mntr_Session_Notes;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\WithPagination;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Ref_Mntr_Session_Notes;
 
 class pmgiRefMntrSessionNotes extends Component
 {
@@ -18,6 +19,19 @@ class pmgiRefMntrSessionNotes extends Component
 
     public $code = null;
     public $user;
+
+    public function exportPDF()
+    {
+        $data = Ref_Mntr_Session_Notes::select(['sesn_note_code', 'sesn_note_sys_desc', 'sesn_note_desc', 'updated_at', 'updated_by'])->get();
+
+        // Generate PDF
+        $pdf = Pdf::loadView('pdf.admin.maintenance.ref_mntr_session_notes', compact('data'))->setPaper('A4', 'landscape');
+
+        // Stream the PDF to the browser or download it
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, 'penyelengaraan_nota_sesi_pemantaun.pdf');       
+    }    
 
     public function edit($code)
     {               

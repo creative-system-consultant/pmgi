@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 use App\Models\Ref_Mgr_Desc;
 use Livewire\WithPagination;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 
 class pmgiRefMgrDesc extends Component
@@ -17,7 +18,20 @@ class pmgiRefMgrDesc extends Component
     public $edits = false; 
     public $mgr = null;
     public $mgr_desc;
-    public $user ;
+    public $user;
+
+    public function exportPDF()
+    {
+        $data = Ref_Mgr_Desc::select(['seq_no','mgr_desc', 'created_at', 'created_by', 'updated_at', 'updated_by'])->get();
+
+        // Generate PDF
+        $pdf = Pdf::loadView('pdf.admin.maintenance.ref_mgr_desc', compact('data'))->setPaper('A4', 'landscape');
+
+        // Stream the PDF to the browser or download it
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, 'penyelengaraan_deskripsi_pengurus.pdf');       
+    }
 
     public function add()
     {

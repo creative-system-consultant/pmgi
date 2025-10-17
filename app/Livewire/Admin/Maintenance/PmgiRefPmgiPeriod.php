@@ -6,6 +6,7 @@ use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\WithPagination;
 use App\Models\Ref_pmgi_Period;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Validation\Rule;
 
 class pmgiRefpmgiPeriod extends Component
@@ -19,6 +20,19 @@ class pmgiRefpmgiPeriod extends Component
     public $pmgi_level;
 
     public $user;
+
+    public function exportPDF()
+    {
+        $data = Ref_pmgi_Period::select(['effective_date', 'wait_period', 'pmgi_level', 'created_at', 'created_by'])->get();
+
+        // Generate PDF
+        $pdf = Pdf::loadView('pdf.admin.maintenance.ref_pmgi_period', compact('data'))->setPaper('A4', 'landscape');
+
+        // Stream the PDF to the browser or download it
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, 'penyelengaraan_tempoh_PMGi.pdf');       
+    }           
 
     public function add()
     {

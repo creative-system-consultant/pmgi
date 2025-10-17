@@ -3,8 +3,12 @@
     Laporan Keciciran Cawangan
   </h2>
 
-  <div class="overflow-x-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-inner mt-6 text-gray-900 dark:text-gray-100">
-    <div class="flex justify-between sm:justify-end mb-4">
+  <div class="overflow-x-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-inner mt-6 text-gray-900 dark:text-gray-100">    
+    <div class="flex justify-between sm:justify-between mb-4">
+        <button wire:click='runStoredProcedureToday' class="flex items-center w-48 bg-white text-gray-600 border border-gray-300 px-4 py-2 mx-1 transition-colors duration-200 rounded-md focus:outline-none">  
+          Jana Semula Senarai
+        </button>
+          
         <button wire:click='exportExcel()' class="flex items-center w-48 bg-white text-gray-600 border border-gray-300 px-4 py-2 mx-1 transition-colors duration-200 rounded-md focus:outline-none">
             <span class="mr-2">Download Excel</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 48 48">

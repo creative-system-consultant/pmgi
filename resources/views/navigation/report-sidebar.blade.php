@@ -7,6 +7,14 @@
             <a href="{{ route('report.admin.sys_msg_log') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
                 Log Mesej Sistem
             </a>              
+
+            <a href="{{ route('report.admin.fms_bank_officer') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                Pengawai (Sumber : FMS)
+            </a>              
+
+            <a href="{{ route('report.admin.fms_hrd_officer') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                Pegawai (Sumber : HR)
+            </a>              
         </nav>
     </aside>
 </div>

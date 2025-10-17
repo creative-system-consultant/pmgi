@@ -6,6 +6,7 @@ use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\WithPagination;
 use App\Models\Map_States_hr2fms;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class pmgiMapStateshr2fms extends Component
 {
@@ -17,6 +18,19 @@ class pmgiMapStateshr2fms extends Component
     public $hr_state_name;
 
     public $user;
+
+    public function exportPDF()
+    {
+        $data = Map_States_hr2fms::select(['fms_state_code', 'fms_state_name', 'hr_state_name', 'updated_at', 'updated_by'])->get();
+
+        // Generate PDF
+        $pdf = Pdf::loadView('pdf.admin.maintenance.map_states_hr2fms', compact('data'))->setPaper('A4', 'landscape');
+
+        // Stream the PDF to the browser or download it
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, 'penyelengaraan_pemetaan_negeri_HR_ke_FMS.pdf');       
+    }        
 
     public function edit($state_name)
     {
