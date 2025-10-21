@@ -62,6 +62,7 @@
           <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Kod CAW FMS</th>
           <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Negeri Dlm Sistem HR</th>
           <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">CAW Dlm Sistem HR</th>
+          <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Kod CAW HR</th>
           <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Kemas Kini Pada</th>
           <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Kemas Kini Oleh</th>
           <th class="py-2 px-2 text-left border border-gray-400 dark:border-gray-700 w-px whitespace-nowrap">Tindakan</th>
@@ -83,6 +84,9 @@
             <td class="py-2 px-4 bg-white hover:bg-gray-100 border border-gray-300 dark:bg-gray-500 dark:border-gray-700">
                 {{ $item->hr_branch_name }}
             </td>
+            <td class="py-2 px-4 bg-white hover:bg-gray-100 border border-gray-300 dark:bg-gray-500 dark:border-gray-700">
+                {{ $item->hr_branch_code }}
+            </td>            
             <td class="py-2 px-4 border border-gray-400 dark:border-gray-700">{{ $item->updated_at }}</td>
             <td class="py-2 px-4 border border-gray-400 dark:border-gray-700">{{ $item->updated_by }}</td>
   
@@ -215,6 +219,18 @@
                         @enderror
                     </div>
 
+                    {{-- HR Branch Code --}}
+                    <div>
+                        <label class="block text-sm sm:text-base font-medium text-gray-600">
+                            Kod Cawangan Dalam Sistem HR:
+                        </label>
+                        <input type="text" name="hr_branch_code" wire:model="hr_branch_code"
+                            class="w-full p-2 sm:p-3 border border-gray-500 rounded-md text-sm sm:text-base" />
+                        @error('hr_branch_code')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                        @enderror
+                    </div>                    
+
                     {{-- Action Buttons --}}
                     <div class="flex flex-col sm:flex-row justify-end gap-3 pt-4">
                         <button type="button"
@@ -299,6 +315,17 @@
                             <span class="text-red-600 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
+
+                    <div>
+                        <label class="block text-sm sm:text-base font-medium text-gray-600">
+                            Kod Cawangan Dalam Sistem HR:
+                        </label>
+                        <input type="text" name="hr_branch_code" wire:model="hr_branch_code"
+                            class="w-full p-2 sm:p-3 border border-gray-500 rounded-md text-sm sm:text-base" />
+                        @error('hr_branch_code')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                        @enderror
+                    </div>                    
 
                     <div class="flex flex-col sm:flex-row justify-end gap-3 pt-4">
                         <button type="button"

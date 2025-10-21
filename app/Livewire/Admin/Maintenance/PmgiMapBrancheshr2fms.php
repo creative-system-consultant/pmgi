@@ -27,6 +27,7 @@ class PmgiMapBrancheshr2fms extends Component
     public $fms_branch_code;
     public $hr_state_name;
     public $hr_branch_name;
+    public $hr_branch_code;
 
     public $filterBranches = [];
 
@@ -74,7 +75,7 @@ class PmgiMapBrancheshr2fms extends Component
         $branchCode = Branch::where('branch_name', $this->fms_branch_name)->value('branch_code');
 
        if ($this->fms_branch_name) {
-            $this->fms_branch_code = ltrim($branchCode, '0');            
+            $this->fms_branch_code = $branchCode;            
        }
 
        else
@@ -97,6 +98,7 @@ class PmgiMapBrancheshr2fms extends Component
         $this->fms_branch_code = '';
         $this->hr_state_name   = '';     
         $this->hr_branch_name  = ''; 
+        $this->hr_branch_code  = '';
     }
 
     public function store() 
@@ -110,7 +112,8 @@ class PmgiMapBrancheshr2fms extends Component
                 'hr_branch_name' => [
                                       'required',
                                        Rule::unique('pmgi_map_branches_hr2fms', 'hr_branch_name') ->where(fn ($branch_name) => $branch_name->where('fms_branch_code', $this->fms_branch_code)),                                    
-                                    ]
+                ],
+                'hr_branch_code' => 'nullable|integer|unique:pmgi_map_branches_hr2fms,hr_branch_code',
             ],
             [
                 'fms_state_name.required'  => 'Sila plih nama negeri dalam sistem FMS',
@@ -118,7 +121,9 @@ class PmgiMapBrancheshr2fms extends Component
                 'fms_branch_code.required' => 'Sila masukan kod cawangan',
                 'hr_state_name.required'   => 'Sila pilih nama negeri dalam sistem HR',
                 'hr_branch_name.required'  => 'Sila masukkan nama branch dalam sistem HR',
-                'hr_branch_name.unique'    => 'Nama cawangan dalam sistem HR sudah wujud untuk kod cawangan FMS ini'
+                'hr_branch_code.integer'   => 'Kod Cawangan dalam sistem HR mestilah nombor bulat',
+                'hr_branch_name.unique'    => 'Nama cawangan dalam sistem HR sudah wujud untuk kod cawangan FMS ini',
+                'hr_branch_code.unique'    => 'Kod cawangan dalam sistem HR sudah wujud',
             ]);
         }
 
@@ -144,6 +149,7 @@ class PmgiMapBrancheshr2fms extends Component
             'fms_branch_code' => $this->fms_branch_code,
             'hr_state_name'   => $this->hr_state_name,
             'hr_branch_name'  => Str::squish(strtoupper($this->hr_branch_name)),
+            'hr_branch_code'  => Str::squish(str_pad($this->hr_branch_code, '4', '0', STR_PAD_LEFT)),
             'upd_flag'        => 'N',
             'created_at'      => \Carbon\Carbon::now('Asia/Kuala_Lumpur'),
             'created_by'      => $this->user,
@@ -153,8 +159,8 @@ class PmgiMapBrancheshr2fms extends Component
         $this->insert = false; // close modal only
 
         // Livewire v3 event (name + payload)
-        $this->dispatch('swal', title: 'Berjaya', text: 'Berjaya Tambah Senarai Cawangan.', icon: 'success');
-        redirect()->route('maintenance.admin.map_brances_hr2fms');
+        $this->dispatch('swal', title: 'Berjaya', text: 'Berjaya Tambah Senarai Pemetaan Cawangan.', icon: 'success');
+        redirect()->route('maintenance.admin.map_branches_hr2fms');
     }
 
     public function edit($branch)
@@ -169,22 +175,34 @@ class PmgiMapBrancheshr2fms extends Component
         $this->fms_branch_code = $data->fms_branch_code;
         $this->hr_state_name   = $data->hr_state_name;     
         $this->hr_branch_name  = $data->hr_branch_name;   
+        $this->hr_branch_code  = $data->hr_branch_code;   
     }
 
     public function update()
     {
         $this->validate([
             'hr_state_name'  => 'required',
-            'hr_branch_name' => 'required',                                                           
+            'hr_branch_name' => [
+                                    'required',
+                                    Rule::unique('pmgi_map_branches_hr2fms', 'hr_branch_name') ->where(fn ($branch_name) => $branch_name->where('fms_branch_code', $this->fms_branch_code))->ignore($this->branch, 'seq_no'),                                    
+            ],
+            'hr_branch_code' =>  [
+                                    'nullable', 'integer',
+                                    Rule::unique('pmgi_map_branches_hr2fms', 'hr_branch_code')->ignore($this->branch, 'seq_no'),                                    
+            ],           
         ],
         [
             'hr_state_name.required'  => 'Sila pilih nama negeri',
             'hr_branch_name.required' => 'Sila masukkan nama branch dalam sistem HR',
+            'hr_branch_code.integer'   => 'Kod Cawangan dalam sistem HR mestilah nombor bulat',
+            'hr_branch_name.unique'    => 'Nama cawangan dalam sistem HR sudah wujud untuk kod cawangan FMS ini',
+            'hr_branch_code.unique'    => 'Kod cawangan dalam sistem HR sudah wujud',            
         ]);
 
         Map_Branches_hr2fms::where('seq_no', $this->branch)->update([
             'hr_state_name'   => $this->hr_state_name,
             'hr_branch_name'  => Str::squish(strtoupper($this->hr_branch_name)),
+            'hr_branch_code'  => Str::squish(str_pad($this->hr_branch_code, '4', '0', STR_PAD_LEFT)),
             'updated_at'      => \Carbon\Carbon::now('Asia/Kuala_Lumpur'),
             'updated_by'      => $this->user,
         ]);
@@ -192,8 +210,8 @@ class PmgiMapBrancheshr2fms extends Component
         $this->edits = false; // close modal only
 
         // Livewire v3 event (name + payload)
-        $this->dispatch('swal', title: 'Berjaya', text: 'Nama Negeri dan Nama Cawagan Dalam Sistem HR Berjaya Dikemas Kini.', icon: 'success');
-        redirect()->route('maintenance.admin.map_brances_hr2fms');      
+        $this->dispatch('swal', title: 'Berjaya', text: 'Senarai Pemetaan Cawangan Berjaya Dikemas Kini.', icon: 'success');
+        redirect()->route('maintenance.admin.map_branches_hr2fms');      
     }
 
     public function confirmDelete($branch)
@@ -213,7 +231,7 @@ class PmgiMapBrancheshr2fms extends Component
         ]);
 
         $this->dispatch('swal', title: 'Berjaya', text: 'Senarai Cawangan Ini Berjaya Dihapuskan.', icon: 'success');
-        redirect()->route('maintenance.admin.map_brances_hr2fms');
+        redirect()->route('maintenance.admin.map_branches_hr2fms');
     }
 
     public function close()
@@ -225,6 +243,7 @@ class PmgiMapBrancheshr2fms extends Component
         $this->resetValidation('fms_branch_name');
         $this->resetValidation('hr_state_name');
         $this->resetValidation('hr_branch_name');
+        $this->resetValidation('hr_branch_code');
     }
 
     public function mount()
