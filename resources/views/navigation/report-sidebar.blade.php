@@ -9,7 +9,7 @@
             </a>              
 
             <a href="{{ route('report.admin.fms_bank_officer') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
-                Pengawai (Sumber : FMS)
+                Pegawai (Sumber : FMS)
             </a>              
 
             <a href="{{ route('report.admin.fms_hrd_officer') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">

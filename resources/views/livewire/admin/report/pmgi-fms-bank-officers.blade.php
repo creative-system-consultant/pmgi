@@ -1,6 +1,6 @@
 <div class="ml-4">
   <h2 class="mt-6 text-2xl font-semibold text-gray-800 mb-4 border-b border-gray-300 pb-2 dark:text-gray-100">
-    Laporan Pengawai (Sumber : FMS)
+    Laporan Pegawai (Sumber : FMS)
   </h2>
   
   <div class="overflow-x-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow-inner mt-6 text-gray-900 dark:text-gray-100">    
@@ -60,7 +60,7 @@
               Kod Cawangan
             </th>
             <th class="py-2 px-2 text-left border border-gray-300 dark:border-gray-700">
-              No. Pengawai
+              No. Pegawai
             </th>
             <th class="py-2 px-3 text-left border border-gray-300 dark:border-gray-700">
               Status (FMS)

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Laporan Pengawai Bank FMS</title>
+    <title>Laporan Pegawai FMS</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,7 +22,7 @@
     </style>
 </head>
 <body>
-    <h2>Laporan Pengawai Bank FMS</h2>
+    <h2>Laporan Pegawai FMS</h2>
     
     <table>
         <thead>
@@ -40,7 +40,7 @@
               Kod Cawangan
             </th>
             <th>
-              No. Pengawai
+              No. Pegawai
             </th>
             <th>
               Status (FMS)
