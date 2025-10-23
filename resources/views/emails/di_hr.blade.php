@@ -472,7 +472,7 @@
                                                                                             </div>
                                                                                             <div><span>Tatatertib Berdasarkan Keputusan</span>
                                                                                             </div>
-                                                                                            <div><span>Jawatankuasa Timbang Tara (PMGi)</span>
+                                                                                            <div><span>Jawatankuasa Penilaian PMGi</span>
                                                                                             </div>
                                                                                             <div><span>﻿</span>
                                                                                             </div>

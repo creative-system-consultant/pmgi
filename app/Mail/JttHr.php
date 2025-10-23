@@ -26,7 +26,7 @@ class JttHr extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Makluman Permohonan Pelaksanaan Tindakan Tatatertib Berdasarkan Keputusan Jawatankuasa Timbang Tara (PMGi)',
+            subject: 'Makluman Permohonan Pelaksanaan Tindakan Tatatertib Berdasarkan Keputusan Jawatankuasa Penilaian PMGi',
         );
     }
 
