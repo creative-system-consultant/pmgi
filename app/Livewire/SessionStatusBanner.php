@@ -28,7 +28,7 @@ class SessionStatusBanner extends Component
         $user = Auth::user();
 
         $this->sessionInfo = SessionInfo::whereDate('session_date', now())
-            ->where('status', 0)
+            ->whereNull('status')
             ->whereHas('setting', function ($query) use ($user) {
                 $query->where(function ($q) use ($user) {
                     $q->where('pyd_id', $user->USERID)
