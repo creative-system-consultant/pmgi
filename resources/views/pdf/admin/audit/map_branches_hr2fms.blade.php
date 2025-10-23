@@ -27,13 +27,15 @@
     <table>
         <thead>
             <tr>
-                <th>Seq No</th>
+                <th>NO</th>
+                <th>ID</th>
                 <th>Negeri Dlm FMS</th>
                 <th>CAW Dlm FMS</th>
                 <th>Kod CAW FMS</th>
                 <th>Negeri Dlm Sistem HR</th>
                 <th>CAW Dlm Sistem HR</th>
                 <th>Kod CAW HR</th>
+                <th>Jenis Kemaskini</th>                
                 <th>Kemas Kini Pada</th>
                 <th>Kemas Kini Oleh</th>
             </tr>
@@ -41,15 +43,23 @@
         <tbody>
             @forelse ($data as $item)
                 <tr>
-                    <td>
-                    {{ $item->seq_no }}
-                    </td>
+                    <td> {{ $loop->iteration }}</td>
+                    <td>{{ $item->seq_no }}</td>
                     <td>{{ $item->fms_state_name }}</td>
                     <td>{{ $item->fms_branch_name }}</td>
                     <td>{{ $item->fms_branch_code }}</td>
                     <td>{{ $item->hr_state_name }}</td>
                     <td>{{ $item->hr_branch_name }}</td>
                     <td>{{ $item->hr_branch_code }}</td>
+                    <td>
+                        @if($item->update_ind == 'A')
+                            Cipta
+                        @elseif($item->update_ind == 'U')
+                            Pinda
+                        @else
+                            Hapus
+                        @endif                           
+                    </td>                    
                     <td>{{ $item->updated_at ? date('d/m/Y H:i:s', strtotime($item->updated_at)) : '' }}</td>
                     <td>{{ $item->updated_by }}</td>
                 </tr>

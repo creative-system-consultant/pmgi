@@ -25,7 +25,7 @@
             </a>           
                     
             <a href="{{ route('maintenance.admin.ref_eval_pctg') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
-                Peratusan Penilaian
+                Peratusan Penilaian PMGi
             </a>
 
             <a href="{{ route('maintenance.admin.map_state_hr2fms') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">

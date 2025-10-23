@@ -137,11 +137,11 @@
                                 </li>
 
                                 <li>
-                                    <a href="{{ route('exceptionReport.admin.excl_branch') }}" class="block {{ Route::currentRouteName() === 'exceptionReport.admin.excl_branch' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Laporan Pengecualian</a>
+                                    <a href="{{ route('exceptionReport.admin.excl_branch') }}" class="block {{ Route::currentRouteName() === 'exceptionReport.admin.excl_branch' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Laporan Khas</a>
                                 </li>  
                                 
                                 <li>
-                                    <a href="{{ route('report.admin.sys_msg_log') }}" class="block {{ Route::currentRouteName() === 'report.admin.sys_msg_log' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Laporan</a>
+                                    <a href="{{ route('report.admin.fms_bank_officer') }}" class="block {{ Route::currentRouteName() === 'report.admin.fms_bank_officer' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Laporan</a>
                                 </li>                                 
                             @endif                                
                         </ul>                    
@@ -292,11 +292,11 @@
                     </li>
 
                     <li class="block border-b">
-                        <a href="{{ route('exceptionReport.admin.excl_branch') }}" class="block px-4 py-3 {{ Route::currentRouteName() === 'exceptionReport.admin.excl_branch' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Laporan Pengecualian</a>
+                        <a href="{{ route('exceptionReport.admin.excl_branch') }}" class="block px-4 py-3 {{ Route::currentRouteName() === 'exceptionReport.admin.excl_branch' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Laporan Khas</a>
                     </li>  
                     
                     <li class="block border-b">
-                        <a href="{{ route('report.admin.sys_msg_log') }}" class="block px-4 py-3 {{ Route::currentRouteName() === 'report.admin.sys_msg_log' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Laporan</a>
+                        <a href="{{ route('report.admin.fms_bank_officer') }}" class="block px-4 py-3c {{ Route::currentRouteName() === 'report.admin.fms_bank_officer' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Laporan</a>
                     </li>                                 
                 @endif                          
             @endauth

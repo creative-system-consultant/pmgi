@@ -35,7 +35,7 @@ class PmgiMapBrancheshr2fms extends Component
 
     public function exportPDF()
     {
-        $data = Map_Branches_hr2fms::select(['seq_no', 'fms_state_name' , 'fms_branch_name', 'fms_branch_code', 'hr_state_name' ,'hr_branch_name', 'updated_at', 'updated_by'])->orderBy('seq_no', 'asc')->get();        
+        $data = Map_Branches_hr2fms::select(['seq_no', 'fms_state_name' , 'fms_branch_name', 'fms_branch_code', 'hr_state_name' ,'hr_branch_name', 'hr_branch_code', 'updated_at', 'updated_by'])->orderBy('seq_no', 'asc')->get();        
 
         // Generate PDF
         $pdf = Pdf::loadView('pdf.admin.maintenance.map_branches_hr2fms', compact('data'))->setPaper('A4', 'landscape');

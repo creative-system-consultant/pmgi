@@ -29,6 +29,15 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Livewire\Module\Tetapan\PeratusanKriteria;
 use App\Livewire\Module\Tetapan\MeetingRoom\MeetingRoom;
 use App\Http\Controllers\Maintenance\MaintenanceController;
+use App\Livewire\Admin\AuditReport\PmgiAuditEvalPctg;
+use App\Livewire\Admin\AuditReport\PmgiAuditJttRoles;
+use App\Livewire\Admin\AuditReport\PmgiAuditMapBrancheshr2fms;
+use App\Livewire\Admin\AuditReport\PmgiAuditMapStateshr2fms;
+use App\Livewire\Admin\AuditReport\PmgiAuditMgrDesc;
+use App\Livewire\Admin\AuditReport\PmgiAuditMntrSession;
+use App\Livewire\Admin\AuditReport\PmgiAuditPmgiLevel;
+use App\Livewire\Admin\AuditReport\PmgiAuditPmgiPeriod;
+use App\Livewire\Admin\AuditReport\PmgiAuditPmgiResult;
 use App\Livewire\Admin\ExceptionReport\PmgiExclBranch;
 use App\Livewire\Admin\ExceptionReport\PmgiExcpMissingBranch;
 use App\Livewire\Admin\ExceptionReport\PmgiExcpMissingMgr;
@@ -148,20 +157,33 @@ Route::middleware(['check.sysAvailable'])->group(function () {
             Route::get('/jtt-roles', PmgiRefJttRoles::class)->name('ref_jtt_roles');
         });
 
-        // Laporan Pengecualian (Admin Only)
-        Route::prefix('admin-exception-report')->name('exceptionReport.admin.')->group(function () {
+        // Laporan Khas (Admin Only)
+        Route::prefix('admin-special-report')->name('exceptionReport.admin.')->group(function () {
+            // Laporan Pengecualian
             Route::get('/excl-branch', PmgiExclBranch::class)->name('excl_branch');
             Route::get('/excp-misssing-branch', PmgiExcpMissingBranch::class)->name('excp_missing_branch');
-            Route::get('/excp-missing-mgr', PmgiExcpMissingMgr::class)->name('excp_missing_mgr');            
+            Route::get('/excp-missing-mgr', PmgiExcpMissingMgr::class)->name('excp_missing_mgr');   
+            
+            // Laporan Audit
+            Route::get('/audit-mgr-desc', PmgiAuditMgrDesc::class)->name('audit_mgr_desc');
+            Route::get('/audit-pmgi-result', PmgiAuditPmgiResult::class)->name('audit_pmgi_result');
+            Route::get('/audit-monitor-session-notes', PmgiAuditMntrSession::class)->name('audit_monitor_session_notes');
+            Route::get('/audit-pmgi-level', PmgiAuditPmgiLevel::class)->name('audit_pmgi_level');
+            Route::get('/audit-pmgi-period', PmgiAuditPmgiPeriod::class)->name('audit_pmgi_period');
+            Route::get('/audit-map-states-hr2fms', PmgiAuditMapStateshr2fms::class)->name('audit_map_state_hr2fms');
+            Route::get('/audit-eval-percentage', PmgiAuditEvalPctg::class)->name('audit_eval_pctg');
+            Route::get('/audit-map-branches-hr2fms', PmgiAuditMapBrancheshr2fms::class)->name('audit_map_branches_hr2fms');
+            Route::get('/audit-jtt-roles', PmgiAuditJttRoles::class)->name('audit_jtt_roles');
+
+            // Laporan Sistem
+            Route::get('/sys-msg-log', PmgiSysMsgLog::class)->name('sys_msg_log');
         });
 
         // Laporan (Admin Only)
-        Route::prefix('admin-report')->name('report.admin.')->group(function () {
-            Route::get('/sys-msg-log', PmgiSysMsgLog::class)->name('sys_msg_log');         
+        Route::prefix('admin-report')->name('report.admin.')->group(function () {                  
             Route::get('/fms-bank-officer', PmgiFMSBankOfficers::class)->name('fms_bank_officer');         
             Route::get('/fms-hrd-officer', PmgiHrdOfficer::class)->name('fms_hrd_officer');         
         });        
-
     });
 
     Route::middleware(['auth', 'check.role', 'ensure.session'])->group(function () {
