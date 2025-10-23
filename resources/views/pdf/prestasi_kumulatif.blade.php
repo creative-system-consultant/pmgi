@@ -257,7 +257,7 @@
                         </tr>
                         <tr>
                             <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap border border-black border-dashed border-y">
-                                KUTIPAN TANPA KONTRAK I (Minimum {{ $percentage->get(0)->evaluation_percentage }}%)
+                                KUTIPAN T. <br> KONTRAK I <br> (Min. {{ $percentage->get(0)->evaluation_percentage }}%)
                             </td>
                             @foreach($datas as $data)
                             <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
@@ -310,11 +310,11 @@
                         </tr>
                         <tr>
                             <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap border border-black border-dashed border-y">
-                                BILANGAN MEMBAYAR (Minimum {{ $percentage->get(1)->evaluation_percentage }}%)
+                                BIL. BAYAR <br> (Min. {{ $percentage->get(1)->evaluation_percentage }}%)
                             </td>
                             @foreach($datas as $data)
                             <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
-                                BILANGAN SELIAAN
+                                BIL. SELIA
                             </td>
                             <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->bil_patut_kutip) }}
@@ -334,7 +334,7 @@
                         <tr>
                             @foreach($datas as $data)
                             <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
-                                BILANGAN MEMBAYAR
+                                BIL. BAYAR
                             </td>
                             <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->bil_dapat_kutip) }}
@@ -363,11 +363,11 @@
                         </tr>
                         <tr>
                             <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap border border-black border-dashed border-y">
-                                LAWATAN SELIAAN (Minimum {{ $percentage->get(2)->evaluation_percentage }}%)
+                                LAWAT SELIA <br> (Min. {{ $percentage->get(2)->evaluation_percentage }}%)
                             </td>
                             @foreach($datas as $data)
                             <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
-                                BILANGAN SELIAAN
+                                BIL. SELIA
                             </td>
                             <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->bil_selia) }}
@@ -387,7 +387,7 @@
                         <tr>
                             @foreach($datas as $data)
                             <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
-                                JUMLAH LAWATAN
+                                JUMLAH LAWAT
                             </td>
                             <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->bil_lawat) }}
@@ -416,11 +416,11 @@
                         </tr>
                         <tr>
                             <td rowspan="3" class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap border border-black border-dashed border-y">
-                                PRESTASI NPF (KAWALAN) (Minimum {{ $percentage->get(3)->evaluation_percentage }}%)
+                                PRESTASI NPF <br> (KAWAL) <br> (Min. {{ $percentage->get(3)->evaluation_percentage }}%)
                             </td>
                             @foreach($datas as $data)
                             <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
-                                BILANGAN AKAUN A3 (5.01-6)
+                                BIL. AKAUN A3 (5.01-6)
                             </td>
                             <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->bil_kawal_npf_sblm) }}
@@ -440,7 +440,7 @@
                         <tr>
                             @foreach($datas as $data)
                             <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
-                                BERTUKAR B1
+                                TUKAR B1
                             </td>
                             <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->bil_kawal_npf_tukar) }}
@@ -450,7 +450,7 @@
                         <tr>
                             @foreach($datas as $data)
                             <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
-                                BILANGAN KEKAL
+                                BIL. KEKAL
                             </td>
                             <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->bil_kawal_npf_kekal) }}
@@ -479,11 +479,11 @@
                         </tr>
                         <tr>
                             <td rowspan="2" class="p-2 text-sm font-normal text-center text-gray-900 whitespace-nowrap border border-black border-dashed border-y">
-                                PRESTASI NPF PEMULIHAN (Minimum {{ $percentage->get(4)->evaluation_percentage }}%)
+                                PRESTASI NPF <br> PULIH <br> (Min. {{ $percentage->get(4)->evaluation_percentage }}%)
                             </td>
                             @foreach($datas as $data)
                             <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
-                                BILANGAN AKAUN NPF
+                                BIL. AKAUN NPF
                             </td>
                             <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->bil_pulih_npf_sblm) }}
@@ -503,7 +503,7 @@
                         <tr>
                             @foreach($datas as $data)
                             <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
-                                BERTUKAR SEMASA
+                                TUKAR SEMASA
                             </td>
                             <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black border-dashed border-y">
                                 {{ number_format($data->bil_pulih_npf_tukar) }}
