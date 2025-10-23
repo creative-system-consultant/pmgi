@@ -46,7 +46,7 @@
                                 {{ $data->branch_name }}
                             </td>
                             <td class="p-2 text-sm font-normal text-left text-gray-900 whitespace-nowrap border border-black">
-                                {{ $data->jawatan }}
+                                {{ $data->gelaran }}
                             </td>
                             <td class="p-1 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                 <div class="flex justify-center">
