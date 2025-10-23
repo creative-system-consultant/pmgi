@@ -56,13 +56,18 @@ class HomeJtt extends Component
             $token = Str::random(32);
 
             // Create a new meeting invitation record
-            JttMeetingInvitation::create([
-                'session_id' => $sessionId,
-                'officer_id' => $officer->officer_id,
-                'role' => $role,
-                'token' => $token,
-                'expires_at' => now()->addHour(),
-            ]);
+            JttMeetingInvitation::updateOrCreate(
+                [   'session_id' => $sessionId,
+                    'officer_id' => $officer->officer_id,
+                ],
+                [
+                    'session_id' => $sessionId,
+                    'officer_id' => $officer->officer_id,
+                    'role' => $role,
+                    'token' => $token,
+                    'expires_at' => now()->addHour(),
+                ]
+            );
 
             // save panel
             JttSessionPanel::create([
@@ -80,7 +85,7 @@ class HomeJtt extends Component
     {
         $datePart = now()->format('Ymd');
         $formattedDatePart = substr($datePart, 2, 6);
-        return 'JTT' . $formattedDatePart . $this->room;
+        return 'JKPI' . $formattedDatePart . $this->room;
     }
 
     public function confirmAttendance($token)
