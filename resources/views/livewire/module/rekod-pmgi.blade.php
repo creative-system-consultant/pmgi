@@ -54,12 +54,12 @@
                     </li>
                     <li class="me-2">
                         <div @click="tab = 'JTT1'" :class="{ 'bg-primary-600 text-white': tab === 'JTT1', 'hover:text-gray-900 hover:bg-gray-100': tab !== 'JTT1' }" class="inline-block px-4 py-3 rounded-lg cursor-pointer">
-                            JKPi 1
+                            JKPI 1
                         </div>
                     </li>
                     <li class="me-2">
                         <div @click="tab = 'JTT2'" :class="{ 'bg-primary-600 text-white': tab === 'JTT2', 'hover:text-gray-900 hover:bg-gray-100': tab !== 'JTT2' }" class="inline-block px-4 py-3 rounded-lg cursor-pointer">
-                            JKPi 2
+                            JKPI 2
                         </div>
                     </li>
                 </ul>
@@ -277,7 +277,7 @@
                                                     @if($data->mntrSession && $data->mntrSession->pmgi_result == 'PDQ')
                                                     <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-yellow-800 bg-yellow-100 rounded-md border-yellow-100">DIBERI TEMPOH</div>
                                                     @else
-                                                    <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-red-800 bg-red-100 rounded-md border-red-100">TINDAKAN TATA TERTIB</div>
+                                                    <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-red-800 bg-red-100 rounded-md border-red-100">DIBAWA KE JKPI 2</div>
                                                     @endif
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
