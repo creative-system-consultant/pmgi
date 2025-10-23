@@ -123,7 +123,7 @@
                     clearInterval(refreshInterval);
                     
                     // Show success message and redirect
-                    WireUI.notify({
+                    window.$wireui.notify({
                         title: 'System Available!',
                         description: 'Redirecting to login page...',
                         icon: 'success'
