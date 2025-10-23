@@ -111,13 +111,13 @@
                 <strong>{{ $alamat2 }}</strong>
             </div>
 
-            {{-- bil seliaan --}}
-            <div class="input-container" style="top: 487px; left: 270px;">
-                <strong>{{ $accCount }}</strong>
-            </div>
-
             @if ($bankOfficerPyd->hr_mgr_flag == 'Y')
                 {{-- NPF Cawangan --}}
+                {{-- bil seliaan --}}
+                <div class="input-container" style="top: 487px; left: 270px;">
+                    <strong>{{ $accCount }}</strong>
+                </div>
+
                 {{-- bil seliaan --}}
                 <div class="input-container" style="top: 487px; left: 270px;">
                     <strong>{{ $accCount }}</strong>
@@ -261,10 +261,15 @@
                 <strong>{{ $pydInfo->action }}</strong>
             </div>
 
+            {{-- kepala ulasan --}}
+            <div class="input-container" style="top: 600px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
+                <strong>Ulasan (Jika Ada) : </strong>
+            </div> 
+
             {{-- ulasan --}}
-            {{-- <div class="input-container" style="top: 660px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
+            <div class="input-container" style="top: 660px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
                 <strong>{{ $pydInfo->comments }}</strong>
-            </div> --}}
+            </div> 
         </div>
     </div>
     <div class="page_break"></div>
@@ -278,12 +283,12 @@
             </div>
 
             {{-- kepala ulasan --}}
-             <div class="input-container" style="top: 300px; left: 90px; width: 500px; word-wrap: break-word; white-space: normal;">
+            <div class="input-container" style="top: 300px; left: 90px; width: 500px; word-wrap: break-word; white-space: normal;">
                 <strong>Ulasan (Jika Ada) : </strong>
             </div> 
 
             {{-- ulasan --}}
-             <div class="input-container" style="top: 340px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
+            <div class="input-container" style="top: 340px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
                 <strong>{{ $pymInfo->comments }}</strong>
             </div> 
 

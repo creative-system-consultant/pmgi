@@ -257,10 +257,15 @@
                 <strong>{{ $pydInfo->action }}</strong>
             </div>
 
+            {{-- kepala ulasan --}}
+            <div class="input-container" style="top: 600px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
+                <strong>Ulasan (Jika Ada) : </strong>
+            </div> 
+
             {{-- ulasan --}}
-            {{-- <div class="input-container" style="top: 660px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
+            <div class="input-container" style="top: 660px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
                 <strong>{{ $pydInfo->comments }}</strong>
-            </div> --}}
+            </div> 
         </div>
     </div>
     <div class="page_break"></div>
@@ -268,15 +273,20 @@
     <div class="centered">
         <img src="image/borang/jpoc/BorangJpocPmgi12-4.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
         <div class="content-overlay">
-            {{-- ulasan --}}
-            {{-- <div class="input-container" style="top: 190px; left: 140px; width: 500px; word-wrap: break-word; white-space: normal;">
-                <strong>{{ $pymInfo->comments }}</strong>
-            </div> --}}
-
             {{-- pelan tindakan --}}
             <div class="input-container" style="top: 190px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
                 <strong>{{ $pymInfo->action }}</strong>
             </div>
+
+            {{-- kepala ulasan --}}
+            <div class="input-container" style="top: 300px; left: 90px; width: 500px; word-wrap: break-word; white-space: normal;">
+                <strong>Ulasan (Jika Ada) : </strong>
+            </div> 
+
+            {{-- ulasan --}}
+            <div class="input-container" style="top: 340px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
+                <strong>{{ $pymInfo->comments }}</strong>
+            </div> 
         </div>
     </div>
     <div class="page_break"></div>
