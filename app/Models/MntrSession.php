@@ -45,4 +45,19 @@ class MntrSession extends Model
     {
         return $this->hasOne(SettPymPmc::class, 'report_date', 'report_date');
     }
+
+    public function level()
+    {
+        return $this->belongsTo(\App\Models\Ref_pmgi_Level::class, 'pmgi_level', 'pmgi_level');
+    }
+
+    public function result()
+    {
+        return $this->belongsTo(\App\Models\Ref_pmgi_Result::class, 'pmgi_result', 'pmgi_result');
+    }
+    
+    public function bankOfficer()
+    {
+        return $this->hasOne(BankOfficer::class, 'officer_id', 'officer_id');
+    }    
 }

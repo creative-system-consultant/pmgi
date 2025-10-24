@@ -11,6 +11,10 @@
             <a href="{{ route('report.admin.fms_hrd_officer') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
                 Pegawai (Sumber : HR)
             </a>              
+
+            <a href="{{ route('report.admin.senarai_pengawai_JKPi') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                Senarai Pegawai Selesai JKPi Mengikut Peringkat
+            </a>              
         </nav>
     </aside>
 </div>

@@ -78,7 +78,7 @@
       </thead>
     
       <tbody class="text-sm text-gray-700 dark:text-gray-200">
-        @forelse ($data as $item)
+        @forelse ($report as $item)
           <tr class="text-xs hover:bg-gray-50 dark:hover:bg-gray-800/70">
             <td class="py-2 px-4 text-left border border-gray-300 dark:border-gray-700">{{ $item->officer_id }}</td>
             <td class="py-2 px-4 text-left border border-gray-300 dark:border-gray-700">{{ $item->officer_name }}</td>
@@ -101,7 +101,7 @@
     </table>
 
     <div class="mt-6">
-      {{ $data->links() }}
+      {{ $report->links() }}
     </div>
   </div>
 </div>

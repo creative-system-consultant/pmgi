@@ -28,11 +28,10 @@ class PmgiFMSBankOfficers extends Component
         }, 'laporan_pengawai_bank_FMS.pdf');       
     }        
 
-
     public function render()
     {
-        $data = BankOfficer::paginate(15);
+        $report = BankOfficer::paginate(15);
 
-        return view('livewire.admin.report.pmgi-fms-bank-officers', compact('data'))->extends('layouts.main');
+        return view('livewire.admin.report.pmgi-fms-bank-officers', compact('report'))->extends('layouts.main');
     }
 }

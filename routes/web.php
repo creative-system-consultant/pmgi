@@ -51,6 +51,7 @@ use App\Livewire\Admin\Maintenance\pmgiRefMntrSessionNotes;
 use App\Livewire\Admin\Maintenance\pmgiRefpmgiLevel;
 use App\Livewire\Admin\Maintenance\pmgiRefpmgiPeriod;
 use App\Livewire\Admin\Maintenance\pmgiRefpmgiResult;
+use App\Livewire\Admin\Report\JKPiCompletedOfficerByLevel;
 use App\Livewire\Admin\Report\PmgiFMSBankOfficers;
 use App\Livewire\Admin\Report\PmgiHrdOfficer;
 use App\Livewire\Admin\Report\PmgiSysMsgLog;
@@ -183,6 +184,7 @@ Route::middleware(['check.sysAvailable'])->group(function () {
         Route::prefix('admin-report')->name('report.admin.')->group(function () {                  
             Route::get('/fms-bank-officer', PmgiFMSBankOfficers::class)->name('fms_bank_officer');         
             Route::get('/fms-hrd-officer', PmgiHrdOfficer::class)->name('fms_hrd_officer');         
+            Route::get('/senarai-pengawai-JKPi', JKPiCompletedOfficerByLevel::class)->name('senarai_pengawai_JKPi');         
         });        
     });
 

@@ -28,8 +28,8 @@ class PmgiHrdOfficer extends Component
 
     public function render()
     {
-        $data = HrdOfficer::paginate(15);
+        $report = HrdOfficer::paginate(15);
 
-        return view('livewire..admin.report.pmgi-hrd-officer', compact('data'))->extends('layouts.main');
+        return view('livewire..admin.report.pmgi-hrd-officer', compact('report'))->extends('layouts.main');
     }
 }
