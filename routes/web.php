@@ -1,37 +1,64 @@
 <?php
 
-use App\Http\Controllers\Auth\LogoutController;
-use App\Http\Controllers\Maintenance\MaintenanceController;
-use App\Http\Controllers\SearchController;
-use App\Livewire\Auth\Login;
-use App\Livewire\Auth\Passwords\Email;
-use App\Livewire\Auth\Passwords\Reset;
 use App\Livewire\Home;
 use App\Livewire\HomeJtt;
+use App\Livewire\Auth\Login;
+use App\Livewire\LoadingPmgi;
+use App\Livewire\Auth\Register;
 use App\Livewire\JttAttendance;
 use App\Livewire\LoadingPerakuan;
-use App\Livewire\LoadingPmgi;
-use App\Livewire\Module\Hr\Index as HrIndex;
-use App\Livewire\Module\MaklumatWargaKerja;
+use App\Livewire\Module\Perakuan;
+use App\Livewire\Module\RekodPmgi;
+use App\Livewire\Module\ListPydJtt;
 use App\Livewire\Module\MesyuaratJtt;
+use Illuminate\Support\Facades\Route;
+use App\Livewire\Auth\Passwords\Email;
+use App\Livewire\Auth\Passwords\Reset;
 use App\Livewire\Module\PegawaiDinilai;
 use App\Livewire\Module\PegawaiMenilai;
-use App\Livewire\Module\PegawaiPemudahCara;
-use App\Livewire\Module\Perakuan;
 use App\Livewire\Module\Prestasi\Bulanan;
+use App\Http\Controllers\SearchController;
+use App\Livewire\Module\MaklumatWargaKerja;
+use App\Livewire\Module\PegawaiPemudahCara;
 use App\Livewire\Module\Prestasi\Kumulatif;
-use App\Livewire\Module\RekodPmgi;
-use App\Livewire\Module\Lantikan\Evaluator\Index as EvaluatorIndex;
-use App\Livewire\Module\Lantikan\StateCommittee\Index as StateCommitteeIndex;
-use App\Livewire\Module\Tetapan\MeetingRoom\MeetingRoom;
-use App\Livewire\Module\ListPydJtt;
-use App\Livewire\Module\MasterListWargaKerja;
 use App\Livewire\Module\Tetapan\JttOfficer;
-use App\Livewire\Module\Tetapan\OfficerInfo\Index as OfficerInfoIndex;
-use App\Livewire\Module\Tetapan\PeratusanKriteria;
-use App\Livewire\Module\Tetapan\UserAccessLevel\Index as UserAccessLevelIndex;
-use Illuminate\Support\Facades\Route;
+use App\Livewire\Module\Hr\Index as HrIndex;
+use App\Livewire\Module\MasterListWargaKerja;
 use App\Http\Middleware\RestrictDuringSession;
+use App\Http\Controllers\Auth\LogoutController;
+use App\Livewire\Module\Tetapan\PeratusanKriteria;
+use App\Livewire\Module\Tetapan\MeetingRoom\MeetingRoom;
+use App\Http\Controllers\Maintenance\MaintenanceController;
+use App\Livewire\Admin\AuditReport\PmgiAuditEvalPctg;
+use App\Livewire\Admin\AuditReport\PmgiAuditJttRoles;
+use App\Livewire\Admin\AuditReport\PmgiAuditMapBrancheshr2fms;
+use App\Livewire\Admin\AuditReport\PmgiAuditMapStateshr2fms;
+use App\Livewire\Admin\AuditReport\PmgiAuditMgrDesc;
+use App\Livewire\Admin\AuditReport\PmgiAuditMntrSession;
+use App\Livewire\Admin\AuditReport\PmgiAuditPmgiLevel;
+use App\Livewire\Admin\AuditReport\PmgiAuditPmgiPeriod;
+use App\Livewire\Admin\AuditReport\PmgiAuditPmgiResult;
+use App\Livewire\Admin\ExceptionReport\PmgiExclBranch;
+use App\Livewire\Admin\ExceptionReport\PmgiExcpMissingBranch;
+use App\Livewire\Admin\ExceptionReport\PmgiExcpMissingMgr;
+use App\Livewire\Admin\Maintenance\PmgiExclUserLogin;
+use App\Livewire\Admin\Maintenance\pmgiRefMgrDesc;
+use App\Livewire\Admin\Maintenance\PmgiMapBrancheshr2fms;
+use App\Livewire\Admin\Maintenance\pmgiMapStateshr2fms;
+use App\Livewire\Admin\Maintenance\pmgiRefEvalPctg;
+use App\Livewire\Admin\Maintenance\PmgiRefJttRoles;
+use App\Livewire\Admin\Maintenance\pmgiRefMntrSessionNotes;
+use App\Livewire\Admin\Maintenance\pmgiRefpmgiLevel;
+use App\Livewire\Admin\Maintenance\pmgiRefpmgiPeriod;
+use App\Livewire\Admin\Maintenance\pmgiRefpmgiResult;
+use App\Livewire\Admin\Report\JKPiCompletedOfficerByLevel;
+use App\Livewire\Admin\Report\PmgiFMSBankOfficers;
+use App\Livewire\Admin\Report\PmgiHrdOfficer;
+use App\Livewire\Admin\Report\PmgiSysMsgLog;
+use App\Livewire\Module\Lantikan\Evaluator\Index as EvaluatorIndex;
+use App\Livewire\Module\Tetapan\OfficerInfo\Index as OfficerInfoIndex;
+use App\Livewire\Module\Lantikan\StateCommittee\Index as StateCommitteeIndex;
+use App\Livewire\Module\Tetapan\UserAccessLevel\Index as UserAccessLevelIndex;
 
 /*
 |--------------------------------------------------------------------------
@@ -116,6 +143,49 @@ Route::middleware(['check.sysAvailable'])->group(function () {
         // search purpose
         Route::get('/staff-search', [SearchController::class, 'staffName'])->name('staff-name-search');
         Route::get('/staff-search-by-branch', [SearchController::class, 'staffNameByBranch'])->name('staff-name-search-by-branch');
+
+        // Penyelenggaraan (Admin only)
+        Route::prefix('admin-maintenance')->name('maintenance.admin.')->group(function () {
+            Route::get('/mgr-description', pmgiRefMgrDesc::class)->name('ref_mgr_desc');
+            Route::get('/pmgi-result', pmgiRefpmgiResult::class)->name('ref_pmgi_result');
+            Route::get('/monitor-session-notes', pmgiRefMntrSessionNotes::class)->name('monitor_session_notes');
+            Route::get('/pmgi-level', pmgiRefpmgiLevel::class)->name('ref_pmgi_level');
+            Route::get('/pmgi-period', pmgiRefpmgiPeriod::class)->name('ref_pmgi_period');
+            Route::get('/map-states-hr2fms', pmgiMapStateshr2fms::class)->name('map_state_hr2fms');
+            Route::get('/eval-percentage', pmgiRefEvalPctg::class)->name('ref_eval_pctg');
+            Route::get('/map-branches-hr2fms', PmgiMapBrancheshr2fms::class)->name('map_branches_hr2fms');
+            Route::get('/pmgi-excl-user-login', PmgiExclUserLogin::class)->name('excl_user_login');
+            Route::get('/jtt-roles', PmgiRefJttRoles::class)->name('ref_jtt_roles');
+        });
+
+        // Laporan Khas (Admin Only)
+        Route::prefix('admin-special-report')->name('exceptionReport.admin.')->group(function () {
+            // Laporan Pengecualian
+            Route::get('/excl-branch', PmgiExclBranch::class)->name('excl_branch');
+            Route::get('/excp-misssing-branch', PmgiExcpMissingBranch::class)->name('excp_missing_branch');
+            Route::get('/excp-missing-mgr', PmgiExcpMissingMgr::class)->name('excp_missing_mgr');   
+            
+            // Laporan Audit
+            Route::get('/audit-mgr-desc', PmgiAuditMgrDesc::class)->name('audit_mgr_desc');
+            Route::get('/audit-pmgi-result', PmgiAuditPmgiResult::class)->name('audit_pmgi_result');
+            Route::get('/audit-monitor-session-notes', PmgiAuditMntrSession::class)->name('audit_monitor_session_notes');
+            Route::get('/audit-pmgi-level', PmgiAuditPmgiLevel::class)->name('audit_pmgi_level');
+            Route::get('/audit-pmgi-period', PmgiAuditPmgiPeriod::class)->name('audit_pmgi_period');
+            Route::get('/audit-map-states-hr2fms', PmgiAuditMapStateshr2fms::class)->name('audit_map_state_hr2fms');
+            Route::get('/audit-eval-percentage', PmgiAuditEvalPctg::class)->name('audit_eval_pctg');
+            Route::get('/audit-map-branches-hr2fms', PmgiAuditMapBrancheshr2fms::class)->name('audit_map_branches_hr2fms');
+            Route::get('/audit-jtt-roles', PmgiAuditJttRoles::class)->name('audit_jtt_roles');
+
+            // Laporan Sistem
+            Route::get('/sys-msg-log', PmgiSysMsgLog::class)->name('sys_msg_log');
+        });
+
+        // Laporan (Admin Only)
+        Route::prefix('admin-report')->name('report.admin.')->group(function () {                  
+            Route::get('/fms-bank-officer', PmgiFMSBankOfficers::class)->name('fms_bank_officer');         
+            Route::get('/fms-hrd-officer', PmgiHrdOfficer::class)->name('fms_hrd_officer');         
+            Route::get('/senarai-pengawai-JKPi', JKPiCompletedOfficerByLevel::class)->name('senarai_pengawai_JKPi');         
+        });        
     });
 
     Route::middleware(['auth', 'check.role', 'ensure.session'])->group(function () {

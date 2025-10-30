@@ -2,17 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class RefEvalPctg extends Model
+class AuditRefEvalPctg extends Model
 {
     use HasFactory;
-    
+
     protected $connection = 'sqlsrv';
-    protected $table = "pmgi_ref_eval_pctg";
-    protected $guarded = [];
-    public $timestamps = false;
+    protected $table = 'AUDIT.pmgi_ref_eval_pctg';
 
     // Mutator to strip leading zero before saving to the database
     public function setStatecodeAttribute($value)
@@ -29,5 +27,5 @@ class RefEvalPctg extends Model
     public function bnmState()
     {
         return $this->hasOne(BnmStatecode::class, 'code', 'state_code');
-    }
+    }    
 }
