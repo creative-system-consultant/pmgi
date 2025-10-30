@@ -258,7 +258,6 @@
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                                     KEPUTUSAN
                                                 </th>
-                                                <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black"></th>
                                             </tr>
                                         </thead>
                                         <tbody class="bg-white">
@@ -279,9 +278,6 @@
                                                     @else
                                                     <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-red-800 bg-red-100 rounded-md border-red-100">DIBAWA KE JKPI 2</div>
                                                     @endif
-                                                </td>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
-                                                    <x-badge rounded primary label="Lihat" class="cursor-pointer" wire:click="toggleDetail" />
                                                 </td>
                                             </tr>
                                             @empty
@@ -316,11 +312,10 @@
                                                 <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black">
                                                     KEPUTUSAN
                                                 </th>
-                                                <th scope="col" class="p-2 text-xs font-medium tracking-wider text-center text-gray-500 uppercase border border-black"></th>
                                             </tr>
                                         </thead>
                                         <tbody class="bg-white">
-                                            @forelse ($allSession->where('pmgi_level', 'JT2') as $data)
+                                            @forelse ($jt2Session as $data)
                                             <tr>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     {{ $loop->iteration }}
@@ -329,7 +324,7 @@
                                                     {{ evaluationMonth($data->report_date) }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
-                                                    {{ strtoupper($data->created_at->translatedFormat('d/m/Y')) }}
+                                                    {{ strtoupper(\Carbon\Carbon::parse($data->sessionInfo->session_date)->translatedFormat('d/m/Y')) }}
                                                 </td>
                                                 <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
                                                     @if($data->mntrSession && $data->mntrSession->pmgi_result == 'EXL')
@@ -337,9 +332,6 @@
                                                     @else
                                                     <div class="inline-block px-2.5 py-0.5 mr-2 text-xs font-medium text-red-800 bg-red-100 rounded-md border-red-100">TINDAKAN TATA TERTIB</div>
                                                     @endif
-                                                </td>
-                                                <td class="p-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap border border-black">
-                                                    <x-badge rounded primary label="Lihat" class="cursor-pointer" wire:click="toggleDetail" />
                                                 </td>
                                             </tr>
                                             @empty

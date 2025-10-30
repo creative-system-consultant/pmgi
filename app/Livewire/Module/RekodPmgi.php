@@ -5,6 +5,7 @@ namespace App\Livewire\Module;
 use App\Models\BankOfficer;
 use App\Models\BnmStatecode;
 use App\Models\Branch;
+use App\Models\JttSessionInfo;
 use App\Models\JttSessionParticipant;
 use App\Models\MntrSession;
 use App\Models\RefEvalPctg;
@@ -46,6 +47,7 @@ class RekodPmgi extends Component
         // Initialize $allSession as an empty collection
         $this->allSession = new Collection();
         $this->jt1Session = new Collection();
+        $this->jt2Session = new Collection();
 
         $this->populateData();
     }
@@ -100,6 +102,16 @@ class RekodPmgi extends Component
         ->whereUserId($this->pydId) // Filter on the main JttSessionParticipant model
         ->where('pmgi_level', 'JT1')
         ->get();
+
+        $this->jt2Session = JttSessionParticipant::with([
+            'sessionInfo',
+            'mntrSession' => function ($query) use ($userId) {
+                $query->where('officer_id', $userId); // Apply condition to mntrSession
+            }
+        ])
+        ->whereUserId($this->pydId) // Filter on the main JttSessionParticipant model
+        ->where('pmgi_level', 'JT2')
+        ->get();
     }
 
     public function toggleDetail($sessionId)
@@ -151,6 +163,7 @@ class RekodPmgi extends Component
         $report_date = Carbon::parse($settInfo->report_date);
         $fromReportDate = $report_date->copy()->subMonthNoOverflow()->endOfMonth()->format('Y-m-d');
         $toReportDate = $report_date->copy()->endOfMonth()->format('Y-m-d');
+    
 
         $data = DB::table('PMGI_SUMM_MTH_OFFICER')
                     ->where('officer_id', $settInfo->pyd_id)
@@ -367,7 +380,8 @@ class RekodPmgi extends Component
     public function render()
     {
         return view('livewire.module.rekod-pmgi', [
-            'jt1Session' => $this->jt1Session
+            'jt1Session' => $this->jt1Session,
+            'jt2Session' => $this->jt2Session
         ])->extends('layouts.main');
     }
 }
