@@ -145,7 +145,7 @@ Route::middleware(['check.sysAvailable'])->group(function () {
         Route::get('/staff-search-by-branch', [SearchController::class, 'staffNameByBranch'])->name('staff-name-search-by-branch');
 
         // Penyelenggaraan (Admin only)
-        Route::prefix('admin-maintenance')->name('maintenance.admin.')->group(function () {
+        Route::prefix('admin-maintenance')->name('maintenance.admin.')->middleware('check.access:admin-penyelenggaraan')->group(function () {
             Route::get('/mgr-description', pmgiRefMgrDesc::class)->name('ref_mgr_desc');
             Route::get('/pmgi-result', pmgiRefpmgiResult::class)->name('ref_pmgi_result');
             Route::get('/monitor-session-notes', pmgiRefMntrSessionNotes::class)->name('monitor_session_notes');
@@ -159,7 +159,7 @@ Route::middleware(['check.sysAvailable'])->group(function () {
         });
 
         // Laporan Khas (Admin Only)
-        Route::prefix('admin-special-report')->name('exceptionReport.admin.')->group(function () {
+        Route::prefix('admin-special-report')->name('exceptionReport.admin.')->middleware('check.access:admin-laporan-khas')->group(function () {
             // Laporan Pengecualian
             Route::get('/excl-branch', PmgiExclBranch::class)->name('excl_branch');
             Route::get('/excp-misssing-branch', PmgiExcpMissingBranch::class)->name('excp_missing_branch');
@@ -181,7 +181,7 @@ Route::middleware(['check.sysAvailable'])->group(function () {
         });
 
         // Laporan (Admin Only)
-        Route::prefix('admin-report')->name('report.admin.')->group(function () {                  
+        Route::prefix('admin-report')->name('report.admin.')->middleware('check.access:admin-laporan')->group(function () {                  
             Route::get('/fms-bank-officer', PmgiFMSBankOfficers::class)->name('fms_bank_officer');         
             Route::get('/fms-hrd-officer', PmgiHrdOfficer::class)->name('fms_hrd_officer');         
             Route::get('/senarai-pengawai-JKPi', JKPiCompletedOfficerByLevel::class)->name('senarai_pengawai_JKPi');         

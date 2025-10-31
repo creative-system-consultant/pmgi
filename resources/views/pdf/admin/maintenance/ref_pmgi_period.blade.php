@@ -40,7 +40,7 @@
                     <td>{{ date('d/m/Y', strtotime($item->effective_date)) }}</td>
                     <td>{{ $item->wait_period }}</td>
                     <td>{{ $item->pmgi_level }}</td>
-                    <td>{{ $item->updated_at ? date('d/m/Y H:i:s', strtotime($item->updated_at)) : '') }}</td>
+                    <td>{{ $item->updated_at ? date('d/m/Y H:i:s', strtotime($item->updated_at)) : '' }}</td>
                     <td>{{ $item->created_by }}</td>
                 </tr>
 

@@ -138,13 +138,16 @@
 
                                 <li>
                                     <a href="{{ route('exceptionReport.admin.excl_branch') }}" class="block {{ Route::currentRouteName() === 'exceptionReport.admin.excl_branch' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Laporan Khas</a>
-                                </li>  
+                                </li>
+                            @endif
                                 
+                            {{-- @if(hasRoles('ADMINISTRATOR', 'URUSETIA HQ')) --}}
+                            @if(hasAccess('admin-laporan'))
                                 <li>
                                     <a href="{{ route('report.admin.fms_bank_officer') }}" class="block {{ Route::currentRouteName() === 'report.admin.fms_bank_officer' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Laporan</a>
-                                </li>                                 
-                            @endif                                
-                        </ul>                    
+                                </li>
+                            @endif
+                        </ul>
                     </div>
                 @endauth
             </div>
