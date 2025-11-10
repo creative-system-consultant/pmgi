@@ -4,6 +4,7 @@ namespace App\Livewire\Module;
 
 use App\Models\BankOfficer;
 use App\Models\SessionPmcInfo;
+use App\Models\SettOfficerInfoFile;
 use App\Models\SettPymPmc;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
@@ -32,8 +33,10 @@ class PegawaiPemudahCara extends Component
     public $exitFlag = 0;
     public $exitTypeFlag;
     public $comment;
+    public $savedFile;
     public $file;
     public $attachment;
+    public $infoModal = false;
     public $attachmentUrl = null;
     public $attachmentModal = false;
     public $sessionSetting;
@@ -79,6 +82,7 @@ class PegawaiPemudahCara extends Component
         }
 
         $this->sessionId = str_replace('-', '/', request()->query('session_id'));
+        $this->savedFile = SettOfficerInfoFile::where('OFFICER_LVL', 'PMC')->firstOrFail();
         $this->sessionSetting = SettPymPmc::whereSessionId($this->sessionId)->first();
 
         if ($this->sessionId) {
@@ -126,6 +130,11 @@ class PegawaiPemudahCara extends Component
             $this->attachmentUrl = asset('storage/' . $this->attachment);
         }
         $this->attachmentModal = true;
+    }
+
+    public function openInfo()
+    {
+        $this->infoModal = true;
     }
 
     public function submit()

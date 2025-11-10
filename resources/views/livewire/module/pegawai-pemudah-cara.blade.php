@@ -240,7 +240,13 @@
                         @endif
                     @endif
 
-                    <div class="flex">
+                    @if($savedFile)
+                        <button wire:click="openInfo" type="button" class="cursor-pointer text-blue-500 hover:underline">
+                            Rujukan PMC
+                        </button>
+                    @endif
+
+                    <div class="flex mt-2">
                         <button wire:click="submit" class="inline-flex items-center px-4 py-2.5 font-medium text-center text-white rounded-lg bg-primary-700 focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
                             Hantar
                         </button>
@@ -249,6 +255,14 @@
             </div>
         </div>
     </div>
+
+    <x-modal wire:model="infoModal" blur align="center" max-width="6xl">
+        <x-card title="Info Pegawai Mudah Cara">
+            <div class="flex justify-center items-center">
+                <img class="w-90% h-90%" src="{{ asset('storage/' . $savedFile->filename) }}" alt="Tiada Fail">
+            </div>
+        </x-card>
+    </x-modal>
     
     {{-- attachment modal --}}
     <x-modal.card blur align="center" max-width="7xl" hide-close=false wire:model="attachmentModal">
