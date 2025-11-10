@@ -30,18 +30,20 @@
             </div>
         </div>        
   
-        <!-- Search Button -->
-        <button type="submit"
-                class="ml-4 px-3 py-2 text-white inline-flex items-center rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300">
-            Cari
-            <x-icon name="search" class="w-4 h-4 ms-2" />            
-        </button>
-  
-          <!-- Reset Button -->
-        <button type="button" wire:click='resetSearch';
-                class="ml-4 px-3 py-2 text-gray-800 bg-gray-200 rounded-md hover:bg-gray-300">
-            Set Semula Carian
-        </button>
+        <div class="sm: flex">
+          <!-- Search Button -->
+          <button type="submit"
+                  class="ml-4 px-3 py-2 text-white inline-flex items-center rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300">
+              Cari
+              <x-icon name="search" class="w-4 h-4 ms-2" />            
+          </button>
+    
+            <!-- Reset Button -->
+          <button type="button" wire:click='resetSearch';
+                  class="ml-4 px-3 py-2 text-gray-800 bg-gray-200 rounded-md hover:bg-gray-300">
+              Set Semula Carian
+          </button>
+        </div>
       </form>
       <div class="overflow-x-auto">
     
