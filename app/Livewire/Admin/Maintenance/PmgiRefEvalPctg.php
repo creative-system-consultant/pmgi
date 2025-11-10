@@ -33,8 +33,8 @@ class pmgiRefEvalPctg extends Component
         $search = $this->search_term;
 
         $data   = RefEvalPctg::with('bnmState')
-                  ->when($search, fn($q) => $q->where('state_code', $search))
-                  ->get();
+                ->when($search, fn($q) => $q->where('state_code', $search))
+                ->get();
 
         // Generate PDF
         $pdf = Pdf::loadView('pdf.admin.maintenance.ref_eval_pctg', compact('data'))->setPaper('A4', 'landscape');
@@ -148,7 +148,7 @@ class pmgiRefEvalPctg extends Component
             'updated_at'             => \Carbon\Carbon::now('Asia/Kuala_Lumpur'),
             'updated_by'             => $this->user,
         ]);
- 
+        
         $this->edits = false; // close modal only
 
         // Livewire v3 event (name + payload)
@@ -177,8 +177,9 @@ class pmgiRefEvalPctg extends Component
         $search = $this->search_term;
 
         $data   = RefEvalPctg::with('bnmState')
-                  ->when($search, fn($q) => $q->where('state_code', $search))
-                  ->paginate(15);
+                ->when($search, fn($q) => $q->where('state_code', $search))
+                ->paginate(15);
+
         $states = BnmStatecode::select(['code', 'description'])->get();
         
         return view('livewire.admin.maintenance.pmgi-ref-eval-pctg', compact('data', 'states'))->extends('layouts.main');
