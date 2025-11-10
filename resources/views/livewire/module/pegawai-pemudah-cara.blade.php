@@ -134,10 +134,14 @@
                 </div>
                 <hr>
                 <div class="my-8">
+                    <div class="flex justify-between">
+                        <label for="lain-lain" class="block mb-2 font-medium text-gray-900 text-md">Lain-lain perkara (jika ada) :</label>
+                        <x-icon name="information-circle" class="w-6 h-6 cursor-pointer text-primary-600" wire:click="openInfo" />
+                    </div>
                     @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id)
-                        <x-textarea label="Lain-lain perkara (Jika ada) :" wire:model="others" disabled />
+                        <x-textarea placeholder="Tuliskan pandangan anda" wire:model="others" disabled />
                     @else
-                        <x-textarea label="Lain-lain perkara (Jika ada) :" wire:model="others" />
+                        <x-textarea placeholder="Tuliskan pandangan anda" wire:model="others" />
                     @endif
                 </div>
                 <hr>
@@ -238,12 +242,6 @@
                                 {{ $file->getClientOriginalName() }}
                             </a>
                         @endif
-                    @endif
-
-                    @if($savedFile)
-                        <button wire:click="openInfo" type="button" class="cursor-pointer text-blue-500 hover:underline">
-                            Rujukan PMC
-                        </button>
                     @endif
 
                     <div class="flex mt-2">

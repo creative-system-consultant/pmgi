@@ -153,12 +153,6 @@
                         @endif
                     @endif
 
-                    @if($savedFile)
-                        <button wire:click="openInfo" type="button" class="cursor-pointer text-blue-500 hover:underline">
-                            Rujukan PYD
-                        </button>
-                    @endif
-
                     <div class="flex mt-4">
                         <button type="submit" wire:click="submit" class="inline-flex items-center px-4 py-2.5 font-medium text-center text-white rounded-lg bg-primary-700 focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
                             Hantar
