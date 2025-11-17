@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\BnmStatecode;
 use App\Models\RefEvalPctg;
+use App\Rules\UniqueEvaluationId;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Livewire\Component;
 use Illuminate\Support\Str;
@@ -27,6 +28,14 @@ class pmgiRefEvalPctg extends Component
     public $search_term;
 
     public $user;
+    
+    public $evaluation_titles = [
+        1 => 'Patut Kutip (RM) vs Dapat Kutip (RM)',
+        2 => 'Patut Kutip (BIL) vs Dapat Kutip (BIL)',
+        3 => 'Lawatan Seliaan (BIL)',
+        4 => 'Prestasi NPF (Kawalan BIL)',
+        5 => 'Prestasi NPF (Pemulihan BIL)'
+    ];
 
     public function exportPDF()
     {
@@ -36,14 +45,16 @@ class pmgiRefEvalPctg extends Component
                 ->when($search, fn($q) => $q->where('state_code', $search))
                 ->get();
 
+        $evaluation_titles = $this->evaluation_titles;
+
         // Generate PDF
-        $pdf = Pdf::loadView('pdf.admin.maintenance.ref_eval_pctg', compact('data'))->setPaper('A4', 'landscape');
+        $pdf = Pdf::loadView('pdf.admin.maintenance.ref_eval_pctg', compact('data', 'evaluation_titles'))->setPaper('A4', 'landscape');
 
         // Stream the PDF to the browser or download it
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->stream();
         }, 'penyelengaraan_peratusan_penilaian_PMGi.pdf');       
-    }        
+    }
 
     public function searchState()
     {
@@ -79,10 +90,10 @@ class pmgiRefEvalPctg extends Component
             'state_code'             => [                    
                                             'required',                                          
                                         ],
-            // 'evaluation_id'          => [
-            //                                 'required',
-            //                                  Rule::unique('pmgi_ref_eval_pctg', 'evaluation_id') ->where(fn ($eval) => $eval->whereDate('effective_date', $this->effective_date)),                                        
-            //                             ],
+            'evaluation_id'          => [
+                                            'required',
+                                            new UniqueEvaluationId($this->state_code, $this->effective_date),
+                                        ],
             'evaluation_percentage'  => 'required|numeric|between:0,100',
         ],
         [
@@ -98,7 +109,7 @@ class pmgiRefEvalPctg extends Component
         RefEvalPctg::create([
             'effective_date'         => $this->effective_date,
             'state_code'             => Str::squish(str_pad($this->state_code, '2', '0', STR_PAD_LEFT)),
-            // 'evaluation_id'          => $this->evaluation_id,
+            'evaluation_id'          => $this->evaluation_id,
             'evaluation_percentage'  => Str::squish(number_format($this->evaluation_percentage, 2, '.')),
             'created_at'             => \Carbon\Carbon::now('Asia/Kuala_Lumpur'),
             'created_by'             => $this->user,
@@ -116,20 +127,12 @@ class pmgiRefEvalPctg extends Component
     {
         $data = RefEvalPctg::where('id', $id)->first();
 
-        $evaluation_labels = [
-            1 => 'Kriteria 1 - Kutipan',
-            2 => 'Kriteria 2 - Bilangan membayar',
-            3 => 'Kriteria 3 - Lawatan Seliaan',
-            4 =>'Kriteria 4 - Prestasi NPF (Kawalan)',
-            5 =>'Kriteria 5 - Prestasi NPF (Pemulihan)',
-        ];
-
         $this->edits = true;
 
         $this->id                     = $id;
         $this->effective_date         = $data->effective_date;
         $this->state_code             = $data->bnmState->description;
-        // $this->evaluation_id          = $evaluation_labels[$data->evaluation_id] ?? $data->evaluation_id;
+        $this->evaluation_id          = $this->evaluation_titles[$data->evaluation_id];
         $this->evaluation_percentage  = $data->evaluation_percentage;
     }
 
@@ -138,7 +141,7 @@ class pmgiRefEvalPctg extends Component
         $this->validate([
             'evaluation_percentage'  => 'required|numeric|between:0,100',
         ],
-        [
+        [ 
             'evaluation_percentage.required'  => 'Sila masukkan Peratus Penilaian',
             'evaluation_percentage.between'   => 'Peratus penilaian mestilah dari 0 hingga 100'
         ]);

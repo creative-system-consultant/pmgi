@@ -30,6 +30,7 @@
                 <th>ID</th>
                 <th>Tarikh Kuatkuasa</th>
                 <th>Negeri</th>
+                <th>Penilaian</th>
                 <th>Peratus Penilaian (%)</th>
                 <th>Dikemaskini Pada</th>
                 <th>Dikemaskini Oleh</th>
@@ -41,6 +42,7 @@
                     <td>{{ $item->id }}</td>
                     <td>{{ date('d/m/Y', strtotime($item->effective_date)) }}</td>
                     <td>{{ $item->bnmState->description }}</td>
+                    <td>{{ $evaluation_titles[$item->evaluation_id] }}</td>
                     <td>{{ $item->evaluation_percentage }}</td>
                     <td>{{ $item->updated_at ? date('d/m/Y H:i:s', strtotime($item->updated_at)) : '' }}</td>
                     <td>{{ $item->updated_by }}</td>

@@ -82,7 +82,7 @@
                     <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">ID</th>
                     <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Tarikh Kuatkuasa</th>
                     <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Negeri</th>
-                    {{-- <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Penilaian</th> --}}
+                    <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Penilaian</th>
                     <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Peratus Penilaian (%)</th>
                     <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Dikemas Kini Pada</th>
                     <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Dikemas Kini Oleh</th>
@@ -106,6 +106,7 @@
                         <td class="py-2 px-4 border border-gray-400 dark:border-gray-700">{{ $item->id }}</td>
                         <td class="py-2 px-4 border border-gray-400 dark:border-gray-700">{{ date('d/m/Y', strtotime($item->effective_date)) }}</td>
                         <td class="py-2 px-4 border border-gray-400 dark:border-gray-700">{{ $item->bnmState?->description }}</td>
+                        <td class="py-2 px-4 border border-gray-400 dark:border-gray-700">{{ $evaluation_titles[$item->evaluation_id] }}</td>
                         {{-- <td class="py-2 px-4 border border-gray-400 dark:border-gray-700">
                             {{ $evaluation_labels[$item->evaluation_id] ?? $item->evaluation_id }}
                         </td> --}}
@@ -185,19 +186,19 @@
                             @enderror
                         </div>
 
-                        {{-- <div class="mb-4">
+                        <div class="mb-4">
                             <label class="block text-base font-medium text-gray-600">Penilaian:</label>
                             <select type="text" name="evaluation_id" wire:model='evaluation_id' class="w-full p-2 border border-gray-500 rounded-md">
-                                <option value="">Pilih Kriteria Penilaian</option>
+                                <option value="" disabled>Pilih Kriteria Penilaian</option>
 
-                                @foreach ($evaluation_labels as $key => $label)
+                                @foreach ($evaluation_titles as $key => $label)
                                     <option value="{{ $key }}">{{ $label }}</option>
                                 @endforeach
                             </select>
                             @error('evaluation_id')
                                 <span class="error text-red-600">{{ $message }}</span>
                             @enderror                        
-                        </div> --}}
+                        </div>
                         
                         <div class="mb-4">
                             <label class="block text-base font-medium text-gray-600">Peratus Penilaian (%):</label>
@@ -243,10 +244,10 @@
                             <input type="text" name="state_code" wire:model='state_code' class="w-full p-2 bg-gray-100 border border-gray-500 rounded-md" readonly/>
                         </div>        
                         
-                        {{-- <div class="mb-4">
+                        <div class="mb-4">
                             <label class="block text-base font-medium text-gray-600">Penilaian:</label>
                             <input type="text" name="evaluation_id" wire:model='evaluation_id' class="w-full p-2 bg-gray-100 border border-gray-500 rounded-md" readonly/>             
-                        </div> --}}
+                        </div>
 
                         <div class="mb-4">
                             <label class="block text-base font-medium text-gray-600">Peratus Penilaian (%):</label>
