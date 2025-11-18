@@ -23,7 +23,7 @@ class pmgiRefpmgiPeriod extends Component
 
     public function exportPDF()
     {
-        $data = Ref_pmgi_Period::select(['effective_date', 'wait_period', 'pmgi_level', 'created_at', 'created_by'])->get();
+        $data = Ref_pmgi_Period::select(['effective_date', 'wait_period', 'pmgi_level_desc', 'created_at', 'created_by'])->get();
 
         // Generate PDF
         $pdf = Pdf::loadView('pdf.admin.maintenance.ref_pmgi_period', compact('data'))->setPaper('A4', 'landscape');

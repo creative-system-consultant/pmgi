@@ -68,7 +68,7 @@
         @forelse ($data as $item)
           <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/70">
             <td class="py-2 px-4 border border-gray-300 dark:border-gray-700">{{ $item->effective_date }}</td>
-            <td class="py-2 px-4 border border-gray-300 dark:border-gray-700">{{ $item->level->pmgi_level }}</td>
+            <td class="py-2 px-4 border border-gray-300 dark:border-gray-700">{{ $item->level->pmgi_level_desc }}</td>
             <td class="py-2 px-4 border border-gray-300 dark:border-gray-700">{{ $item->wait_period }}</td>
             <td class="py-2 px-4 border border-gray-300 dark:border-gray-700">{{ $item->created_at }}</td>
             <td class="py-2 px-4 border border-gray-300 dark:border-gray-700">{{ $item->created_by }}</td>
@@ -102,15 +102,17 @@
                             wire:model="effective_date"
                             placeholder="dd/mm/yyyy"
                             without-time
-                            :clearable="false"          
-                            display-format="DD/MM/YYYY"  
-                            min="{{ \Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString() }}"  
-                            errorless                                              
+                            :clearable="false"
+                            display-format="DD/MM/YYYY"
+                            :disable-past-dates="true"
+                            :without-tips="true"
+                            min="{{ \Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString() }}"
+                            errorless
                             style="
                             padding: 0.5rem;
                             font-size: 1rem;
-                            line-height: 1.5rem; 
-                             border-color: rgb(107 114 128 / 1);            
+                            line-height: 1.5rem;
+                            border-color: rgb(107 114 128 / 1);
                             "          
                         />
                         @error('effective_date')
