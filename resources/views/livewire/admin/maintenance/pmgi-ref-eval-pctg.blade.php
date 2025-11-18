@@ -84,9 +84,9 @@
                     <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Negeri</th>
                     <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Penilaian</th>
                     <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Peratus Penilaian (%)</th>
-                    <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Dikemas Kini Pada</th>
-                    <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Dikemas Kini Oleh</th>
-                    <th class="py-2 px-2 text-left border border-gray-400 dark:border-gray-700 w-px whitespace-nowrap">Tindakan</th>
+                    <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Dicipta Pada</th>
+                    <th class="py-2 px-4 text-left border border-gray-400 dark:border-gray-700">Dicipta Oleh</th>
+                    {{-- <th class="py-2 px-2 text-left border border-gray-400 dark:border-gray-700 w-px whitespace-nowrap">Tindakan</th> --}}
                 </tr>
             </thead>
 
@@ -113,18 +113,18 @@
                         <td class="py-2 px-4 bg-white hover:bg-gray-100 border dark:hover:bg-gray-800/70 border-gray-300 dark:bg-gray-500 dark:border-gray-700">
                             {{ $item->evaluation_percentage }}
                         </td>
-                        <td class="py-2 px-4 border border-gray-400 dark:border-gray-700">{{ $item->updated_at ? date('d/m/Y H:i:s', strtotime($item->updated_at)) : '' }}</td>
-                        <td class="py-2 px-4 border border-gray-400 dark:border-gray-700">{{ $item->updated_by }}</td>            
+                        <td class="py-2 px-4 border border-gray-400 dark:border-gray-700">{{ $item->created_at ? date('d/m/Y H:i:s', strtotime($item->created_at)) : '' }}</td>
+                        <td class="py-2 px-4 border border-gray-400 dark:border-gray-700">{{ $item->created_by }}</td>            
             
                         {{-- Action --}}
-                        <td class="py-2 px-2 border border-gray-400 dark:border-gray-700 w-px whitespace-nowrap">
-                        <div class="flex items-center gap-2">
-                            <button type="button" wire:click="edit(@js($item->id))"
-                            class="inline-flex items-center gap-1 text-white bg-blue-500 hover:bg-blue-600 border border-transparent px-3 py-1 rounded-md">
-                            <span>Edit</span>
-                            </button>
-                        </div>
-                        </td>
+                        {{-- <td class="py-2 px-2 border border-gray-400 dark:border-gray-700 w-px whitespace-nowrap">
+                            <div class="flex items-center gap-2">
+                                <button type="button" wire:click="edit(@js($item->id))"
+                                class="inline-flex items-center gap-1 text-white bg-blue-500 hover:bg-blue-600 border border-transparent px-3 py-1 rounded-md">
+                                <span>Edit</span>
+                                </button>
+                            </div>
+                        </td> --}}
                     </tr>
 
                 @empty
@@ -156,15 +156,17 @@
                                 wire:model="effective_date"
                                 placeholder="dd/mm/yyyy"
                                 without-time
-                                :clearable="false"          
-                                display-format="DD/MM/YYYY"  
+                                :clearable="false"
+                                display-format="DD/MM/YYYY"
+                                :disable-past-dates="true"
+                                :without-tips="true"
                                 min="{{ \Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString() }}"  
-                                errorless                                              
+                                errorless
                                 style="
                                 padding: 0.5rem;
                                 font-size: 1rem;
                                 line-height: 1.5rem; 
-                                border-color: rgb(107 114 128 / 1);            
+                                border-color: rgb(107 114 128 / 1);
                                 "            
                             />            
                             @error('effective_date')
