@@ -18,6 +18,7 @@ class Map_Branches_hr2fms extends Model
         'fms_branch_code',
         'hr_state_name',
         'hr_branch_name',
+        'hr_branch_code',
         'upd_flag',
         'created_at',
         'created_by',

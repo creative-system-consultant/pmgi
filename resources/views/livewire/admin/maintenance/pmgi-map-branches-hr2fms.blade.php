@@ -107,7 +107,7 @@
           </tr>
         @empty
           <tr>
-              <td colspan="7" class="py-2 px-4 text-center text-gray-700 dark:text-gray-200">
+              <td colspan="10" class="py-2 px-4 text-center text-gray-700 dark:text-gray-200">
                   Tiada data dijumpai.
               </td>
           </tr>            
