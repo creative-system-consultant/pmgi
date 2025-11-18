@@ -40,7 +40,7 @@
                 <tr>
                     <td>{{ $item->seq_no }}</td>
                     <td>{{ $item->mgr_desc }}</td>
-                    <td>{{ $item->created_at ? date('d/m/Y H:i:s', strtotime($item->created_at) : '' )}}</td>
+                    <td>{{ $item->created_at ? date('d/m/Y H:i:s', strtotime($item->created_at)) : '' }}</td>
                     <td>{{ $item->created_by }}</td>
                     <td>{{ $item->updated_at ? date('d/m/Y H:i:s', strtotime($item->updated_at)) : '' }}</td>
                     <td>{{ $item->updated_by }}</td>
