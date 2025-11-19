@@ -41,6 +41,7 @@ use App\Livewire\Admin\AuditReport\PmgiAuditPmgiResult;
 use App\Livewire\Admin\ExceptionReport\PmgiExclBranch;
 use App\Livewire\Admin\ExceptionReport\PmgiExcpMissingBranch;
 use App\Livewire\Admin\ExceptionReport\PmgiExcpMissingMgr;
+use App\Livewire\Admin\Maintenance\PmgiExclBranch as MaintenancePmgiExclBranch;
 use App\Livewire\Admin\Maintenance\PmgiExclUserLogin;
 use App\Livewire\Admin\Maintenance\pmgiRefMgrDesc;
 use App\Livewire\Admin\Maintenance\PmgiMapBrancheshr2fms;
@@ -155,6 +156,7 @@ Route::middleware(['check.sysAvailable'])->group(function () {
             Route::get('/eval-percentage', pmgiRefEvalPctg::class)->name('ref_eval_pctg');
             Route::get('/map-branches-hr2fms', PmgiMapBrancheshr2fms::class)->name('map_branches_hr2fms');
             Route::get('/pmgi-excl-user-login', PmgiExclUserLogin::class)->name('excl_user_login');
+            Route::get('/pmgi-excl-branch', MaintenancePmgiExclBranch::class)->name('maintenance_excl_branch');
             Route::get('/jtt-roles', PmgiRefJttRoles::class)->name('ref_jtt_roles');
         });
 

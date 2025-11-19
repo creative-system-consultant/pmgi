@@ -38,7 +38,11 @@
             
             <a href="{{ route('maintenance.admin.excl_user_login') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
                 Pengecualian Log Masuk Pengguna
-            </a>              
+            </a>
+            
+            <a href="{{ route('maintenance.admin.maintenance_excl_branch') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                Pengecualian Cawangan
+            </a>
 
             <a href="{{ route('maintenance.admin.ref_jtt_roles') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
                 Peranan JTT 

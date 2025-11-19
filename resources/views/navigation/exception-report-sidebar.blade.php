@@ -10,9 +10,9 @@
                 <div class="border-t border-gray-300 flex-1"></div>
             </div>
 
-            <a href="{{ route('exceptionReport.admin.excl_branch') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+            {{-- <a href="{{ route('exceptionReport.admin.excl_branch') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
                 Laporan Cawangan Dikecualikan
-            </a>
+            </a> --}}
 
             <a href="{{ route('exceptionReport.admin.excp_missing_branch') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
                 Laporan Keciciran Cawangan

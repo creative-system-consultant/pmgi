@@ -137,7 +137,7 @@
                                 </li>
 
                                 <li>
-                                    <a href="{{ route('exceptionReport.admin.excl_branch') }}" class="block {{ Route::currentRouteName() === 'exceptionReport.admin.excl_branch' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Laporan Khas</a>
+                                    <a href="{{ route('exceptionReport.admin.excp_missing_branch') }}" class="block {{ Route::currentRouteName() === 'exceptionReport.admin.excp_missing_branch' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Laporan Khas</a>
                                 </li>
                             @endif
                                 
@@ -295,7 +295,7 @@
                     </li>
 
                     <li class="block border-b">
-                        <a href="{{ route('exceptionReport.admin.excl_branch') }}" class="block px-4 py-3 {{ Route::currentRouteName() === 'exceptionReport.admin.excl_branch' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Laporan Khas</a>
+                        <a href="{{ route('exceptionReport.admin.excp_missing_branch') }}" class="block px-4 py-3 {{ Route::currentRouteName() === 'exceptionReport.admin.excp_missing_branch' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Laporan Khas</a>
                     </li>  
                     
                     <li class="block border-b">
