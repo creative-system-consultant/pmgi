@@ -32,7 +32,7 @@ class PmgiExcpMissingBranch extends Component
         {
             $output = '';
 
-            $procedureName = 'UP_PMGI_IMP_HR_OFFICER';
+            $procedureName = 'UP_PMGI_CHK_MISSING_BRN';
 
             $bindings = [
                 $dateString,
@@ -48,7 +48,7 @@ class PmgiExcpMissingBranch extends Component
             DB::executeProcedure($procedureName, $bindings);
 
             if (substr($output, 0, 1) == '0') {
-                $successMessage = "Stored procedure UP_PMGI_IMP_HR_OFFICER executed successfully with date: $dateString and user ID: $user.";
+                $successMessage = "Stored procedure $procedureName executed successfully with date: $dateString and user ID: $user.";
                 
                 // Dispatch success message to SweetAlert
                 $this->dispatch('swal', title:'Success', text:$successMessage, icon:'success');
@@ -57,7 +57,7 @@ class PmgiExcpMissingBranch extends Component
             } 
 
             else {
-                $errorMessage = "Stored procedure UP_PMGI_IMP_HR_OFFICER executed with errors for date: $dateString. Output: $output";
+                $errorMessage = "Stored procedure $procedureName executed with errors for date: $dateString. Output: $output";
                 
                 // Dispatch error message to SweetAlert
                 $this->dispatch('swal', title:'Error', text:$errorMessage, icon:'error');
@@ -69,7 +69,7 @@ class PmgiExcpMissingBranch extends Component
         
         catch (\Exception $e) 
         {
-            $errorMessage = "Failed to execute stored procedure UP_PMGI_IMP_HR_OFFICER for date: $dateString. Error: " . $e->getMessage();
+            $errorMessage = "Failed to execute stored procedure $procedureName for date: $dateString. Error: " . $e->getMessage();
             $logMessage .= $errorMessage . "\n";
             
             $this->dispatch('swal', title:'Error', text:$errorMessage, icon:'error');
