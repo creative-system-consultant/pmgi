@@ -73,9 +73,9 @@
                                                 <x-input placeholder="Branch" wire:model="selectedBranchDescription" disabled />
                                             </div>
                                         </div>
-                                        <p class="flex items-center font-semibold">Tarikh Lantikan</p>
+                                        <p class="flex items-center font-semibold">Tarikh Mula Berkhidmat</p>
                                         <div class="block w-full col-span-2">
-                                            <x-input placeholder="Tarikh Lantikan" wire:model="pydDateJoined" disabled />
+                                            <x-input placeholder="Tarikh Mula Berkhidmat" wire:model="pydDateJoined" disabled />
                                         </div>
                                         <p class="flex items-center font-semibold">Tempoh Berkhidmat di Cawangan Semasa</p>
                                         <div class="block w-full col-span-2">
