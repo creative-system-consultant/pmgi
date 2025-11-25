@@ -16,6 +16,8 @@
                         <P>{{ $staffno }}</P>
                         <h3>JAWATAN</h3>
                         <P>{{ $jawatan }}</P>
+                        <h3>GELARAN</h3>
+                        <P>{{ $gelaran }}</P>
                         <h3>NEGERI</h3>
                         <P>{{ $stateName }}</P>
                         <h3>CAWANGAN</h3>
@@ -350,7 +352,7 @@
         </div>
 
         {{-- table pelaksanaan mia --}}
-        <div class="p-4 my-4 bg-white rounded-lg border border-gray-200 shadow-sm sm:p-6">
+        {{-- <div class="p-4 my-4 bg-white rounded-lg border border-gray-200 shadow-sm sm:p-6">
             <!-- Card header -->
             <div class="justify-between items-center lg:flex">
                 <div class="mb-4 lg:mb-0">
@@ -406,14 +408,14 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         {{-- wilma report --}}
         <div class="p-4 my-4 bg-white rounded-lg border border-gray-200 shadow-sm sm:p-6">
             <!-- Card header -->
             <div class="justify-between items-center lg:flex">
                 <div class="mb-4 lg:mb-0">
-                    <h3 class="mb-2 text-xl font-bold text-gray-900">WILMA Report</h3>
+                    <h3 class="mb-2 text-xl font-bold text-gray-900">WILMA Report ({{ $wilma?->bila1 ? \Carbon\Carbon::parse($wilma->report_date)->subMonth()->format('F Y') : '-' }})</h3>
                 </div>
             </div>
             <!-- Table -->

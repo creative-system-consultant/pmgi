@@ -27,12 +27,13 @@ class Pyd extends Component
     public $username;
     public $staffno;
     public $jawatan;
+    public $gelaran;
     public $stateName;
     public $branchName;
     public $tarikhLantikan;
     public $tempohBerkhidmat;
     public $ringkasan;
-
+    
     public function mount()
     {
         if ($this->userId) {
@@ -48,6 +49,7 @@ class Pyd extends Component
         $this->username = $this->data->USERNAME;
         $this->staffno = $this->data->staffNo();
         $this->jawatan = $this->data->bankOfficer->hrData?->jawatan;
+        $this->gelaran = $this->data->bankOfficer->hrData?->gelaran;
         $this->stateName = $this->data->stateName();
         $this->branchName = $this->data->branchName();
         $this->tarikhLantikan = Carbon::parse($this->data->bankOfficer->hrData?->tarikh_lantikan)->translatedFormat('d F Y');
@@ -74,7 +76,6 @@ class Pyd extends Component
                 ->where('branch_code', $authUser->branchCode())
                 ->first();
         })();
-
         $this->pembiayaan = (function () use ($authUser) {
             $maxDate = PmgiSummPembiayaanProduk::max('report_date');
             return PmgiSummPembiayaanProduk::where('report_date', $maxDate)

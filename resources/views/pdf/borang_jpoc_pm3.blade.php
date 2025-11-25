@@ -436,8 +436,13 @@
             <div class="input-container" style="top: 633px; left: 170px; font-size: 11px;">
                 <strong>{{ $pmcInfo->exit_flag == 1 ? 'PENILAIAN SEMULA' : 'TANPA PENILAIAN SEMULA' }}</strong>
             </div>
+
             
-            {{-- kategori penangguhan--}}
+            {{--buang kategori penangguhan--}}
+            <div style="position: absolute; top: 658px; left: 75px; width: 180px; height: 15px; background-color: white;"></div>           
+
+            {{--kategori--}}
+            <div style="position: absolute; top: 676px; left: 128px; width: 70px; height: 12.5px; background-color: white;"></div>
             <div class="input-container" style="top: 690px; left: 83px; font-size: 10px;">
                 <strong>{{ 
                     $pmcInfo->exit_type_flag == 1 ? 'Tanpa Syarat' : 
@@ -446,7 +451,8 @@
                 }}</strong>
             </div>
 
-            {{-- tindakan sistem--}}
+            {{--tindakan--}}
+            <div style="position: absolute; top: 676px; left: 295px; width: 40px; height: 11px; background-color: white;"></div>
             <div class="input-container" style="top: 690px; left: 247px; font-size: 10px;">
                 <strong>{{ 
                     $pmcInfo->exit_type_flag == 1 ? 'Proses penilaian dikembalikan kepada asal.' : 
