@@ -16,15 +16,19 @@ use App\Models\SessionPymInfo;
 use App\Models\SettPymPmc;
 use App\Models\SummMthOfficer;
 use App\Services\HtmlToImageService;
+use App\Services\PdfToImageService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class RekodPmgi extends Component
 {
     private $htmlToImageService;
+    private $pdfToImageService;
 
     public $pmgiSession = false;
     public $pydIdOrigin;
@@ -40,6 +44,7 @@ class RekodPmgi extends Component
     public function __construct()
     {
         $this->htmlToImageService = new HtmlToImageService();
+        $this->pdfToImageService = new PdfToImageService();
     }
 
     public function mount()
@@ -198,12 +203,19 @@ class RekodPmgi extends Component
         // Copy attachment files to the same temp directory as the chart image (which works)
         $attachmentPaths = [];
         $tempAttachmentFiles = []; // Keep track of copied files for cleanup
+        $attachmentExtension = null;
+        $imageExtensions = ['png', 'jpg', 'jpeg'];
+        $pdfExtension = 'pdf';
+
+        $pathSessionId = str_replace('/', '-', $sessionId);
         
         // Get the directory where the chart image is stored (this directory works)
         $tempDirectory = dirname($paths['image']);
         
         if ($pydInfo && $pydInfo->attachment) {
             $originalPath = storage_path('app/public/' . $pydInfo->attachment);
+            $originalName = strtoupper(pathinfo($originalPath, PATHINFO_FILENAME));
+            $extension = strtolower(pathinfo($originalPath, PATHINFO_EXTENSION));
             
             if (file_exists($originalPath)) {
                 // Copy to temp directory where chart image is stored
@@ -213,12 +225,22 @@ class RekodPmgi extends Component
                 if (copy($originalPath, $tempPath)) {
                     $attachmentPaths['pyd_attachment'] = $tempPath;
                     $tempAttachmentFiles[] = $tempPath; // Track for cleanup
+                    $attachmentExtension['pyd_attachment'] = pathinfo($attachmentPaths['pyd_attachment'], PATHINFO_EXTENSION);
+                }
+
+                if ($extension === 'pdf') {
+                    $convertImage = $this->pdfToImageService->generate($settInfo->pyd_id, $pathSessionId, $attachmentPaths['pyd_attachment'], $originalName);
+
+                    $attachmentPaths['pyd_attachment'] = $convertImage['image'];
+                    $attachmentExtension['pyd_attachment'] = $convertImage['extension'];
                 }
             }
         }
         
         if ($pymInfo && $pymInfo->attachment) {
             $originalPath = storage_path('app/public/' . $pymInfo->attachment);
+            $originalName = strtoupper(pathinfo($originalPath, PATHINFO_FILENAME));
+            $extension = strtolower(pathinfo($originalPath, PATHINFO_EXTENSION));
             
             if (file_exists($originalPath)) {
                 // Copy to temp directory where chart image is stored
@@ -229,11 +251,23 @@ class RekodPmgi extends Component
                     $attachmentPaths['pym_attachment'] = $tempPath;
                     $tempAttachmentFiles[] = $tempPath; // Track for cleanup
                 }
+
+                if ($extension === 'pdf') {
+                    $convertImage = $this->pdfToImageService->generate($settInfo->pyd_id, $pathSessionId, $originalPath, $originalName);
+
+                    $attachmentPaths['pym_attachment'] = $convertImage['image'];
+                    $attachmentExtension['pym_attachment'] = $convertImage['extension'];
+                } else {
+                    $attachmentPaths['pym_attachment'] = route('stream.attachment', ['path' => encrypt($data->pym_attachment)]);
+                    $attachmentExtension['pym_attachment'] = $extension;
+                }
             }
         }
         
         if ($pmcInfo && $pmcInfo->attachment) {
             $originalPath = storage_path('app/public/' . $pmcInfo->attachment);
+            $originalName = strtoupper(pathinfo($originalPath, PATHINFO_FILENAME));
+            $extension = strtolower(pathinfo($originalPath, PATHINFO_EXTENSION));
             
             if (file_exists($originalPath)) {
                 // Copy to temp directory where chart image is stored
@@ -243,13 +277,24 @@ class RekodPmgi extends Component
                 if (copy($originalPath, $tempPath)) {
                     $attachmentPaths['pmc_attachment'] = $tempPath;
                     $tempAttachmentFiles[] = $tempPath; // Track for cleanup
+                    $attachmentExtension['pmc_attachment'] = pathinfo($attachmentPaths['pmc_attachment'], PATHINFO_EXTENSION);
+                }
+
+                if ($extension === 'pdf') {
+                    $convertImage = $this->pdfToImageService->generate($settInfo->pyd_id, $pathSessionId, $attachmentPaths['pmc_attachment'], $originalName);
+
+                    $attachmentPaths['pmc_attachment'] = $convertImage['image'];
+                    $attachmentExtension['pmc_attachment'] = $convertImage['extension'];
+                } else {
+                    $attachmentPaths['pmc_attachment'] = route('stream.attachment', ['path' => encrypt($data->pmc_attachment)]);
+                    $attachmentExtension['pmc_attachment'] = $extension;
                 }
             }
         }
         
         $pdf = Pdf::loadView($template, compact(
                 'settInfo','bankOfficerPyd', 'state', 'branch', 'tempohBerkhidmat', 'alamat1', 'alamat2','summMthOfficer', 'accCount', 'osB1D', 'osAll', 'npfOs', 'sessionInfo', 'bankOfficerPym', 'bankOfficerPmc',
-                'pydInfo', 'pymInfo', 'pmcInfo', 'from', 'to', 'paths', 'attachmentPaths'
+                'pydInfo', 'pymInfo', 'pmcInfo', 'from', 'to', 'paths', 'attachmentPaths', 'attachmentExtension', 'imageExtensions', 'pdfExtension'
             ))->setPaper('A4', 'portrait');
 
         // Store the PDF content in a variable before cleanup
@@ -281,6 +326,24 @@ class RekodPmgi extends Component
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="borang_jpoc_12.pdf"'
         ]);
+    }
+
+    public function streamAttachment(Request $request)
+    {
+        try {
+            $path = decrypt($request->path);
+            $filePath = storage_path('app/public/' . $path);
+            
+            if (!file_exists($filePath)) {
+                abort(404);
+            }
+            
+            return response()->file($filePath);
+            
+        } catch (\Exception $e) {
+            Log::error('Failed to stream attachment: ' . $e->getMessage());
+            abort(404);
+        }
     }
 
     public function saveRekodPmgi($sessionId, $level)

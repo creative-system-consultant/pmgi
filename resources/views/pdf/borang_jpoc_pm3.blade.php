@@ -493,30 +493,73 @@
     </div>
 
     @if (isset($attachmentPaths['pyd_attachment']))
-    <div class="page_break"></div>
-    <!--------------------------------------------------------------- page 7 ----------------------------------------------------------------------------->    
-    <div style="text-align: center; padding: 50px;">
-        <h3>PYD Attachment</h3>
-        <img src="{{ $attachmentPaths['pyd_attachment'] }}" alt="PYD Attachment" style="width: 90%; max-height: 800px; object-fit: contain; border: 1px solid #ccc;">
-    </div>
+        <div class="page_break"></div>
+        <!--------------------------------------------------------------- page 7 ----------------------------------------------------------------------------->    
+        <div style="text-align: center; padding: 50px;">
+            <h3>Lampiran PYD</h3>
+            @if(in_array($attachmentExtension['pyd_attachment'], $imageExtensions))
+                <img src="{{ $attachmentPaths['pyd_attachment'] }}" alt="PYD Attachment" style="width: 90%; max-height: 800px; object-fit: contain; border: 1px solid #ccc;">
+            @elseif($attachmentExtension['pyd_attachment'] == $pdfExtension)
+                @foreach($attachmentPaths['pyd_attachment'] as $index => $imagePath)
+                    <div style="margin-bottom: 20px;">
+                        <p style="font-size: 12px; color: #666;">Halaman {{ $index + 1 }}</p>
+                        <img src="{{ $imagePath }}" 
+                            alt="PDF Page {{ $index + 1 }}" 
+                            style="width: 120%;">
+                    </div>
+                    @if(!$loop->last)
+                        <div class="page_break"></div>
+                    @endif
+                @endforeach
+            @endif
+        </div>
     @endif
 
     @if (isset($attachmentPaths['pym_attachment']))
-    <div class="page_break"></div>
-    <!--------------------------------------------------------------- page 8 ----------------------------------------------------------------------------->    
-    <div style="text-align: center; padding: 50px;">
-        <h3>PYM Attachment</h3>
-        <img src="{{ $attachmentPaths['pym_attachment'] }}" alt="PYM Attachment" style="width: 90%; max-height: 800px; object-fit: contain; border: 1px solid #ccc;">
-    </div>
+        <div class="page_break"></div>
+        <!--------------------------------------------------------------- page 8 ----------------------------------------------------------------------------->    
+        <div style="text-align: center; padding: 50px;">
+            <h3>Lampiran PYM</h3>
+            @if(in_array($attachmentExtension['pym_attachment'], $imageExtensions))
+                <img src="{{ $attachmentPaths['pym_attachment'] }}" alt="PYM Attachment" style="width: 90%; max-height: 800px; object-fit: contain; border: 1px solid #ccc;">
+            @elseif($attachmentExtension['pym_attachment'] == $pdfExtension)
+                {{-- Display converted PDF pages as images --}}
+                @foreach($attachmentPaths['pym_attachment'] as $index => $imagePath)
+                    <div style="margin-bottom: 20px;">
+                        <p style="font-size: 12px; color: #666;">Halaman {{ $index + 1 }}</p>
+                        <img src="{{ $imagePath }}" 
+                            alt="PDF Page {{ $index + 1 }}" 
+                            style="width: 120%;">
+                    </div>
+                    @if(!$loop->last)
+                        <div class="page_break"></div>
+                    @endif
+                @endforeach
+            @endif
+        </div>
     @endif
 
     @if (isset($attachmentPaths['pmc_attachment']))
-    <div class="page_break"></div>
-    <!--------------------------------------------------------------- page 9 ----------------------------------------------------------------------------->    
-    <div style="text-align: center; padding: 50px;">
-        <h3>PMC Attachment</h3>
-        <img src="{{ $attachmentPaths['pmc_attachment'] }}" alt="PMC Attachment" style="width: 90%; max-height: 800px; object-fit: contain; border: 1px solid #ccc;">
-    </div>
+        <div class="page_break"></div>
+        <!--------------------------------------------------------------- page 9 ----------------------------------------------------------------------------->    
+        <div style="text-align: center; padding: 50px;">
+            <h3>Lampiran PMC</h3>
+            @if(in_array($attachmentExtension['pmc_attachment'], $imageExtensions))
+                <img src="{{ $attachmentPaths['pmc_attachment'] }}" alt="PMC Attachment" style="width: 90%; max-height: 800px; object-fit: contain; border: 1px solid #ccc;">
+            @elseif($attachmentExtension['pmc_attachment'] == $pdfExtension)
+                @foreach($attachmentPaths['pmc_attachment'] as $index => $imagePath)
+                    <div style="margin-bottom: 20px;">
+                        <p style="font-size: 12px; color: #666;">Halaman {{ $index + 1 }}</p>
+                        <img src="{{ $imagePath }}" 
+                            alt="PDF Page {{ $index + 1 }}" 
+                            style="width: 120%;">
+                    </div>
+                    @if(!$loop->last)
+                        <div class="page_break"></div>
+                    @endif
+                @endforeach
+            @endif
+        </div>
     @endif
 
 </body>

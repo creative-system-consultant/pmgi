@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'ghostscript' => [
+        'path' => env('GS_PATH'),
+    ],
+
 ];

@@ -122,6 +122,7 @@ Route::middleware(['check.sysAvailable'])->group(function () {
         // rekod PMGi (individu)
         Route::get('/rekod-pmgi', RekodPmgi::class)->name('rekod-pmgi')->middleware('check.access:rekod-pmgi');
         Route::get('/stream-pdf/{sessionId}', [RekodPmgi::class, 'streamRekodPmgi'])->name('stream.rekodPmgi')->withoutMiddleware([RestrictDuringSession::class]);
+            Route::get('/stream/attachment', [RekodPmgi::class, 'streamAttachment'])->name('stream.attachment')->withoutMiddleware([RestrictDuringSession::class]);
 
         // prestasi
         Route::get('/prestasi/bulanan', Bulanan::class)->name('prestasi.bulanan')->middleware('check.access:prestasi-bulanan');
