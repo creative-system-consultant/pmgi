@@ -59,11 +59,7 @@ class Kumulatif extends Component
 
             $this->pydId = $setting->pyd_id;
             $report_date = Carbon::parse($setting->report_date);
-            $this->fromReportDate = match($setting->pmgi_level) {
-                'PM2' => $report_date->copy()->subMonthsNoOverflow(5)->endOfMonth()->format('Y-m-d'),
-                'PM3' => $report_date->copy()->subMonthsNoOverflow(8)->endOfMonth()->format('Y-m-d'),
-                default => $report_date->copy()->subMonthNoOverflow()->endOfMonth()->format('Y-m-d'),
-            };
+            $this->fromReportDate = $report_date->copy()->subMonthNoOverflow()->endOfMonth()->format('Y-m-d');
             $this->toReportDate = $report_date->copy()->endOfMonth()->format('Y-m-d');
             $this->getData();
         }
