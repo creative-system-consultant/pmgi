@@ -35,6 +35,7 @@ class MaklumatWargaKerja extends Component
     public $pydCurrentService;
     public $pydPhoneNo;
     public $pydAddress;
+    public $sessionExist;
 
     protected function rules()
     {
@@ -65,6 +66,7 @@ class MaklumatWargaKerja extends Component
             $settInfo = SettPymPmc::where('session_id', $this->sessionId)->first();
             $bankOfficerPyd = BankOfficer::whereOfficerId($settInfo->pyd_id)->first();
             $bankOfficerPym = BankOfficer::whereOfficerId($settInfo->pym_id)->first();
+            $this->sessionExist = SessionInfo::whereSessionId($this->sessionId)->exists();
 
             $this->selectedBranch = $settInfo->branch_code;
             $this->selectedBranchDescription = Branch::where('branch_code', $settInfo->branch_code)->value('branch_name');
@@ -88,6 +90,12 @@ class MaklumatWargaKerja extends Component
                 $this->pmcName = $bankOfficerPmc->officer_name;
                 $this->pmcStaffNo = $bankOfficerPmc->staffno;
             }
+
+            if($this->sessionExist) {
+                $sessionInfo = SessionInfo::whereSessionId($this->sessionId)->first();
+                $this->venue = $sessionInfo->venue;
+                $this->meetingType = (int)$sessionInfo->type;
+            }
         }
     }
 
@@ -95,13 +103,23 @@ class MaklumatWargaKerja extends Component
     {
         $this->validate();
 
-        SessionInfo::create([
-            'session_id' => $this->sessionId,
-            'type' => $this->meetingType,
-            'venue' => $this->venue,
-            'session_date' => now(),
-            'created_by' => auth()->user()->USERID
-        ]);
+        if($this->sessionExist) {
+            $sessionInfo = SessionInfo::whereSessionId($this->sessionId)->whereStatus(2)->orWhereNull('status')->first();
+            $sessionInfo->update([
+                'type' => $this->meetingType,
+                'venue' => $this->venue,
+                'session_date' => now(),
+                'created_by' => auth()->user()->USERID
+            ]);
+        } else {
+            SessionInfo::create([
+                'session_id' => $this->sessionId,
+                'type' => $this->meetingType,
+                'venue' => $this->venue,
+                'session_date' => now(),
+                'created_by' => auth()->user()->USERID
+            ]);
+        }
 
         $sessionId = str_replace('/', '-', $this->sessionId);
         if ($this->pmgiLevel == 'PM3') {

@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Module;
 
+use App\Constants\PMGI\PmgiCancelReason;
 use App\Models\BankOfficer;
+use App\Models\SessionInfo;
 use App\Models\SessionPmcInfo;
 use App\Models\SettOfficerInfoFile;
 use App\Models\SettPymPmc;
@@ -42,6 +44,8 @@ class PegawaiPemudahCara extends Component
     public $sessionSetting;
     public $pydId;
     public $pmcId;
+    public $reasonCancel;
+    public $cancelSessionModal = false;
 
     protected function rules()
     {
@@ -211,8 +215,44 @@ class PegawaiPemudahCara extends Component
         );
     }
 
+    public function cancelSessionConfirm()
+    {
+        $this->cancelSessionModal = true;
+    }
+
+    public function close()
+    {
+        $this->cancelSessionModal = false;
+        $this->resetValidation('reasonCancel');
+    }
+
+    public function confirmCancel()
+    {
+        $this->validate([
+            'reasonCancel' => 'required'
+        ],
+        [
+            '*.required' => 'Sila pilih sebab pembatalan sesi'
+        ]);
+
+        $sessionInfo = SessionInfo::query()->whereSessionId($this->sessionId)->first();
+        $sessionInfo->update([
+            'status' => 2,
+            'reason' => $this->reasonCancel,
+        ]);
+        $this->sessionSetting->update([
+            'status' => 2,
+        ]);
+
+        redirect()->route('home');
+    }
+
     public function render()
     {
-        return view('livewire.module.pegawai-pemudah-cara')->extends('layouts.main');
+        $reasonList = PmgiCancelReason::getReasonList();
+
+        return view('livewire.module.pegawai-pemudah-cara', [
+            'reasonList' => $reasonList
+        ])->extends('layouts.main');
     }
 }

@@ -41,13 +41,20 @@
             </div>
 
             @if(!$perakuan)
-                <div class="flex mt-8">
-                    <button wire:click="togglePrestasiKumulatif" class="inline-flex items-center px-4 py-2.5 font-medium text-center text-white bg-teal-700 rounded-lg focus:ring-4 focus:ring-teal-200 dark:focus:ring-teal-900 hover:bg-teal-800">
-                        {{ $showPrestasiKumulatif ? 'Tutup' : 'Lihat' }} Prestasi Kumulatif
-                    </button>
-                    <button wire:click="toggleRekodPmgi" class="inline-flex items-center px-4 py-2.5 ml-4 font-medium text-center text-white bg-teal-700 rounded-lg focus:ring-4 focus:ring-teal-200 dark:focus:ring-teal-900 hover:bg-teal-800">
-                        {{ $showRekodPmgi ? 'Tutup' : 'Lihat' }} Rekod PMGi
-                    </button>
+                <div class="flex justify-between">
+                    <div class="flex mt-8">
+                        <button wire:click="togglePrestasiKumulatif" class="inline-flex items-center px-4 py-2.5 font-medium text-center text-white bg-teal-700 rounded-lg focus:ring-4 focus:ring-teal-200 dark:focus:ring-teal-900 hover:bg-teal-800">
+                            {{ $showPrestasiKumulatif ? 'Tutup' : 'Lihat' }} Prestasi Kumulatif
+                        </button>
+                        <button wire:click="toggleRekodPmgi" class="inline-flex items-center px-4 py-2.5 ml-4 font-medium text-center text-white bg-teal-700 rounded-lg focus:ring-4 focus:ring-teal-200 dark:focus:ring-teal-900 hover:bg-teal-800">
+                            {{ $showRekodPmgi ? 'Tutup' : 'Lihat' }} Rekod PMGi
+                        </button>
+                    </div>
+                    <div class="mt-8">
+                        <button wire:click="cancelSessionConfirm" class="inline-flex items-center px-4 py-2.5 ml-4 font-medium text-center text-white bg-red-700 rounded-lg focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900 hover:bg-red-800">
+                            Batal Sesi PMGi
+                        </button>
+                    </div>
                 </div>
 
                 {{-- Prestasi Kumulatif --}}
@@ -268,4 +275,29 @@
         <iframe src="{{ $attachmentUrl }}" frameborder="0" width="100%" height="700px"></iframe>
         @endif
     </x-modal.card>
+
+    {{-- cancel PMGI session modal --}}
+    <x-modal wire:model="cancelSessionModal" blur align="center" max-width="4xl">
+        <x-card title="Batal Sesi PMGI">
+            <div class="grid gap-y-4">
+                <label class="block text-gray-600">Pilih sebab pembatalan:</label>
+                <select id="small" class="flex-1 block w-full p-1 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" wire:model="reasonCancel">
+                    <option value="" disabled>Sila Pilih</option>
+                    @foreach ($reasonList as $id => $name)
+                        <option value="{{ $id }}">{{ $id }} {{ $name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="flex flex-col sm:flex-row justify-center gap-3 pt-2">
+                <button type="button" wire:click="close"
+                        class="w-full sm:w-auto py-2 px-4 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-400 dark:hover:bg-gray-500 text-sm sm:text-base">
+                    Cancel
+                </button>
+                <button type="button" wire:click="confirmCancel"
+                        class="w-full sm:w-auto py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm sm:text-base">
+                    Simpan
+                </button>
+            </div>
+        </x-card>
+    </x-modal>
 </main>

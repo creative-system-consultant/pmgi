@@ -25,7 +25,7 @@ class EnsureHasSession
         $session = SessionInfo::whereSessionId($sessionId)
                                 ->whereDate('session_date', now())
                                 ->where(function ($query) {
-                                    $query->where('status', 0)
+                                    $query->whereIn('status', [0, 2])
                                           ->orWhereNull('status'); // Allow NULL status
                                 })
                                 ->whereHas('setting', function ($query) use ($user) {
