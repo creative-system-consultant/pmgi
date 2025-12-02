@@ -53,6 +53,14 @@
                                                 @else
                                                     <x-badge rounded warning label="Menunggu PMC mulakan sesi" class="cursor-not-allowed" />
                                                 @endif
+                                            @elseif ($data->status == 2)
+                                                @if(substr($data->pmgi_level, -1) != 3 && $data->pym_id == auth()->user()->USERID)
+                                                    <x-badge rounded orange label="Sambung sesi" class="cursor-pointer" wire:click="startSession('{{ $data->session_id }}')" />
+                                                @elseif(substr($data->pmgi_level, -1) == 3 && $data->pmc_id == auth()->user()->USERID)
+                                                    <x-badge rounded orange label="Sambung sesi" class="cursor-pointer" wire:click="startSession('{{ $data->session_id }}')" />
+                                                @else
+                                                    <x-badge rounded warning label="Menunggu PMC sambung sesi" class="cursor-not-allowed" />
+                                                @endif
                                             @else
                                                 <x-badge rounded positive label="Sesi Selesai Dilaksana" class="cursor-not-allowed" />
                                             @endif
