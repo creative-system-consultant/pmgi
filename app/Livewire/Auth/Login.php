@@ -6,6 +6,7 @@ use App\Models\ExcludeUserLogin;
 use App\Models\SettUalPage;
 use App\Models\SettUalRoleHasPage;
 use App\Models\User;
+use App\Models\UserAccess;
 use App\Services\General\LoginService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -175,6 +176,29 @@ class Login extends Component
         // Store access pages and roles in session
         Session::put('user_access_pages', $accessPages);
         Session::put('user_roles', $userRoles);
+
+        // Single session logic for PYD (role_id = 4) and PYM (role_id = 5)
+        if (in_array(4, $userRoles) || in_array(5, $userRoles)) {
+            // Logout all other active sessions for this user
+            $active_sessions = UserAccess::where('user_id', $loggedUser->USERID)
+                ->whereNull('logout_dt')
+                ->get();
+
+            if ($active_sessions->count() > 0) {
+                UserAccess::where('user_id', $loggedUser->USERID)
+                    ->whereNull('logout_dt')
+                    ->update([
+                        'logout_dt' => now(),
+                    ]);
+            }
+        }
+
+        // Create new session record
+        UserAccess::create([
+            'user_id' => $loggedUser->USERID,
+            'login_dt' => now(),
+            'session_id' => session()->getId(),
+        ]);
 
         return redirect()->intended(route('home'));
     }

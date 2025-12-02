@@ -6,6 +6,7 @@ use App\Http\Middleware\CheckUserRole;
 use App\Http\Middleware\EnsureHasSession;
 use App\Http\Middleware\RestrictDuringSession;
 use App\Http\Middleware\RestrictLoadingAccess;
+use App\Http\Middleware\SingleSessionLogin;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -24,6 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'restrict.loading' => RestrictLoadingAccess::class,
             'ensure.session' => EnsureHasSession::class,
             'check.sysAvailable' => CheckSysAvailableFlag::class,
+            'session.singleLogin' => SingleSessionLogin::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
