@@ -17,73 +17,86 @@ class PegawaiDinilai extends Component
     use Actions, WithFileUploads;
 
     public $problemSelection;
-    public $perakuan = false;
-    public $model;
-    public $savedFile;
-    public $showPrestasiKumulatif = false;
-    public $showRekodPmgi = false;
-    public $infoModal = false;
-    public $attachmentUrl = null;
-    public $attachmentModal = false;
     public $sessionId;
+    public $sessionSetting;
+
     public $pydName;
     public $pydPosition;
     public $pydStaffNo;
     public $pydId;
     public $pydBranch;
     public $pydState;
-    public $stateBranch;
 
-    #[Validate('required', message: 'Sila pilih masalah yang dihadapi.')]
+    public $perakuan = false; 
+
+    public $savedFile;
+
+    #[Validate('required')]
     public $problem;
 
-    #[Validate('required', message: 'Sila tuliskan punca bagi masalah yang dipilih.')]
-    #[Validate('min:3', message: 'Sila tuliskan punca lebih dari 3 perkataan')]
+    #[Validate('required|min:3')]
     public $reason;
 
-    #[Validate('required', message: 'sila tuliskan pelan tindakan anda.')]
-    #[Validate('min:3', message: 'Sila tuliskan pelan tindakan anda lebih dari 3 perkataan')]
+    #[Validate('required|min:3')]
     public $actionPlan;
+
     public $comment;
-    public $file;
+
+    #[Validate('nullable|file|max:20480|mimes:jpg,jpeg,png,gif,pdf,doc,docx')]
+    public $file1;
+
+    #[Validate('nullable|file|max:20480|mimes:jpg,jpeg,png,gif,pdf,doc,docx')]
+    public $file2;
+
+    #[Validate('nullable|file|max:20480|mimes:jpg,jpeg,png,gif,pdf,doc,docx')]
+    public $file3;
+
     public $attachment;
-    public $sessionSetting;
+    public $attachment2;
+    public $attachment3;
+
+    public $attachmentUrl = null;
+    public $attachmentModal = false;
+
+    public $infoModal = false;
+
+    public $showPrestasiKumulatif = false;
+    public $showRekodPmgi = false;
 
     public function mount()
     {
-        // check flash error from middleware
-        if (session()->has('flash_error')) {
-            $this->dialog()->error(
-                $title = 'Perhatian.',
-                $description = session('flash_error')
-            );
-        }
-
-        $this->problemSelection = SettPydProb::orderBy('id', 'asc')->get()->toArray();
+        $this->problemSelection = SettPydProb::orderBy('id')->get()->toArray();
         $this->savedFile = SettOfficerInfoFile::where('OFFICER_LVL', 'PYD')->first();
 
         $this->sessionId = str_replace('-', '/', request()->query('session_id'));
         $this->sessionSetting = SettPymPmc::whereSessionId($this->sessionId)->first();
-        if ($this->sessionId) {
-            $this->pydId = $this->sessionSetting->pyd_id;
-            $bankOfficer = BankOfficer::with(['branch.bnmState'])->whereOfficerId($this->pydId)->first();
-            $this->pydName = $bankOfficer->officer_name;
-            $this->pydPosition = $bankOfficer->officer_position;
-            $this->pydStaffNo = $bankOfficer->staffno;
-            $this->pydBranch = $bankOfficer->branch->branch_name ?? '-';
-            $this->pydState = $bankOfficer->branch->bnmState->description ?? '-';
-            $this->stateBranch = $this->pydState . ' - ' . $this->pydBranch;
 
-            // used in perakuan
-            $pydRecordExists = SessionPydInfo::where('session_id', $this->sessionId)->exists();
-            if($pydRecordExists) {
-                $data = SessionPydInfo::where('session_id', $this->sessionId)->first();
-                $this->problem = (int) $data->problem;
-                $this->reason = $data->reason;
-                $this->actionPlan = $data->action;
-                $this->comment = $data->comments;
-                $this->attachment = $data->attachment;
-            }
+        $this->pydId = $this->sessionSetting->pyd_id;
+
+        $officer = BankOfficer::with(['branch.bnmState'])
+                    ->whereOfficerId($this->pydId)
+                    ->first();
+
+        $this->pydName     = $officer->officer_name;
+        $this->pydPosition = $officer->officer_position;
+        $this->pydStaffNo  = $officer->staffno;
+        $this->pydBranch   = $officer->branch->branch_name ?? '-';
+        $this->pydState    = $officer->branch->bnmState->description ?? '-';
+
+        $data = SessionPydInfo::where('session_id', $this->sessionId)->first();
+
+        if ($data) {
+            $this->problem     = $data->problem;
+            $this->reason      = $data->reason;
+            $this->actionPlan  = $data->action;
+            $this->comment     = $data->comments;
+
+            $this->attachment = $data->attachment;
+            $this->attachment2 = $data->attachment2;
+            $this->attachment3 = $data->attachment3;
+
+            // ONLY lock if PYM verifies
+            $this->perakuan = $data->perakuan_flag == 1;
         }
     }
 
@@ -97,57 +110,74 @@ class PegawaiDinilai extends Component
         $this->showRekodPmgi = !$this->showRekodPmgi;
     }
 
-    public function toggleDetail()
-    {
-        if ($this->file) {
-            $this->attachmentUrl = $this->file->temporaryUrl();
-        } else if($this->attachment) {
-            $this->attachmentUrl = asset('storage/' . $this->attachment);
-        }
-        $this->attachmentModal = true;
-    }
-
     public function openInfo()
     {
         $this->infoModal = true;
     }
 
+
+    private function storeFile($file, $index)
+    {
+        if (!$file) return null;
+
+        $userid = substr($this->sessionId, 11);
+        $folder = str_replace('/', '-', $this->sessionId);
+
+        $ext = $file->getClientOriginalExtension();
+
+        // NAMA FAIL BARU
+        $filename = "attachment_PYD_{$index}_" . now()->format('YmdHis') . "." . $ext;
+
+        $store_path = "public/pmgi_session/{$userid}/{$folder}";
+        $db_path = "pmgi_session/{$userid}/{$folder}/{$filename}";
+
+        $file->storeAs($store_path, $filename);
+
+        return $db_path;
+    }
+
+
+
+    public function toggleDetail($db_path)
+    {
+        $this->attachmentUrl = asset('storage/' . $db_path);
+        $this->attachmentModal = true;
+    }
+
+    public function toggleDetailTemp($num)
+    {
+        $prop = 'file' . $num;
+
+        if ($this->$prop) {
+            $this->attachmentUrl = $this->$prop->temporaryUrl();
+            $this->attachmentModal = true;
+        }
+    }
+
+
     public function submit()
     {
         $this->validate();
 
-        $path = $this->processFile();
+        $path1 = $this->storeFile($this->file1, 1);
+        $path2 = $this->storeFile($this->file2, 2);
+        $path3 = $this->storeFile($this->file3, 3);
 
-        SessionPydInfo::create([
-            'session_id' => $this->sessionId,
-            'problem' => $this->problem,
-            'reason' => $this->reason,
-            'action' => $this->actionPlan,
-            'comments' => $this->comment,
-            'attachment' => $path,
-            'created_by' => auth()->user()->USERID,
-        ]);
-
-        $sessionId  = str_replace('/', '-', $this->sessionId);
-
-        return $this->redirect('/loading-pmgi?session_id=' . $sessionId . '&source=pyd');
+        SessionPydInfo::updateOrCreate(
+            ['session_id' => $this->sessionId],
+            [
+                'problem'       => $this->problem,
+                'reason'        => $this->reason,
+                'action'        => $this->actionPlan,
+                'comments'      => $this->comment,
+                'attachment'    => $path1 ?: $this->attachment,
+                'attachment2'   => $path2 ?: $this->attachment2,
+                'attachment3'   => $path3 ?: $this->attachment3,
+                'created_by'    => auth()->user()->USERID,
+            ]
+        );
     }
 
-    private function processFile()
-    {
-        if($this->file) {
-            $extension = $this->file->getClientOriginalExtension();
-            $userid = substr($this->sessionId, 11); //get userid from sessionId
-            $folder = str_replace('/', '-', $this->sessionId);
-            $filename = 'PYD_'. $this->pydId . '_' . $folder . '_' . now()->format('YmdHis') . '.' . $extension;
-            $store_path = 'public/pmgi_session/' . $userid . '/' . $folder;
-            $db_path = 'pmgi_session/' . $userid . '/' . $folder . '/' . $filename;
-            $this->file->storeAs($store_path, $filename);
-
-            return $db_path;
-        }
-        return;
-    }
 
     public function updates()
     {
@@ -155,30 +185,24 @@ class PegawaiDinilai extends Component
             'title'       => 'Andakah anda pasti?',
             'description' => 'Kemaskini maklumat ini?',
             'icon'        => 'question',
-            'accept'      => [
-                'label'  => 'Ya, pasti',
-                'method' => 'confirmUpdate',
-            ],
-            'reject' => [
-                'label'  => 'Tidak, batalkan',
-            ],
+            'accept'      => ['label' => 'Ya', 'method' => 'confirmUpdate'],
+            'reject'      => ['label' => 'Tidak'],
         ]);
     }
+
 
     public function confirmUpdate()
     {
         SessionPydInfo::whereSessionId($this->sessionId)->update([
-            'problem' => $this->problem,
-            'reason' => $this->reason,
-            'action' => $this->actionPlan,
+            'problem'  => $this->problem,
+            'reason'   => $this->reason,
+            'action'   => $this->actionPlan,
             'comments' => $this->comment,
         ]);
 
-        $this->dialog()->success(
-            $title = 'Berjaya!',
-            $description = 'Ulasan berjaya dikemaskini'
-        );
+        $this->dialog()->success('Berjaya!', 'Maklumat telah dikemaskini.');
     }
+
 
     public function render()
     {
