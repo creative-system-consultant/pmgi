@@ -20,19 +20,26 @@ class PegawaiMenilai extends Component
     public $perakuan = false;
     public $showPrestasiKumulatif = false;
     public $showRekodPmgi = false;
+
     public $savedFile;
     public $infoModal = false;
+
     public $attachmentUrl = null;
     public $attachmentModal = false;
+
     public $sessionId;
+    public $sessionSetting;
+
     public $pydId;
     public $pydName;
     public $pydPosition;
     public $pydStaffNo;
     public $pydBranch;
     public $pydState;
-    public $pymId;
     public $stateBranch;
+
+    public $pymId;
+
     public $reasonCancel;
     public $cancelSessionModal = false;
 
@@ -43,9 +50,22 @@ class PegawaiMenilai extends Component
     #[Validate('required', message: 'sila tuliskan pelan tindakan anda.')]
     #[Validate('min:3', message: 'Sila tuliskan pelan tindakan anda lebih dari 3 perkataan')]
     public $actionPlan;
-    public $file;
-    public $attachment;
-    public $sessionSetting;
+
+    // ====== FAIL LAMPIRAN BARU ======
+    #[Validate('nullable|file|max:20480|mimes:jpg,jpeg,png,gif,pdf,doc,docx')]
+    public $file1;
+
+    #[Validate('nullable|file|max:20480|mimes:jpg,jpeg,png,gif,pdf,doc,docx')]
+    public $file2;
+
+    #[Validate('nullable|file|max:20480|mimes:jpg,jpeg,png,gif,pdf,doc,docx')]
+    public $file3;
+
+    // path yang sedia ada dalam DB
+    public $attachment;   // lampiran 1
+    public $attachment2;  // lampiran 2
+    public $attachment3;  // lampiran 3
+
 
     public function mount()
     {
@@ -61,27 +81,44 @@ class PegawaiMenilai extends Component
 
         $this->sessionId = str_replace('-', '/', request()->query('session_id'));
         $this->sessionSetting = SettPymPmc::whereSessionId($this->sessionId)->first();
-        if ($this->sessionId) {
+
+        if ($this->sessionId && $this->sessionSetting) {
+
             $this->pydId = $this->sessionSetting->pyd_id;
-            $bankOfficer = BankOfficer::with(['branch.bnmState'])->whereOfficerId($this->pydId)->first();
-            $this->pydName = $bankOfficer->officer_name;
-            $this->pydPosition = $bankOfficer->officer_position;
-            $this->pydStaffNo = $bankOfficer->staffno;
-            $this->pydBranch = $bankOfficer->branch->branch_name ?? '-';
-            $this->pydState = $bankOfficer->branch->bnmState->description ?? '-';
-            $this->stateBranch = $this->pydState . ' - ' . $this->pydBranch;
             $this->pymId = $this->sessionSetting->pym_id;
 
-            // used in perakuan
-            $pymRecordExists = SessionPymInfo::where('session_id', $this->sessionId)->exists();
-            if($pymRecordExists) {
-                $data = SessionPymInfo::where('session_id', $this->sessionId)->first();
-                $this->comment = $data->comments;
+            $bankOfficer = BankOfficer::with(['branch.bnmState'])
+                ->whereOfficerId($this->pydId)
+                ->first();
+
+            if ($bankOfficer) {
+                $this->pydName     = $bankOfficer->officer_name;
+                $this->pydPosition = $bankOfficer->officer_position;
+                $this->pydStaffNo  = $bankOfficer->staffno;
+                $this->pydBranch   = $bankOfficer->branch->branch_name ?? '-';
+                $this->pydState    = $bankOfficer->branch->bnmState->description ?? '-';
+                $this->stateBranch = $this->pydState . ' - ' . $this->pydBranch;
+            }
+
+            // rekod PYM sedia ada
+            $data = SessionPymInfo::where('session_id', $this->sessionId)->first();
+
+            if ($data) {
+                $this->comment    = $data->comments;
                 $this->actionPlan = $data->action;
-                $this->attachment = $data->attachment;
+
+                $this->attachment  = $data->attachment;   // lampiran 1
+                $this->attachment2 = $data->attachment2;  // lampiran 2
+                $this->attachment3 = $data->attachment3;  // lampiran 3
+
+                // kalau ada perakuan_flag dalam table
+                if (property_exists($data, 'perakuan_flag')) {
+                    $this->perakuan = $data->perakuan_flag == 1;
+                }
             }
         }
     }
+
 
     public function togglePrestasiKumulatif()
     {
@@ -93,55 +130,62 @@ class PegawaiMenilai extends Component
         $this->showRekodPmgi = !$this->showRekodPmgi;
     }
 
-    public function toggleDetail()
-    {
-        if ($this->file) {
-            $this->attachmentUrl = $this->file->temporaryUrl();
-        } else if($this->attachment) {
-            $this->attachmentUrl = asset('storage/' . $this->attachment);
-        }
-        $this->attachmentModal = true;
-    }
-
     public function openInfo()
     {
         $this->infoModal = true;
     }
 
+    // ====== SIMPAN SATU FAIL (IKUT SLOT 1/2/3) ======
+    private function storeFile($file, int $slot)
+    {
+        if (!$file) {
+            return null;
+        }
+
+        // contoh: sessionId = PMG12511/1/AZHARSU
+        // userid = AZHARSU
+        $userid = substr($this->sessionId, 11);
+
+        // folder = PMG12511-1-AZHARSU
+        $folder = str_replace('/', '-', $this->sessionId);
+
+        $ext = $file->getClientOriginalExtension();
+
+        // ikut pattern lama: attachment_PYM_1_YYYYMMDDHHIISS.ext
+        $filename = 'attachment_PYM_' . $slot . '_' . now()->format('YmdHis') . '.' . $ext;
+
+        $store_path = 'public/pmgi_session/' . $userid . '/' . $folder;
+        $db_path    = 'pmgi_session/' . $userid . '/' . $folder . '/' . $filename;
+
+        $file->storeAs($store_path, $filename);
+
+        return $db_path;
+    }
+
+
     public function submit()
     {
         $this->validate();
 
-        $path = $this->processFile();
+        $path1 = $this->storeFile($this->file1, 1);
+        $path2 = $this->storeFile($this->file2, 2);
+        $path3 = $this->storeFile($this->file3, 3);
 
-        SessionPymInfo::create([
-            'session_id' => $this->sessionId,
-            'comments' => $this->comment,
-            'action' => $this->actionPlan,
-            'attachment' => $path,
-            'created_by' => auth()->user()->USERID,
+        SessionPymInfo::updateOrCreate([
+            'session_id'   => $this->sessionId,
+            'comments'     => $this->comment,
+            'action'       => $this->actionPlan,
+            'attachment'    => $path1 ?: $this->attachment,
+            'attachment2'   => $path2 ?: $this->attachment2,
+            'attachment3'   => $path3 ?: $this->attachment3,
+            'created_by'   => auth()->user()->USERID,
         ]);
 
-        $sessionId  = str_replace('/', '-', $this->sessionId);
+        $sessionId = str_replace('/', '-', $this->sessionId);
 
         return $this->redirect('/loading-pmgi?session_id=' . $sessionId . '&source=pym');
     }
 
-    private function processFile()
-    {
-        if($this->file) {
-            $extension = $this->file->getClientOriginalExtension();
-            $userid = substr($this->sessionId, 11); //get userid from sessionId
-            $folder = str_replace('/', '-', $this->sessionId);
-            $filename = 'PYM_'. $this->pymId . '_' . $folder . '_' . now()->format('YmdHis') . '.' . $extension;
-            $store_path = 'public/pmgi_session/' . $userid . '/' . $folder;
-            $db_path = 'pmgi_session/' . $userid . '/' . $folder . '/' . $filename;
-            $this->file->storeAs($store_path, $filename);
-
-            return $db_path;
-        }
-        return;
-    }
 
     public function updates()
     {
@@ -159,18 +203,38 @@ class PegawaiMenilai extends Component
         ]);
     }
 
+
     public function confirmUpdate()
     {
-        SessionPymInfo::whereSessionId($this->sessionId)->update([
+        $this->validate();
+
+        $update = [
             'comments' => $this->comment,
-            'action' => $this->actionPlan,
-        ]);
+            'action'   => $this->actionPlan,
+        ];
+
+        // hanya overwrite kalau user upload fail baru
+        if ($this->file1) {
+            $update['attachment'] = $this->storeFile($this->file1, 1);
+            $this->attachment = $update['attachment'];
+        }
+        if ($this->file2) {
+            $update['attachment2'] = $this->storeFile($this->file2, 2);
+            $this->attachment2 = $update['attachment2'];
+        }
+        if ($this->file3) {
+            $update['attachment3'] = $this->storeFile($this->file3, 3);
+            $this->attachment3 = $update['attachment3'];
+        }
+
+        SessionPymInfo::whereSessionId($this->sessionId)->update($update);
 
         $this->dialog()->success(
             $title = 'Berjaya!',
             $description = 'Ulasan berjaya dikemaskini'
         );
     }
+
 
     public function cancelSessionConfirm()
     {
@@ -185,18 +249,20 @@ class PegawaiMenilai extends Component
 
     public function confirmCancel()
     {
-        $this->validate([
-            'reasonCancel' => 'required'
-        ],
-        [
-            '*.required' => 'Sila pilih sebab pembatalan sesi'
-        ]);
+        $this->validate(
+            [ 'reasonCancel' => 'required' ],
+            [ '*.required'   => 'Sila pilih sebab pembatalan sesi' ]
+        );
 
-        $sessionInfo = SessionInfo::query()->whereSessionId($this->sessionId)->first();
+        $sessionInfo = SessionInfo::query()
+            ->whereSessionId($this->sessionId)
+            ->first();
+
         $sessionInfo->update([
             'status' => 2,
             'reason' => $this->reasonCancel,
         ]);
+
         $this->sessionSetting->update([
             'status' => 2,
         ]);
@@ -207,6 +273,7 @@ class PegawaiMenilai extends Component
     public function render()
     {
         $reasonList = PmgiCancelReason::getReasonList();
+
         return view('livewire.module.pegawai-menilai', [
             'reasonList' => $reasonList
         ])->extends('layouts.main');

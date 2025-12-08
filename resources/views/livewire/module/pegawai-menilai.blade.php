@@ -100,68 +100,79 @@
                     @endif
                 </div>
 
-                @if($perakuan && $attachment)
-                    @php
-                        $fileExtension = pathinfo($attachment, PATHINFO_EXTENSION);
-                    @endphp
-
-                    @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
-                        <img class="mb-5 w-60" src="{{ asset('storage/' . $attachment) }}" alt="Attachment Preview">
-                    @elseif($fileExtension === 'pdf')
-                        <button type="button" class="cursor-pointer text-blue-500 hover:underline" wire:click="toggleDetail">
-                            {{ basename($attachment) }}
-                        </button>
-                    @elseif($fileExtension === 'docx')
-                        <a href="{{ asset('storage/' . $attachment) }}" target="_blank" class="cursor-pointer text-blue-500 hover:underline">
-                            {{ basename($attachment) }}
-                        </a>
-                    @endif
-                @endif
-
+                {{-- ===================== LAMPIRAN 1, 2, 3 (PYM) ===================== --}}
                 @if(!$perakuan)
-                    <div
-                        x-data="{ uploading: false, progress: 0 }"
-                        x-on:livewire-upload-start="uploading = true"
-                        x-on:livewire-upload-finish="uploading = false"
-                        x-on:livewire-upload-cancel="uploading = false"
-                        x-on:livewire-upload-error="uploading = false"
-                        x-on:livewire-upload-progress="progress = $event.detail.progress"
-                        class="mb-4"
-                    >
-                        <!-- File Input -->
-                        <label for="muatnaik" class="block mb-2 font-medium text-gray-900 text-md dark:text-white">Muat Naik Fail (Jika berkaitan) :</label>
-                        <input class="block mb-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none dark:bg-gray-700" id="default_size" type="file" wire:model="file">
 
-                        <!-- Progress Bar -->
-                        <div x-show="uploading">
-                            <progress max="100" x-bind:value="progress"></progress>
-                        </div>
+                    {{-- ******** Lampiran 1 ******** --}}
+                    <div class="mb-4">
+                        <label class="font-semibold">Lampiran 1 (Jika berkaitan) :</label>
+
+                        @if($attachment)
+                            <p class="mt-1 text-sm">
+                                Fail sedia ada:
+                                <a href="{{ asset('storage/'.$attachment) }}"
+                                   target="_blank"
+                                   class="text-blue-600 underline">
+                                    {{ basename($attachment) }}
+                                </a>
+                            </p>
+                        @endif
+
+                        <input type="file"
+                               wire:model="file1"
+                               class="mt-2 block w-full border rounded p-2">
                     </div>
 
-                    @if($file)
-                        @php
-                            $fileExtension = $file->getClientOriginalExtension();
-                        @endphp
+                    {{-- ******** Lampiran 2 ******** --}}
+                    <div class="mb-4">
+                        <label class="font-semibold">Lampiran 2 (Jika berkaitan) :</label>
 
-                        @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
-                            <img class="mb-5 w-60" src="{{ $file->temporaryUrl() }}" alt="Attachment Preview">
-                        @elseif($fileExtension === 'pdf')
-                            <button type="button" class="cursor-pointer text-blue-500 hover:underline" wire:click="toggleDetail">
-                                {{ $file->getClientOriginalName() }}
-                            </button>
-                        @else
-                            <a href="{{ $file->temporaryUrl() }}" target="_blank" class="cursor-pointer text-blue-500 hover:underline">
-                                {{ $file->getClientOriginalName() }}
-                            </a>
+                        @if($attachment2)
+                            <p class="mt-1 text-sm">
+                                Fail sedia ada:
+                                <a href="{{ asset('storage/'.$attachment2) }}"
+                                   target="_blank"
+                                   class="text-blue-600 underline">
+                                    {{ basename($attachment2) }}
+                                </a>
+                            </p>
                         @endif
-                    @endif
 
+                        <input type="file"
+                               wire:model="file2"
+                               class="mt-2 block w-full border rounded p-2">
+                    </div>
+
+                    {{-- ******** Lampiran 3 ******** --}}
+                    <div class="mb-4">
+                        <label class="font-semibold">Lampiran 3 (Jika berkaitan) :</label>
+
+                        @if($attachment3)
+                            <p class="mt-1 text-sm">
+                                Fail sedia ada:
+                                <a href="{{ asset('storage/'.$attachment3) }}"
+                                   target="_blank"
+                                   class="text-blue-600 underline">
+                                    {{ basename($attachment3) }}
+                                </a>
+                            </p>
+                        @endif
+
+                        <input type="file"
+                               wire:model="file3"
+                               class="mt-2 block w-full border rounded p-2">
+                    </div>
+
+                    {{-- BUTTON HANTAR --}}
                     <div class="flex mt-4">
-                        <button wire:click="submit" class="inline-flex items-center px-4 py-2.5 font-medium text-center text-white rounded-lg bg-primary-700 focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+                        <button wire:click="submit"
+                                class="inline-flex items-center px-4 py-2.5 font-medium text-center text-white rounded-lg bg-primary-700 focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
                             Hantar
                         </button>
                     </div>
+
                 @endif
+
             </div>
         </div>
     </div>
