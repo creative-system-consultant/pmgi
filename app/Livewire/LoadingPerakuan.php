@@ -12,6 +12,7 @@ use App\Models\SessionPymInfo;
 use App\Models\SettPymPmc;
 use App\Services\HtmlToImageService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -44,6 +45,10 @@ class LoadingPerakuan extends Component
         $this->pmgiLevel = substr($this->sessionId, 3, 1);
         $this->pmgiType = substr($this->sessionId, 0, 2);
         $this->pydId = substr($this->sessionId, 11);
+
+        if (request()->query('force') === 'true') {
+            $this->forceRun();
+        }
     }
 
     protected function showError()
@@ -127,7 +132,35 @@ class LoadingPerakuan extends Component
                 }
             }
         }
+
+        Log::info("PMGI: Session {$this->sessionId} berjaya lengkap, trigger SP dan email.");
     }
+
+    public function forceRun()
+    {
+        Log::info("PMGI: ForceRun triggered untuk session {$this->sessionId}");
+
+        // Update status sebagai bypass
+        SessionInfo::whereSessionId($this->sessionId)->update(['status' => 1]);
+        SettPymPmc::whereSessionId($this->sessionId)->update(['status' => 1]);
+
+        $resultSp = $this->runSp();
+
+        if (substr($resultSp, 0, 1) == '0') {
+            $this->hasRedirected = true;
+
+            $this->sendEmailToPyd();
+
+            // Optional: boleh return view atau auto redirect
+            redirect()->route('home')->with('flash_success', 'Force SP berjaya dijalankan.');
+        } else {
+            $this->dialog()->error(
+                $title = 'Ralat!',
+                $description = 'Force SP gagal dijalankan.'
+            );
+        }
+    }
+
 
     public function runSp()
     {
@@ -213,20 +246,87 @@ class LoadingPerakuan extends Component
         );
     }
 
+    // Trigger email kat sini
     private function sendEmail($email, $imagePath, $htmlPath)
     {
+        // === DATA UNTUK SP EMAIL (Option 1 – guna table profile sahaja) ===
+        $setting = SettPymPmc::whereSessionId($this->sessionId)->first();
+
+        $data = MntrSession::with(['branch', 'state'])
+            ->whereOfficerId($this->pydId)
+            ->whereDate('report_date', $setting->report_date)
+            ->first();
+
+        if (!$data) {
+            Log::warning("PMGI: Gagal hantar email – MntrSession tak jumpa untuk PYD {$this->pydId}.");
+            return;
+        }
+
+        $procedureName = 'dbo.UP_PMGI_EMAIL_REM_PYD';
+
+        // $bindings = [
+        //     'email_setting_no'   => 1,  // tukar kalau nak guna setting lain
+        //     'NamaPegawai'        => $data->officer_name,
+        //     'NoKP'               => $data->nokp,
+        //     'JabatanUnit'        => $data->branch->branch_name ?? '',
+        //     'Negeri'             => $data->state->description ?? '',
+        //     // ikut contoh dalam SP, SesiPenilaian lebih kepada nama sesi (awak boleh adjust)
+        //     'SesiPenilaian'      => 'PMGi-1',
+        //     // SP expect DATE, so bagi format Y-m-d
+        //     'TarikhPenilaian'    => Carbon::parse($data->report_date)->format('Y-m-d'),
+        //     'JabatanPemantauan'  => $data->state->description ?? '',
+        // ];
+
+            $bindings = [
+        'email_setting_no'   => 1,  // tukar kalau nak guna setting lain
+        'NamaPegawai'        => 'NamaPegawai',
+        'NoKP'               => 'nokp',
+        'JabatanUnit'        => 'JabatanUnit',
+        'Negeri'             => 'Negeri',
+        // ikut contoh dalam SP, SesiPenilaian lebih kepada nama sesi (awak boleh adjust)
+        'SesiPenilaian'      => 'PMGi-1',
+        // SP expect DATE, so bagi format Y-m-d
+        'TarikhPenilaian'    => '8-12-2025',
+        'JabatanPemantauan'  => 'JabatanPemantauan',
+        ];
+
+
+        // === OPTION 1: Hantar guna SQL Server Database Mail, recipients ikut pmgi_ref_email_profile ===
+        DB::statement("EXEC dbo.UP_PMGI_EMAIL_REM_PYD 
+            :email_setting_no, 
+            :NamaPegawai, 
+            :NoKP, 
+            :JabatanUnit, 
+            :Negeri, 
+            :SesiPenilaian, 
+            :TarikhPenilaian, 
+            :JabatanPemantauan", $bindings);
+
+        Log::info("PMGI: SP UP_PMGI_EMAIL_REM_PYD dipanggil untuk PYD {$data->officer_name} ({$data->nokp}).");
+
+        // ==========================
+        // OPTION 2 (STANDBY): Hantar email individu kepada PYD guna job Laravel
+        // ==========================
+        // Aktifkan bila production ready / kalau client nak email direct ke PYD
+
+        /*
         $jobs = [];
 
         if ($email) {
+            // Job untuk hantar email keputusan dengan lampiran image/html
             $jobs[] = new SendKeputusanPmgiPyd($email, $imagePath, $htmlPath);
         }
 
-        // Chain the cleanup job after the email jobs
+        // Cleanup temporary files lepas email dihantar
         $jobs[] = new CleanupTemporaryFiles([$imagePath], [$htmlPath]);
 
-        // Dispatch the jobs as a chain
+        // Dispatch chain
         Bus::chain($jobs)->dispatch();
+
+        \Log::info("PMGI: Email individu ke {$email} queued (SendKeputusanPmgiPyd).");
+        */
     }
+
 
     public function render()
     {

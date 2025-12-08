@@ -86,7 +86,13 @@
                                             {{ $record ? ($record->rm_dapat_kutip_pts ? number_format($record->rm_dapat_kutip_pts, 2) . '%' : '-') : '-' }}
                                         </th>
                                         <th scope="col" class="p-2 text-sm font-normal tracking-tight text-center @if($record && ($record->incl_pmgi_flag == 'W' || $record->incl_pmgi_flag == 'S')) text-white @else text-gray-800 @endif border-black border-dashed border-x whitespace-nowrap">
-                                            {{ $record ? ($record->rm_dapat_kutip_capai_flag ? $record->rm_dapat_kutip_capai_flag : '-') : '-' }}
+                                            @if ($record && $record->rm_dapat_kutip_capai_flag)
+                                                <span class="{{ $record->rm_dapat_kutip_capai_flag === 'Y' ? 'text-green-700 font-bold' : 'text-red-700 font-bold' }}">
+                                                    {{ $record->rm_dapat_kutip_capai_flag }}
+                                                </span>
+                                            @else
+                                                -
+                                            @endif
                                         </th>
                                         {{-- kriteria 2 --}}
                                         <th scope="col" class="p-2 text-sm font-normal tracking-tight text-center @if($record && ($record->incl_pmgi_flag == 'W' || $record->incl_pmgi_flag == 'S')) text-white @else text-gray-800 @endif border-black border-dashed border-x whitespace-nowrap">
@@ -99,7 +105,13 @@
                                             {{ $record ? ($record->bil_dapat_kutip_pts ? number_format($record->bil_dapat_kutip_pts, 2) . '%' : '-') : '-' }}
                                         </th>
                                         <th scope="col" class="p-2 text-sm font-normal tracking-tight text-center @if($record && ($record->incl_pmgi_flag == 'W' || $record->incl_pmgi_flag == 'S')) text-white @else text-gray-800 @endif border-black border-dashed border-x whitespace-nowrap">
-                                            {{ $record ? ($record->bil_dapat_kutip_capai_flag ? $record->bil_dapat_kutip_capai_flag : '-') : '-' }}
+                                            @if ($record && $record->bil_dapat_kutip_capai_flag)
+                                                <span class="{{ $record->bil_dapat_kutip_capai_flag === 'Y' ? 'text-green-700 font-bold' : 'text-red-700 font-bold' }}">
+                                                    {{ $record->bil_dapat_kutip_capai_flag }}
+                                                </span>
+                                            @else
+                                                -
+                                            @endif
                                         </th>
                                         {{-- kriteria 3 --}}
                                         <th scope="col" class="p-2 text-sm font-normal tracking-tight text-center @if($record && ($record->incl_pmgi_flag == 'W' || $record->incl_pmgi_flag == 'S')) text-white @else text-gray-800 @endif border-black border-dashed border-x whitespace-nowrap">
@@ -112,7 +124,13 @@
                                             {{ $record ? ($record->bil_lawat_pts ? number_format($record->bil_lawat_pts, 2) . '%' : '-') : '-' }}
                                         </th>
                                         <th scope="col" class="p-2 text-sm font-normal tracking-tight text-center @if($record && ($record->incl_pmgi_flag == 'W' || $record->incl_pmgi_flag == 'S')) text-white @else text-gray-800 @endif border-black border-dashed border-x whitespace-nowrap">
-                                            {{ $record ? ($record->bil_lawat_capai_flag ? $record->bil_lawat_capai_flag : '-') : '-' }}
+                                            @if ($record && $record->bil_lawat_capai_flag)
+                                                <span class="{{ $record->bil_lawat_capai_flag === 'Y' ? 'text-green-700 font-bold' : 'text-red-700 font-bold' }}">
+                                                    {{ $record->bil_lawat_capai_flag }}
+                                                </span>
+                                            @else
+                                                -
+                                            @endif
                                         </th>
                                         {{-- kriteria 4 --}}
                                         <th scope="col" class="p-2 text-sm font-normal tracking-tight text-center @if($record && ($record->incl_pmgi_flag == 'W' || $record->incl_pmgi_flag == 'S')) text-white @else text-gray-800 @endif border-black border-dashed border-x whitespace-nowrap">
@@ -128,7 +146,13 @@
                                             {{ $record ? ($record->bil_kawal_npf_pts ? number_format($record->bil_kawal_npf_pts, 2) . '%' : '-') : '-' }}
                                         </th>
                                         <th scope="col" class="p-2 text-sm font-normal tracking-tight text-center @if($record && ($record->incl_pmgi_flag == 'W' || $record->incl_pmgi_flag == 'S')) text-white @else text-gray-800 @endif border-black border-dashed border-x whitespace-nowrap">
-                                            {{ $record ? ($record->bil_kawal_npf_capai_flag ? $record->bil_kawal_npf_capai_flag : '-') : '-' }}
+                                            @if ($record && $record->bil_kawal_npf_capai_flag)
+                                                <span class="{{ $record->bil_kawal_npf_capai_flag === 'Y' ? 'text-green-700 font-bold' : 'text-red-700 font-bold' }}">
+                                                    {{ $record->bil_kawal_npf_capai_flag }}
+                                                </span>
+                                            @else
+                                                -
+                                            @endif
                                         </th>
                                         {{-- kriteria 5 --}}
                                         <th scope="col" class="p-2 text-sm font-normal tracking-tight text-center @if($record && ($record->incl_pmgi_flag == 'W' || $record->incl_pmgi_flag == 'S')) text-white @else text-gray-800 @endif border-black border-dashed border-x whitespace-nowrap">
@@ -141,7 +165,13 @@
                                             {{ $record ? ($record->bil_pulih_npf_pts ? number_format($record->bil_pulih_npf_pts, 2) . '%' : '-') : '-' }}
                                         </th>
                                         <th scope="col" class="p-2 text-sm font-normal tracking-tight text-center @if($record && ($record->incl_pmgi_flag == 'W' || $record->incl_pmgi_flag == 'S')) text-white @else text-gray-800 @endif border-black border-dashed border-x whitespace-nowrap">
-                                            {{ $record ? ($record->bil_pulih_npf_capai_flag ? $record->bil_pulih_npf_capai_flag : '-') : '-' }}
+                                            @if ($record && $record->bil_pulih_npf_capai_flag)
+                                                <span class="{{ $record->bil_pulih_npf_capai_flag === 'Y' ? 'text-green-700 font-bold' : 'text-red-700 font-bold' }}">
+                                                    {{ $record->bil_pulih_npf_capai_flag }}
+                                                </span>
+                                            @else
+                                                -
+                                            @endif
                                         </th>
                                         <th scope="col" class="p-2 text-sm font-normal tracking-tight text-center text-gray-800 border-black border-dashed border-x whitespace-nowrap">
                                             @if($record)

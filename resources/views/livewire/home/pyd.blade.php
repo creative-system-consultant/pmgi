@@ -245,6 +245,11 @@
                 @else
                 <img src="{{ asset('image/illustrations/no-data.svg') }}" alt="astronaut image">
                 @endif
+                <div class="flex flex-col mb-4"> 
+                    <div class="flex-shrink-0">
+                        <span class="text-sm text-gray-600 text-left mt-2 ">Berdasarkan rekod PS bermula dari tarikh permulaan PMG-i 1 sehingga tempoh penilaian JKPi </span>
+                    </div>
+                </div>
             </div>
             <!-- Bar chart -->
             <div class="p-4 bg-white rounded-lg border border-gray-200 shadow-sm sm:p-6">
@@ -258,6 +263,11 @@
                 @else
                 <img src="{{ asset('image/illustrations/no-data.svg') }}" alt="astronaut image">
                 @endif
+                <div class="flex flex-col mb-4"> 
+                    <div class="flex-shrink-0">
+                        <span class="text-sm text-gray-600 text-left mt-2 ">Berdasarkan rekod PS bermula dari tarikh permulaan PMG-i 1 sehingga tempoh penilaian JKPi </span>
+                    </div>
+                </div>
             </div>
             <!-- pie chart -->
             <div class="p-4 bg-white rounded-lg border border-gray-200 shadow-sm sm:p-6">
@@ -271,6 +281,11 @@
                 @else
                 <img src="{{ asset('image/illustrations/no-data.svg') }}" alt="astronaut image">
                 @endif
+                <div class="flex flex-col mb-4"> 
+                    <div class="flex-shrink-0">
+                        <span class="text-sm text-gray-600 text-left mt-2 ">Berdasarkan rekod PS bermula dari tarikh permulaan PMG-i 1 sehingga tempoh penilaian JKPi </span>
+                    </div>
+                </div>
             </div>
         </div>
 
