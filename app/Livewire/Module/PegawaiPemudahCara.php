@@ -220,7 +220,9 @@ class PegawaiPemudahCara extends Component
 
     public function confirmUpdate()
     {
-        SessionPmcInfo::whereSessionId($this->sessionId)->update([
+        $this->validate();
+        
+        $updates = [
             'fair_flag' => $this->fairFlag,
             'fair_comments' => $this->fairComment,
             'undrstd_flag' => $this->undrstdFlag,
