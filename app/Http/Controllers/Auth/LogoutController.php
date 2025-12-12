@@ -17,16 +17,12 @@ class LogoutController extends Controller
         
         // Mark current session as logged out for PYD and PYM users
         if ($user) {
-            $userRoles = $user->roles()->pluck('role_id')->toArray();
-            
-            if (array_intersect($userRoles, [4,5])) {
-                UserAccess::where('user_id', $user->USERID)
-                    ->where('session_id', session()->getId())
-                    ->whereNull('logout_dt')
-                    ->update([
-                        'logout_dt' => now(),
-                    ]);
-            }
+            UserAccess::where('user_id', $user->USERID)
+                ->where('session_id', session()->getId())
+                ->whereNull('logout_dt')
+                ->update([
+                    'logout_dt' => now(),
+                ]);
         }
 
         // Clear session data related to access control

@@ -74,28 +74,33 @@ class Login extends Component
 
     public function updatedUserId()
     {
-        $this->resetUserValidation();
-        
         if (empty($this->userId)) {
+            $this->resetErrorBag();
+            $this->resetUserValidation();
             return;
         }
 
         $this->checkUserId();
+        $this->resetUserValidation();
     }
 
     private function resetUserValidation()
     {
-        $this->excludeUser = null;
-        $this->userMessage = '';
-        $this->canProceedToPassword = false;
-        $this->password = ''; // Clear password when user ID changes
+        $this->reset([
+            'excludeUser',
+            'userMessage',
+            'canProceedToPassword',
+            'password',
+            'tnc',
+            'tnc2'
+        ]);
     }
 
     // Approach 1
     private function checkUserId()
     {
         $excludeUserLogin = ExcludeUserLogin::where('userid', strtoupper($this->userId))
-            ->first();
+            ->exists();
 
         if ($excludeUserLogin) {
             $this->addError('userId', trans('auth.notFound'));
@@ -103,7 +108,10 @@ class Login extends Component
             return;
         }
 
-        $this->excludeUser = $excludeUserLogin !== null;
+        $this->resetErrorBag('userId');
+        $this->disableButton = false;
+
+        $this->excludeUser = $excludeUserLogin;
         $this->canProceedToPassword = !$this->excludeUser;
     }
 
