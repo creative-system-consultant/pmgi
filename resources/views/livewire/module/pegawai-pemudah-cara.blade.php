@@ -49,6 +49,11 @@
                         <button wire:click="toggleRekodPmgi" class="inline-flex items-center px-4 py-2.5 ml-4 font-medium text-center text-white bg-teal-700 rounded-lg focus:ring-4 focus:ring-teal-200 dark:focus:ring-teal-900 hover:bg-teal-800">
                             {{ $showRekodPmgi ? 'Tutup' : 'Lihat' }} Rekod PMGi
                         </button>
+                        @if ($buttonRekodPS)
+                            <a href="{{ route('rekod-penilaian-semula', ['session_id' => $sessionId]) }}" target="_blank" class="inline-flex items-center px-4 py-2.5 ml-4 font-medium text-center text-white bg-teal-700 rounded-lg focus:ring-4 focus:ring-teal-200 dark:focus:ring-teal-900 hover:bg-teal-800">
+                                Lihat Rekod Penilaian Semula
+                            </a>
+                        @endif
                     </div>
                     <div class="mt-8">
                         <button wire:click="cancelSessionConfirm" class="inline-flex items-center px-4 py-2.5 ml-4 font-medium text-center text-white bg-red-700 rounded-lg focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900 hover:bg-red-800">

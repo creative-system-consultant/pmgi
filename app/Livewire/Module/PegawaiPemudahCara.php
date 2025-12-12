@@ -4,6 +4,7 @@ namespace App\Livewire\Module;
 
 use App\Constants\PMGI\PmgiCancelReason;
 use App\Models\BankOfficer;
+use App\Models\MntrSession;
 use App\Models\SessionInfo;
 use App\Models\SessionPmcInfo;
 use App\Models\SettOfficerInfoFile;
@@ -46,6 +47,7 @@ class PegawaiPemudahCara extends Component
     public $pmcId;
     public $reasonCancel;
     public $cancelSessionModal = false;
+    public $buttonRekodPS = false;
 
     protected function rules()
     {
@@ -100,6 +102,15 @@ class PegawaiPemudahCara extends Component
             $this->stateBranch = $this->pydState . ' - ' . $this->pydBranch;
             $this->pmcId = $this->sessionSetting->pmc_id;
 
+            // check if previous PMGi 3 has penilaian semula (EXP)
+            $psExists = MntrSession::query()
+                ->whereOfficerId($this->pydId)
+                ->wherePmgiLevel('PM3')
+                ->wherePmgiResult('EXP')
+                ->exists();
+
+            $this->buttonRekodPS = $psExists ? true : false;
+
             // used in perakuan
             $pmcRecordExists = SessionPmcInfo::where('session_id', $this->sessionId)->exists();
             if($pmcRecordExists) {
@@ -134,6 +145,11 @@ class PegawaiPemudahCara extends Component
             $this->attachmentUrl = asset('storage/' . $this->attachment);
         }
         $this->attachmentModal = true;
+    }
+
+    public function goToRekodPS()
+    {
+        return redirect()->route('/rekod-penilaian-semula?session_id' . $this->sessionId);
     }
 
     public function openInfo()

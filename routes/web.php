@@ -60,6 +60,7 @@ use App\Livewire\Module\Lantikan\Evaluator\Index as EvaluatorIndex;
 use App\Livewire\Module\Tetapan\OfficerInfo\Index as OfficerInfoIndex;
 use App\Livewire\Module\Lantikan\StateCommittee\Index as StateCommitteeIndex;
 use App\Livewire\Module\Tetapan\UserAccessLevel\Index as UserAccessLevelIndex;
+use App\Livewire\Module\RekodPenilaianSemulaPmc;
 
 /*
 |--------------------------------------------------------------------------
@@ -201,6 +202,9 @@ Route::middleware(['check.sysAvailable'])->group(function () {
 
             // PMC
             Route::get('/pegawai-pemudah-cara', PegawaiPemudahCara::class)->name('pegawai-pemudah-cara');
+
+            // Rekod Penilaian Semula
+            Route::get('/rekod-penilaian-semula', RekodPenilaianSemulaPmc::class)->name('rekod-penilaian-semula');
 
             //loading pmgi
             Route::get('/loading-pmgi', LoadingPmgi::class)->name('loading-pmgi');
