@@ -1,3 +1,6 @@
+@php
+    $nonPmcView = $perakuan && auth()->user()->USERID != $sessionSetting->pmc_id;
+@endphp
 <main x-data="{ showPrestasiKumulatif: @entangle('showPrestasiKumulatif'), showRekodPmgi: @entangle('showRekodPmgi') }">
     <div class="px-4 pt-6 2xl:px-0">
         <div class="p-4 my-4 bg-white rounded-lg border border-gray-200 shadow-sm sm:p-6">
@@ -62,21 +65,21 @@
                     </div>
                 </div>
 
-                {{-- Prestasi Kumulatif --}}
+                <!-- Prestasi Kumulatif -->
                 <div x-show="showPrestasiKumulatif" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95">
                     @if($showPrestasiKumulatif)
                         <livewire:module.prestasi.kumulatif :pmgiSession="true" :pmgiSessionId=$sessionId >
                     @endif
                 </div>
-                {{-- end prestasi kumulatif --}}
+                <!-- end prestasi kumulatif -->
 
-                {{-- Rekod PMGi --}}
+                <!-- Rekod PMGi -->
                 <div x-show="showRekodPmgi" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-95">
                     @if($showRekodPmgi)
                         <livewire:module.rekod-pmgi :pmgiSession="true" :pydIdOrigin=$pydId >
                     @endif
                 </div>
-                {{-- end Rekod PMGi --}}
+                <!-- end Rekod PMGi -->
             @endif
 
             @if($perakuan)
@@ -86,16 +89,18 @@
             @endif
                 <div class="mt-4 mb-8">
                     <div class="mb-2">
-                        <label for="punca" class="block mb-2 font-medium @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id) text-gray-700 opacity-60 @else text-gray-900 @endif text-md dark:text-white @error('fairFlag') text-red-700 @enderror">Adakah sesi ini telah dilaksanakan dengan adil dan saksama bagi kedua-dua belah pihak?</label>
+                        <label for="punca" class="block mb-2 font-medium {{ $nonPmcView ? 'text-gray-700 opacity-60' : 'text-gray-900' }} text-md dark:text-white @error('fairFlag') text-red-700 @enderror">Adakah sesi ini telah dilaksanakan dengan adil dan saksama bagi kedua-dua belah pihak?</label>
                         <div class="flex">
                             <div class="flex items-center mr-4 border border-gray-200 rounded ps-4 @error('fairFlag') border-red-200 @enderror" style="padding-left: 2rem;padding-right: 2rem;">
-                                @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id)
+                                @if($nonPmcView)
                                     <input id="adilYa" type="radio" value="1" name="bordered-radio" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 @error('fairFlag') border-red-300 text-red-600 focus:ring-red-500 @enderror" wire:model="fairFlag" disabled>
                                     <label for="adilYa" class="w-full py-4 text-sm font-medium text-gray-700 opacity-60 ms-2 @error('fairFlag') text-red-700 @enderror">YA</label>
                                 @else
                                     <input id="adilYa" type="radio" value="1" name="bordered-radio" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 @error('fairFlag') border-red-300 text-red-600 focus:ring-red-500 @enderror" wire:model="fairFlag">
                                     <label for="adilYa" class="w-full py-4 text-sm font-medium text-gray-900 ms-2 @error('fairFlag') text-red-700 @enderror">YA</label>
                                 @endif
+                                <!-- <input id="adilYa" type="radio" value="1" name="bordered-radio" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 @error('fairFlag') border-red-300 text-red-600 focus:ring-red-500 @enderror" wire:model="fairFlag" {{ $nonPmcView ? 'disabled' : '' }}>
+                                <label for="adilYa" class="w-full py-4 text-sm font-medium text-gray-700 opacity-60 ms-2 @error('fairFlag') text-red-700 @enderror">YA</label> -->
                             </div>
                             <div class="flex items-center mr-4 border border-gray-200 rounded ps-4 @error('fairFlag') border-red-200 @enderror" style="padding-left: 2rem;padding-right: 2rem;">
                                 @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id)
@@ -208,59 +213,109 @@
                     </div>
                 </div>
 
-                @if($perakuan && $attachment)
-                    @php
-                        $fileExtension = pathinfo($attachment, PATHINFO_EXTENSION);
-                    @endphp
-
-                    @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
-                        <img class="mb-5 w-60" src="{{ asset('storage/' . $attachment) }}" alt="Attachment Preview">
-                    @elseif($fileExtension === 'pdf')
-                        <button type="button" class="cursor-pointer text-blue-500 hover:underline" wire:click="toggleDetail">
-                            {{ basename($attachment) }}
-                        </button>
-                    @elseif($fileExtension === 'docx')
-                        <a href="{{ asset('storage/' . $attachment) }}" target="_blank" class="cursor-pointer text-blue-500 hover:underline">
-                            {{ basename($attachment) }}
-                        </a>
-                    @endif
-                @endif
-
+                <!-- ============================================================
+                                LAMPIRAN 1, 2, 3 (PMC)
+                ============================================================ -->
                 @if(!$perakuan)
-                    <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true" x-on:livewire-upload-finish="uploading = false" x-on:livewire-upload-cancel="uploading = false" x-on:livewire-upload-error="uploading = false" x-on:livewire-upload-progress="progress = $event.detail.progress" class="mb-4">
-                        <!-- File Input -->
-                        <label for="muatnaik" class="block mb-2 font-medium text-gray-900 text-md dark:text-white">Muat Naik Fail (Jika berkaitan) :</label>
-                        <input class="block mb-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none dark:bg-gray-700" id="default_size" type="file" wire:model="file">
-
-                        <!-- Progress Bar -->
-                        <div x-show="uploading">
-                            <progress max="100" x-bind:value="progress"></progress>
+                    <!-- ******** Lampiran 1 ******** -->
+                    <div class="mb-4">
+                        <label class="font-semibold">Lampiran 1 (Jika berkaitan) :</label>
+                        <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true" x-on:livewire-upload-finish="uploading = false" x-on:livewire-upload-cancel="uploading = false" x-on:livewire-upload-error="uploading = false" x-on:livewire-upload-progress="progress = $event.detail.progress" class="mb-4">
+                            <!-- File Input -->
+                            <input class="block mb-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none dark:bg-gray-700 {{ $nonPmcView ? 'cursor-not-allowed' : ''}}" id="default_size" type="file" wire:model="file1" {{ $nonPmcView ? 'disabled' : '' }}>
                         </div>
                     </div>
 
-                    @if($file)
+                    <!-- ******** Lampiran 2 ******** -->
+                    <div class="mb-4">
+                        <label class="font-semibold">Lampiran 2 (Jika berkaitan) :</label>
+                        <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true" x-on:livewire-upload-finish="uploading = false" x-on:livewire-upload-cancel="uploading = false" x-on:livewire-upload-error="uploading = false" x-on:livewire-upload-progress="progress = $event.detail.progress" class="mb-4">
+                            <!-- File Input -->
+                            <input class="block mb-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none dark:bg-gray-700 {{ $nonPmcView ? 'cursor-not-allowed' : ''}}" id="default_size" type="file" wire:model="file2" {{ $nonPmcView ? 'disabled' : '' }}>
+                        </div>
+                    </div>
+
+
+                    <!-- ******** Lampiran 3 ******** -->
+                    <div class="mb-4">
+                        <label class="font-semibold">Lampiran 3 (Jika berkaitan) :</label>
+                        <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true" x-on:livewire-upload-finish="uploading = false" x-on:livewire-upload-cancel="uploading = false" x-on:livewire-upload-error="uploading = false" x-on:livewire-upload-progress="progress = $event.detail.progress" class="mb-4">
+                            <!-- File Input -->
+                            <input class="block mb-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none dark:bg-gray-700 {{ $nonPmcView ? 'cursor-not-allowed' : ''}}" id="default_size" type="file" wire:model="file3" {{ $nonPmcView ? 'disabled' : '' }}>
+                        </div>
+                    </div>
+                    
+                    <!-- SUBMIT BUTTON -->
+                    <button class="px-4 py-2 bg-primary-700 text-white rounded-lg"
+                            wire:click="submit">
+                        Hantar
+                    </button>
+                @else
+                    <!-- Lampiran 1 -->
+                    @if($attachment)
                         @php
-                            $fileExtension = $file->getClientOriginalExtension();
+                            $fileExtension = pathinfo($attachment, PATHINFO_EXTENSION);
                         @endphp
 
-                        @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
-                            <img class="mb-5 w-60" src="{{ $file->temporaryUrl() }}" alt="Attachment Preview">
-                        @elseif($fileExtension === 'pdf')
-                            <button type="button" class="cursor-pointer text-blue-500 hover:underline" wire:click="toggleDetail">
-                                {{ $file->getClientOriginalName() }}
-                            </button>
-                        @else
-                            <a href="{{ $file->temporaryUrl() }}" target="_blank" class="cursor-pointer text-blue-500 hover:underline">
-                                {{ $file->getClientOriginalName() }}
-                            </a>
-                        @endif
+                        <div class="mb-4">
+                            <label class="font-semibold">Lampiran 1 :</label>
+                            @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
+                                <img class="mb-5 w-60" src="{{ $attachmentUrl }}" alt="Attachment Preview">
+                            @elseif($fileExtension === 'pdf')
+                                <button type="button" class="cursor-pointer text-blue-500 hover:underline" wire:click="toggleDetail('{{ $attachment }}')">
+                                    {{ basename($attachment) }}
+                                </button>
+                            @else
+                                <a href="{{ $attachmentUrl }}" target="_blank" class="cursor-pointer text-blue-500 hover:underline">
+                                    {{ basename($attachment) }}
+                                </a>
+                            @endif
+                        </div>
                     @endif
 
-                    <div class="flex mt-2">
-                        <button wire:click="submit" class="inline-flex items-center px-4 py-2.5 font-medium text-center text-white rounded-lg bg-primary-700 focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
-                            Hantar
-                        </button>
-                    </div>
+                    <!-- Lampiran 2 -->
+                    @if($attachment2)
+                        @php
+                            $fileExtension = pathinfo($attachment2, PATHINFO_EXTENSION);
+                        @endphp
+
+                        <div class="mb-4">
+                            <label class="font-semibold">Lampiran 2 :</label>
+                            @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif', 'pdf']))
+                                <img class="mb-5 w-60" src="{{ asset('storage/' . $attachment2) }}" alt="Attachment Preview">
+                            @elseif($fileExtension === 'pdf')
+                                <button type="button" class="cursor-pointer text-blue-500 hover:underline" wire:click="toggleDetail('{{ $attachment2 }}')">
+                                    {{ basename($attachment2) }}
+                                </button>
+                            @else
+                                <a href="{{ $attachmentUrl }}" target="_blank" class="cursor-pointer text-blue-500 hover:underline">
+                                    {{ basename($attachment2) }}
+                                </a>
+                            @endif
+                        </div>
+                    @endif
+
+                    <!-- Lampiran 3 -->
+                    @if($attachment3)
+                        @php
+                            $fileExtension = pathinfo($attachment3, PATHINFO_EXTENSION);
+                        @endphp
+
+                        <div class="mb-4">
+                            <label class="font-semibold">Lampiran 3 :</label>
+                            @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
+                                <img class="mb-5 w-60" src="{{ asset('storage/' . $attachment) }}" alt="Attachment Preview">
+                            @elseif($fileExtension === 'pdf')
+                                <button type="button" class="cursor-pointer text-blue-500 hover:underline" wire:click="toggleDetail('{{ $attachment3 }}')">
+                                    {{ basename($attachment3) }}
+                                </button>
+                            @else
+                                <a href="{{ $attachmentUrl }}" target="_blank" class="cursor-pointer text-blue-500 hover:underline">
+                                    {{ basename($attachment3) }}
+                                </a>
+                            @endif
+                        </div>
+                    @endif
                 @endif
             </div>
         </div>
@@ -274,14 +329,14 @@
         </x-card>
     </x-modal>
     
-    {{-- attachment modal --}}
+    <!-- attachment modal -->
     <x-modal.card blur align="center" max-width="7xl" hide-close=false wire:model="attachmentModal">
         @if($attachmentUrl)
         <iframe src="{{ $attachmentUrl }}" frameborder="0" width="100%" height="700px"></iframe>
         @endif
     </x-modal.card>
 
-    {{-- cancel PMGI session modal --}}
+    <!-- cancel PMGI session modal -->
     <x-modal wire:model="cancelSessionModal" blur align="center" max-width="4xl">
         <x-card title="Batal Sesi PMGI">
             <div class="grid gap-y-4">
@@ -305,4 +360,17 @@
             </div>
         </x-card>
     </x-modal>
+
+    @script
+        <script>
+            let format_sessionId = '{{ $sessionId }}'.replaceAll('/', '-');
+
+            window.Echo.private(`pmgi.session.${format_sessionId}`)
+                .listen('.pmgi.session.updated', (e) => {
+                // Ask Livewire to refresh or set flags
+                Livewire.dispatch('pmgi-session-updated', { role: e.role, payload: e.payload });
+            });
+        </script>
+    @endscript
+    
 </main>

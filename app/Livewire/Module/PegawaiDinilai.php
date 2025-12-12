@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Module;
 
+use App\Events\PMGI\SessionUpdated;
 use App\Models\BankOfficer;
 use App\Models\SessionPydInfo;
 use App\Models\SettOfficerInfoFile;
 use App\Models\SettPydProb;
 use App\Models\SettPymPmc;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -26,6 +28,7 @@ class PegawaiDinilai extends Component
     public $pydId;
     public $pydBranch;
     public $pydState;
+    public $stateBranch;
 
     public $perakuan = false; 
 
@@ -63,8 +66,18 @@ class PegawaiDinilai extends Component
     public $showPrestasiKumulatif = false;
     public $showRekodPmgi = false;
 
+    protected $listeners = ['pmgi-session-updated' => 'handleRealtimeUpdate'];
+
     public function mount()
     {
+        // check flash error from middleware
+        if (session()->has('flash_error')) {
+            $this->dialog()->error(
+                $title = 'Perhatian.',
+                $description = session('flash_error')
+            );
+        }
+        
         $this->problemSelection = SettPydProb::orderBy('id')->get()->toArray();
         $this->savedFile = SettOfficerInfoFile::where('OFFICER_LVL', 'PYD')->first();
 
@@ -82,11 +95,12 @@ class PegawaiDinilai extends Component
         $this->pydStaffNo  = $officer->staffno;
         $this->pydBranch   = $officer->branch->branch_name ?? '-';
         $this->pydState    = $officer->branch->bnmState->description ?? '-';
+        $this->stateBranch = $this->pydState . ' - ' . $this->pydBranch;
 
         $data = SessionPydInfo::where('session_id', $this->sessionId)->first();
 
         if ($data) {
-            $this->problem     = $data->problem;
+            $this->problem     = (int) $data->problem;
             $this->reason      = $data->reason;
             $this->actionPlan  = $data->action;
             $this->comment     = $data->comments;
@@ -94,9 +108,6 @@ class PegawaiDinilai extends Component
             $this->attachment = $data->attachment;
             $this->attachment2 = $data->attachment2;
             $this->attachment3 = $data->attachment3;
-
-            // ONLY lock if PYM verifies
-            $this->perakuan = $data->perakuan_flag == 1;
         }
     }
 
@@ -114,7 +125,6 @@ class PegawaiDinilai extends Component
     {
         $this->infoModal = true;
     }
-
 
     private function storeFile($file, $index)
     {
@@ -136,24 +146,11 @@ class PegawaiDinilai extends Component
         return $db_path;
     }
 
-
-
     public function toggleDetail($db_path)
     {
         $this->attachmentUrl = asset('storage/' . $db_path);
         $this->attachmentModal = true;
     }
-
-    public function toggleDetailTemp($num)
-    {
-        $prop = 'file' . $num;
-
-        if ($this->$prop) {
-            $this->attachmentUrl = $this->$prop->temporaryUrl();
-            $this->attachmentModal = true;
-        }
-    }
-
 
     public function submit()
     {
@@ -193,14 +190,70 @@ class PegawaiDinilai extends Component
 
     public function confirmUpdate()
     {
-        SessionPydInfo::whereSessionId($this->sessionId)->update([
+        $this->validate();
+
+        // hanya overwrite kalau user upload fail baru
+        if ($this->file1) {
+            $update['attachment'] = $this->storeFile($this->file1, 1);
+            $this->attachment = $update['attachment'];
+        }
+        if ($this->file2) {
+            $update['attachment2'] = $this->storeFile($this->file2, 2);
+            $this->attachment2 = $update['attachment2'];
+        }
+        if ($this->file3) {
+            $update['attachment3'] = $this->storeFile($this->file3, 3);
+            $this->attachment3 = $update['attachment3'];
+        }
+
+        $updates = [
             'problem'  => $this->problem,
             'reason'   => $this->reason,
             'action'   => $this->actionPlan,
             'comments' => $this->comment,
-        ]);
+            'attachment' => $update['attachment'],
+            'attachment2' => $update['attachment2'],
+            'attachment3' => $update['attachment3'],
+            'updated_by' => $this->pydId
+        ];
 
-        $this->dialog()->success('Berjaya!', 'Maklumat telah dikemaskini.');
+        SessionPydInfo::whereSessionId($this->sessionId)->update($updates);
+
+        event(new SessionUpdated(
+            $this->sessionId,
+            'pyd',
+            $updates,
+            $this->pydId
+        ));
+
+        $this->dialog()->success('Berjaya!', 'Ulasan telah dikemaskini.');
+    }
+
+    #[On('pmgi-session-updated')]
+    public function handleSessionUpdate($role, $payload)
+    {
+        // Skip if current user made the update
+        if (isset($payload['updated_by']) && $payload['updated_by'] === auth()->user()->USERID) {
+            return;
+        }
+
+        // Update the properties based on role
+        if($role === 'pyd')
+        {
+            $this->problem = $payload['problem'] ?? $this->problem;
+            $this->reason = $payload['reason'] ?? $this->reason;
+            $this->actionPlan = $payload['action'] ?? $this->actionPlan;
+            $this->comment = $payload['comments'] ?? $this->comment;
+            $this->attachment = $payload['attachment'] ?? $this->attachment;
+            $this->attachment2 = $payload['attachment2'] ?? $this->attachment2;
+            $this->attachment3 = $payload['attachment3'] ?? $this->attachment3;
+        }
+
+        // Show notification
+        $this->dialog()->info(
+            title: 'Kemaskini Sesi',
+            description: 'Sesi telah dikemaskini oleh ' . strtoupper($role)
+        );
     }
 
 

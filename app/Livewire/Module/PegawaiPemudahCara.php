@@ -3,6 +3,7 @@
 namespace App\Livewire\Module;
 
 use App\Constants\PMGI\PmgiCancelReason;
+use App\Events\PMGI\SessionUpdated;
 use App\Models\BankOfficer;
 use App\Models\MntrSession;
 use App\Models\SessionInfo;
@@ -10,6 +11,7 @@ use App\Models\SessionPmcInfo;
 use App\Models\SettOfficerInfoFile;
 use App\Models\SettPymPmc;
 use Illuminate\Validation\Rule;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -39,6 +41,8 @@ class PegawaiPemudahCara extends Component
     public $savedFile;
     public $file;
     public $attachment;
+    public $attachment2;
+    public $attachment3;
     public $infoModal = false;
     public $attachmentUrl = null;
     public $attachmentModal = false;
@@ -48,6 +52,8 @@ class PegawaiPemudahCara extends Component
     public $reasonCancel;
     public $cancelSessionModal = false;
     public $buttonRekodPS = false;
+
+    protected $listeners = ['pmgi-session-updated' => 'handleRealtimeUpdate'];
 
     protected function rules()
     {
@@ -123,6 +129,8 @@ class PegawaiPemudahCara extends Component
                 $this->exitTypeFlag = $data->exit_type_flag;
                 $this->comment = $data->comments;
                 $this->attachment = $data->attachment;
+                $this->attachment2 = $data->attachment2;
+                $this->attachment3 = $data->attachment3;
             }
         }
     }
@@ -169,9 +177,6 @@ class PegawaiPemudahCara extends Component
             'fair_comments' => $this->fairComment,
             'undrstd_flag' => $this->undrstdFlag,
             'others' => $this->others,
-            'exit_flag' => $this->exitFlag,
-            'exit_type_flag' => $this->exitTypeFlag,
-            'comments' => $this->comment,
             'attachment' => $path,
             'created_by' => auth()->user()->USERID,
         ]);
@@ -223,11 +228,45 @@ class PegawaiPemudahCara extends Component
             'exit_flag' => $this->exitFlag,
             'exit_type_flag' => $this->exitTypeFlag,
             'comments' => $this->comment,
-        ]);
+            'updated_by' => $this->pmcId
+        ];
 
-        $this->dialog()->success(
-            $title = 'Berjaya!',
-            $description = 'Ulasan berjaya dikemaskini'
+        SessionPmcInfo::whereSessionId($this->sessionId)->update($updates);
+
+        event(new SessionUpdated(
+            $this->sessionId,
+            'pmc',
+            $updates,
+            $this->pmcId
+        ));
+
+        $this->dialog()->success('Berjaya!', 'Ulasan telah dikemaskini.');
+    }
+
+    #[On('pmgi-session-updated')]
+    public function handleSessionUpdate($role, $payload)
+    {
+        // Skip if current user made the update
+        if (isset($payload['updated_by']) && $payload['updated_by'] === auth()->user()->USERID) {
+            return;
+        }
+
+        // Update the properties based on role
+        if($role === 'pmc')
+        {
+            $this->fairFlag = $payload['fair_flag'] ?? $this->fairFlag;
+            $this->fairComment = $payload['fair_comments'] ?? $this->fairComment;
+            $this->undrstdFlag = $payload['undrstd_flag'] ?? $this->undrstdFlag;
+            $this->others = $payload['others'] ?? $this->others;
+            $this->exitFlag = $payload['exit_flag'] ?? $this->exitFlag;
+            $this->exitTypeFlag = $payload['exit_type_flag'] ?? $this->exitTypeFlag;
+            $this->comment = $payload['comments'] ?? $this->comment;
+        }
+
+        // Show notification
+        $this->dialog()->info(
+            title: 'Kemaskini Sesi',
+            description: 'Sesi telah dikemaskini oleh ' . strtoupper($role)
         );
     }
 

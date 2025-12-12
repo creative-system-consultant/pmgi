@@ -3,11 +3,13 @@
 namespace App\Livewire\Module;
 
 use App\Constants\PMGI\PmgiCancelReason;
+use App\Events\PMGI\SessionUpdated;
 use App\Models\BankOfficer;
 use App\Models\SessionInfo;
 use App\Models\SessionPymInfo;
 use App\Models\SettOfficerInfoFile;
 use App\Models\SettPymPmc;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -37,6 +39,7 @@ class PegawaiMenilai extends Component
     public $pydBranch;
     public $pydState;
     public $stateBranch;
+    public $pmgiLevel;
 
     public $pymId;
 
@@ -66,6 +69,8 @@ class PegawaiMenilai extends Component
     public $attachment2;  // lampiran 2
     public $attachment3;  // lampiran 3
 
+    
+    protected $listeners = ['pmgi-session-updated' => 'handleRealtimeUpdate'];
 
     public function mount()
     {
@@ -81,6 +86,7 @@ class PegawaiMenilai extends Component
 
         $this->sessionId = str_replace('-', '/', request()->query('session_id'));
         $this->sessionSetting = SettPymPmc::whereSessionId($this->sessionId)->first();
+        $this->pmgiLevel = $this->sessionSetting->pmgi_level;
 
         if ($this->sessionId && $this->sessionSetting) {
 
@@ -101,7 +107,7 @@ class PegawaiMenilai extends Component
             }
 
             // rekod PYM sedia ada
-            $data = SessionPymInfo::where('session_id', $this->sessionId)->first();
+                $data = SessionPymInfo::where('session_id', $this->sessionId)->first();
 
             if ($data) {
                 $this->comment    = $data->comments;
@@ -110,11 +116,6 @@ class PegawaiMenilai extends Component
                 $this->attachment  = $data->attachment;   // lampiran 1
                 $this->attachment2 = $data->attachment2;  // lampiran 2
                 $this->attachment3 = $data->attachment3;  // lampiran 3
-
-                // kalau ada perakuan_flag dalam table
-                if (property_exists($data, 'perakuan_flag')) {
-                    $this->perakuan = $data->perakuan_flag == 1;
-                }
             }
         }
     }
@@ -128,6 +129,16 @@ class PegawaiMenilai extends Component
     public function toggleRekodPmgi()
     {
         $this->showRekodPmgi = !$this->showRekodPmgi;
+    }
+
+    public function toggleDetail()
+    {
+        if ($this->file) {
+            $this->attachmentUrl = $this->file->temporaryUrl();
+        } else if($this->attachment) {
+            $this->attachmentUrl = asset('storage/' . $this->attachment);
+        }
+        $this->attachmentModal = true;
     }
 
     public function openInfo()
@@ -186,7 +197,6 @@ class PegawaiMenilai extends Component
         return $this->redirect('/loading-pmgi?session_id=' . $sessionId . '&source=pym');
     }
 
-
     public function updates()
     {
         $this->dialog()->confirm([
@@ -207,12 +217,7 @@ class PegawaiMenilai extends Component
     public function confirmUpdate()
     {
         $this->validate();
-
-        $update = [
-            'comments' => $this->comment,
-            'action'   => $this->actionPlan,
-        ];
-
+        
         // hanya overwrite kalau user upload fail baru
         if ($this->file1) {
             $update['attachment'] = $this->storeFile($this->file1, 1);
@@ -227,14 +232,48 @@ class PegawaiMenilai extends Component
             $this->attachment3 = $update['attachment3'];
         }
 
+        $update = [
+            'comments' => $this->comment,
+            'action'   => $this->actionPlan,
+            'attachment' => $update['attachment'],
+            'attachment2' => $update['attachment2'],
+            'attachment3' => $update['attachment3'],
+            'updated_by' => $this->pymId
+        ];
+
         SessionPymInfo::whereSessionId($this->sessionId)->update($update);
 
-        $this->dialog()->success(
-            $title = 'Berjaya!',
-            $description = 'Ulasan berjaya dikemaskini'
-        );
+        event(new SessionUpdated(
+            $this->sessionId,
+            'pym',
+            $update,
+            $this->pymId
+        ));
+
+        $this->dialog()->success('Berjaya!', 'Ulasan telah dikemaskini.');
     }
 
+    #[On('pmgi-session-updated')]
+    public function handleSessionUpdate($role, $payload)
+    {
+        // Skip if current user made the update
+        if (isset($payload['updated_by']) && $payload['updated_by'] === auth()->user()->USERID) {
+            return;
+        }
+
+        // Update the properties based on role
+        if($role === 'pym')
+        {
+            $this->actionPlan = $payload['action'] ?? $this->actionPlan;
+            $this->comment = $payload['comments'] ?? $this->comment;
+        }
+
+        // Show notification
+        $this->dialog()->info(
+            title: 'Kemaskini Sesi',
+            description: 'Sesi telah dikemaskini oleh ' . strtoupper($role)
+        );
+    }
 
     public function cancelSessionConfirm()
     {

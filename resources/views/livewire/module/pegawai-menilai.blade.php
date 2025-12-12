@@ -1,3 +1,7 @@
+@php
+    $nonPymView = $perakuan && auth()->user()->USERID != $sessionSetting->pym_id;
+@endphp
+
 <main x-data="{ showPrestasiKumulatif: @entangle('showPrestasiKumulatif') }">
     <div class="px-4 pt-6 2xl:px-0">
         <div class="p-4 my-4 bg-white rounded-lg border border-gray-200 shadow-sm sm:p-6">
@@ -6,11 +10,6 @@
                 <div class="mb-4 lg:mb-0">
                     <div class="flex items-center mb-2">
                         <h3 class="mb-2 text-xl font-bold text-gray-900">Ulasan Pegawai Yang Menilai (PYM)</h3>
-                        @if($perakuan && auth()->user()->USERID == $sessionSetting->pym_id)
-                            <button class="inline-flex items-center px-4 py-2 ml-4 font-medium text-center text-white bg-indigo-700 rounded-lg cursor-pointer focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800" wire:click="updates">
-                                Kemaskini
-                            </button>
-                        @endif
                     </div>
 
                     @if(!$perakuan)
@@ -75,11 +74,7 @@
                 {{-- end Rekod PMGi --}}
             @endif
 
-            @if($perakuan)
-            <div class="mt-4">
-            @else
-            <div class="mt-4 w-[70%]">
-            @endif
+            <div class="{{ $perakuan ? 'mt-4' : 'mt-4 w-[70%]' }} ">
                 <div class="my-4">
                     @if($perakuan && auth()->user()->USERID != $sessionSetting->pym_id)
                         <x-textarea label="Ulasan Pegawai Yang Menilai (PYM) :" placeholder="Tuliskan ulasan anda" wire:model="comment" disabled />
@@ -102,77 +97,115 @@
 
                 {{-- ===================== LAMPIRAN 1, 2, 3 (PYM) ===================== --}}
                 @if(!$perakuan)
-
-                    {{-- ******** Lampiran 1 ******** --}}
+                    <!-- ******** Lampiran 1 ******** -->
                     <div class="mb-4">
                         <label class="font-semibold">Lampiran 1 (Jika berkaitan) :</label>
-
-                        @if($attachment)
-                            <p class="mt-1 text-sm">
-                                Fail sedia ada:
-                                <a href="{{ asset('storage/'.$attachment) }}"
-                                   target="_blank"
-                                   class="text-blue-600 underline">
-                                    {{ basename($attachment) }}
-                                </a>
-                            </p>
-                        @endif
-
-                        <input type="file"
-                               wire:model="file1"
-                               class="mt-2 block w-full border rounded p-2">
+                        <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true" x-on:livewire-upload-finish="uploading = false" x-on:livewire-upload-cancel="uploading = false" x-on:livewire-upload-error="uploading = false" x-on:livewire-upload-progress="progress = $event.detail.progress" class="mb-4">
+                            <!-- File Input -->
+                            <input class="block mb-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none dark:bg-gray-700 {{ $nonPymView ? 'cursor-not-allowed' : ''}}" id="default_size" type="file" wire:model="file1" {{ $nonPymView ? 'disabled' : '' }}>
+                        </div>
                     </div>
 
-                    {{-- ******** Lampiran 2 ******** --}}
+                    <!-- ******** Lampiran 2 ******** -->
                     <div class="mb-4">
                         <label class="font-semibold">Lampiran 2 (Jika berkaitan) :</label>
-
-                        @if($attachment2)
-                            <p class="mt-1 text-sm">
-                                Fail sedia ada:
-                                <a href="{{ asset('storage/'.$attachment2) }}"
-                                   target="_blank"
-                                   class="text-blue-600 underline">
-                                    {{ basename($attachment2) }}
-                                </a>
-                            </p>
-                        @endif
-
-                        <input type="file"
-                               wire:model="file2"
-                               class="mt-2 block w-full border rounded p-2">
+                        <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true" x-on:livewire-upload-finish="uploading = false" x-on:livewire-upload-cancel="uploading = false" x-on:livewire-upload-error="uploading = false" x-on:livewire-upload-progress="progress = $event.detail.progress" class="mb-4">
+                            <!-- File Input -->
+                            <input class="block mb-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none dark:bg-gray-700 {{ $nonPymView ? 'cursor-not-allowed' : ''}}" id="default_size" type="file" wire:model="file2" {{ $nonPymView ? 'disabled' : '' }}>
+                        </div>
                     </div>
 
-                    {{-- ******** Lampiran 3 ******** --}}
+
+                    <!-- ******** Lampiran 3 ******** -->
                     <div class="mb-4">
                         <label class="font-semibold">Lampiran 3 (Jika berkaitan) :</label>
+                        <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true" x-on:livewire-upload-finish="uploading = false" x-on:livewire-upload-cancel="uploading = false" x-on:livewire-upload-error="uploading = false" x-on:livewire-upload-progress="progress = $event.detail.progress" class="mb-4">
+                            <!-- File Input -->
+                            <input class="block mb-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none dark:bg-gray-700 {{ $nonPymView ? 'cursor-not-allowed' : ''}}" id="default_size" type="file" wire:model="file3" {{ $nonPymView ? 'disabled' : '' }}>
+                        </div>
+                    </div>
+                    
+                    <!-- SUBMIT BUTTON -->
+                    <button class="px-4 py-2 bg-primary-700 text-white rounded-lg"
+                            wire:click="submit">
+                        Hantar
+                    </button>
+                @else
+                    <!-- ============================================================
+                                LAMPIRAN 1, 2, 3 (PYM)
+                    ============================================================ -->
+                    <!-- Lampiran 1 -->
+                    @if($attachment)
+                        @php
+                            $fileExtension = pathinfo($attachment, PATHINFO_EXTENSION);
+                        @endphp
 
-                        @if($attachment3)
-                            <p class="mt-1 text-sm">
-                                Fail sedia ada:
-                                <a href="{{ asset('storage/'.$attachment3) }}"
-                                   target="_blank"
-                                   class="text-blue-600 underline">
+                        <div class="mb-4">
+                            <label class="font-semibold">Lampiran 1 :</label>
+                            @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
+                                <img class="mb-5 w-60" src="{{ $attachmentUrl }}" alt="Attachment Preview">
+                            @elseif($fileExtension === 'pdf')
+                                <button type="button" class="cursor-pointer text-blue-500 hover:underline" wire:click="toggleDetail('{{ $attachment }}')">
+                                    {{ basename($attachment) }}
+                                </button>
+                            @else
+                                <a href="{{ $attachmentUrl }}" target="_blank" class="cursor-pointer text-blue-500 hover:underline">
+                                    {{ basename($attachment) }}
+                                </a>
+                            @endif
+                        </div>
+                    @endif
+
+                    <!-- Lampiran 2 -->
+                    @if($attachment2)
+                        @php
+                            $fileExtension = pathinfo($attachment2, PATHINFO_EXTENSION);
+                        @endphp
+
+                        <div class="mb-4">
+                            <label class="font-semibold">Lampiran 2 :</label>
+                            @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif', 'pdf']))
+                                <img class="mb-5 w-60" src="{{ asset('storage/' . $attachment2) }}" alt="Attachment Preview">
+                            @elseif($fileExtension === 'pdf')
+                                <button type="button" class="cursor-pointer text-blue-500 hover:underline" wire:click="toggleDetail('{{ $attachment2 }}')">
+                                    {{ basename($attachment2) }}
+                                </button>
+                            @else
+                                <a href="{{ $attachmentUrl }}" target="_blank" class="cursor-pointer text-blue-500 hover:underline">
+                                    {{ basename($attachment2) }}
+                                </a>
+                            @endif
+                        </div>
+                    @endif
+
+                    <!-- Lampiran 3 -->
+                    @if($attachment3)
+                        @php
+                            $fileExtension = pathinfo($attachment3, PATHINFO_EXTENSION);
+                        @endphp
+
+                        <div class="mb-4">
+                            <label class="font-semibold">Lampiran 3 :</label>
+                            @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
+                                <img class="mb-5 w-60" src="{{ asset('storage/' . $attachment) }}" alt="Attachment Preview">
+                            @elseif($fileExtension === 'pdf')
+                                <button type="button" class="cursor-pointer text-blue-500 hover:underline" wire:click="toggleDetail('{{ $attachment3 }}')">
+                                    {{ basename($attachment3) }}
+                                </button>
+                            @else
+                                <a href="{{ $attachmentUrl }}" target="_blank" class="cursor-pointer text-blue-500 hover:underline">
                                     {{ basename($attachment3) }}
                                 </a>
-                            </p>
-                        @endif
-
-                        <input type="file"
-                               wire:model="file3"
-                               class="mt-2 block w-full border rounded p-2">
-                    </div>
-
-                    {{-- BUTTON HANTAR --}}
-                    <div class="flex mt-4">
-                        <button wire:click="submit"
-                                class="inline-flex items-center px-4 py-2.5 font-medium text-center text-white rounded-lg bg-primary-700 focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
-                            Hantar
-                        </button>
-                    </div>
-
+                            @endif
+                        </div>
+                    @endif
                 @endif
-
+                
+                @if($perakuan && auth()->user()->USERID == $sessionSetting->pym_id)
+                    <button class="inline-flex items-center px-4 py-2 ml-4 font-medium text-center text-white bg-indigo-700 rounded-lg cursor-pointer focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800" wire:click="updates">
+                        Kemaskini
+                    </button>
+                @endif
             </div>
         </div>
     </div>
@@ -188,7 +221,7 @@
     {{-- attachment modal --}}
     <x-modal.card blur align="center" max-width="7xl" hide-close=false wire:model="attachmentModal">
         @if($attachmentUrl)
-        <iframe src="{{ $attachmentUrl }}" frameborder="0" width="100%" height="700px"></iframe>
+            <iframe src="{{ $attachmentUrl }}" frameborder="0" width="100%" height="700px"></iframe>
         @endif
     </x-modal.card>
 
@@ -216,5 +249,17 @@
             </div>
         </x-card>
     </x-modal>
+
+    @script
+        <script>
+            let format_sessionId = '{{ $sessionId }}'.replaceAll('/', '-');
+
+            window.Echo.private(`pmgi.session.${format_sessionId}`)
+                .listen('.pmgi.session.updated', (e) => {
+                // Ask Livewire to refresh or set flags
+                Livewire.dispatch('pmgi-session-updated', { role: e.role, payload: e.payload });
+            });
+        </script>
+    @endscript
 
 </main>
