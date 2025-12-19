@@ -190,7 +190,7 @@ class PegawaiPemudahCara extends Component
     {
         if($this->file) {
             $extension = $this->file->getClientOriginalExtension();
-            $userid = substr($this->sessionId, 11); //get userid from sessionId
+            $userid = substr($this->sessionId, 13); //get userid from sessionId
             $folder = str_replace('/', '-', $this->sessionId);
             $filename = 'PMC_'. $this->pmcId . '_' . $folder . '_' .now()->format('YmdHis') . '.' . $extension;
             $store_path = 'public/pmgi_session/' . $userid . '/' . $folder;

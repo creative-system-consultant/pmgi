@@ -263,8 +263,8 @@ abstract class BasePmgi extends Component
 
     private function generateSessionId($pydInfo, $pyd)
     {
-        $datePart = now()->format('Ym');
-        $formattedDatePart = substr($datePart, 2, 2) . substr($datePart, 4, 2);
+        $datePart = now()->format('Ymd');
+        $formattedDatePart = substr($datePart, 2, 2) . substr($datePart, 4, 2) . substr($datePart, 6, 2);
         return 'PMG' . substr($pydInfo->pmgi_level, -1) . $formattedDatePart . '/' . $pydInfo->pmgi_cycle . '/' . $pyd;
     }
 

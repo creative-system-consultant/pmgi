@@ -155,7 +155,7 @@ class PegawaiMenilai extends Component
 
         // contoh: sessionId = PMG12511/1/AZHARSU
         // userid = AZHARSU
-        $userid = substr($this->sessionId, 11);
+        $userid = substr($this->sessionId, 13);
 
         // folder = PMG12511-1-AZHARSU
         $folder = str_replace('/', '-', $this->sessionId);

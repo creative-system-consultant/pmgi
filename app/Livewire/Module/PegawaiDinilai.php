@@ -130,7 +130,7 @@ class PegawaiDinilai extends Component
     {
         if (!$file) return null;
 
-        $userid = substr($this->sessionId, 11);
+        $userid = substr($this->sessionId, 13);
         $folder = str_replace('/', '-', $this->sessionId);
 
         $ext = $file->getClientOriginalExtension();

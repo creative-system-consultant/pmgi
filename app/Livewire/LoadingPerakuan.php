@@ -44,11 +44,7 @@ class LoadingPerakuan extends Component
         $this->setText();
         $this->pmgiLevel = substr($this->sessionId, 3, 1);
         $this->pmgiType = substr($this->sessionId, 0, 2);
-        $this->pydId = substr($this->sessionId, 11);
-
-        if (request()->query('force') === 'true') {
-            $this->forceRun();
-        }
+        $this->pydId = substr($this->sessionId, 13);
     }
 
     protected function showError()
