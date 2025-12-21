@@ -104,6 +104,11 @@ Route::middleware(['check.sysAvailable'])->group(function () {
 
     Route::middleware(['session.singleLogin'])->group(function () {
         // Route::middleware(['auth', 'check.sys.availability', 'check.role', 'restrict.session'])->group(function () {
+
+        // prestasi
+        Route::get('/prestasi/bulanan', Bulanan::class)->name('prestasi.bulanan')->middleware('check.access:prestasi-bulanan');
+        Route::get('/prestasi/kumulatif', Kumulatif::class)->name('prestasi.kumulatif')->middleware('check.access:prestasi-kumulatif');
+
         Route::middleware(['auth', 'check.role', 'restrict.session'])->group(function () {
             Route::get('/', Home::class)->name('home');
 
@@ -125,10 +130,6 @@ Route::middleware(['check.sysAvailable'])->group(function () {
             Route::get('/rekod-pmgi', RekodPmgi::class)->name('rekod-pmgi')->middleware('check.access:rekod-pmgi');
             Route::get('/stream-pdf/{sessionId}', [RekodPmgi::class, 'streamRekodPmgi'])->name('stream.rekodPmgi')->withoutMiddleware([RestrictDuringSession::class]);
             Route::get('/stream/attachment', [RekodPmgi::class, 'streamAttachment'])->name('stream.attachment')->withoutMiddleware([RestrictDuringSession::class]);
-
-            // prestasi
-            Route::get('/prestasi/bulanan', Bulanan::class)->name('prestasi.bulanan')->middleware('check.access:prestasi-bulanan');
-            Route::get('/prestasi/kumulatif', Kumulatif::class)->name('prestasi.kumulatif')->middleware('check.access:prestasi-kumulatif');
 
             // lantikan
             Route::get('/lantikan/urusetia-negeri', StateCommitteeIndex::class)->name('lantikan.urusetia-negeri')->middleware('check.access:lantikan-urusetia-negeri');
