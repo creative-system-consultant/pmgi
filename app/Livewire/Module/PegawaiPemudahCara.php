@@ -35,7 +35,7 @@ class PegawaiPemudahCara extends Component
     public $fairComment;
     public $undrstdFlag;
     public $others;
-    public $exitFlag = 0;
+    public $exitFlag = 1;
     public $exitTypeFlag;
     public $comment;
     public $savedFile;
@@ -61,13 +61,9 @@ class PegawaiPemudahCara extends Component
             'fairFlag' => 'required',
             'fairComment' => 'required|min:3',
             'undrstdFlag' => 'required',
-            'exitFlag' => 'required',
-            'exitTypeFlag' => [
-                Rule::requiredIf(function () {
-                    return $this->exitFlag == 1;
-                }),
-            ],
-            'comment' => 'required|min:3',
+            'exitFlag' => $this->perakuan ? 'required' : 'nullable',
+            'exitTypeFlag' => ($this->perakuan && $this->exitFlag == 1) ? 'required' : 'nullable',
+            'comment' => $this->perakuan ? 'required|min:3' : 'nullable',
         ];
     }
 
@@ -78,7 +74,7 @@ class PegawaiPemudahCara extends Component
             'fairComment.required' => 'Sila tuliskan ulasan bagi PYD dinilai.',
             'undrstdFlag.required' => 'Sila Pilih.',
             'exitFlag.required' => 'Sila Pilih.',
-            'exitTypeFlag.required' => 'Sila Pilih.',
+            'exitTypeFlag.required' => 'Sila Pilih Jenis Penangguhan.',
             'comment.required' => 'Sila tuliskan ulasan anda.',
         ];
     }
@@ -202,6 +198,27 @@ class PegawaiPemudahCara extends Component
         return;
     }
 
+    public function updatedExitFlag($value)
+    {
+        if($value == 0)
+        {
+            $this->exitTypeFlag = null;
+            $this->resetValidation('exitTypeFlag');
+        }
+    }
+    
+    public function validateExitFields()
+    {
+        if ($this->exitFlag == 1) {
+            if (empty($this->exitTypeFlag) || $this->exitTypeFlag == 0) {
+                $this->addError('exitTypeFlag', $this->messages('exitTypeFlag'));
+                return false;
+            }
+        }
+        
+        return true;
+    }
+
     public function updates()
     {
         $this->dialog()->confirm([
@@ -221,6 +238,8 @@ class PegawaiPemudahCara extends Component
     public function confirmUpdate()
     {
         $this->validate();
+
+        if(!$this->validateExitFields()) return;
         
         $updates = [
             'fair_flag' => $this->fairFlag,

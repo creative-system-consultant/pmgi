@@ -9,11 +9,6 @@
                 <div class="mb-4 lg:mb-0">
                     <div class="flex items-center mb-2">
                         <h3 class="text-xl font-bold text-gray-900">Ulasan Pegawai Pemudah Cara (PMC)</h3>
-                        @if($perakuan && auth()->user()->USERID == $sessionSetting->pmc_id)
-                        <button class="inline-flex items-center px-4 py-2 ml-4 font-medium text-center text-white bg-indigo-700 rounded-lg cursor-pointer focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800" wire:click="updates">
-                            Kemaskini
-                        </button>
-                        @endif
                     </div>
 
                     @if(!$perakuan)
@@ -82,11 +77,7 @@
                 <!-- end Rekod PMGi -->
             @endif
 
-            @if($perakuan)
-            <div class="mt-4">
-            @else
-            <div class="mt-4 w-[70%]">
-            @endif
+            <div class="{{ $perakuan ? 'mt-4' : 'mt-4 w-[70%]' }} ">
                 <div class="mt-4 mb-8">
                     <div class="mb-2">
                         <label for="punca" class="block mb-2 font-medium {{ $nonPmcView ? 'text-gray-700 opacity-60' : 'text-gray-900' }} text-md dark:text-white @error('fairFlag') text-red-700 @enderror">Adakah sesi ini telah dilaksanakan dengan adil dan saksama bagi kedua-dua belah pihak?</label>
@@ -162,56 +153,61 @@
                     @endif
                 </div>
                 <hr>
-                <div class="my-8">
-                    <div class="mb-2">
-                        <label for="syorKeluar" class="block mb-2 font-medium @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id) text-gray-700 opacity-60 @else text-gray-900 @endif text-md dark:text-white @error('exitFlag') text-red-700 @enderror">Disyorkan penangguhan?</label>
-                        <div class="flex">
-                            <div class="flex items-center mr-4 border border-gray-200 rounded ps-4 @error('exitFlag') border-red-200 @enderror" style="padding-left: 2rem;padding-right: 2rem;">
-                                @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id)
-                                    <input id="syorKeluarYa" type="radio" value="1" name="bordered-radio3" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 @error('exitFlag') border-red-300 text-red-600 focus:ring-red-500 @enderror" wire:model.live="exitFlag" disabled>
-                                    <label for="syorKeluarYa" class="w-full py-4 text-sm font-medium text-gray-700 opacity-60 ms-2  @error('exitFlag') text-red-700 @enderror">YA</label>
-                                @else
-                                    <input id="syorKeluarYa" type="radio" value="1" name="bordered-radio3" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 @error('exitFlag') border-red-300 text-red-600 focus:ring-red-500 @enderror" wire:model.live="exitFlag">
-                                    <label for="syorKeluarYa" class="w-full py-4 text-sm font-medium text-gray-900 ms-2  @error('exitFlag') text-red-700 @enderror">YA</label>
-                                @endif
+
+                @if ($perakuan)
+                    <div class="my-8">
+                        <div class="mb-2">
+                            <label for="syorKeluar" class="block mb-2 font-medium @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id) text-gray-700 opacity-60 @else text-gray-900 @endif text-md dark:text-white @error('exitFlag') text-red-700 @enderror">Disyorkan penilaian semula?</label>
+                            <div class="flex">
+                                <div class="flex items-center mr-4 border border-gray-200 rounded ps-4 @error('exitFlag') border-red-200 @enderror" style="padding-left: 2rem;padding-right: 2rem;">
+                                    @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id)
+                                        <input id="syorKeluarYa" type="radio" value="1" name="bordered-radio3" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 @error('exitFlag') border-red-300 text-red-600 focus:ring-red-500 @enderror" wire:model.live="exitFlag" disabled>
+                                        <label for="syorKeluarYa" class="w-full py-4 text-sm font-medium text-gray-700 opacity-60 ms-2  @error('exitFlag') text-red-700 @enderror">YA</label>
+                                    @else
+                                        <input id="syorKeluarYa" type="radio" value="1" name="bordered-radio3" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 @error('exitFlag') border-red-300 text-red-600 focus:ring-red-500 @enderror" wire:model.live="exitFlag">
+                                        <label for="syorKeluarYa" class="w-full py-4 text-sm font-medium text-gray-900 ms-2  @error('exitFlag') text-red-700 @enderror">YA</label>
+                                    @endif
+                                </div>
+                                <div class="flex items-center mr-4 border border-gray-200 rounded ps-4 @error('exitFlag') border-red-200 @enderror" style="padding-left: 2rem;padding-right: 2rem;">
+                                    @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id)
+                                        <input id="syorKeluarTidak" type="radio" value="0" name="bordered-radio3" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 @error('exitFlag') border-red-300 text-red-600 focus:ring-red-500 @enderror" wire:model.live="exitFlag" disabled>
+                                        <label for="syorKeluarTidak" class="w-full py-4 text-sm font-medium text-gray-700 opacity-60 ms-2  @error('exitFlag') text-red-700 @enderror">TIDAK</label>
+                                    @else
+                                        <input id="syorKeluarTidak" type="radio" value="0" name="bordered-radio3" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 @error('exitFlag') border-red-300 text-red-600 focus:ring-red-500 @enderror" wire:model.live="exitFlag">
+                                        <label for="syorKeluarTidak" class="w-full py-4 text-sm font-medium text-gray-900 ms-2  @error('exitFlag') text-red-700 @enderror">TIDAK</label>
+                                    @endif
+                                </div>
                             </div>
-                            <div class="flex items-center mr-4 border border-gray-200 rounded ps-4 @error('exitFlag') border-red-200 @enderror" style="padding-left: 2rem;padding-right: 2rem;">
-                                @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id)
-                                    <input id="syorKeluarTidak" type="radio" value="0" name="bordered-radio3" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 @error('exitFlag') border-red-300 text-red-600 focus:ring-red-500 @enderror" wire:model.live="exitFlag" disabled>
-                                    <label for="syorKeluarTidak" class="w-full py-4 text-sm font-medium text-gray-700 opacity-60 ms-2  @error('exitFlag') text-red-700 @enderror">TIDAK</label>
-                                @else
-                                    <input id="syorKeluarTidak" type="radio" value="0" name="bordered-radio3" class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 @error('exitFlag') border-red-300 text-red-600 focus:ring-red-500 @enderror" wire:model.live="exitFlag">
-                                    <label for="syorKeluarTidak" class="w-full py-4 text-sm font-medium text-gray-900 ms-2  @error('exitFlag') text-red-700 @enderror">TIDAK</label>
-                                @endif
-                            </div>
+                            @error('exitFlag')<p class="mt-2 text-sm text-negative-600">{{ $message }}</p>@enderror
                         </div>
-                        @error('exitFlag')<p class="mt-2 text-sm text-negative-600">{{ $message }}</p>@enderror
-                    </div>
-                    <div class="{{ $exitFlag == 1 ? 'block' : 'hidden'}}">
-                        <div class="flex items-center my-4 w-full">
+                        <div class="{{ $exitFlag == 1 ? 'block' : 'hidden'}}">
+                            <div class="flex items-center my-4 w-full">
+                                @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id)
+                                    <x-native-select label="Sila pilih jenis penangguhan :" placeholder="Sila Pilih Keputusan" :options="[
+                                        ['name' => 'Kembali ke PMG-i (1)',  'id' => 1],
+                                        ['name' => 'Kembali ke PMG-i (2)',  'id' => 2],
+                                        ['name' => 'Kembali ke PMG-i (3)',  'id' => 3],
+                                    ]" option-label="name" option-value="id" wire:model="exitTypeFlag" disabled />
+                                @else
+                                    <x-native-select label="Sila pilih jenis penangguhan :" placeholder="Sila Pilih Keputusan" :options="[
+                                        ['name' => 'Kembali ke PMG-i (1)',  'id' => 1],
+                                        ['name' => 'Kembali ke PMG-i (2)',  'id' => 2],
+                                        ['name' => 'Kembali ke PMG-i (3)',  'id' => 3],
+                                    ]" option-label="name" option-value="id" wire:model="exitTypeFlag" />
+                                @endif
+                            </div>
+                            {{-- @error('exitTypeFlag')<p class="mt-2 text-sm text-negative-600">{{ $message }}</p>@enderror --}}
+                        </div>
+                        <div>
                             @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id)
-                                <x-native-select label="Sila pilih jenis penangguhan :" placeholder="Sila Pilih" :options="[
-                                    ['name' => 'Tanpa Syarat - Keluar Senarai',  'id' => 1],
-                                    ['name' => 'Bersyarat (a) - Kembali ke PMG-i (2)', 'id' => 2],
-                                    ['name' => 'Bersyarat (b) - Kekal di PMG-i (3)',   'id' => 3],
-                                ]" option-label="name" option-value="id" wire:model="exitTypeFlag" disabled />
+                                <x-textarea label="Ulasan :" wire:model="comment" disabled />
                             @else
-                                <x-native-select label="Sila pilih jenis penangguhan :" placeholder="Sila Pilih" :options="[
-                                    ['name' => 'Tanpa Syarat - Keluar Senarai',  'id' => 1],
-                                    ['name' => 'Bersyarat (a) - Kembali ke PMG-i (2)', 'id' => 2],
-                                    ['name' => 'Bersyarat (b) - Kekal di PMG-i (3)',   'id' => 3],
-                                ]" option-label="name" option-value="id" wire:model="exitTypeFlag" />
+                                <x-textarea label="Ulasan :" wire:model="comment" />
                             @endif
+                            @error('comment')<p class="mt-2 text-sm text-negative-600">{{ $message }}</p>@enderror
                         </div>
                     </div>
-                    <div>
-                        @if($perakuan && auth()->user()->USERID != $sessionSetting->pmc_id)
-                            <x-textarea label="Ulasan :" wire:model="comment" disabled />
-                        @else
-                            <x-textarea label="Ulasan :" wire:model="comment" />
-                        @endif
-                    </div>
-                </div>
+                @endif
 
                 <!-- ============================================================
                                 LAMPIRAN 1, 2, 3 (PMC)
@@ -246,10 +242,12 @@
                     </div>
                     
                     <!-- SUBMIT BUTTON -->
-                    <button class="px-4 py-2 bg-primary-700 text-white rounded-lg"
-                            wire:click="submit">
-                        Hantar
-                    </button>
+                    <div class="flex justify-center">
+                        <button class="px-4 py-2 bg-primary-700 text-white rounded-lg"
+                                wire:click="submit">
+                            Hantar
+                        </button>
+                    </div>
                 @else
                     <!-- Lampiran 1 -->
                     @if($attachment)
@@ -281,7 +279,7 @@
 
                         <div class="mb-4">
                             <label class="font-semibold">Lampiran 2 :</label>
-                            @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif', 'pdf']))
+                            @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
                                 <img class="mb-5 w-60" src="{{ asset('storage/' . $attachment2) }}" alt="Attachment Preview">
                             @elseif($fileExtension === 'pdf')
                                 <button type="button" class="cursor-pointer text-blue-500 hover:underline" wire:click="toggleDetail('{{ $attachment2 }}')">
@@ -319,6 +317,18 @@
                 @endif
             </div>
         </div>
+        @if($perakuan && auth()->user()->USERID == $sessionSetting->pmc_id)
+            <div class="space-y-2">
+                <div>
+                    <h2 class="text-sm px-2 font-italic text-gray-900">Sila klik Kemaskini terlebih dahulu sebelum menghantar keputusan anda.</h2>
+                </div>
+                <div>
+                    <button class="inline-flex items-center px-4 py-2 ml-4 font-medium text-center text-white bg-indigo-700 rounded-lg cursor-pointer focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800" wire:click="updates">
+                        Kemaskini
+                    </button>
+                </div>
+            </div>
+        @endif
     </div>
 
     <x-modal wire:model="infoModal" blur align="center" max-width="6xl">
