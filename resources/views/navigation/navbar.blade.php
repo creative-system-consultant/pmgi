@@ -160,7 +160,7 @@
 
                     <button type="button" class="flex flex-shrink-0 mx-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300" id="userMenuDropdownButton" aria-expanded="false" data-dropdown-toggle="userMenuDropdown">
                         <span class="sr-only">Open user menu</span>
-                        <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+                        <img class="w-8 h-8 rounded-full" src="{{ asset('/image/blank-avatar.png') }}" alt="user photo">
                     </button>
 
                     <div class="hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow" id="userMenuDropdown" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(1712px, 58px);" data-popper-placement="bottom">
