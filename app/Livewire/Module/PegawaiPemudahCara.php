@@ -53,7 +53,7 @@ class PegawaiPemudahCara extends Component
     public $cancelSessionModal = false;
     public $buttonRekodPS = false;
 
-    protected $listeners = ['pmgi-session-updated' => 'handleRealtimeUpdate'];
+    protected $listeners = ['pmgi-session-updated' => 'handleSessionUpdate'];
 
     protected function rules()
     {
@@ -151,6 +151,26 @@ class PegawaiPemudahCara extends Component
         $this->attachmentModal = true;
     }
 
+    private function storeFile($file, $index)
+    {
+        if (!$file) return null;
+
+        $userid = substr($this->sessionId, 13);
+        $folder = str_replace('/', '-', $this->sessionId);
+
+        $ext = $file->getClientOriginalExtension();
+
+        // NAMA FAIL BARU
+        $filename = "attachment_PMC_{$index}_" . now()->format('YmdHis') . "." . $ext;
+
+        $store_path = "public/pmgi_session/{$userid}/{$folder}";
+        $db_path = "pmgi_session/{$userid}/{$folder}/{$filename}";
+
+        $file->storeAs($store_path, $filename);
+
+        return $db_path;
+    }
+
     public function goToRekodPS()
     {
         return redirect()->route('/rekod-penilaian-semula?session_id' . $this->sessionId);
@@ -165,17 +185,24 @@ class PegawaiPemudahCara extends Component
     {
         $this->validate();
 
-        $path = $this->processFile();
+        $path1 = $this->storeFile($this->file1, 1);
+        $path2 = $this->storeFile($this->file2, 2);
+        $path3 = $this->storeFile($this->file3, 3);
 
-        SessionPmcInfo::create([
-            'session_id' => $this->sessionId,
-            'fair_flag' => $this->fairFlag,
-            'fair_comments' => $this->fairComment,
-            'undrstd_flag' => $this->undrstdFlag,
-            'others' => $this->others,
-            'attachment' => $path,
-            'created_by' => auth()->user()->USERID,
-        ]);
+        SessionPmcInfo::updateOrCreate(
+            ['session_id' => $this->sessionId],
+            [
+                'session_id' => $this->sessionId,
+                'fair_flag' => $this->fairFlag,
+                'fair_comments' => $this->fairComment,
+                'undrstd_flag' => $this->undrstdFlag,
+                'others' => $this->others,
+                'attachment' => $path1,
+                'attachment2' => $path2,
+                'attachment3' => $path3,
+                'created_by' => auth()->user()->USERID,
+            ]
+        );
 
         $sessionId  = str_replace('/', '-', $this->sessionId);
 
@@ -251,6 +278,20 @@ class PegawaiPemudahCara extends Component
             'comments' => $this->comment,
             'updated_by' => $this->pmcId
         ];
+
+        // hanya overwrite kalau user upload fail baru
+        if ($this->file1) {
+            $update['attachment'] = $this->storeFile($this->file1, 1);
+            $this->attachment = $update['attachment'];
+        }
+        if ($this->file2) {
+            $update['attachment2'] = $this->storeFile($this->file2, 2);
+            $this->attachment2 = $update['attachment2'];
+        }
+        if ($this->file3) {
+            $update['attachment3'] = $this->storeFile($this->file3, 3);
+            $this->attachment3 = $update['attachment3'];
+        }
 
         SessionPmcInfo::whereSessionId($this->sessionId)->update($updates);
 

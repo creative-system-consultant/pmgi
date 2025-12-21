@@ -131,13 +131,9 @@ class PegawaiMenilai extends Component
         $this->showRekodPmgi = !$this->showRekodPmgi;
     }
 
-    public function toggleDetail()
+    public function toggleDetail($db_path)
     {
-        if ($this->file) {
-            $this->attachmentUrl = $this->file->temporaryUrl();
-        } else if($this->attachment) {
-            $this->attachmentUrl = asset('storage/' . $this->attachment);
-        }
+        $this->attachmentUrl = asset('storage/' . $db_path);
         $this->attachmentModal = true;
     }
 
@@ -218,6 +214,12 @@ class PegawaiMenilai extends Component
     {
         $this->validate();
         
+        $update = [
+            'comments' => $this->comment,
+            'action'   => $this->actionPlan,
+            'updated_by' => $this->pymId
+        ];
+
         // hanya overwrite kalau user upload fail baru
         if ($this->file1) {
             $update['attachment'] = $this->storeFile($this->file1, 1);
@@ -231,16 +233,7 @@ class PegawaiMenilai extends Component
             $update['attachment3'] = $this->storeFile($this->file3, 3);
             $this->attachment3 = $update['attachment3'];
         }
-
-        $update = [
-            'comments' => $this->comment,
-            'action'   => $this->actionPlan,
-            'attachment' => $update['attachment'],
-            'attachment2' => $update['attachment2'],
-            'attachment3' => $update['attachment3'],
-            'updated_by' => $this->pymId
-        ];
-
+        
         SessionPymInfo::whereSessionId($this->sessionId)->update($update);
 
         event(new SessionUpdated(
@@ -266,6 +259,9 @@ class PegawaiMenilai extends Component
         {
             $this->actionPlan = $payload['action'] ?? $this->actionPlan;
             $this->comment = $payload['comments'] ?? $this->comment;
+            $this->attachment = $payload['attachment'] ?? $this->attachment;
+            $this->attachment2 = $payload['attachment2'] ?? $this->attachment2;
+            $this->attachment3 = $payload['attachment3'] ?? $this->attachment3;
         }
 
         // Show notification

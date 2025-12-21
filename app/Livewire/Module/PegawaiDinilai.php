@@ -192,6 +192,14 @@ class PegawaiDinilai extends Component
     {
         $this->validate();
 
+        $updates = [
+            'problem'  => $this->problem,
+            'reason'   => $this->reason,
+            'action'   => $this->actionPlan,
+            'comments' => $this->comment,
+            'updated_by' => $this->pydId
+        ];
+
         // hanya overwrite kalau user upload fail baru
         if ($this->file1) {
             $update['attachment'] = $this->storeFile($this->file1, 1);
@@ -205,17 +213,6 @@ class PegawaiDinilai extends Component
             $update['attachment3'] = $this->storeFile($this->file3, 3);
             $this->attachment3 = $update['attachment3'];
         }
-
-        $updates = [
-            'problem'  => $this->problem,
-            'reason'   => $this->reason,
-            'action'   => $this->actionPlan,
-            'comments' => $this->comment,
-            'attachment' => $update['attachment'],
-            'attachment2' => $update['attachment2'],
-            'attachment3' => $update['attachment3'],
-            'updated_by' => $this->pydId
-        ];
 
         SessionPydInfo::whereSessionId($this->sessionId)->update($updates);
 

@@ -73,7 +73,7 @@
 
             {{-- tarikh lantikan --}}
             <div class="input-container" style="top: 217px; left: 550px;">
-                <strong>30/1/2019</strong>
+                <strong>{{ $tarikhLantikan }}</strong>
             </div>
 
             {{-- negeri --}}
@@ -492,75 +492,80 @@
         </div>
     </div>
 
-    @if (isset($attachmentPaths['pyd_attachment']))
-        <div class="page_break"></div>
-        <!--------------------------------------------------------------- page 7 ----------------------------------------------------------------------------->    
-        <div style="text-align: center; padding: 50px;">
-            <h3>Lampiran PYD</h3>
-            @if(in_array($attachmentExtension['pyd_attachment'], $imageExtensions))
-                <img src="{{ $attachmentPaths['pyd_attachment'] }}" alt="PYD Attachment" style="width: 90%; max-height: 800px; object-fit: contain; border: 1px solid #ccc;">
-            @elseif($attachmentExtension['pyd_attachment'] == $pdfExtension)
-                @foreach($attachmentPaths['pyd_attachment'] as $index => $imagePath)
-                    <div style="margin-bottom: 20px;">
-                        <p style="font-size: 12px; color: #666;">Halaman {{ $index + 1 }}</p>
-                        <img src="{{ $imagePath }}" 
-                            alt="PDF Page {{ $index + 1 }}" 
-                            style="width: 120%;">
-                    </div>
-                    @if(!$loop->last)
-                        <div class="page_break"></div>
-                    @endif
-                @endforeach
-            @endif
-        </div>
-    @endif
+    {{-- PYD Attachments --}}
+    <x-rekod-pmgi-attachment-display
+        attachmentKey="pyd_attachment" 
+        title="Lampiran PYD 1"
+        :attachmentPaths="$attachmentPaths"
+        :attachmentExtension="$attachmentExtension"
+        :imageExtensions="$imageExtensions"
+    />
 
-    @if (isset($attachmentPaths['pym_attachment']))
-        <div class="page_break"></div>
-        <!--------------------------------------------------------------- page 8 ----------------------------------------------------------------------------->    
-        <div style="text-align: center; padding: 50px;">
-            <h3>Lampiran PYM</h3>
-            @if(in_array($attachmentExtension['pym_attachment'], $imageExtensions))
-                <img src="{{ $attachmentPaths['pym_attachment'] }}" alt="PYM Attachment" style="width: 90%; max-height: 800px; object-fit: contain; border: 1px solid #ccc;">
-            @elseif($attachmentExtension['pym_attachment'] == $pdfExtension)
-                {{-- Display converted PDF pages as images --}}
-                @foreach($attachmentPaths['pym_attachment'] as $index => $imagePath)
-                    <div style="margin-bottom: 20px;">
-                        <p style="font-size: 12px; color: #666;">Halaman {{ $index + 1 }}</p>
-                        <img src="{{ $imagePath }}" 
-                            alt="PDF Page {{ $index + 1 }}" 
-                            style="width: 120%;">
-                    </div>
-                    @if(!$loop->last)
-                        <div class="page_break"></div>
-                    @endif
-                @endforeach
-            @endif
-        </div>
-    @endif
+    <x-rekod-pmgi-attachment-display
+        attachmentKey="pyd_attachment2" 
+        title="Lampiran PYD 2"
+        :attachmentPaths="$attachmentPaths"
+        :attachmentExtension="$attachmentExtension"
+        :imageExtensions="$imageExtensions"
+    />
 
-    @if (isset($attachmentPaths['pmc_attachment']))
-        <div class="page_break"></div>
-        <!--------------------------------------------------------------- page 9 ----------------------------------------------------------------------------->    
-        <div style="text-align: center; padding: 50px;">
-            <h3>Lampiran PMC</h3>
-            @if(in_array($attachmentExtension['pmc_attachment'], $imageExtensions))
-                <img src="{{ $attachmentPaths['pmc_attachment'] }}" alt="PMC Attachment" style="width: 90%; max-height: 800px; object-fit: contain; border: 1px solid #ccc;">
-            @elseif($attachmentExtension['pmc_attachment'] == $pdfExtension)
-                @foreach($attachmentPaths['pmc_attachment'] as $index => $imagePath)
-                    <div style="margin-bottom: 20px;">
-                        <p style="font-size: 12px; color: #666;">Halaman {{ $index + 1 }}</p>
-                        <img src="{{ $imagePath }}" 
-                            alt="PDF Page {{ $index + 1 }}" 
-                            style="width: 120%;">
-                    </div>
-                    @if(!$loop->last)
-                        <div class="page_break"></div>
-                    @endif
-                @endforeach
-            @endif
-        </div>
-    @endif
+    <x-rekod-pmgi-attachment-display
+        attachmentKey="pyd_attachment3" 
+        title="Lampiran PYD 3"
+        :attachmentPaths="$attachmentPaths"
+        :attachmentExtension="$attachmentExtension"
+        :imageExtensions="$imageExtensions"
+    />
+
+    {{-- PYM Attachments --}}
+    <x-rekod-pmgi-attachment-display
+        attachmentKey="pym_attachment" 
+        title="Lampiran PYM 1"
+        :attachmentPaths="$attachmentPaths"
+        :attachmentExtension="$attachmentExtension"
+        :imageExtensions="$imageExtensions"
+    />
+
+    <x-rekod-pmgi-attachment-display
+        attachmentKey="pym_attachment2" 
+        title="Lampiran PYM 2"
+        :attachmentPaths="$attachmentPaths"
+        :attachmentExtension="$attachmentExtension"
+        :imageExtensions="$imageExtensions"
+    />
+
+    <x-rekod-pmgi-attachment-display
+        attachmentKey="pym_attachment3" 
+        title="Lampiran PYM 3"
+        :attachmentPaths="$attachmentPaths"
+        :attachmentExtension="$attachmentExtension"
+        :imageExtensions="$imageExtensions"
+    />
+
+    {{-- PMC Attachments --}}
+    <x-rekod-pmgi-attachment-display
+        attachmentKey="pmc_attachment" 
+        title="Lampiran PMC 1"
+        :attachmentPaths="$attachmentPaths"
+        :attachmentExtension="$attachmentExtension"
+        :imageExtensions="$imageExtensions"
+    />
+
+    <x-rekod-pmgi-attachment-display
+        attachmentKey="pmc_attachment2" 
+        title="Lampiran PMC 2"
+        :attachmentPaths="$attachmentPaths"
+        :attachmentExtension="$attachmentExtension"
+        :imageExtensions="$imageExtensions"
+    />
+
+    <x-rekod-pmgi-attachment-display
+        attachmentKey="pmc_attachment3" 
+        title="Lampiran PMC 3"
+        :attachmentPaths="$attachmentPaths"
+        :attachmentExtension="$attachmentExtension"
+        :imageExtensions="$imageExtensions"
+    />
 
 </body>
 </html>

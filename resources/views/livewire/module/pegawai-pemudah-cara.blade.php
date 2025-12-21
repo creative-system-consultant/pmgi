@@ -270,6 +270,13 @@
                             @endif
                         </div>
                     @endif
+                    <div class="mt-2">
+                        <label class="font-semibold">{{ $attachment ? 'Ganti' : 'Muat naik' }} Lampiran 1 (Jika berkaitan) :</label>
+                        <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true" x-on:livewire-upload-finish="uploading = false" x-on:livewire-upload-cancel="uploading = false" x-on:livewire-upload-error="uploading = false" x-on:livewire-upload-progress="progress = $event.detail.progress" class="mb-4">
+                            <!-- File Input -->
+                            <input class="block mb-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none dark:bg-gray-700 {{ $nonPmcView ? 'cursor-not-allowed' : ''}}" id="default_size" type="file" wire:model="file1" @disabled($nonPmcView ? true : false)>
+                        </div>
+                    </div>
 
                     <!-- Lampiran 2 -->
                     @if($attachment2)
@@ -292,6 +299,13 @@
                             @endif
                         </div>
                     @endif
+                    <div class="mt-2">
+                        <label class="font-semibold">{{ $attachment2 ? 'Ganti' : 'Muat naik' }} Lampiran 2 (Jika berkaitan) :</label>
+                        <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true" x-on:livewire-upload-finish="uploading = false" x-on:livewire-upload-cancel="uploading = false" x-on:livewire-upload-error="uploading = false" x-on:livewire-upload-progress="progress = $event.detail.progress" class="mb-4">
+                            <!-- File Input -->
+                            <input class="block mb-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none dark:bg-gray-700 {{ $nonPmcView ? 'cursor-not-allowed' : ''}}" id="default_size" type="file" wire:model="file2" @disabled($nonPmcView ? true : false)>
+                        </div>
+                    </div>
 
                     <!-- Lampiran 3 -->
                     @if($attachment3)
@@ -314,6 +328,13 @@
                             @endif
                         </div>
                     @endif
+                    <div class="mt-2">
+                        <label class="font-semibold">{{ $attachment3 ? 'Ganti' : 'Muat naik' }} Lampiran 3 (Jika berkaitan) :</label>
+                        <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true" x-on:livewire-upload-finish="uploading = false" x-on:livewire-upload-cancel="uploading = false" x-on:livewire-upload-error="uploading = false" x-on:livewire-upload-progress="progress = $event.detail.progress" class="mb-4">
+                            <!-- File Input -->
+                            <input class="block mb-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none dark:bg-gray-700 {{ $nonPmcView ? 'cursor-not-allowed' : ''}}" id="default_size" type="file" wire:model="file3" @disabled($nonPmcView ? true : false)>
+                        </div>
+                    </div>
                 @endif
             </div>
         </div>
@@ -354,7 +375,7 @@
                 <select id="small" class="flex-1 block w-full p-1 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" wire:model="reasonCancel">
                     <option value="" disabled>Sila Pilih</option>
                     @foreach ($reasonList as $id => $name)
-                        <option value="{{ $id }}">{{ $id }} {{ $name }}</option>
+                        <option value="{{ $id }}">{{ $name }}</option>
                     @endforeach
                 </select>
             </div>

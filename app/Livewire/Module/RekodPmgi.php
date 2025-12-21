@@ -134,6 +134,7 @@ class RekodPmgi extends Component
         $bankOfficerPyd = BankOfficer::with('hrData')->whereOfficerId($settInfo->pyd_id)->first();
         $state = BnmStatecode::whereCode(substr($settInfo->branch_code, 0, 2))->value('description');
         $branch = Branch::where('branch_code', $settInfo->branch_code)->value('branch_name');
+        $tarikhLantikan = $bankOfficerPyd->hrData ? $bankOfficerPyd->hrData->tarikh_lantikan->format('d/m/Y') : 'Tiada maklumat';
         $tempohBerkhidmat = strtoupper(str_replace(['Y', 'M', 'D'], [' Tahun ', ' Bulan ', ' Hari'], $bankOfficerPyd->hrData->tempoh_penempatan_semasa));
         $address = $bankOfficerPyd->hrData->alamat;
         if (preg_match('/^(.*?)(\d{5}.*)$/', $address, $matches)) {
@@ -203,7 +204,7 @@ class RekodPmgi extends Component
         // Copy attachment files to the same temp directory as the chart image (which works)
         $attachmentPaths = [];
         $tempAttachmentFiles = []; // Keep track of copied files for cleanup
-        $attachmentExtension = null;
+        $attachmentExtension = [];
         $imageExtensions = ['png', 'jpg', 'jpeg'];
         $pdfExtension = 'pdf';
 
@@ -212,88 +213,84 @@ class RekodPmgi extends Component
         // Get the directory where the chart image is stored (this directory works)
         $tempDirectory = dirname($paths['image']);
         
-        if ($pydInfo && $pydInfo->attachment) {
-            $originalPath = storage_path('app/public/' . $pydInfo->attachment);
-            $originalName = strtoupper(pathinfo($originalPath, PATHINFO_FILENAME));
-            $extension = strtolower(pathinfo($originalPath, PATHINFO_EXTENSION));
-            
-            if (file_exists($originalPath)) {
-                // Copy to temp directory where chart image is stored
-                $tempFileName = 'pyd_attachment_' . time() . '_' . basename($originalPath);
-                $tempPath = $tempDirectory . DIRECTORY_SEPARATOR . $tempFileName;
-                
-                if (copy($originalPath, $tempPath)) {
-                    $attachmentPaths['pyd_attachment'] = $tempPath;
-                    $tempAttachmentFiles[] = $tempPath; // Track for cleanup
-                    $attachmentExtension['pyd_attachment'] = pathinfo($attachmentPaths['pyd_attachment'], PATHINFO_EXTENSION);
-                }
+        if ($pydInfo) 
+        {
+            $pydAttachments = [
+                'attachment' => $pydInfo->attachment,
+                'attachment2' => $pydInfo->attachment2,
+                'attachment3' => $pydInfo->attachment3,
+            ];
 
-                if ($extension === 'pdf') {
-                    $convertImage = $this->pdfToImageService->generate($settInfo->pyd_id, $pathSessionId, $attachmentPaths['pyd_attachment'], $originalName);
-
-                    $attachmentPaths['pyd_attachment'] = $convertImage['image'];
-                    $attachmentExtension['pyd_attachment'] = $convertImage['extension'];
-                }
-            }
-        }
-        
-        if ($pymInfo && $pymInfo->attachment) {
-            $originalPath = storage_path('app/public/' . $pymInfo->attachment);
-            $originalName = strtoupper(pathinfo($originalPath, PATHINFO_FILENAME));
-            $extension = strtolower(pathinfo($originalPath, PATHINFO_EXTENSION));
-            
-            if (file_exists($originalPath)) {
-                // Copy to temp directory where chart image is stored
-                $tempFileName = 'pym_attachment_' . time() . '_' . basename($originalPath);
-                $tempPath = $tempDirectory . DIRECTORY_SEPARATOR . $tempFileName;
-                
-                if (copy($originalPath, $tempPath)) {
-                    $attachmentPaths['pym_attachment'] = $tempPath;
-                    $tempAttachmentFiles[] = $tempPath; // Track for cleanup
-                }
-
-                if ($extension === 'pdf') {
-                    $convertImage = $this->pdfToImageService->generate($settInfo->pyd_id, $pathSessionId, $originalPath, $originalName);
-
-                    $attachmentPaths['pym_attachment'] = $convertImage['image'];
-                    $attachmentExtension['pym_attachment'] = $convertImage['extension'];
-                } else {
-                    $attachmentPaths['pym_attachment'] = route('stream.attachment', ['path' => encrypt($data->pym_attachment)]);
-                    $attachmentExtension['pym_attachment'] = $extension;
+            foreach ($pydAttachments as $key => $attachmentPath) {
+                if (!empty($attachmentPath)) {
+                    $attachmentKey = 'pyd_' . $key;
+                    
+                    $this->processAttachment(
+                        $attachmentPath,
+                        $attachmentKey,
+                        $tempDirectory,
+                        $settInfo->pyd_id,
+                        $pathSessionId,
+                        $attachmentPaths,
+                        $attachmentExtension,
+                        $tempAttachmentFiles
+                    );
                 }
             }
         }
         
-        if ($pmcInfo && $pmcInfo->attachment) {
-            $originalPath = storage_path('app/public/' . $pmcInfo->attachment);
-            $originalName = strtoupper(pathinfo($originalPath, PATHINFO_FILENAME));
-            $extension = strtolower(pathinfo($originalPath, PATHINFO_EXTENSION));
-            
-            if (file_exists($originalPath)) {
-                // Copy to temp directory where chart image is stored
-                $tempFileName = 'pmc_attachment_' . time() . '_' . basename($originalPath);
-                $tempPath = $tempDirectory . DIRECTORY_SEPARATOR . $tempFileName;
-                
-                if (copy($originalPath, $tempPath)) {
-                    $attachmentPaths['pmc_attachment'] = $tempPath;
-                    $tempAttachmentFiles[] = $tempPath; // Track for cleanup
-                    $attachmentExtension['pmc_attachment'] = pathinfo($attachmentPaths['pmc_attachment'], PATHINFO_EXTENSION);
+        if ($pymInfo) {
+            $pymAttachments = [
+                'attachment' => $pymInfo->attachment,
+                'attachment2' => $pymInfo->attachment2,
+                'attachment3' => $pymInfo->attachment3,
+            ];
+
+            foreach ($pymAttachments as $key => $attachmentPath) {
+                if (!empty($attachmentPath)) {
+                    $attachmentKey = 'pym_' . $key;
+                    
+                    $this->processAttachment(
+                        $attachmentPath,
+                        $attachmentKey,
+                        $tempDirectory,
+                        $settInfo->pyd_id,
+                        $pathSessionId,
+                        $attachmentPaths,
+                        $attachmentExtension,
+                        $tempAttachmentFiles
+                    );
                 }
+            }
+        }
+        
+        if ($pmcInfo) {
+            $pmcAttachments = [
+                'attachment' => $pmcInfo->attachment,
+                'attachment2' => $pmcInfo->attachment2,
+                'attachment3' => $pmcInfo->attachment3,
+            ];
 
-                if ($extension === 'pdf') {
-                    $convertImage = $this->pdfToImageService->generate($settInfo->pyd_id, $pathSessionId, $attachmentPaths['pmc_attachment'], $originalName);
-
-                    $attachmentPaths['pmc_attachment'] = $convertImage['image'];
-                    $attachmentExtension['pmc_attachment'] = $convertImage['extension'];
-                } else {
-                    $attachmentPaths['pmc_attachment'] = route('stream.attachment', ['path' => encrypt($data->pmc_attachment)]);
-                    $attachmentExtension['pmc_attachment'] = $extension;
+            foreach ($pmcAttachments as $key => $attachmentPath) {
+                if (!empty($attachmentPath)) {
+                    $attachmentKey = 'pmc_' . $key;
+                    
+                    $this->processAttachment(
+                        $attachmentPath,
+                        $attachmentKey,
+                        $tempDirectory,
+                        $settInfo->pyd_id,
+                        $pathSessionId,
+                        $attachmentPaths,
+                        $attachmentExtension,
+                        $tempAttachmentFiles
+                    );
                 }
             }
         }
         
         $pdf = Pdf::loadView($template, compact(
-                'settInfo','bankOfficerPyd', 'state', 'branch', 'tempohBerkhidmat', 'alamat1', 'alamat2','summMthOfficer', 'accCount', 'osB1D', 'osAll', 'npfOs', 'sessionInfo', 'bankOfficerPym', 'bankOfficerPmc',
+                'settInfo','bankOfficerPyd', 'state', 'branch', 'tarikhLantikan', 'tempohBerkhidmat', 'alamat1', 'alamat2','summMthOfficer', 'accCount', 'osB1D', 'osAll', 'npfOs', 'sessionInfo', 'bankOfficerPym', 'bankOfficerPmc',
                 'pydInfo', 'pymInfo', 'pmcInfo', 'from', 'to', 'paths', 'attachmentPaths', 'attachmentExtension', 'imageExtensions', 'pdfExtension'
             ))->setPaper('A4', 'portrait');
 
@@ -438,6 +435,57 @@ class RekodPmgi extends Component
         $pdf->save($filePath);
 
         return $filePath;
+    }
+
+    private function processAttachment(string $attachmentPath, string $attachmentKey, string $tempDirectory, string $pydId,
+        string $pathSessionId, array &$attachmentPaths, array &$attachmentExtension, array &$tempAttachmentFiles): void {
+        
+        $originalPath = storage_path('app/public/' . $attachmentPath);
+        
+        if (!file_exists($originalPath)) {
+            Log::warning("Attachment file not found: {$originalPath}");
+            return;
+        }
+        
+        $originalName = strtoupper(pathinfo($originalPath, PATHINFO_FILENAME));
+        $extension = strtolower(pathinfo($originalPath, PATHINFO_EXTENSION));
+        
+        // Copy to temp directory
+        $tempFileName = $attachmentKey . '_' . time() . '_' . basename($originalPath);
+        $tempPath = $tempDirectory . DIRECTORY_SEPARATOR . $tempFileName;
+        
+        if (!copy($originalPath, $tempPath)) {
+            Log::error("Failed to copy attachment to temp directory: {$originalPath}");
+            return;
+        }
+        
+        $tempAttachmentFiles[] = $tempPath; // Track for cleanup
+        
+        // Process based on file type
+        if ($extension === 'pdf') {
+            try {
+                // Convert PDF to images
+                $convertImage = $this->pdfToImageService->generate($pydId, $pathSessionId, $tempPath, $originalName);
+                
+                $attachmentPaths[$attachmentKey] = $convertImage['image'];
+                $attachmentExtension[$attachmentKey] = $convertImage['extension'];
+                
+                Log::info("PDF converted to images for {$attachmentKey}");
+                
+            } catch (\Exception $e) {
+                Log::error("PDF conversion failed for {$attachmentKey}: " . $e->getMessage());
+                
+                // Fallback: use original PDF path
+                $attachmentPaths[$attachmentKey] = $tempPath;
+                $attachmentExtension[$attachmentKey] = 'pdf';
+            }
+        } else {
+            // For images, use the temp path directly
+            $attachmentPaths[$attachmentKey] = $tempPath;
+            $attachmentExtension[$attachmentKey] = $extension;
+            
+            Log::info("Image attachment processed for {$attachmentKey}");
+        }
     }
 
     public function render()

@@ -10,11 +10,6 @@
                 <div class="mb-4 lg:mb-0">
                     <div class="flex items-center mb-2">
                         <h3 class="mb-2 text-xl font-bold text-gray-900">Ulasan Pegawai Yang Dinilai (PYD)</h3>
-                        @if($perakuan && auth()->user()->USERID == $sessionSetting->pyd_id)
-                            <button class="inline-flex items-center px-4 py-2 ml-4 font-medium text-center text-white bg-indigo-700 rounded-lg cursor-pointer focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800" wire:click="updates">
-                                Kemaskini
-                            </button>
-                        @endif
                     </div>
 
                     <!-- FORM INFO PYD -->
@@ -180,6 +175,13 @@
                             @endif
                         </div>
                     @endif
+                    <div class="mt-2">
+                        <label class="font-semibold">{{ $attachment ? 'Ganti' : 'Muat naik' }} Lampiran 1 (Jika berkaitan) :</label>
+                        <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true" x-on:livewire-upload-finish="uploading = false" x-on:livewire-upload-cancel="uploading = false" x-on:livewire-upload-error="uploading = false" x-on:livewire-upload-progress="progress = $event.detail.progress" class="mb-4">
+                            <!-- File Input -->
+                            <input class="block mb-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none dark:bg-gray-700 {{ $nonPydView ? 'cursor-not-allowed' : ''}}" id="default_size" type="file" wire:model="file1" @disabled($nonPydView ? true : false)>
+                        </div>
+                    </div>
 
                     <!-- Lampiran 2 -->
                     @if($attachment2)
@@ -189,7 +191,7 @@
 
                         <div class="mb-4">
                             <label class="font-semibold">Lampiran 2 :</label>
-                            @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif', 'pdf']))
+                            @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
                                 <img class="mb-5 w-60" src="{{ asset('storage/' . $attachment2) }}" alt="Attachment Preview">
                             @elseif($fileExtension === 'pdf')
                                 <button type="button" class="cursor-pointer text-blue-500 hover:underline" wire:click="toggleDetail('{{ $attachment2 }}')">
@@ -202,6 +204,13 @@
                             @endif
                         </div>
                     @endif
+                    <div class="mt-2">
+                        <label class="font-semibold">{{ $attachment2 ? 'Ganti' : 'Muat naik' }} Lampiran 2 (Jika berkaitan) :</label>
+                        <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true" x-on:livewire-upload-finish="uploading = false" x-on:livewire-upload-cancel="uploading = false" x-on:livewire-upload-error="uploading = false" x-on:livewire-upload-progress="progress = $event.detail.progress" class="mb-4">
+                            <!-- File Input -->
+                            <input class="block mb-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none dark:bg-gray-700 {{ $nonPydView ? 'cursor-not-allowed' : ''}}" id="default_size" type="file" wire:model="file2" @disabled($nonPydView ? true : false)>
+                        </div>
+                    </div>
 
                     <!-- Lampiran 3 -->
                     @if($attachment3)
@@ -224,25 +233,44 @@
                             @endif
                         </div>
                     @endif
-                @endif
-            </div>
-
-            <x-modal wire:model="infoModal" blur align="center" max-width="6xl">
-                <x-card title="Info Pegawai Yang Dinilai">
-                    <div class="flex justify-center items-center">
-                        <img class="w-90% h-90%" src="{{ asset('storage/' . $savedFile->filename) }}" alt="Tiada Fail">
+                    <div class="mt-2">
+                        <label class="font-semibold">{{ $attachment3 ? 'Ganti' : 'Muat naik' }} Lampiran 3 (Jika berkaitan) :</label>
+                        <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true" x-on:livewire-upload-finish="uploading = false" x-on:livewire-upload-cancel="uploading = false" x-on:livewire-upload-error="uploading = false" x-on:livewire-upload-progress="progress = $event.detail.progress" class="mb-4">
+                            <!-- File Input -->
+                            <input class="block mb-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none dark:bg-gray-700 {{ $nonPydView ? 'cursor-not-allowed' : ''}}" id="default_size" type="file" wire:model="file3" @disabled($nonPydView ? true : false)>
+                        </div>
                     </div>
-                </x-card>
-            </x-modal>
-        
-            <!-- attachment modal -->
-            <x-modal.card blur align="center" max-width="7xl" hide-close=false wire:model="attachmentModal">
-                @if($attachmentUrl)
-                    <iframe src="{{ $attachmentUrl }}" frameborder="0" width="100%" height="700px"></iframe>
                 @endif
-            </x-modal.card>     
+            </div> 
         </div>
-    </div>   
+        @if($perakuan && auth()->user()->USERID == $sessionSetting->pyd_id)
+            <div class="space-y-2">
+                <div>
+                    <h2 class="text-sm px-2 font-italic text-gray-900">Sekiranya anda melakukan sebarang perubahan, sila klik Kemaskini terlebih dahulu sebelum menghantar keputusan anda.</h2>
+                </div>
+                <div>
+                    <button class="inline-flex items-center px-4 py-2 ml-4 font-medium text-center text-white bg-indigo-700 rounded-lg cursor-pointer focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800" wire:click="updates">
+                        Kemaskini
+                    </button>
+                </div>
+            </div>
+        @endif
+    </div>
+
+    <x-modal wire:model="infoModal" blur align="center" max-width="6xl">
+        <x-card title="Info Pegawai Yang Dinilai">
+            <div class="flex justify-center items-center">
+                <img class="w-90% h-90%" src="{{ asset('storage/' . $savedFile->filename) }}" alt="Tiada Fail">
+            </div>
+        </x-card>
+    </x-modal>
+
+    <!-- attachment modal -->
+    <x-modal.card blur align="center" max-width="7xl" hide-close=false wire:model="attachmentModal">
+        @if($attachmentUrl)
+            <iframe src="{{ $attachmentUrl }}" frameborder="0" width="100%" height="700px"></iframe>
+        @endif
+    </x-modal.card>   
 
     @script
         <script>
