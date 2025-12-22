@@ -61,6 +61,14 @@
                                 </li>
                             @endif
 
+                            @if(hasAccess('soalan-lazim-view'))
+                                <li>
+                                    <a href="{{ route('soalan-lazim-view') }}" class="block {{ Route::currentRouteName() === 'soalan-lazim-view' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">
+                                        Soalan Lazim
+                                    </a>
+                                </li>
+                            @endif
+
                             @if(hasAccess('lantikan-urusetia-negeri') || hasAccess('lantikan-pym-mc'))
                                 <li>
                                     <button
