@@ -2,7 +2,7 @@
     {{-- Sidebar --}}
     <aside class="w-full shrink-0 border-r border-gray-200 bg-white/60">
         <div class="p-4 text-xl font-semibold">Menu Penyelenggaraan</div>
-        <nav class="px-2 space-y-1">
+    <nav class="px-2 space-y-1">
             {{-- Team dropdown --}}
             <a href="{{ route('maintenance.admin.ref_mgr_desc') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
                 Deskripsi Pengurus
@@ -46,7 +46,11 @@
 
             <a href="{{ route('maintenance.admin.ref_jtt_roles') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
                 Peranan JTT 
-            </a>              
+            </a>    
+            
+            <a href="{{ route('maintenance.admin.soalan_lazim') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                Soalan Lazim
+            </a>  
         </nav>
     </aside>
 </div>

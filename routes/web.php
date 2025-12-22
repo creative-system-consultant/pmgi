@@ -52,6 +52,7 @@ use App\Livewire\Admin\Maintenance\pmgiRefMntrSessionNotes;
 use App\Livewire\Admin\Maintenance\pmgiRefpmgiLevel;
 use App\Livewire\Admin\Maintenance\pmgiRefpmgiPeriod;
 use App\Livewire\Admin\Maintenance\pmgiRefpmgiResult;
+use App\Livewire\Admin\Maintenance\SoalanLazim;
 use App\Livewire\Admin\Report\JKPiCompletedOfficerByLevel;
 use App\Livewire\Admin\Report\PmgiFMSBankOfficers;
 use App\Livewire\Admin\Report\PmgiHrdOfficer;
@@ -59,6 +60,7 @@ use App\Livewire\Admin\Report\PmgiSysMsgLog;
 use App\Livewire\Module\Lantikan\Evaluator\Index as EvaluatorIndex;
 use App\Livewire\Module\Tetapan\OfficerInfo\Index as OfficerInfoIndex;
 use App\Livewire\Module\Lantikan\StateCommittee\Index as StateCommitteeIndex;
+use App\Livewire\Module\SoalanLazimView;
 use App\Livewire\Module\Tetapan\UserAccessLevel\Index as UserAccessLevelIndex;
 use App\Livewire\Module\RekodPenilaianSemulaPmc;
 
@@ -130,6 +132,8 @@ Route::middleware(['check.sysAvailable'])->group(function () {
             Route::get('/rekod-pmgi', RekodPmgi::class)->name('rekod-pmgi')->middleware('check.access:rekod-pmgi');
             Route::get('/stream-pdf/{sessionId}', [RekodPmgi::class, 'streamRekodPmgi'])->name('stream.rekodPmgi')->withoutMiddleware([RestrictDuringSession::class]);
             Route::get('/stream/attachment', [RekodPmgi::class, 'streamAttachment'])->name('stream.attachment')->withoutMiddleware([RestrictDuringSession::class]);
+            // Soalanan Lazim View
+            Route::get('/soalan-lazim-view', SoalanLazimView::class)->name('soalan-lazim-view')->middleware('check.access:soalan-lazim-view');
 
             // lantikan
             Route::get('/lantikan/urusetia-negeri', StateCommitteeIndex::class)->name('lantikan.urusetia-negeri')->middleware('check.access:lantikan-urusetia-negeri');
@@ -162,6 +166,7 @@ Route::middleware(['check.sysAvailable'])->group(function () {
                 Route::get('/pmgi-excl-user-login', PmgiExclUserLogin::class)->name('excl_user_login');
                 Route::get('/pmgi-excl-branch', MaintenancePmgiExclBranch::class)->name('maintenance_excl_branch');
                 Route::get('/jtt-roles', PmgiRefJttRoles::class)->name('ref_jtt_roles');
+                Route::get('/soalan-lazim', SoalanLazim::class)->name('soalan_lazim');
             });
 
             // Laporan Khas (Admin Only)
