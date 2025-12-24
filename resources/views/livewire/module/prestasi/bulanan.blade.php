@@ -89,9 +89,11 @@
                                             ['desc' => 'PERINCIAN PRESTASI', 'id' => 2],
                                         ]" option-label="desc" option-value="id" wire:model.live="type" />
                                 </div>
-                                <div class="col-span-2">
-                                    <x-select class="z-50" label="Negeri" placeholder="Sila Pilih" :options="$stateSelection" option-label="description" option-value="code" wire:model.live="state" />
-                                </div>
+                                @if ($role == 'admin')
+                                    <div class="col-span-2">
+                                        <x-select class="z-50" label="Negeri" placeholder="Sila Pilih" :options="$stateSelection" option-label="description" option-value="code" wire:model.live="state" />
+                                    </div>
+                                @endif
                                 <div class="col-span-2">
                                     <x-select empty-message="Sila Pilih Negeri" class="z-50" label="Cawangan" placeholder="Sila Pilih" :options="$branchSelection" option-label="branch_name" option-value="branch_code" wire:model.live="branch" />
                                 </div>

@@ -19,6 +19,7 @@ class Bulanan extends Component
     public $branch;
     public $staffName;
     public $pydId;
+    public $userId;
     public $date;
     public $role;
     public $result = false;
@@ -30,7 +31,7 @@ class Bulanan extends Component
             'date' => 'required',
         ];
 
-        if ($this->role != 'pyd') {
+        if (!in_array($this->role, ['pyd', 'user'])) {
             $rules['state'] = 'required';
             $rules['branch'] = [
                 Rule::requiredIf(function () {
@@ -58,8 +59,11 @@ class Bulanan extends Component
         if (hasRoles('PYD')) {
             $this->role = 'pyd';
             $this->pydId = auth()->user()->USERID;
-        } else {
+        } elseif(hasRoles(['URUSETIA HQ', 'ADMINISTRATOR', 'JSM'])) {
             $this->role = 'admin';
+        } else {
+            $this->role = 'user';
+            $this->userId = auth()->user()->USERID;
         }
     }
 
@@ -128,6 +132,12 @@ class Bulanan extends Component
             'code' => '%',
             'description' => 'SEMUA NEGERI',
         ]);
+        
+        if($this->role == 'user')
+        {
+            $userState = BankOfficer::query()->whereOfficerId($this->userId)->first();
+            $this->state = $this->role == 'user' ? $userState->fms_branch_state_code : $this->state;
+        }
 
         // Handle branch selection based on the selected state
         if ($this->state && $this->state == '%') {
