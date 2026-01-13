@@ -50,11 +50,13 @@
                             {{ $showRekodPmgi ? 'Tutup' : 'Lihat' }} Rekod PMGi
                         </button>
                     </div>
-                    <div class="mt-8">
-                        <button wire:click="cancelSessionConfirm" class="inline-flex items-center px-4 py-2.5 ml-4 font-medium text-center text-white bg-red-700 rounded-lg focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900 hover:bg-red-800">
-                            Batal Sesi PMGi
-                        </button>
-                    </div>
+                    @if ($pmgiLevel !== 'PM3')
+                        <div class="mt-8">
+                            <button wire:click="cancelSessionConfirm" class="inline-flex items-center px-4 py-2.5 ml-4 font-medium text-center text-white bg-red-700 rounded-lg focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900 hover:bg-red-800">
+                                Batal Sesi PMGi
+                            </button>
+                        </div>
+                    @endif
                 </div>
 
                 {{-- Prestasi Kumulatif --}}

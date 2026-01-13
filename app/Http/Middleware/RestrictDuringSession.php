@@ -7,6 +7,7 @@ use App\Models\SessionPmcInfo;
 use App\Models\SessionPydInfo;
 use App\Models\SessionPymInfo;
 use App\Models\SettPymPmc;
+use App\PmgiSessionStatus;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,7 @@ class RestrictDuringSession
         // Check if there's an active session for today
         $session = SessionInfo::whereDate('session_date', now())
                                 ->where(function ($query) {
-                                    $query->where('status', 0)
+                                    $query->where('status', PmgiSessionStatus::Pending)
                                           ->orWhereNull('status'); // Allow NULL status
                                 })
                                 ->whereHas('setting', function ($query) use ($user) {

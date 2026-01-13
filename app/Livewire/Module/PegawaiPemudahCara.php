@@ -354,11 +354,11 @@ class PegawaiPemudahCara extends Component
 
         $sessionInfo = SessionInfo::query()->whereSessionId($this->sessionId)->first();
         $sessionInfo->update([
-            'status' => 2,
+            'status' => PmgiSessionStatus::Cancel,
             'reason' => $this->reasonCancel,
         ]);
         $this->sessionSetting->update([
-            'status' => 2,
+            'status' => PmgiSessionStatus::Cancel,
         ]);
 
         redirect()->route('home');

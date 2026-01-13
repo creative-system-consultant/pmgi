@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\SessionInfo;
+use App\PmgiSessionStatus;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +26,7 @@ class EnsureHasSession
         $session = SessionInfo::whereSessionId($sessionId)
                                 ->whereDate('session_date', now())
                                 ->where(function ($query) {
-                                    $query->whereIn('status', [0, 2])
+                                    $query->whereStatus(PmgiSessionStatus::Pending)
                                           ->orWhereNull('status'); // Allow NULL status
                                 })
                                 ->whereHas('setting', function ($query) use ($user) {

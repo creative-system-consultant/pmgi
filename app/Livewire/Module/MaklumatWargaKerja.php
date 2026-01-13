@@ -8,6 +8,7 @@ use App\Models\Branch;
 use App\Models\SessionInfo;
 use App\Models\SettPymPmc;
 use App\Models\User;
+use App\PmgiSessionStatus;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
@@ -104,8 +105,15 @@ class MaklumatWargaKerja extends Component
         $this->validate();
 
         if($this->sessionExist) {
-            $sessionInfo = SessionInfo::whereSessionId($this->sessionId)->whereStatus(2)->orWhereNull('status')->first();
+            $sessionInfo = SessionInfo::query()
+                ->whereSessionId($this->sessionId)
+                ->where(function ($query) {
+                    $query->whereIn('status', [PmgiSessionStatus::Pending, PmgiSessionStatus::Cancel])
+                            ->orWhereNull('status');
+                })
+                ->first();
             $sessionInfo->update([
+                'status' => PmgiSessionStatus::Pending,
                 'type' => $this->meetingType,
                 'venue' => $this->venue,
                 'session_date' => now(),
