@@ -10,6 +10,7 @@ use App\Models\SessionInfo;
 use App\Models\SessionPmcInfo;
 use App\Models\SettOfficerInfoFile;
 use App\Models\SettPymPmc;
+use App\PmgiSessionStatus;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
@@ -39,10 +40,21 @@ class PegawaiPemudahCara extends Component
     public $exitTypeFlag;
     public $comment;
     public $savedFile;
-    public $file;
-    public $attachment;
-    public $attachment2;
-    public $attachment3;
+
+    #[Validate('nullable|file|max:20480|mimes:jpg,jpeg,png,pdf')]
+    public $file1;
+
+    #[Validate('nullable|file|max:20480|mimes:jpg,jpeg,png,pdf')]
+    public $file2;
+
+    #[Validate('nullable|file|max:20480|mimes:jpg,jpeg,png,pdf')]
+    public $file3;
+
+    // file yang sedia ada dalam DB
+    public $attachment;   // lampiran 1
+    public $attachment2;  // lampiran 2
+    public $attachment3;  // lampiran 3
+    
     public $infoModal = false;
     public $attachmentUrl = null;
     public $attachmentModal = false;
@@ -141,13 +153,9 @@ class PegawaiPemudahCara extends Component
         $this->showRekodPmgi = !$this->showRekodPmgi;
     }
 
-    public function toggleDetail()
+    public function toggleDetail($db_path)
     {
-        if ($this->file) {
-            $this->attachmentUrl = $this->file->temporaryUrl();
-        } else if($this->attachment) {
-            $this->attachmentUrl = asset('storage/' . $this->attachment);
-        }
+        $this->attachmentUrl = asset('storage/' . $db_path);
         $this->attachmentModal = true;
     }
 
@@ -209,22 +217,6 @@ class PegawaiPemudahCara extends Component
         return $this->redirect('/loading-pmgi?session_id=' . $sessionId . '&source=pmc');
     }
 
-    private function processFile()
-    {
-        if($this->file) {
-            $extension = $this->file->getClientOriginalExtension();
-            $userid = substr($this->sessionId, 13); //get userid from sessionId
-            $folder = str_replace('/', '-', $this->sessionId);
-            $filename = 'PMC_'. $this->pmcId . '_' . $folder . '_' .now()->format('YmdHis') . '.' . $extension;
-            $store_path = 'public/pmgi_session/' . $userid . '/' . $folder;
-            $db_path = 'pmgi_session/' . $userid . '/' . $folder . '/' . $filename;
-            $this->file->storeAs($store_path, $filename);
-
-            return $db_path;
-        }
-        return;
-    }
-
     public function updatedExitFlag($value)
     {
         if($value == 0)
@@ -281,16 +273,16 @@ class PegawaiPemudahCara extends Component
 
         // hanya overwrite kalau user upload fail baru
         if ($this->file1) {
-            $update['attachment'] = $this->storeFile($this->file1, 1);
-            $this->attachment = $update['attachment'];
+            $updates['attachment'] = $this->storeFile($this->file1, 1);
+            $this->attachment = $updates['attachment'];
         }
         if ($this->file2) {
-            $update['attachment2'] = $this->storeFile($this->file2, 2);
-            $this->attachment2 = $update['attachment2'];
+            $updates['attachment2'] = $this->storeFile($this->file2, 2);
+            $this->attachment2 = $updates['attachment2'];
         }
         if ($this->file3) {
-            $update['attachment3'] = $this->storeFile($this->file3, 3);
-            $this->attachment3 = $update['attachment3'];
+            $updates['attachment3'] = $this->storeFile($this->file3, 3);
+            $this->attachment3 = $updates['attachment3'];
         }
 
         SessionPmcInfo::whereSessionId($this->sessionId)->update($updates);
@@ -323,6 +315,9 @@ class PegawaiPemudahCara extends Component
             $this->exitFlag = $payload['exit_flag'] ?? $this->exitFlag;
             $this->exitTypeFlag = $payload['exit_type_flag'] ?? $this->exitTypeFlag;
             $this->comment = $payload['comments'] ?? $this->comment;
+            $this->attachment = $payload['attachment'] ?? $this->attachment;
+            $this->attachment2 = $payload['attachment2'] ?? $this->attachment2;
+            $this->attachment3 = $payload['attachment3'] ?? $this->attachment3;
         }
 
         // Show notification

@@ -163,7 +163,9 @@
                         <div class="mb-4">
                             <label class="font-semibold">Lampiran 1 :</label>
                             @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
-                                <img class="mb-5 w-60" src="{{ $attachmentUrl }}" alt="Attachment Preview">
+                                <button type="button" class="cursor-pointer text-blue-500 hover:underline" wire:click="toggleDetail('{{ $attachment }}')">
+                                    <img class="mb-5 w-60" src="{{ $attachment }}" alt="Attachment Preview">
+                                </button>
                             @elseif($fileExtension === 'pdf')
                                 <button type="button" class="cursor-pointer text-blue-500 hover:underline" wire:click="toggleDetail('{{ $attachment }}')">
                                     {{ basename($attachment) }}
@@ -192,7 +194,9 @@
                         <div class="mb-4">
                             <label class="font-semibold">Lampiran 2 :</label>
                             @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
-                                <img class="mb-5 w-60" src="{{ asset('storage/' . $attachment2) }}" alt="Attachment Preview">
+                                <button type="button" class="cursor-pointer text-blue-500 hover:underline" wire:click="toggleDetail('{{ $attachment2 }}')">
+                                    <img class="mb-5 w-60" src="{{ asset('storage/' . $attachment2) }}" alt="Attachment Preview">
+                                </button>
                             @elseif($fileExtension === 'pdf')
                                 <button type="button" class="cursor-pointer text-blue-500 hover:underline" wire:click="toggleDetail('{{ $attachment2 }}')">
                                     {{ basename($attachment2) }}
@@ -221,7 +225,9 @@
                         <div class="mb-4">
                             <label class="font-semibold">Lampiran 3 :</label>
                             @if(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
-                                <img class="mb-5 w-60" src="{{ asset('storage/' . $attachment) }}" alt="Attachment Preview">
+                                <button type="button" class="cursor-pointer text-blue-500 hover:underline" wire:click="toggleDetail('{{ $attachment3 }}')">
+                                    <img class="mb-5 w-60" src="{{ asset('storage/' . $attachment3) }}" alt="Attachment Preview">
+                                </button>
                             @elseif($fileExtension === 'pdf')
                                 <button type="button" class="cursor-pointer text-blue-500 hover:underline" wire:click="toggleDetail('{{ $attachment3 }}')">
                                     {{ basename($attachment3) }}

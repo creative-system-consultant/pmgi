@@ -9,6 +9,7 @@ use App\Models\SessionInfo;
 use App\Models\SessionPymInfo;
 use App\Models\SettOfficerInfoFile;
 use App\Models\SettPymPmc;
+use App\PmgiSessionStatus;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -55,13 +56,13 @@ class PegawaiMenilai extends Component
     public $actionPlan;
 
     // ====== FAIL LAMPIRAN BARU ======
-    #[Validate('nullable|file|max:20480|mimes:jpg,jpeg,png,gif,pdf,doc,docx')]
+    #[Validate('nullable|file|max:20480|mimes:jpg,jpeg,png,pdf')]
     public $file1;
 
-    #[Validate('nullable|file|max:20480|mimes:jpg,jpeg,png,gif,pdf,doc,docx')]
+    #[Validate('nullable|file|max:20480|mimes:jpg,jpeg,png,pdf')]
     public $file2;
 
-    #[Validate('nullable|file|max:20480|mimes:jpg,jpeg,png,gif,pdf,doc,docx')]
+    #[Validate('nullable|file|max:20480|mimes:jpg,jpeg,png,pdf')]
     public $file3;
 
     // path yang sedia ada dalam DB

@@ -45,13 +45,13 @@ class PegawaiDinilai extends Component
 
     public $comment;
 
-    #[Validate('nullable|file|max:20480|mimes:jpg,jpeg,png,gif,pdf,doc,docx')]
+    #[Validate('nullable|file|max:20480|mimes:jpg,jpeg,png,pdf')]
     public $file1;
 
-    #[Validate('nullable|file|max:20480|mimes:jpg,jpeg,png,gif,pdf,doc,docx')]
+    #[Validate('nullable|file|max:20480|mimes:jpg,jpeg,png,pdf')]
     public $file2;
 
-    #[Validate('nullable|file|max:20480|mimes:jpg,jpeg,png,gif,pdf,doc,docx')]
+    #[Validate('nullable|file|max:20480|mimes:jpg,jpeg,png,pdf')]
     public $file3;
 
     public $attachment;
@@ -173,6 +173,10 @@ class PegawaiDinilai extends Component
                 'created_by'    => auth()->user()->USERID,
             ]
         );
+
+        $sessionId = str_replace('/', '-', $this->sessionId);
+
+        return redirect('/loading-pmgi?session_id='. $sessionId . '&source=pyd');
     }
 
 
@@ -202,16 +206,16 @@ class PegawaiDinilai extends Component
 
         // hanya overwrite kalau user upload fail baru
         if ($this->file1) {
-            $update['attachment'] = $this->storeFile($this->file1, 1);
-            $this->attachment = $update['attachment'];
+            $updates['attachment'] = $this->storeFile($this->file1, 1);
+            $this->attachment = $updates['attachment'];
         }
         if ($this->file2) {
-            $update['attachment2'] = $this->storeFile($this->file2, 2);
-            $this->attachment2 = $update['attachment2'];
+            $updates['attachment2'] = $this->storeFile($this->file2, 2);
+            $this->attachment2 = $updates['attachment2'];
         }
         if ($this->file3) {
-            $update['attachment3'] = $this->storeFile($this->file3, 3);
-            $this->attachment3 = $update['attachment3'];
+            $updates['attachment3'] = $this->storeFile($this->file3, 3);
+            $this->attachment3 = $updates['attachment3'];
         }
 
         SessionPydInfo::whereSessionId($this->sessionId)->update($updates);
