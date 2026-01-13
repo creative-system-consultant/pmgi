@@ -289,6 +289,19 @@ const getLawatanChartOptions = (data) => {
 				fontSize: '14px',
 				fontFamily: 'Inter, sans-serif',
 			},
+			shared: false,
+			intersect: true,
+			custom: function({ series, seriesIndex, dataPointIndex, w }) {
+				const bilLawatan = series[seriesIndex][dataPointIndex];
+				const percentLawat = percentLawatanData[dataPointIndex];
+
+				return `
+					<div class="px-3 py-2 text-sm">
+						<div><strong>Bulan:</strong> ${w.globals.categoryLabels[dataPointIndex]}</div>
+						<div><strong>Bil. Lawatan:</strong> ${bilLawatan}</div>
+						<div><strong>% Lawat:</strong> ${percentLawat}%</div>
+					</div>`;
+			}
 		},
 		grid: {
 			show: true,
@@ -305,12 +318,6 @@ const getLawatanChartOptions = (data) => {
 				type: 'column', // Column chart type
 				data: bilLawatanData, // Example data
 				color: '#1A56DB'
-			},
-			{
-				name: '% Lawat',
-				type: 'line', // Line chart type
-				data: percentLawatanData, // Example data
-				color: '#FDBA8C'
 			}
 		],
 		markers: {
@@ -384,6 +391,126 @@ const getLawatanChartOptions = (data) => {
 	};
 };
 
+const getCombinedChartOptions = (data) => {
+  const categories = data.map(item => item.report_date);
+
+  const bilSeliaanData = data.map(item => item.bil_selia);
+  const bilMembayarData = data.map(item => item.bil_dapat_kutip);
+  const bilLawatanData = data.map(item => item.bil_lawat);
+  const percentLawatanData = data.map(item => item.bil_lawat_pts); // tooltip sahaja
+
+  return {
+    chart: {
+      height: 420,
+      type: 'line',
+      stacked: false,
+      fontFamily: 'Inter, sans-serif',
+      toolbar: { show: false }
+    },
+
+    // 🔑 ORDER PENTING: BAR LAST supaya tak ditindih
+    series: [
+      {
+        name: 'Bil. Seliaan',
+        type: 'line',
+        data: bilSeliaanData
+      },
+      {
+        name: 'Bil. Membayar',
+        type: 'line',
+        data: bilMembayarData
+      },
+      {
+        name: 'Bil. Lawatan',
+        type: 'column',
+        data: bilLawatanData
+      }
+    ],
+
+    colors: [
+      '#1CC700', // Seliaan (hijau)
+      '#FDBA8C', // Membayar (oren)
+      '#2563EB'  // Lawatan (biru solid)
+    ],
+
+    stroke: {
+      width: [3, 3, 0],
+      curve: 'smooth'
+    },
+
+    fill: {
+      type: ['solid', 'solid', 'solid'], // ❌ TIADA gradient
+      opacity: [1, 1, 1]
+    },
+
+    plotOptions: {
+      bar: {
+        columnWidth: '55%',
+        borderRadius: 6,
+        dataLabels: {
+          position: 'top'
+        }
+      }
+    },
+
+    // dataLabels: {
+    //   enabled: true,
+    //   enabledOnSeries: [2], // ✅ HANYA LAWATAN ADA LABEL
+    //   style: {
+    //     fontSize: '12px',
+    //     fontWeight: 'bold',
+    //     colors: ['#ffffff']
+    //   },
+    //   formatter: (val) => val
+    // },
+
+    markers: {
+      size: [4, 4, 0],
+      strokeWidth: 2,
+      hover: { sizeOffset: 2 }
+    },
+
+    xaxis: {
+      categories,
+      labels: {
+        style: {
+          fontSize: '12px',
+          fontWeight: 500
+        }
+      }
+    },
+
+    yaxis: {
+      labels: {
+        formatter: (val) => Math.round(val)
+      }
+    },
+
+    tooltip: {
+      shared: true,
+      intersect: false,
+      custom: function ({ series, dataPointIndex, w }) {
+        return `
+          <div class="px-3 py-2 text-sm">
+            <div><strong>Bulan:</strong> ${w.globals.categoryLabels[dataPointIndex]}</div>
+            <div><strong>Bil. Seliaan:</strong> ${series[0][dataPointIndex]}</div>
+            <div><strong>Bil. Membayar:</strong> ${series[1][dataPointIndex]}</div>
+            <div><strong>Bil. Lawatan:</strong> ${series[2][dataPointIndex]}</div>
+            <div><strong>% Lawat:</strong> ${percentLawatanData[dataPointIndex]}%</div>
+          </div>
+        `;
+      }
+    },
+
+    legend: {
+      position: 'bottom',
+      fontSize: '13px'
+    }
+  };
+};
+
+
+
 document.addEventListener('DOMContentLoaded', function () {
 	if (document.getElementById('bil-bayar-chart')) {
 		const chartOptions = getBilMembayarChartOptions(window.chartData);
@@ -403,13 +530,13 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	if (document.getElementById('lawatan-chart')) {
-		const chartOptions = getLawatanChartOptions(window.chartData);
+		const chartOptions = getCombinedChartOptions(window.chartData);
 		const chart = new ApexCharts(document.getElementById('lawatan-chart'), chartOptions);
 		chart.render();
 
 		// Re-initialize when toggling dark mode
 		document.addEventListener('dark-mode', function () {
-			chart.updateOptions(getLawatanChartOptions(window.chartData));
+			chart.updateOptions(getCombinedChartOptions(window.chartData));
 		});
 	}
 });

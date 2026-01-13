@@ -111,6 +111,16 @@ class PrestasiBulananKeseluruhan implements FromView, WithStyles
         });
     }
 
+    private function ynStyle(?string $flag): array
+    {
+        return match ($flag) {
+            'Y' => ['font' => ['bold' => true, 'color' => ['argb' => 'FF047857']]], // hijau
+            'N' => ['font' => ['bold' => true, 'color' => ['argb' => 'FFB91C1C']]], // merah
+            default => [], // kosong / null -> no style
+        };
+    }
+
+
     public function styles(Worksheet $sheet)
     {
         // Adjust column width dynamically
@@ -190,8 +200,35 @@ class PrestasiBulananKeseluruhan implements FromView, WithStyles
             ],
         ]);
 
-        // Style rows based on flags
+        $flagColumnMap = [
+            'F' => 'rm_dapat_kutip_capai_flag',
+            'J' => 'bil_dapat_kutip_capai_flag',
+            'N' => 'bil_lawat_capai_flag',
+            'S' => 'bil_kawal_npf_capai_flag',
+            'W' => 'bil_pulih_npf_capai_flag',
+        ];
+
         $startRow = 11;
+
+        if (!empty($this->groupedData) && $this->groupedData->isNotEmpty()) {
+            foreach ($this->groupedData as $stateData) {
+                foreach ($stateData as $branchData) {
+                    foreach ($branchData as $officerData) {
+
+                        $rowRecord = $officerData->first();
+
+                        foreach ($flagColumnMap as $col => $field) {
+                            $flag = $rowRecord->{$field} ?? null;
+                            $sheet->getStyle("{$col}{$startRow}")
+                                ->applyFromArray($this->ynStyle($flag));
+                        }
+
+                        $startRow++;
+                    }
+                }
+            }
+        }
+
 
         if (!empty($this->groupedData) && $this->groupedData->isNotEmpty()) {
             foreach ($this->groupedData as $stateData) {
