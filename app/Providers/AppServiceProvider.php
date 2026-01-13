@@ -110,7 +110,14 @@ class AppServiceProvider extends ServiceProvider
             } else {
                 // Simple execution without output parameters
                 $sql = "EXEC $procedureName " . implode(', ', array_fill(0, count($paramValues), '?'));
-                return $connection->select($sql, $paramValues);
+                
+                // Use statement() instead of select() for procedures that don't return results
+                try {
+                    return $connection->statement($sql, $paramValues);
+                } catch (\Exception $e) {
+                    // If statement() fails, try select() as fallback
+                    return $connection->select($sql, $paramValues);
+                }
             }
         });
     }

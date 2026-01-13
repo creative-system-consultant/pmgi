@@ -93,6 +93,7 @@ class LoadingPerakuan extends Component
 
                     // send email to PYD
                     $this->sendEmailToPyd();
+                    Log::info("PMGI: Session {$this->sessionId} berjaya lengkap, trigger SP dan email.");
                     return redirect()->route('home')->with('flash_success', 'Sesi selesai dilaksanakan.');
                 } else {
                     $this->dialog()->error(
@@ -119,6 +120,7 @@ class LoadingPerakuan extends Component
                     
                     // send email to PYD
                     $this->sendEmailToPyd();
+                    Log::info("PMGI: Session {$this->sessionId} berjaya lengkap, trigger SP dan email.");
                     return redirect()->route('home')->with('flash_success', 'Sesi selesai dilaksanakan.');
                 } else {
                     $this->dialog()->error(
@@ -128,8 +130,6 @@ class LoadingPerakuan extends Component
                 }
             }
         }
-
-        Log::info("PMGI: Session {$this->sessionId} berjaya lengkap, trigger SP dan email.");
     }
 
     public function forceRun()
@@ -218,10 +218,9 @@ class LoadingPerakuan extends Component
 
         $pmgi_description = substr($pyd_data->pmgi_level, 0, 2) == 'PM' ? 'PMGI' : (substr($pyd_data->pmgi_level, 0, 2) == 'JT' ? 'JKPI' : (substr($pyd_data->pmgi_level, 0, 2) == 'HR' ? 'HR' : 'undefined'));
 
-        $path = $this->generateImageFromHtml($pyd_data, $pmgi_description);
         $email = $pyd_data->bankOfficer?->email;
 
-        $this->sendEmail($email, $path['image'], $path['html']);
+        $this->sendEmail($email, $pyd_data, $setting, $pmgi_description);
     }
 
     private function generateImageFromHtml($data, $pmgi_type)
@@ -243,7 +242,7 @@ class LoadingPerakuan extends Component
     }
 
     // Trigger email kat sini
-    private function sendEmail($email, $imagePath, $htmlPath)
+    private function sendEmail($email, $pyd_data, $session_setting, $pmgiLevel)
     {
         // === DATA UNTUK SP EMAIL (Option 1 – guna table profile sahaja) ===
         $setting = SettPymPmc::whereSessionId($this->sessionId)->first();
@@ -254,49 +253,30 @@ class LoadingPerakuan extends Component
             ->first();
 
         if (!$data) {
-            Log::warning("PMGI: Gagal hantar email – MntrSession tak jumpa untuk PYD {$this->pydId}.");
+            Log::warning("PMGI: Gagal hantar email - MntrSession tak jumpa untuk PYD {$this->pydId}.");
             return;
         }
 
+        $timestamp = Carbon::parse(now())->format('Y-m-d');
+
         $procedureName = 'dbo.UP_PMGI_EMAIL_REM_PYD';
 
-        // $bindings = [
-        //     'email_setting_no'   => 1,  // tukar kalau nak guna setting lain
-        //     'NamaPegawai'        => $data->officer_name,
-        //     'NoKP'               => $data->nokp,
-        //     'JabatanUnit'        => $data->branch->branch_name ?? '',
-        //     'Negeri'             => $data->state->description ?? '',
-        //     // ikut contoh dalam SP, SesiPenilaian lebih kepada nama sesi (awak boleh adjust)
-        //     'SesiPenilaian'      => 'PMGi-1',
-        //     // SP expect DATE, so bagi format Y-m-d
-        //     'TarikhPenilaian'    => Carbon::parse($data->report_date)->format('Y-m-d'),
-        //     'JabatanPemantauan'  => $data->state->description ?? '',
-        // ];
-
-            $bindings = [
-        'email_setting_no'   => 1,  // tukar kalau nak guna setting lain
-        'NamaPegawai'        => 'NamaPegawai',
-        'NoKP'               => 'nokp',
-        'JabatanUnit'        => 'JabatanUnit',
-        'Negeri'             => 'Negeri',
-        // ikut contoh dalam SP, SesiPenilaian lebih kepada nama sesi (awak boleh adjust)
-        'SesiPenilaian'      => 'PMGi-1',
-        // SP expect DATE, so bagi format Y-m-d
-        'TarikhPenilaian'    => '8-12-2025',
-        'JabatanPemantauan'  => 'JabatanPemantauan',
+        $bindings = [
+            'email_setting_no'   => 101,  // tukar kalau nak guna setting lain
+            'parm_recipients'      => $email,
+            'parm_copy_recipients'  => null,
+            'parm_blind_copy_recipients'    => null,
+            'NamaPegawai'        => $pyd_data->bankOfficer->officer_name,
+            'NoKP'               => $pyd_data->bankOfficer->nokp,
+            'JabatanUnit'        => $pyd_data->branch->branch_name,
+            'Negeri'             => $pyd_data->state->description,
+            'SesiPenilaian'      => $pmgiLevel,
+            // 'TarikhPenilaian'    => Carbon::now()->toDateString(),
+            'TarikhPenilaian'    => $timestamp,
+            'JabatanPemantauan'  => 'JabatanPemantauan',
         ];
-
-
-        // === OPTION 1: Hantar guna SQL Server Database Mail, recipients ikut pmgi_ref_email_profile ===
-        DB::statement("EXEC dbo.UP_PMGI_EMAIL_REM_PYD 
-            :email_setting_no, 
-            :NamaPegawai, 
-            :NoKP, 
-            :JabatanUnit, 
-            :Negeri, 
-            :SesiPenilaian, 
-            :TarikhPenilaian, 
-            :JabatanPemantauan", $bindings);
+        
+        DB::executeProcedure($procedureName, $bindings);
 
         Log::info("PMGI: SP UP_PMGI_EMAIL_REM_PYD dipanggil untuk PYD {$data->officer_name} ({$data->nokp}).");
 
