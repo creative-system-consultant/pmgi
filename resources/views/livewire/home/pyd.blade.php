@@ -232,25 +232,7 @@
         </div>
 
         {{-- chart --}}
-        <div class="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
-            <!-- line chart -->
-            <div class="p-4 bg-white rounded-lg border border-gray-200 shadow-sm 2xl:col-span-1 sm:p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <div class="flex-shrink-0">
-                        <span class="text-xl font-bold leading-none text-gray-900 sm:text-2xl">Bil. Seliaan vs Bil. Membayar</span>
-                    </div>
-                </div>
-                @if($officerDatas->isNotEmpty())
-                <div id="bil-bayar-chart"></div>
-                @else
-                <img src="{{ asset('image/illustrations/no-data.svg') }}" alt="astronaut image">
-                @endif
-                <div class="flex flex-col mb-4"> 
-                    <div class="flex-shrink-0">
-                        <span class="text-sm text-gray-600 text-left mt-2 ">Berdasarkan rekod PS bermula dari tarikh permulaan PMG-i 1 sehingga tempoh penilaian JKPi </span>
-                    </div>
-                </div>
-            </div>
+        <div class="grid gap-4 xl:grid-cols-2 2xl:grid-cols-2">
             <!-- Bar chart -->
             <div class="p-4 bg-white rounded-lg border border-gray-200 shadow-sm sm:p-6">
                 <div class="justify-between items-center pb-4sm:flex">
@@ -273,7 +255,7 @@
             <div class="p-4 bg-white rounded-lg border border-gray-200 shadow-sm sm:p-6">
                 <div class="flex justify-between items-center pb-4 mb-4">
                     <div>
-                        <span class="text-2xl font-bold leading-none text-gray-900 sm:text-2xl">Lawatan</span>
+                        <span class="text-2xl font-bold leading-none text-gray-900 sm:text-2xl">Bil. Seliaan vs Bil. Membayar vs Bil. Lawatan</span>
                     </div>
                 </div>
                 @if($officerDatas->isNotEmpty())
@@ -362,6 +344,13 @@
                             </table>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="flex flex-col mb-4 mt-4"> 
+                <div class="flex-shrink-0">
+                    <span class="text-sm text-gray-600 text-left">
+                        Berdasarkan rekod PS bermula dari tarikh permulaan PMG-i 1 sehingga tempoh penilaian JKPi
+                    </span>
                 </div>
             </div>
         </div>
