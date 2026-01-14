@@ -271,9 +271,8 @@ class LoadingPerakuan extends Component
             'JabatanUnit'        => $pyd_data->branch->branch_name,
             'Negeri'             => $pyd_data->state->description,
             'SesiPenilaian'      => $pmgiLevel,
-            // 'TarikhPenilaian'    => Carbon::now()->toDateString(),
             'TarikhPenilaian'    => $timestamp,
-            'JabatanPemantauan'  => 'JabatanPemantauan',
+            'JabatanPemantauan'  => 'Jabatan Pemantauan dan Operasi Cawangan',
         ];
         
         DB::executeProcedure($procedureName, $bindings);

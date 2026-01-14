@@ -3,19 +3,13 @@
 namespace App\Livewire\Module\Lantikan\Evaluator;
 
 use App\Exports\EvaluatorSessionList;
-use App\Jobs\CleanupTemporaryFiles;
-use App\Jobs\SendLantikanPymPmcEmail;
-use App\Models\BahagianOperasi;
 use App\Models\BankOfficer;
-use App\Models\HrdOfficer;
 use App\Models\MntrSession;
 use App\Models\SettPymPmc;
 use App\Models\SettUalRole;
+use App\Models\SettUalUserHasRole;
 use App\Models\User;
-use App\Services\HtmlToImageService;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -25,8 +19,6 @@ use WireUi\Traits\Actions;
 abstract class BasePmgi extends Component
 {
     use Actions;
-
-    private $htmlToImageService;
 
     public $stateCode;
     public $selectedDate;
@@ -39,6 +31,7 @@ abstract class BasePmgi extends Component
     public $datas;
     public $pymSelection;
     public $pmcSelection;
+    public $pydData = [];
 
     protected function rules()
     {
@@ -63,11 +56,6 @@ abstract class BasePmgi extends Component
     }
 
     protected $listeners = ['refreshPmgi' => 'updateReportDate'];
-
-    public function __construct()
-    {
-        $this->htmlToImageService = new HtmlToImageService();
-    }
 
     public function mount($currentDate)
     {
@@ -183,27 +171,14 @@ abstract class BasePmgi extends Component
     {
         $this->validate();
 
-        $fileUrl = $this->generateExcelFile();
         $this->processSelections();
 
-        $pymImagePath = $this->generateImageFromHtml('pym');
-        $pmcImagePath = $this->selectedPmc ? $this->generateImageFromHtml('pmc') : null;
-
-        // $pymEmail = 'hafizah@tekun.gov.my'; //FAT purpose
-        $pymEmail = 'nazirul@csc.net.my'; //FAT purpose
-        // $pymEmail = $this->getPymEmailAddress();
-        $pmcEmail = 'nazirul@csc.net.my'; //FAT purpose
-        // $pmcEmail = 'hafizah@tekun.gov.my'; //FAT purpose
-        // $pmcEmail = $this->getPmcEmailAddress();
+        $pymEmail = $this->getPymEmailAddress();
+        $pmcEmail = $this->getPmcEmailAddress();
 
         $this->sendEmails(
             $pymEmail,
             $pmcEmail,
-            $fileUrl,
-            $pymImagePath['email_image_path'] ?? $pymImagePath['image'], // Use compressed version
-            $pymImagePath['html'],
-            $pmcImagePath ? ($pmcImagePath['email_image_path'] ?? $pmcImagePath['image_path']) : null, // Use compressed version
-            $pmcImagePath ? $pmcImagePath['html_path'] : null,
         );
 
         $this->resetAfterSave();
@@ -220,7 +195,9 @@ abstract class BasePmgi extends Component
     private function processSelections()
     {
         foreach ($this->selection as $pyd) {
-            $pydInfo = MntrSession::whereOfficerId($pyd)
+            $pydInfo = MntrSession::query()
+                                    ->with('bankOfficer')
+                                    ->whereOfficerId($pyd)
                                     ->whereDate('SESSION_DATE_START', $this->selectedDate)
                                     ->first();
 
@@ -235,6 +212,8 @@ abstract class BasePmgi extends Component
             } else {
                 SettPymPmc::create($data);
             }
+
+            $this->pydData[] = $pydInfo;
         }
 
         $this->giveRoles();
@@ -295,60 +274,49 @@ abstract class BasePmgi extends Component
         return $this->selectedPmc ? BankOfficer::whereOfficerId($this->selectedPmc)->value('email') : null;
     }
 
-    private function generateImageFromHtml($type)
+    private function sendEmails($pymEmail, $pmcEmail)
     {
-        $lastDate = Carbon::create($this->selectedDate->format('Y'), $this->selectedDate->format('m'), 20)->format('d-m-Y');
-        $userId = $type === 'pym' ? $this->selectedPym : $this->selectedPmc;
+        foreach ($this->pydData as $pydInfo) {
+            $pmgiLevel = substr($this->getPmgiLevel(), -1);
+            $lastDate = Carbon::now()->day(25)->format('Y-m-d');
 
-        return $this->htmlToImageService->generate(
-            'emails.lantikan_pym_pmc',
-            [
-                'type' => $type,
-                'session' => substr($this->getPmgiLevel(), -1),
-                'lastDate' => $lastDate,
-            ],
-            'emails/lantikan_pym_pmc/',
-            "email_content_{$type}_{$userId}"
-        );
+            $procedureName = 'dbo.UP_PMGI_EMAIL_APT_PYMPMC';
+
+            // Send to PYM
+            if ($pymEmail) {
+                $this->dispatchEmail($procedureName, [
+                    'email_setting_no'              => 101,
+                    'parm_receipients'              => $pymEmail,
+                    'parm_copy_recipients'          => null,
+                    'parm_blind_copy_recipients'    => null,
+                    'JenisPegawai'                  => 'Pegawai Yang Menilai',
+                    'SesiPMGi'                      => $pmgiLevel,
+                    'PC_PP'                         => $pydInfo->bankOfficer->officer_name,
+                    'TarikhPelaksanaan'             => $lastDate,
+                    'PengurusNegeri_JPOC'           => 'Jabatan Pemantauan dan Operasi Cawangan',
+                ]);
+            }
+
+            // Send to PMC
+            if ($pmcEmail) {
+                $this->dispatchEmail($procedureName, [
+                    'email_setting_no'              => 101,
+                    'parm_receipients'              => $pmcEmail,
+                    'parm_copy_recipients'          => null,
+                    'parm_blind_copy_recipients'    => null,
+                    'JenisPegawai'                  => 'Pegawai Mudah Cara',
+                    'SesiPMGi'                      => $pmgiLevel,
+                    'PC_PP'                         => $pydInfo->bankOfficer->officer_name,
+                    'TarikhPelaksanaan'             => $lastDate,
+                    'PengurusNegeri_JPOC'           => 'Jabatan Pemantauan dan Operasi Cawangan',
+                ]);
+            }
+        }
     }
 
-    private function sendEmails($pymEmail, $pmcEmail, $fileUrl, $pymImagePath, $pymHtmlPath, $pmcImagePath, $pmcHtmlPath)
+    public function dispatchEmail($procedureName, $bindings)
     {
-        $jobs = [];
-
-        if ($pymEmail && $pymImagePath) {
-            $jobs[] = new SendLantikanPymPmcEmail($pymEmail, $pmcEmail, $fileUrl, 'pym', $pymImagePath, $pymHtmlPath);
-        }
-
-        if ($pmcEmail && $pmcImagePath) {
-            $jobs[] = new SendLantikanPymPmcEmail($pymEmail, $pmcEmail, $fileUrl, 'pmc', $pmcImagePath, $pmcHtmlPath);
-        }
-
-        // Chain the cleanup job after the email jobs
-        // Include both original and compressed image paths for cleanup
-        $imagePaths = [];
-        if ($pymImagePath) {
-            $imagePaths[] = $pymImagePath;
-            // Also add original PNG if we used compressed version
-            $originalPng = str_replace('_email.jpg', '.png', $pymImagePath);
-            if (file_exists($originalPng) && $originalPng !== $pymImagePath) {
-                $imagePaths[] = $originalPng;
-            }
-        }
-        if ($pmcImagePath) {
-            $imagePaths[] = $pmcImagePath;
-            // Also add original PNG if we used compressed version
-            $originalPng = str_replace('_email.jpg', '.png', $pmcImagePath);
-            if (file_exists($originalPng) && $originalPng !== $pmcImagePath) {
-                $imagePaths[] = $originalPng;
-            }
-        }
-        
-        $htmlPaths = array_filter([$pymHtmlPath, $pmcHtmlPath]); // Remove null values
-        $jobs[] = new CleanupTemporaryFiles($imagePaths, $htmlPaths, $fileUrl);
-
-        // Dispatch the jobs as a chain
-        Bus::chain($jobs)->dispatch();
+        DB::executeProcedure($procedureName, $bindings);
     }
 
     private function resetAfterSave()
