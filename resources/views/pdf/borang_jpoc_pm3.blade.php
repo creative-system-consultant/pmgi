@@ -43,7 +43,7 @@
 <body>
     <!--------------------------------------------------------------- page 1 ----------------------------------------------------------------------------->    
     <div class="centered">
-        <img src="image/borang/jpoc/BorangJpocPmgi3-1.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
+        <img src="image/borang/jpoc/Borang_JPOC_09_Page_1.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
 
         <div class="content-overlay">
             {{-- pmgi level --}}
@@ -212,9 +212,20 @@
         </div>
     </div>
     <div class="page_break"></div>
-    <!--------------------------------------------------------------- page 2 ----------------------------------------------------------------------------->    
+        <!--------------------------------------------------------------- page 2 ----------------------------------------------------------------------------->    
     <div class="centered">
-        <img src="image/borang/jpoc/BorangJpocPmgi12-2.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
+        <img src="image/borang/jpoc/Borang_JPOC_09_Page_2.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
+        <div class="content-overlay">
+            {{-- NAMA PMC --}}
+            <div class="input-container" style="top: 85px; left: 270px;">
+                <strong>{{ $bankOfficerPmc->officer_name . ' (' . $bankOfficerPmc->staffno . ')' }}</strong>
+            </div>
+        </div>
+    </div>
+    <div class="page_break"></div>
+    <!--------------------------------------------------------------- page 3 ----------------------------------------------------------------------------->    
+    <div class="centered">
+        <img src="image/borang/jpoc/Borang_JPOC_09_Page_3.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
         <div class="content-overlay">
             {{-- nama --}}
             <div class="input-container" style="top: 129px; left: 190px;">
@@ -242,9 +253,9 @@
         </div>
     </div>
     <div class="page_break"></div>
-    <!--------------------------------------------------------------- page 3 ----------------------------------------------------------------------------->    
+    <!--------------------------------------------------------------- page 4 ----------------------------------------------------------------------------->    
     <div class="centered">
-        <img src="image/borang/jpoc/BorangJpocPmgi12-3.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
+        <img src="image/borang/jpoc/Borang_JPOC_09_Page_4.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
         <div class="content-overlay">
             {{-- masalah dihadapi --}}
             <div class="input-container" style="top: 190px; left: 100px;">
@@ -252,12 +263,12 @@
             </div>
 
             {{-- punca --}}
-            <div class="input-container" style="top: 360px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
+            <div class="input-container" style="top: 400px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
                 <strong>{{ $pydInfo->reason }}</strong>
             </div>
 
             {{-- pelan tindakan --}}
-            <div class="input-container" style="top: 550px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
+            <div class="input-container" style="top: 650px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
                 <strong>{{ $pydInfo->action }}</strong>
             </div>
 
@@ -273,9 +284,9 @@
         </div>
     </div>
     <div class="page_break"></div>
-    <!--------------------------------------------------------------- page 4 ----------------------------------------------------------------------------->    
+    <!--------------------------------------------------------------- page 5 ----------------------------------------------------------------------------->    
     <div class="centered">
-        <img src="image/borang/jpoc/BorangJpocPmgi12-4.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
+        <img src="image/borang/jpoc/Borang_JPOC_09_Page_5.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
         <div class="content-overlay">
             {{-- pelan tindakan --}}
             <div class="input-container" style="top: 190px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
@@ -296,9 +307,9 @@
     </div>
     <div class="page_break"></div>
 
-    <!--------------------------------------------------------------- page 5 ----------------------------------------------------------------------------->    
+    <!--------------------------------------------------------------- page 6 ----------------------------------------------------------------------------->    
     <div class="centered">
-        <img src="image/borang/jpoc/BorangJpocPmgi3-5.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
+        <img src="image/borang/jpoc/Borang_JPOC_09_Page_6.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
         <div class="content-overlay">
             {{-- adil flag --}}
             @if($pmcInfo->fair_flag == 1)
@@ -340,22 +351,22 @@
     </div>
     <div class="page_break"></div>
 
-    <!--------------------------------------------------------------- page 6 ----------------------------------------------------------------------------->    
+    <!--------------------------------------------------------------- page 7 ----------------------------------------------------------------------------->    
     <div class="centered">
-        <img src="image/borang/jpoc/BorangJpocPmgi3-6.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
+        <img src="image/borang/jpoc/Borang_JPOC_09_Page_7.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
         <div class="content-overlay">
             {{-- nama --}}
-            <div class="input-container" style="top: 118px; left: 110px; font-size: 11px;">
+            <div class="input-container" style="top: 118px; left: 130px; font-size: 11px;">
                 <strong>{{ $bankOfficerPyd->officer_name }}</strong>
             </div>
 
             {{-- ic --}}
-            <div class="input-container" style="top: 118px; left: 560px; font-size: 11px;">
+            <div class="input-container" style="top: 118px; left: 520px; font-size: 11px;">
                 <strong>{{ substr($bankOfficerPyd->nokp, 0, 6) . '-' . substr($bankOfficerPyd->nokp, 6, 2) . '-' . substr($bankOfficerPyd->nokp, 8, 4) }}</strong>
             </div>
 
             {{-- staff no --}}
-            <div class="input-container" style="top: 140px; left: 240px; font-size: 11px;">
+            <div class="input-container" style="top: 140px; left: 200px; font-size: 11px;">
                 <strong>{{ $bankOfficerPyd->staffno }}</strong>
             </div>
 
@@ -365,12 +376,12 @@
             </div>
 
             {{-- from --}}
-            <div class="input-container" style="top: 205px; left: 440px; font-size: 11px;">
+            <div class="input-container" style="top: 208px; left: 430px; font-size: 11px;">
                 <strong>{{ $from }}</strong>
             </div>
 
             {{-- to --}}
-            <div class="input-container" style="top: 230px; left: 110px; font-size: 11px;">
+            <div class="input-container" style="top: 229px; left: 80px; font-size: 11px;">
                 <strong>{{ $to }}</strong>
             </div>
 
@@ -384,22 +395,22 @@
                 }
             @endphp
 
-            <div class="input-container" style="top: 445px; left: 145px; font-size: 11px;">
+            <div class="input-container" style="top: 425px; left: 145px; font-size: 11px;">
                 <strong>{!! $pydName !!}</strong>
             </div>
 
             {{-- ic pyd--}}
-            <div class="input-container" style="top: 445px; left: 450px; font-size: 11px;">
+            <div class="input-container" style="top: 425px; left: 450px; font-size: 11px;">
                 <strong>{{ substr($bankOfficerPyd->nokp, 0, 6) . '-' . substr($bankOfficerPyd->nokp, 6, 2) . '-' . substr($bankOfficerPyd->nokp, 8, 4) }}</strong>
             </div>
 
             {{-- tarikh perakuan pyd--}}
-            <div class="input-container" style="top: 473px; left: 145px; font-size: 11px;">
+            <div class="input-container" style="top: 451px; left: 145px; font-size: 11px;">
                 <strong>{{ $pydInfo->date_signed->format('d/m/Y H:i:s A') }}</strong>
             </div>
 
             {{-- userid pyd--}}
-            <div class="input-container" style="top: 473px; left: 450px; font-size: 11px;">
+            <div class="input-container" style="top: 451px; left: 450px; font-size: 11px;">
                 <strong>{{ $settInfo->pyd_id }}</strong>
             </div>
 
@@ -413,49 +424,43 @@
                 }
             @endphp
 
-            <div class="input-container" style="top: 540px; left: 145px; font-size: 11px;">
+            <div class="input-container" style="top: 518px; left: 145px; font-size: 11px;">
                 <strong>{!! $pymName !!}</strong>
             </div>
 
             {{-- ic pym--}}
-            <div class="input-container" style="top: 540px; left: 450px; font-size: 11px;">
+            <div class="input-container" style="top: 518px; left: 450px; font-size: 11px;">
                 <strong>{{ substr($bankOfficerPym->nokp, 0, 6) . '-' . substr($bankOfficerPym->nokp, 6, 2) . '-' . substr($bankOfficerPym->nokp, 8, 4) }}</strong>
             </div>
 
             {{-- tarikh perakuan pym--}}
-            <div class="input-container" style="top: 568px; left: 145px; font-size: 11px;">
+            <div class="input-container" style="top: 546px; left: 145px; font-size: 11px;">
                 <strong>{{ $pymInfo->date_signed->format('d/m/Y H:i:s A') }}</strong>
             </div>
 
             {{-- userid pym--}}
-            <div class="input-container" style="top: 568px; left: 450px; font-size: 11px;">
+            <div class="input-container" style="top: 546px; left: 450px; font-size: 11px;">
                 <strong>{{ $settInfo->pym_id }}</strong>
             </div>
 
             {{-- keputusan PMC--}}
-            <div class="input-container" style="top: 633px; left: 170px; font-size: 11px;">
+            <div class="input-container" style="top: 613px; left: 170px; font-size: 11px;">
                 <strong>{{ $pmcInfo->exit_flag == 1 ? 'PENILAIAN SEMULA' : 'TANPA PENILAIAN SEMULA' }}</strong>
             </div>
 
-            
-            {{--buang kategori penangguhan--}}
-            <div style="position: absolute; top: 658px; left: 75px; width: 180px; height: 15px; background-color: white;"></div>           
-
             {{--kategori--}}
-            <div style="position: absolute; top: 676px; left: 128px; width: 70px; height: 12.5px; background-color: white;"></div>
-            <div class="input-container" style="top: 690px; left: 83px; font-size: 10px;">
+            <div class="input-container" style="top: 670px; left: 83px; font-size: 10px;">
                 <strong>{{ 
-                    $pmcInfo->exit_type_flag == 1 ? 'Tanpa Syarat' : 
-                    ($pmcInfo->exit_type_flag == 2 ? 'Bersyarat (a)' :
-                    ($pmcInfo->exit_type_flag == 3 ? 'Bersyarat (b)' : ''))
+                    $pmcInfo->exit_type_flag == 1 ? 'Kembali ke PMG-i (1)' : 
+                    ($pmcInfo->exit_type_flag == 2 ? 'Kembali ke PMG-i (2)' :
+                    ($pmcInfo->exit_type_flag == 3 ? 'Kekal di PMG-i (3)' : ''))
                 }}</strong>
             </div>
 
             {{--tindakan--}}
-            <div style="position: absolute; top: 676px; left: 295px; width: 40px; height: 11px; background-color: white;"></div>
-            <div class="input-container" style="top: 690px; left: 247px; font-size: 10px;">
+            <div class="input-container" style="top: 670px; left: 247px; font-size: 10px;">
                 <strong>{{ 
-                    $pmcInfo->exit_type_flag == 1 ? 'Proses penilaian dikembalikan kepada asal.' : 
+                    $pmcInfo->exit_type_flag == 1 ? 'Proses penilaian dikembalikan kepada peringkat PMG-i (1)' : 
                     ($pmcInfo->exit_type_flag == 2 ? 'Proses penilaian dikembalikan kepada peringkat PMG-i (2).' :
                     ($pmcInfo->exit_type_flag == 3 ? 'Proses penilaian dikekalkan diperingkat PMG-i (3).' : ''))
                 }}</strong>
@@ -471,22 +476,22 @@
                 }
             @endphp
 
-            <div class="input-container" style="top: 716px; left: 145px; font-size: 11px;">
+            <div class="input-container" style="top: 696px; left: 145px; font-size: 11px;">
                 <strong>{!! $pmcName !!}</strong>
             </div>
 
             {{-- ic pmc--}}
-            <div class="input-container" style="top: 716px; left: 450px; font-size: 11px;">
+            <div class="input-container" style="top: 696px; left: 450px; font-size: 11px;">
                 <strong>{{ substr($bankOfficerPmc->nokp, 0, 6) . '-' . substr($bankOfficerPmc->nokp, 6, 2) . '-' . substr($bankOfficerPmc->nokp, 8, 4) }}</strong>
             </div>
 
             {{-- tarikh perakuan pmc--}}
-            <div class="input-container" style="top: 744px; left: 145px; font-size: 11px;">
+            <div class="input-container" style="top: 724px; left: 145px; font-size: 11px;">
                 <strong>{{ $pmcInfo->date_signed->format('d/m/Y H:i:s A') }}</strong>
             </div>
 
             {{-- userid pmc--}}
-            <div class="input-container" style="top: 744px; left: 450px; font-size: 11px;">
+            <div class="input-container" style="top: 724px; left: 450px; font-size: 11px;">
                 <strong>{{ $settInfo->pmc_id }}</strong>
             </div>
         </div>
