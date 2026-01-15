@@ -43,7 +43,7 @@
 <body>
     <!--------------------------------------------------------------- page 1 ----------------------------------------------------------------------------->    
     <div class="centered">
-        <img src="image/borang/jpoc/Borang_JPOC_09_Page_1.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
+        <img src="image/borang/jpoc/jpoc_pmgi_page_1_v2.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
 
         <div class="content-overlay">
             {{-- pmgi level --}}
@@ -201,23 +201,12 @@
             </div>
 
             {{-- pym --}}
-            <div class="input-container" style="top: 785px; left: 270px;">
+            <div class="input-container" style="top: 770px; left: 270px;">
                 <strong>{{ $bankOfficerPym->officer_name . ' (' . $bankOfficerPym->staffno . ')' }}</strong>
             </div>
 
             {{-- pmc --}}
-            <div class="input-container" style="top: 812px; left: 270px;">
-                <strong>{{ $bankOfficerPmc->officer_name . ' (' . $bankOfficerPmc->staffno . ')' }}</strong>
-            </div>
-        </div>
-    </div>
-    <div class="page_break"></div>
-        <!--------------------------------------------------------------- page 2 ----------------------------------------------------------------------------->    
-    <div class="centered">
-        <img src="image/borang/jpoc/Borang_JPOC_09_Page_2.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
-        <div class="content-overlay">
-            {{-- NAMA PMC --}}
-            <div class="input-container" style="top: 85px; left: 270px;">
+            <div class="input-container" style="top: 798px; left: 270px;">
                 <strong>{{ $bankOfficerPmc->officer_name . ' (' . $bankOfficerPmc->staffno . ')' }}</strong>
             </div>
         </div>
@@ -268,17 +257,17 @@
             </div>
 
             {{-- pelan tindakan --}}
-            <div class="input-container" style="top: 650px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
+            <div class="input-container" style="top: 605px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
                 <strong>{{ $pydInfo->action }}</strong>
             </div>
 
             {{-- kepala ulasan --}}
-            <div class="input-container" style="top: 600px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
+            <div class="input-container" style="top: 690px; left: 83px; width: 500px; word-wrap: break-word; white-space: normal;">
                 <strong>Ulasan (Jika Ada) : </strong>
             </div> 
 
             {{-- ulasan --}}
-            <div class="input-container" style="top: 660px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
+            <div class="input-container" style="top: 610px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
                 <strong>{{ $pydInfo->comments }}</strong>
             </div> 
         </div>
@@ -356,22 +345,22 @@
         <img src="image/borang/jpoc/Borang_JPOC_09_Page_7.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
         <div class="content-overlay">
             {{-- nama --}}
-            <div class="input-container" style="top: 118px; left: 130px; font-size: 11px;">
+            <div class="input-container" style="top: 118px; left: 110px; font-size: 11px;">
                 <strong>{{ $bankOfficerPyd->officer_name }}</strong>
             </div>
 
             {{-- ic --}}
-            <div class="input-container" style="top: 118px; left: 520px; font-size: 11px;">
+            <div class="input-container" style="top: 118px; left: 560px; font-size: 11px;">
                 <strong>{{ substr($bankOfficerPyd->nokp, 0, 6) . '-' . substr($bankOfficerPyd->nokp, 6, 2) . '-' . substr($bankOfficerPyd->nokp, 8, 4) }}</strong>
             </div>
 
             {{-- staff no --}}
-            <div class="input-container" style="top: 140px; left: 200px; font-size: 11px;">
+            <div class="input-container" style="top: 140px; left: 170px; font-size: 11px;">
                 <strong>{{ $bankOfficerPyd->staffno }}</strong>
             </div>
 
             {{-- branch --}}
-            <div class="input-container" style="top: 140px; left: 455px; font-size: 11px;">
+            <div class="input-container" style="top: 120px; left: 420px; font-size: 11px;">
                 <strong>{{ $branch }}</strong>
             </div>
 
