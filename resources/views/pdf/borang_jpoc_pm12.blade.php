@@ -43,7 +43,7 @@
 <body>
     <!--------------------------------------------------------------- page 1 ----------------------------------------------------------------------------->    
     <div class="centered">
-        <img src="image/borang/jpoc/BorangJpocPmgi12-1.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
+        <img src="image/borang/jpoc/jpoc_pmgi_page_1.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
 
         <div class="content-overlay">
             {{-- pmgi level --}}
@@ -210,7 +210,7 @@
     <div class="page_break"></div>
     <!--------------------------------------------------------------- page 2 ----------------------------------------------------------------------------->    
     <div class="centered">
-        <img src="image/borang/jpoc/BorangJpocPmgi12-2.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
+        <img src="image/borang/jpoc/jpoc_pmgi_page_2.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
         <div class="content-overlay">
             {{-- nama --}}
             <div class="input-container" style="top: 129px; left: 190px;">
@@ -240,7 +240,7 @@
     <div class="page_break"></div>
     <!--------------------------------------------------------------- page 3 ----------------------------------------------------------------------------->    
     <div class="centered">
-        <img src="image/borang/jpoc/BorangJpocPmgi12-3.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
+        <img src="image/borang/jpoc/jpoc_pmgi_page_3.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
         <div class="content-overlay">
             {{-- masalah dihadapi --}}
             <div class="input-container" style="top: 190px; left: 100px;">
@@ -248,22 +248,22 @@
             </div>
 
             {{-- punca --}}
-            <div class="input-container" style="top: 360px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
+            <div class="input-container" style="top: 400px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
                 <strong>{{ $pydInfo->reason }}</strong>
             </div>
 
             {{-- pelan tindakan --}}
-            <div class="input-container" style="top: 550px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
+            <div class="input-container" style="top: 605px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
                 <strong>{{ $pydInfo->action }}</strong>
             </div>
 
             {{-- kepala ulasan --}}
-            <div class="input-container" style="top: 600px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
+            <div class="input-container" style="top: 690px; left: 83px; width: 500px; word-wrap: break-word; white-space: normal;">
                 <strong>Ulasan (Jika Ada) : </strong>
             </div> 
 
             {{-- ulasan --}}
-            <div class="input-container" style="top: 660px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
+            <div class="input-container" style="top: 710px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
                 <strong>{{ $pydInfo->comments }}</strong>
             </div> 
         </div>
@@ -271,7 +271,7 @@
     <div class="page_break"></div>
     <!--------------------------------------------------------------- page 4 ----------------------------------------------------------------------------->    
     <div class="centered">
-        <img src="image/borang/jpoc/BorangJpocPmgi12-4.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
+        <img src="image/borang/jpoc/jpoc_pmgi_page_4.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
         <div class="content-overlay">
             {{-- pelan tindakan --}}
             <div class="input-container" style="top: 190px; left: 100px; width: 500px; word-wrap: break-word; white-space: normal;">
@@ -293,7 +293,7 @@
 
     <!--------------------------------------------------------------- page 5 ----------------------------------------------------------------------------->    
     <div class="centered">
-        <img src="image/borang/jpoc/BorangJpocPmgi12-5.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
+        <img src="image/borang/jpoc/jpoc_pmgi_page_5.jpg" alt="BORANG JPoc PMGi 12" style="margin-top: 200px" width="700" height="900">
         <div class="content-overlay">
             {{-- nama --}}
             <div class="input-container" style="top: 118px; left: 110px; font-size: 11px;">
@@ -316,12 +316,12 @@
             </div>
 
             {{-- from --}}
-            <div class="input-container" style="top: 205px; left: 440px; font-size: 11px;">
+            <div class="input-container" style="top: 208px; left: 430px; font-size: 11px;">
                 <strong>{{ $from }}</strong>
             </div>
 
             {{-- to --}}
-            <div class="input-container" style="top: 230px; left: 110px; font-size: 11px;">
+            <div class="input-container" style="top: 229px; left: 80px; font-size: 11px;">
                 <strong>{{ $to }}</strong>
             </div>
 
@@ -335,22 +335,22 @@
                 }
             @endphp
 
-            <div class="input-container" style="top: 445px; left: 145px; font-size: 11px;">
+            <div class="input-container" style="top: 425px; left: 145px; font-size: 11px;">
                 <strong>{!! $pydName !!}</strong>
             </div>
 
             {{-- ic pyd--}}
-            <div class="input-container" style="top: 445px; left: 450px; font-size: 11px;">
+            <div class="input-container" style="top: 425px; left: 450px; font-size: 11px;">
                 <strong>{{ substr($bankOfficerPyd->nokp, 0, 6) . '-' . substr($bankOfficerPyd->nokp, 6, 2) . '-' . substr($bankOfficerPyd->nokp, 8, 4) }}</strong>
             </div>
 
             {{-- tarikh perakuan pyd--}}
-            <div class="input-container" style="top: 473px; left: 145px; font-size: 11px;">
+            <div class="input-container" style="top: 451px; left: 145px; font-size: 11px;">
                 <strong>{{ $pydInfo->date_signed->format('d/m/Y H:i:s A') }}</strong>
             </div>
 
             {{-- userid pyd--}}
-            <div class="input-container" style="top: 473px; left: 450px; font-size: 11px;">
+            <div class="input-container" style="top: 451px; left: 450px; font-size: 11px;">
                 <strong>{{ $settInfo->pyd_id }}</strong>
             </div>
 
@@ -364,22 +364,22 @@
                 }
             @endphp
 
-            <div class="input-container" style="top: 540px; left: 145px; font-size: 11px;">
+            <div class="input-container" style="top: 518px; left: 145px; font-size: 11px;">
                 <strong>{!! $pymName !!}</strong>
             </div>
 
             {{-- ic pym--}}
-            <div class="input-container" style="top: 540px; left: 450px; font-size: 11px;">
+            <div class="input-container" style="top: 518px; left: 450px; font-size: 11px;">
                 <strong>{{ substr($bankOfficerPym->nokp, 0, 6) . '-' . substr($bankOfficerPym->nokp, 6, 2) . '-' . substr($bankOfficerPym->nokp, 8, 4) }}</strong>
             </div>
 
             {{-- tarikh perakuan pym--}}
-            <div class="input-container" style="top: 568px; left: 145px; font-size: 11px;">
+            <div class="input-container" style="top: 546px; left: 145px; font-size: 11px;">
                 <strong>{{ $pymInfo->date_signed->format('d/m/Y H:i:s A') }}</strong>
             </div>
 
             {{-- userid pym--}}
-            <div class="input-container" style="top: 568px; left: 450px; font-size: 11px;">
+            <div class="input-container" style="top: 546px; left: 450px; font-size: 11px;">
                 <strong>{{ $settInfo->pym_id }}</strong>
             </div>
         </div>
