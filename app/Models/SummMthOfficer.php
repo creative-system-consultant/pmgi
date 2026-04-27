@@ -27,4 +27,9 @@ class SummMthOfficer extends Model
     {
         return $this->hasOne(Branch::class, 'branch_code', 'officer_branch_code');
     }
+
+    public function fmsBankOfficers()
+    {
+        return $this->hasOne(BankOfficer::class, 'officer_id', 'officer_id');
+    }
 }

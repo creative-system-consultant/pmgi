@@ -40,7 +40,7 @@
                                             @elseif ($records->first()->incl_pmgi_flag == 'G')
                                                 <p class="text-xs text-red-600">PINDAH KE {{ $records->first()->officerBranch->branch_name }}</p>
                                             @else
-                                                <p class="text-xs text-gray-600">{{ $records->first()->officer_position }}</p>
+                                            <p class="text-xs text-gray-600">{{ filled($records->first()->fmsBankOfficers?->hr_officer_position) ? $records->first()->fmsBankOfficers?->hr_officer_position : $records->first()->officer_position }}</p>
                                             @endif
                                         @endif
                                     </th>

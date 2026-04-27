@@ -70,7 +70,7 @@
                                             @elseif ($record->incl_pmgi_flag == 'G')
                                             <p class="text-xs text-red-600">PINDAH KE {{ $record->officerBranch->branch_name }}</p>
                                             @else
-                                            <p class="text-xs text-gray-600">{{ $record->officer_position }}</p>
+                                            <p class="text-xs text-gray-600">{{ filled($record->fmsBankOfficers?->hr_officer_position) ? $record->fmsBankOfficers?->hr_officer_position : $record->officer_position }}</p>
                                             @endif
                                             @endif
                                         </th>

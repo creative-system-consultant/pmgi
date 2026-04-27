@@ -46,7 +46,7 @@ class Keseluruhan extends Component
 
     private function getAdminData(): Collection
     {
-        $query = SummMthOfficer::with(['branch', 'officerBranch'])
+        $query = SummMthOfficer::with(['branch', 'officerBranch', 'fmsBankOfficers'])
             ->whereDate('report_date', $this->reportDate->copy()->endOfMonth()->format('Y-m-d'));
 
         if ($this->state != '%') {

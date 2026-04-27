@@ -50,7 +50,7 @@ class Ringkasan extends Component
 
     private function getAdminData(): Collection
     {
-        $query = SummMthOfficer::with(['branch', 'officerBranch'])
+        $query = SummMthOfficer::with(['branch', 'officerBranch', 'fmsBankOfficers'])
                                 ->whereBetween('report_date', [$this->reportDate->copy()->subMonthNoOverflow()->startOfMonth(), $this->reportDate->copy()->endOfMonth()]);
 
         if ($this->state != '%') {
