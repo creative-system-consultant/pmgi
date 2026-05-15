@@ -22,43 +22,43 @@ class CheckUserRole
     {
         if (Auth::check()) {
             $user = Auth::user();
+            $user->loadMissing('roles');
+            $userRoleIds = $user->roles->pluck('id')->toArray();
 
-            if ($user->roles()->count() === 0) {
-                $pydRoleId = SettUalRole::where('name', 'PYD')->value('id');
+            $roleIdsByName = SettUalRole::whereIn('name', ['PYD', 'PYM', 'PMC'])
+                ->pluck('id', 'name');
+            $pydRoleId = $roleIdsByName->get('PYD');
+            $pymRoleId = $roleIdsByName->get('PYM');
+            $pmcRoleId = $roleIdsByName->get('PMC');
+
+            if (empty($userRoleIds)) {
                 if ($pydRoleId) {
                     $user->roles()->attach($pydRoleId);
                     $user->load('roles'); // Reload the roles relationship
+                    $userRoleIds = $user->roles->pluck('id')->toArray();
                 }
             }
 
-            // Check if the user has both PYD and either PYM or PMC roles; remove PYD
-            $pydRoleId = SettUalRole::where('name', 'PYD')->value('id');
-            $pymRoleId = SettUalRole::where('name', 'PYM')->value('id');
-            $pmcRoleId = SettUalRole::where('name', 'PMC')->value('id');
-
-            $userRoleIds = $user->roles->pluck('id');
-
-            if ($userRoleIds->contains($pydRoleId)) {
+            if (in_array($pydRoleId, $userRoleIds, true)) {
                 // Check if the user also has PYM or PMC roles
-                if ($userRoleIds->contains($pymRoleId) || $userRoleIds->contains($pmcRoleId)) {
+                if (in_array($pymRoleId, $userRoleIds, true) || in_array($pmcRoleId, $userRoleIds, true)) {
                     // Detach the PYD role and keep the others
                     $user->roles()->detach($pydRoleId);
                     $user->load('roles'); // Reload the roles relationship
+                    $userRoleIds = $user->roles->pluck('id')->toArray();
                 }
             }
 
             // Refresh the access pages and roles stored in the session
             $accessPages = SettUalPage::select('key')
-                ->whereIn('id', SettUalRoleHasPage::whereIn('role_id', $user->roles()->pluck('role_id'))
+                ->whereIn('id', SettUalRoleHasPage::whereIn('role_id', $userRoleIds)
                                 ->pluck('page_id'))
                 ->pluck('key')
                 ->toArray();
 
-            $userRoles = $user->roles()->pluck('role_id')->toArray();
-
             // Store the updated access pages and roles in the session
             Session::put('user_access_pages', $accessPages);
-            Session::put('user_roles', $userRoles);
+            Session::put('user_roles', $userRoleIds);
         }
 
         return $next($request);

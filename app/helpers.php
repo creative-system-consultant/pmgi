@@ -5,6 +5,7 @@ use App\Models\SettUalPage;
 use App\Models\SettUalRole;
 use App\Models\SettUalRoleHasPage;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 if (!function_exists('hasAccess')) {
     function hasAccess($pageKey)
@@ -21,16 +22,56 @@ if (!function_exists('hasRoles')) {
     function hasRoles($roles)
     {
         // Get user roles from session
-        $userRoles = session('user_roles', []);
+        $userRoleIds = session('user_roles', []);
+        if (empty($userRoleIds)) {
+            return false;
+        }
 
         // Convert roles to an array if it's not already
         $roles = is_array($roles) ? $roles : [$roles];
 
-        // Get role IDs for the specified role names or IDs
-        $roleIds = SettUalRole::whereIn('name', $roles)->pluck('id')->toArray();
+        // Cache role mapping so helper doesn't query every call
+        $roleMap = Cache::remember('role_name_id_map', now()->addHours(12), function () {
+            return \App\Models\SettUalRole::pluck('id', 'name')->toArray();
+        });
+
+        static $resolvedRoleIdsMemo = [];
+        $memoKey = implode('|', $roles);
+
+        if (!array_key_exists($memoKey, $resolvedRoleIdsMemo)) {
+            $resolvedRoleIdsMemo[$memoKey] = collect($roles)
+                ->map(function ($role) use ($roleMap) {
+                    if (is_numeric($role)) {
+                        return (int) $role;
+                    }
+
+                    return $roleMap[$role] ?? null;
+                })
+                ->filter()
+                ->values()
+                ->all();
+        }
 
         // Check if any of the specified roles match the user's roles
-        return !empty(array_intersect($userRoles, $roleIds));
+        return !empty(array_intersect($userRoleIds, $resolvedRoleIdsMemo[$memoKey]));
+    }
+}
+
+if (!function_exists('reportUserRole')) {
+    function reportUserRole(): string
+    {
+        return hasRoles(['URUSETIA HQ', 'ADMINISTRATOR', 'JSM'])
+            ? 'admin'
+            : 'user';
+    }
+}
+
+if (!function_exists('reportView')) {
+    function reportView(): string
+    {
+        return !hasRoles(['PYD', 'PYM', 'PMC'])
+            ? 'admin'
+            : 'user';
     }
 }
 

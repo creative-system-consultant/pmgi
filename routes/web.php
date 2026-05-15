@@ -54,9 +54,13 @@ use App\Livewire\Admin\Maintenance\pmgiRefpmgiPeriod;
 use App\Livewire\Admin\Maintenance\pmgiRefpmgiResult;
 use App\Livewire\Admin\Maintenance\SoalanLazim;
 use App\Livewire\Admin\Report\JKPiCompletedOfficerByLevel;
+use App\Livewire\Admin\Report\PerincianStatusPmgiPegawai;
 use App\Livewire\Admin\Report\PmgiFMSBankOfficers;
 use App\Livewire\Admin\Report\PmgiHrdOfficer;
 use App\Livewire\Admin\Report\PmgiSysMsgLog;
+use App\Livewire\Admin\Report\RingkasanBilPyd;
+use App\Livewire\Admin\Report\RingkasanPmgiBatchNegeriCawangan;
+use App\Livewire\Admin\Report\RingkasanPrestasiPYD;
 use App\Livewire\Module\Lantikan\Evaluator\Index as EvaluatorIndex;
 use App\Livewire\Module\Tetapan\OfficerInfo\Index as OfficerInfoIndex;
 use App\Livewire\Module\Lantikan\StateCommittee\Index as StateCommitteeIndex;
@@ -196,6 +200,10 @@ Route::middleware(['check.sysAvailable'])->group(function () {
                 Route::get('/fms-bank-officer', PmgiFMSBankOfficers::class)->name('fms_bank_officer');         
                 Route::get('/fms-hrd-officer', PmgiHrdOfficer::class)->name('fms_hrd_officer');         
                 Route::get('/senarai-pengawai-JKPi', JKPiCompletedOfficerByLevel::class)->name('senarai_pengawai_JKPi');         
+                Route::get('/ringkasan-peringkat-PMGi', RingkasanPmgiBatchNegeriCawangan::class)->name('ringkasan_peringkat_PMGi');
+                Route::get('/ringkasan-bil-PYD', RingkasanBilPyd::class)->name('ringkasan_bil_PYD');
+                Route::get('/perincian-status-PMGi', PerincianStatusPmgiPegawai::class)->name('perincian_status');
+                Route::get('/ringkasan-prestasi-PYD', RingkasanPrestasiPYD::class)->name('ringkasan_prestasi_PYD');
             });        
         });
 

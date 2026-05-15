@@ -136,7 +136,7 @@
                 <td class="py-2 px-4 text-left border border-gray-300 dark:border-gray-700">
                     {{ $item->report_date ? date('d/m/Y', strtotime($item->report_date)) : '' }}
                 </td> 
-                <td class="py-2 px-4 text-left border border-gray-300 dark:border-gray-700">{{ $item->result->pmgi_result_desc }}</td>           
+                <td class="py-2 px-4 text-left border border-gray-300 dark:border-gray-700">{{ $item->result?->pmgi_result_desc }}</td>           
               </tr>
             @empty
               <tr>

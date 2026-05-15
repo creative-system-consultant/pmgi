@@ -9,6 +9,9 @@
                 </a>
 
                 @auth
+                    @php
+                        $isAdministrator = hasRoles('ADMINISTRATOR');
+                    @endphp
                     <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1">
                         <ul class="flex flex-col mt-4 space-x-6 text-sm font-medium lg:flex-row xl:space-x-8 lg:mt-0">
                             <li>
@@ -139,7 +142,7 @@
                                 </li>
                             @endif
 
-                            @if(hasRoles('ADMINISTRATOR'))
+                            @if($isAdministrator)
                                 <li>
                                     <a href="{{ route('maintenance.admin.ref_mgr_desc') }}" class="block {{ Route::currentRouteName() === 'maintenance.admin.ref_mgr_desc' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Penyelenggaraan</a>
                                 </li>
@@ -297,19 +300,21 @@
                 @endif
 
 
-                @if(hasRoles('ADMINISTRATOR'))
+                @if($isAdministrator)
                     <li class="block border-b">
                         <a href="{{ route('maintenance.admin.ref_mgr_desc') }}" class="block px-4 py-3 {{ Route::currentRouteName() === 'maintenance.admin.ref_mgr_desc' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Penyelenggaraan</a>
                     </li>
 
                     <li class="block border-b">
                         <a href="{{ route('exceptionReport.admin.excp_missing_branch') }}" class="block px-4 py-3 {{ Route::currentRouteName() === 'exceptionReport.admin.excp_missing_branch' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Laporan Khas</a>
-                    </li>  
+                    </li>
+                @endif
                     
+                @if(reportView() === 'admin')
                     <li class="block border-b">
                         <a href="{{ route('report.admin.fms_bank_officer') }}" class="block px-4 py-3c {{ Route::currentRouteName() === 'report.admin.fms_bank_officer' ? 'text-primary-700' : 'text-gray-700 hover:text-primary-700' }}">Laporan</a>
-                    </li>                                 
-                @endif                          
+                    </li>
+                @endif
             @endauth
 
             @guest

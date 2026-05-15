@@ -19,10 +19,12 @@ class SingleSessionLogin
         }
 
         $user = Auth::user();
-        $user_roles = $user->roles()->pluck('role_id')->toArray();
+        $user_roles = session('user_roles', []);
+        if (empty($user_roles)) {
+            $user_roles = $user->roles()->pluck('role_id')->toArray();
+        }
         
         // Only apply to PYD (role_id = 4) and PYM (role_id = 5)
-        // if (!in_array($user_roles, [4, 5])) {
         if (!array_intersect($user_roles, [4, 5])) {
             return $next($request);
         }

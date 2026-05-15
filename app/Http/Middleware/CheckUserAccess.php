@@ -20,6 +20,16 @@ class CheckUserAccess
     {
         $user = Auth::user();
 
+        // Fast path: when access pages are already prepared in session, avoid DB queries.
+        $accessPages = session('user_access_pages', []);
+        if (!empty($accessPages)) {
+            if (!in_array($pageKey, $accessPages, true)) {
+                abort(403, 'Unauthorized access.');
+            }
+
+            return $next($request);
+        }
+
         // Find the page by the key
         $page = SettUalPage::where('key', $pageKey)->first();
 
