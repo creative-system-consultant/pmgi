@@ -130,6 +130,7 @@ class Index extends Component
                 'type'  => PDO::PARAM_STR,
                 'length' => 4000,
             ],
+            'pi_session_id' => $this->sessionId,
         ];
 
         // Execute the procedure

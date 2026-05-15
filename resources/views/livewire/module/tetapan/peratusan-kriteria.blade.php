@@ -92,6 +92,11 @@
                                     {{ $header }}
                                 </th>
                                 @endforeach
+                                <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                                    <div class="flex justify-center">
+                                        <x-checkbox id="checkbox-select-all" wire:model.live="selectAll" />
+                                    </div>
+                                </th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -112,6 +117,11 @@
                                     {{ $cell }}
                                 </td>
                                 @endforeach
+                                <td>
+                                    <div class="flex justify-center">
+                                        <x-checkbox id="checkbox-select-{{ $nextTableData[1]['Negeri'] }}" wire:model.live="selection" />
+                                    </div>
+                                </td>
                             </tr>
                             @endif
                             @endforeach
@@ -122,11 +132,24 @@
                     <x-button
                         negative
                         label="Padam Peratusan (Belum Aktif)"
-                        wire:click="deleteNextEffective"
+                        wire:click="openDeleteModal"
                         icon="trash"
                     />
                 </div>
             </div>
+            @endif
+
+            <!-- Delete Modal -->
+            @if($deleteModal)
+                <x-modal.card title="Padam Peratusan (Belum Aktif)" align="center" wire:model="deleteModal">
+                    <p>Adakah anda pasti untuk padam peratusan kriteria (belum aktif) yang dipilih?</p>
+                    <x-slot name="footer">
+                        <div class="flex gap-x-4 justify-end">
+                            <x-button primary label="Batal" wire:click="closeDeleteModal" />
+                            <x-button negative label="Padam" wire:click="deleteNextEffective" icon="trash" />
+                        </div>
+                    </x-slot>
+                </x-modal.card>
             @endif
 
             <!-- Update -->

@@ -116,7 +116,9 @@ class MesyuaratJtt extends Component
             'officer_id' => $this->userId,
             'result' => $this->result,
             'mth_delay' => $this->mthDelay,
-            'comments' => $this->comment
+            'comments' => $this->comment,
+            'session_date' => now()->format('Y-m-d'),
+            'session_type' => $this->pmgiLevel,
         ]);
 
         $resultSp = $this->runSp();
@@ -126,6 +128,8 @@ class MesyuaratJtt extends Component
             // sent email to HR if DI
             if($this->result == 'Domestic Inquiry (DI)'){
                 $this->sendEmailToHr();
+            } else {
+                $this->sendEmailToPyd();
             }
 
             return redirect()->route('list-pyd-jtt', ['sessionId' => $this->sessionId])->with('flash_success', 'Sesi selesai dilaksanakan.');
@@ -175,6 +179,7 @@ class MesyuaratJtt extends Component
                 'type'  => PDO::PARAM_STR,
                 'length' => 4000,
             ],
+            'pi_session_id' => $this->sessionId,
         ];
 
         // Execute the procedure
@@ -184,6 +189,16 @@ class MesyuaratJtt extends Component
     }
 
     private function sendEmailToHr()
+    {
+        $path = $this->generateImageFromHtml();
+        $emails = $this->getHrEmail();
+
+        foreach ($emails as $email) {
+            $this->sendEmail($email, $path['image'], $path['html']);
+        }
+    }
+
+    private function sendEmailToPyd()
     {
         $path = $this->generateImageFromHtml();
         $emails = $this->getHrEmail();

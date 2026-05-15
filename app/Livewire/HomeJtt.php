@@ -83,9 +83,8 @@ class HomeJtt extends Component
 
     private function generateSessionId()
     {
-        $datePart = now()->format('Ymd');
-        $formattedDatePart = substr($datePart, 2, 6);
-        return 'JKPI' . $formattedDatePart . $this->room;
+        $date = now()->format('Ymd');
+        return 'JTT' . $date . $this->room;
     }
 
     public function confirmAttendance($token)
@@ -112,10 +111,10 @@ class HomeJtt extends Component
         // $sessionDate = now()->format('Y-m-d');
 
         // uat jtt 1
-        $sessionDate = Carbon::createFromFormat('d/m/Y', '30/11/2023')->addMonth()->format('Y-m-d'); //report_date
+        // $sessionDate = Carbon::createFromFormat('d/m/Y', '30/09/2023')->addMonth()->format('Y-m-d'); //report_date
 
         // uat jtt 2
-        // $sessionDate = Carbon::createFromFormat('d/m/Y', '1/05/2024')->format('Y-m-d');
+        $sessionDate = Carbon::createFromFormat('d/m/Y', '01/05/2024')->format('Y-m-d');
 
         $jttOfficer = SettJtt::all();
 

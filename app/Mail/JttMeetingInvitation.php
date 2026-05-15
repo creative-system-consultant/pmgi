@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Constants\JTT\JTTRoles;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -64,6 +65,8 @@ class JttMeetingInvitation extends Mailable implements ShouldQueue
             '7' => 'PENGERUSI BERSAMA (PERHEBAT)',
             '8' => 'AHLI (PERHEBAT)',
         ];
+
+        // $roles = JTTRoles::getRoleName();
 
         return $roles[$role] ?? 'Unknown Role';
     }

@@ -13,7 +13,7 @@ class Pmc extends BasePymPmc
         // $lastMonthEnd = now()->subMonth()->endOfMonth();
 
         // uat pmgi 3
-        $lastMonthEnd = Carbon::createFromFormat('d/m/Y', '30/11/2023')->format('Y-m-d');
+        $lastMonthEnd = Carbon::createFromFormat('d/m/Y', '30/04/2024')->format('Y-m-d');
 
         return SettPymPmc::wherePmcId(auth()->user()->USERID)
                             ->whereDate('report_date', $lastMonthEnd)

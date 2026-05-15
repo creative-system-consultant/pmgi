@@ -14,7 +14,9 @@ class Hr extends Component
 
     public function render()
     {
-        $data = MntrSession::wherePmgiLevel('HRD')
+        $data = MntrSession::query()
+                            ->with('user')
+                            ->wherePmgiLevel('HRD')
                             ->whereNull('pmgi_result')
                             ->get();
 

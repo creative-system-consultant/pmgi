@@ -206,6 +206,9 @@ abstract class BasePmgi extends Component
             $existingRecord = SettPymPmc::where('session_id', $sessionId)->first();
 
             $data = $this->prepareData($sessionId, $pydInfo, $pyd, $existingRecord);
+            // $updatePydInfo = $pydInfo->update([
+            //     'session_id' => $sessionId
+            // ]);
 
             if ($existingRecord) {
                 $existingRecord->update($data);
@@ -224,7 +227,8 @@ abstract class BasePmgi extends Component
         $userPym = User::where('USERID', $this->selectedPym)->first();
 
         $pymRoleId = SettUalRole::where('name', 'PYM')->value('id');
-        if ($pymRoleId) {
+        $userHasRole = SettUalUserHasRole::where([['userid', $this->selectedPym], ['role_id', $pymRoleId]])->exists();
+        if ($pymRoleId && !$userHasRole) {
             $userPym->roles()->attach($pymRoleId);
             $userPym->load('roles');
         }
@@ -233,7 +237,8 @@ abstract class BasePmgi extends Component
             $userPmc = User::where('USERID', $this->selectedPmc)->first();
 
             $pmcRoleId = SettUalRole::where('name', 'PMC')->value('id');
-            if ($pmcRoleId) {
+            $userHasRole = SettUalUserHasRole::where([['userid', $this->selectedPmc], ['role_id', $pmcRoleId]])->exists();
+            if ($pmcRoleId && !$userHasRole) {
                 $userPmc->roles()->attach($pmcRoleId);
                 $userPmc->load('roles');
             }

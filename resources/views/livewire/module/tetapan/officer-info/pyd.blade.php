@@ -64,7 +64,7 @@
         </div>
         <div class="flex justify-center mt-4">
             @if ($savedFile)
-                <img class="w-50% h-50%" src="{{ asset('storage/' . $savedFile->filename) }}" alt="Logo">
+                <img class="w-50% h-50%" src="{{ asset('storage/' . $savedFile->filename) }}" alt="">
             @endif
         </div>
     </div>

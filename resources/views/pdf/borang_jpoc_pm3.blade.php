@@ -489,7 +489,7 @@
     {{-- PYD Attachments --}}
     <x-rekod-pmgi-attachment-display
         attachmentKey="pyd_attachment" 
-        title="Lampiran PYD 1"
+        title="Lampiran 1 PYD"
         :attachmentPaths="$attachmentPaths"
         :attachmentExtension="$attachmentExtension"
         :imageExtensions="$imageExtensions"
@@ -497,7 +497,7 @@
 
     <x-rekod-pmgi-attachment-display
         attachmentKey="pyd_attachment2" 
-        title="Lampiran PYD 2"
+        title="Lampiran 2 PYD"
         :attachmentPaths="$attachmentPaths"
         :attachmentExtension="$attachmentExtension"
         :imageExtensions="$imageExtensions"
@@ -505,7 +505,7 @@
 
     <x-rekod-pmgi-attachment-display
         attachmentKey="pyd_attachment3" 
-        title="Lampiran PYD 3"
+        title="Lampiran 3 PYD"
         :attachmentPaths="$attachmentPaths"
         :attachmentExtension="$attachmentExtension"
         :imageExtensions="$imageExtensions"
@@ -514,7 +514,7 @@
     {{-- PYM Attachments --}}
     <x-rekod-pmgi-attachment-display
         attachmentKey="pym_attachment" 
-        title="Lampiran PYM 1"
+        title="Lampiran 1 PYM"
         :attachmentPaths="$attachmentPaths"
         :attachmentExtension="$attachmentExtension"
         :imageExtensions="$imageExtensions"
@@ -522,7 +522,7 @@
 
     <x-rekod-pmgi-attachment-display
         attachmentKey="pym_attachment2" 
-        title="Lampiran PYM 2"
+        title="Lampiran 2 PYM"
         :attachmentPaths="$attachmentPaths"
         :attachmentExtension="$attachmentExtension"
         :imageExtensions="$imageExtensions"
@@ -530,7 +530,7 @@
 
     <x-rekod-pmgi-attachment-display
         attachmentKey="pym_attachment3" 
-        title="Lampiran PYM 3"
+        title="Lampiran 3 PYM"
         :attachmentPaths="$attachmentPaths"
         :attachmentExtension="$attachmentExtension"
         :imageExtensions="$imageExtensions"
@@ -539,7 +539,7 @@
     {{-- PMC Attachments --}}
     <x-rekod-pmgi-attachment-display
         attachmentKey="pmc_attachment" 
-        title="Lampiran PMC 1"
+        title="Lampiran 1 PMC"
         :attachmentPaths="$attachmentPaths"
         :attachmentExtension="$attachmentExtension"
         :imageExtensions="$imageExtensions"
@@ -547,7 +547,7 @@
 
     <x-rekod-pmgi-attachment-display
         attachmentKey="pmc_attachment2" 
-        title="Lampiran PMC 2"
+        title="Lampiran 2 PMC"
         :attachmentPaths="$attachmentPaths"
         :attachmentExtension="$attachmentExtension"
         :imageExtensions="$imageExtensions"
@@ -555,7 +555,7 @@
 
     <x-rekod-pmgi-attachment-display
         attachmentKey="pmc_attachment3" 
-        title="Lampiran PMC 3"
+        title="Lampiran 3 PMC"
         :attachmentPaths="$attachmentPaths"
         :attachmentExtension="$attachmentExtension"
         :imageExtensions="$imageExtensions"

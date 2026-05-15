@@ -75,6 +75,51 @@ use App\Livewire\Module\RekodPenilaianSemulaPmc;
 |
 */
 
+Route::get('/test-ghostscript', function() {
+    try {
+        // Check if Ghostscript executable exists
+        $gsPath = config('services.ghostscript.path');
+        $gsExecutable = $gsPath . '/gs.exe'; // Windows
+        // or
+        // $gsExecutable = 'gs'; // Linux
+
+        // Try different executables
+        $gswin64c = $gsPath . '/gswin64c.exe';
+        $gswin32c = $gsPath . '/gswin32c.exe';
+        
+        $exists = file_exists($gsExecutable);
+        
+        // Test each executable
+        $results = [];
+        
+        foreach ([$gsExecutable, $gswin64c, $gswin32c] as $exe) {
+            if (file_exists($exe)) {
+                exec('"' . $exe . '" --version 2>&1', $output, $returnCode);
+                $results[$exe] = [
+                    'exists' => true,
+                    'output' => $output,
+                    'return_code' => $returnCode,
+                ];
+            } else {
+                $results[$exe] = ['exists' => false];
+            }
+        }
+        
+        return response()->json([
+            'ghostscript_path' => $gsPath,
+            'executables_tested' => $results,
+            'imagick_loaded' => extension_loaded('imagick'),
+            'PATH_env' => getenv('PATH'),
+            'MAGICK_GHOSTSCRIPT_PATH' => getenv('MAGICK_GHOSTSCRIPT_PATH'),
+            'php_uname' => php_uname(),
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+});
+
 // Route::view('/', 'welcome')->name('home');
 
 // Maintenance routes (should be outside middleware group)
@@ -112,6 +157,7 @@ Route::middleware(['check.sysAvailable'])->group(function () {
         Route::get('/prestasi/kumulatif', Kumulatif::class)->name('prestasi.kumulatif')->middleware('check.access:prestasi-kumulatif');
 
         Route::middleware(['auth', 'check.role', 'restrict.session'])->group(function () {
+        // Route::middleware(['auth', 'check.role'])->group(function () {
             Route::get('/', Home::class)->name('home');
 
             Route::post('logout', LogoutController::class)
@@ -190,7 +236,7 @@ Route::middleware(['check.sysAvailable'])->group(function () {
                 // Laporan Sistem
                 Route::get('/sys-msg-log', PmgiSysMsgLog::class)->name('sys_msg_log');
             });
-
+            
             // Laporan (Admin Only)
             Route::prefix('admin-report')->name('report.admin.')->middleware('check.access:admin-laporan')->group(function () {                  
                 Route::get('/fms-bank-officer', PmgiFMSBankOfficers::class)->name('fms_bank_officer');         
@@ -199,7 +245,8 @@ Route::middleware(['check.sysAvailable'])->group(function () {
             });        
         });
 
-        Route::middleware(['auth', 'check.role', 'ensure.session'])->group(function () {
+        // Route::middleware(['auth', 'check.role', 'ensure.session'])->group(function () {
+        Route::middleware(['auth', 'check.role'])->group(function () {
             // PYD
             Route::get('/pegawai-dinilai', PegawaiDinilai::class)->name('pegawai-dinilai');
 

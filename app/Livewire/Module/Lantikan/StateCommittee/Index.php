@@ -133,7 +133,7 @@ class Index extends Component
 
             if ($stateCommitteeRoleId && !empty($userId)) { // Explicit check for empty userId
                 $existingRole = SettUalUserHasRole::where(DB::raw('UPPER(USERID)'), strtoupper($userId))
-                    ->where('ROLE_ID', $stateCommitteeRoleId)
+                    ->where('role_id', $stateCommitteeRoleId)
                     ->exists();
 
                 if (!$existingRole) {

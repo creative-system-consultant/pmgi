@@ -25,20 +25,18 @@ class SessionStatusBanner extends Component
 
     public function checkSessionStatus()
     {
-        $user = Auth::user();
+        $user = Auth::user()->USERID;
+        $today = now()->toDateString();
 
-        $this->sessionInfo = SessionInfo::whereDate('session_date', now())
+        $this->hasActiveSession = SessionInfo::query()
+            ->where('session_date', $today)
             ->whereNull('status')
             ->whereHas('setting', function ($query) use ($user) {
-                $query->where(function ($q) use ($user) {
-                    $q->where('pyd_id', $user->USERID)
-                        ->orWhere('pym_id', $user->USERID)
-                        ->orWhere('pmc_id', $user->USERID);
-                });
+                $query->where('pyd_id', $user)
+                    ->orWhere('pym_id', $user)
+                    ->orWhere('pmc_id', $user);
             })
-            ->first();
-
-        $this->hasActiveSession = !is_null($this->sessionInfo);
+            ->exists();
     }
 
     public function render()

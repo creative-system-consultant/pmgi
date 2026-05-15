@@ -46,10 +46,10 @@ class ListPydJtt extends Component
         // $sessionDate = now()->format('Y-m-d');
 
         // uat jtt1
-        $sessionDate = Carbon::createFromFormat('d/m/Y', '01/12/2023')->format('Y-m-d'); //report_date
+        $sessionDate = Carbon::createFromFormat('d/m/Y', '01/05/2024')->format('Y-m-d'); //report_date
 
         // uat jtt2
-        // $sessionDate = Carbon::createFromFormat('d/m/Y', '01/05/2024')->format('Y-m-d');
+        // $sessionDate = Carbon::createFromFormat('d/m/Y', '01/10/2024')->format('Y-m-d');
 
         $data = MntrSession::with('user')
                             ->whereIn('pmgi_level', ['JT1', 'JT2'])

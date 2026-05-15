@@ -6,7 +6,9 @@ use App\Jobs\CleanupTemporaryFiles;
 use App\Jobs\SendJttHrEmail;
 use App\Livewire\Module\RekodPmgi as RekodPmgiModule;
 use App\Models\BankOfficer;
+use App\Models\JttMeetingInvitation;
 use App\Models\JttSessionInfo;
+use App\Models\JttSessionPanel;
 use App\Models\JttSessionParticipant;
 use App\Models\MntrSession;
 use App\Models\SessionInfo;
@@ -17,6 +19,7 @@ use App\Services\HtmlToImageService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use PDO;
@@ -195,29 +198,31 @@ class RekodPmgi extends Component
             'comments' => $this->comment
         ]);
 
-        $resultSp = $this->runSp();
+        // $resultSp = $this->runSp();
 
-        // Redirect to the next page or do whatever action you need
-        if (substr($resultSp, 0, 1) == '0') {
-            // sent email to HR if DI
-            if ($this->result == 'Tindakan Tatatertib') {
-                $pmgiInstance = new RekodPmgiModule();
-                $pmgiReports = [
-                    $pmgiInstance->saveRekodPmgi($pmgiSessionIds['PM1'], 'PM1'),
-                    $pmgiInstance->saveRekodPmgi($pmgiSessionIds['PM2'], 'PM2'),
-                    $pmgiInstance->saveRekodPmgi($pmgiSessionIds['PM3'], 'PM3'),
-                ];
+        // // Redirect to the next page or do whatever action you need
+        // if (substr($resultSp, 0, 1) == '0') {
+        //     // sent email to HR if DI
+        //     if ($this->result == 'Tindakan Tatatertib') {
+        //         $pmgiInstance = new RekodPmgiModule();
+        //         $pmgiReports = [
+        //             $pmgiInstance->saveRekodPmgi($pmgiSessionIds['PM1'], 'PM1'),
+        //             $pmgiInstance->saveRekodPmgi($pmgiSessionIds['PM2'], 'PM2'),
+        //             $pmgiInstance->saveRekodPmgi($pmgiSessionIds['PM3'], 'PM3'),
+        //         ];
 
-                $this->sendEmailToHr($pmgiReports);
-            }
+        //         $this->sendEmailToHr($pmgiReports);
+        //     }
 
-            return redirect()->route('list-pyd-jtt', ['sessionId' => $this->sessionId])->with('flash_success', 'Sesi selesai dilaksanakan.');
-        } else {
-            $this->dialog()->error(
-                $title = 'Ralat!',
-                $description = "Masalah Server."
-            );
-        }
+            $this->sendEmailToPyd();
+
+        //     return redirect()->route('list-pyd-jtt', ['sessionId' => $this->sessionId])->with('flash_success', 'Sesi selesai dilaksanakan.');
+        // } else {
+        //     $this->dialog()->error(
+        //         $title = 'Ralat!',
+        //         $description = "Masalah Server."
+        //     );
+        // }
     }
 
     public function runSp()
@@ -260,6 +265,7 @@ class RekodPmgi extends Component
                 'type'  => PDO::PARAM_STR,
                 'length' => 4000,
             ],
+            'pi_session_id' => $this->sessionId,
         ];
 
         // Execute the procedure
@@ -276,6 +282,22 @@ class RekodPmgi extends Component
         foreach ($emails as $email) {
             $this->sendEmail($email, $path['image'], $path['html'], $reportPaths);
         }
+    }
+
+    private function sendEmailToPyd()
+    {
+        $setting = SessionJttPydInfo::whereSessionId($this->sessionId)->first();
+        $chairman_info = JttMeetingInvitation::whereSessionId($this->sessionId)->whereRole(1)->first();
+        $pyd_data = MntrSession::with('user', 'state', 'branch', 'bankOfficer')
+                            ->whereOfficerId($this->userId)
+                            ->whereDate('report_date', $setting->report_date)
+                            ->first();
+
+        // $email = $pyd_data->bankOfficer?->email;
+        $chairman_id = $chairman_info->officer_id;
+
+        // $this->sendEmail($email, $pyd_data, $setting, $pmgi_description);
+        $this->sendEmailSp($chairman_id);
     }
 
     private function generateImageFromHtml()
@@ -326,6 +348,59 @@ class RekodPmgi extends Component
 
         // Dispatch the jobs as a chain
         Bus::chain($jobs)->dispatch();
+    }
+
+    public function sendEmailSp($chairman_id)
+    {
+        if ($this->pmgiLevel == 'JT1') {
+            if ($this->result == 'Diberi Tempoh') {
+                $pmgiResult = 'PDQ';
+            } elseif($this->result == 'Keluar Senarai') {
+                $pmgiResult = 'EX1';
+            } else {
+                $pmgiResult = 'DQ1';
+            }
+        } else {
+            if ($this->result == 'Keluar Senarai') {
+                $pmgiResult = 'EXL';
+            } else {
+                $pmgiResult = 'DQ2';
+            }
+        }
+
+        $data = MntrSession::whereOfficerId($this->userId)
+                            ->whereDate('report_date', $this->reportDate)
+                            ->first();
+
+        $output = '';
+
+        $spMap = [
+            'PDQ' => 'dbo.UP_PMGI_EMAIL_POSTPONE_SSN', 
+            'EX1' => 'dbo.UP_PMGI_EMAIL_DROP_PMGI_BY_JKPI',
+            'EXL' => 'dbo.UP_PMGI_EMAIL_DROP_PMGI_BY_JKPI',
+            'DQ1' => 'dbo.UP_PMGI_EMAIL_REFER_JSM_BY_JKPI',
+            'DQ2' => 'dbo.UP_PMGI_EMAIL_REFER_JSM_BY_JKPI'
+        ];
+
+        $sp = $spMap[$pmgiResult] ?? 'dbo.UP_PMGI_EMAIL_POSTPONE_SSN';
+
+        $procedureName = $sp;
+
+        $bindings = [
+            'email_setting_no' => 101,
+            'pyd_id' => $this->userId,
+            'chairman_id' => $chairman_id,
+            'report_date' => Carbon::parse($data->report_date)->addMonthNoOverflow()->endOfMonth()->format('Y-m-d'),
+            'pmgi_level' => $this->pmgiLevel,
+            'session_id' => $this->sessionId,
+            'sender_id' => auth()->user()->USERID,
+        ];
+
+        // Execute the procedure
+        $exc_sp = DB::executeProcedure($procedureName, $bindings);
+        Log::info("SP triggered : $exc_sp");
+
+        return $output;
     }
 
     public function render()

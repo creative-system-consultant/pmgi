@@ -42,11 +42,24 @@ class PeratusanKriteria extends Component
     ];
     public $tableData = [];
     public $nextTableData = [];
+    public $selection = [];
+    public $selectAll = false;
+    public $deleteModal = false;
 
     public function mount()
     {
         $this->retrieveInitialData();
         $this->retrieveNextEffectiveData();
+    }
+
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            // Select only the users with status 0 (not already in PMGI_SETT_PYM_PMC)
+            $this->selection = $this->datas->where('status', 0)->pluck('USERID')->toArray();
+        } else {
+            $this->reset('selection');
+        }
     }
 
     public function retrieveInitialData()
@@ -77,7 +90,7 @@ class PeratusanKriteria extends Component
                 }
                 $statePercentages[$stateCode] = [
                     'state_code' => $stateCode,
-                    'state_name' => $stateData->first()->bnmState->description,
+                    'state_name' => $stateData->first()->bnmState?->description,
                     'percentages' => $percentages,
                 ];
             }
@@ -202,7 +215,7 @@ class PeratusanKriteria extends Component
                     }
                     $statePercentages[$stateCode] = [
                         'state_code' => $stateCode,
-                        'state_name' => $stateData->first()->bnmState->description,
+                        'state_name' => $stateData->first()->bnmState?->description,
                         'percentages' => $percentages,
                     ];
                 }
@@ -286,6 +299,14 @@ class PeratusanKriteria extends Component
                 $this->nextTableData = $tableData;
                 $this->nextResultMount = true;
             }
+        }
+    }
+
+    public function getStatesCode()
+    {
+        if($this->retrieveNextEffectiveData())
+        {
+            // do something
         }
     }
 
@@ -388,10 +409,21 @@ class PeratusanKriteria extends Component
             ]);
 
             $this->dialog()->error(
+                $icon = 'error',
                 $title = 'Ralat',
                 $description = 'Terdapat ralat semasa menyimpan data. Sila cuba lagi.'
             );
         }
+    }
+
+    public function openDeleteModal()
+    {
+        $this->deleteModal = true;
+    }
+
+    public function closeDeleteModal()
+    {
+        $this->deleteModal = false;
     }
 
     public function deleteNextEffective()

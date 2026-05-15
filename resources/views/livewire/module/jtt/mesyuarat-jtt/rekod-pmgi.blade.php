@@ -63,6 +63,7 @@
     <div class="items-center">
         <div class="mb-4 lg:mb-0">
             <div class="w-1/2 mx-auto mt-8">
+                <h2 class="text-xl font-bold text-gray-900">Sesi JKPI {{ $pmgiLevel == 'JT1' ? '1' : '2' }}</h2>
                 <h3 class="text-lg font-medium text-center text-gray-900">Keputusan :</h3>
                 <x-select
                     placeholder="Sila Pilih"
