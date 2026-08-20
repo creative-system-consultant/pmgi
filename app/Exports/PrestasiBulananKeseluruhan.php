@@ -2,10 +2,9 @@
 
 namespace App\Exports;
 
-use App\Models\SummMthOfficer;
+use App\Services\Prestasi\PrestasiBulananKeseluruhanService;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Style\Border;
@@ -19,7 +18,7 @@ class PrestasiBulananKeseluruhan implements FromView, WithStyles
     protected $state;
     protected $branch;
     protected $pydId;
-    protected $groupedData;
+    protected $rows;
 
     public function __construct($date, $state, $branch, $pydId = null)
     {
@@ -31,84 +30,33 @@ class PrestasiBulananKeseluruhan implements FromView, WithStyles
 
     public function view(): View
     {
-        $query = SummMthOfficer::with(['branch', 'officerBranch'])
-                                ->whereDate('report_date', $this->reportDate->copy()->endOfMonth()->format('Y-m-d'));
+        $service = new PrestasiBulananKeseluruhanService();
+        $date = $this->reportDate->format('Y-m-d');
 
-        if(!$this->state) {
-            $userData = SummMthOfficer::whereOfficerId(auth()->user()->USERID)
-                                        ->orderBy('report_date', 'desc')
-                                        ->first();
-
-            if ($userData) {
-                $branch_code = $userData->officer_branch_code;
-            } else {
-                return view('exports.prestasi-bulanan-keseluruhan', [
-                    'groupedData' => collect(),
-                    'selectedState' => 'N/A',
-                    'selectedBranch' => 'N/A',
-                    'reportDate' => strtoupper($this->reportDate->format('F Y')),
-                ]);
-            }
-
-            $query->whereAcctBranchCode($branch_code)
-                  ->whereOfficerId(auth()->user()->USERID); // PYD only sees their own data
-        } else {
-            if ($this->state && $this->state != '%') {
-                $query->where('branch_state_code', $this->state);
-            }
-
-            if ($this->branch && $this->branch != '%%') {
-                $query->where('acct_branch_code', $this->branch);
-            }
-
-            // Filter by specific staff if pydId is provided, otherwise show all staff in the branch/state
-            if ($this->pydId) {
-                $query->where('officer_id', $this->pydId);
-            }
-        }
-
-        $data = $query->orderBy('branch_state_code', 'asc')
-                        ->orderBy('cawangan', 'asc')
-                        ->orderBy('incl_pmgi_flag', 'asc')
-                        ->get();
-
-        $this->groupedData = $this->groupData($data);
-
-        // get negeri,branch title data
+        // No state means the download was triggered by a PYD, who only sees their own data.
         if (!$this->state) {
-            $selectedState = $data->first()->negeri;
-            $selectedBranch = $data->first()->cawangan;
-        } else {
-            if ($this->state != '%') {
-                $selectedState = $data->first()->negeri;
-            } else {
-                $selectedState = 'SEMUA NEGERI';
-            }
+            $this->rows = $service->forOfficer($date, auth()->user()->USERID);
 
-            if ($this->branch != '%%') {
-                $selectedBranch = $data->first()->cawangan;
-            }  else {
-                $selectedBranch = 'SEMUA CAWANGAN';
-            }
+            $selectedState = $this->rows->first()?->negeri ?? 'N/A';
+            $selectedBranch = $this->rows->first()?->cawangan ?? 'N/A';
+        } else {
+            $this->rows = $service->forAdmin($date, $this->state, $this->branch, $this->pydId);
+
+            $selectedState = $this->state == PrestasiBulananKeseluruhanService::ALL_STATES
+                ? 'SEMUA NEGERI'
+                : ($this->rows->first()?->negeri ?? 'N/A');
+
+            $selectedBranch = $this->branch == PrestasiBulananKeseluruhanService::ALL_BRANCHES
+                ? 'SEMUA CAWANGAN'
+                : ($this->rows->first()?->cawangan ?? 'N/A');
         }
 
         return view('exports.prestasi-bulanan-keseluruhan', [
-            'groupedData' => $this->groupedData,
+            'rows' => $this->rows,
             'selectedState' => $selectedState,
             'selectedBranch' => $selectedBranch,
             'reportDate' => strtoupper($this->reportDate->format('F Y'))
         ]);
-    }
-
-    private function groupData(Collection $officerData): Collection
-    {
-        return $officerData->groupBy('branch_state_code')->map(function ($stateData) {
-            return $stateData->groupBy('acct_branch_code')->map(function ($branchData) {
-                return $branchData->groupBy('officer_id')->map(function ($officerRecords) {
-                    return $officerRecords->take(1);
-                });
-            });
-        });
     }
 
     private function ynStyle(?string $flag): array
@@ -210,79 +158,65 @@ class PrestasiBulananKeseluruhan implements FromView, WithStyles
 
         $startRow = 11;
 
-        if (!empty($this->groupedData) && $this->groupedData->isNotEmpty()) {
-            foreach ($this->groupedData as $stateData) {
-                foreach ($stateData as $branchData) {
-                    foreach ($branchData as $officerData) {
-
-                        $rowRecord = $officerData->first();
-
-                        foreach ($flagColumnMap as $col => $field) {
-                            $flag = $rowRecord->{$field} ?? null;
-                            $sheet->getStyle("{$col}{$startRow}")
-                                ->applyFromArray($this->ynStyle($flag));
-                        }
-
-                        $startRow++;
-                    }
-                }
+        foreach ($this->rows as $rowRecord) {
+            foreach ($flagColumnMap as $col => $field) {
+                $flag = $rowRecord->{$field} ?? null;
+                $sheet->getStyle("{$col}{$startRow}")
+                    ->applyFromArray($this->ynStyle($flag));
             }
+
+            $startRow++;
         }
 
+        $startRow = 11;
 
-        if (!empty($this->groupedData) && $this->groupedData->isNotEmpty()) {
-            foreach ($this->groupedData as $stateData) {
-                foreach ($stateData as $branchData) {
-                    foreach ($branchData as $officerData) {
-                        $inclPmgiFlag = $officerData->first()->incl_pmgi_flag;
+        foreach ($this->rows as $rowRecord) {
+            $inclPmgiFlag = $rowRecord->incl_pmgi_flag;
 
-                        $cell = "B$startRow"; // Adjust for the actual column
+            $cell = "B$startRow"; // Adjust for the actual column
 
-                        if ($inclPmgiFlag == 'J') {
-                            $sheet->getStyle($cell)->applyFromArray([
-                                'font' => [
-                                    'bold' => true,  // Apply bold for resigned officers
-                                    'color' => ['argb' => Color::COLOR_RED],
-                                    'size' => 11,
-                                ]
-                            ]);
-                        } elseif ($inclPmgiFlag == 'G') {
-                            $sheet->getStyle($cell)->applyFromArray([
-                                'font' => [
-                                    'bold' => true,  // Apply bold for transferred officers
-                                    'color' => ['argb' => Color::COLOR_RED],
-                                    'size' => 11,
-                                ]
-                            ]);
-                        } elseif ($inclPmgiFlag == 'N') {
-                            $sheet->getStyle($cell)->applyFromArray([
-                                'font' => [
-                                    'color' => ['argb' => Color::COLOR_BLACK],  // Black text color
-                                    'size' => 11,
-                                ]
-                            ]);
-                        } elseif ($inclPmgiFlag == 'S' || $inclPmgiFlag == 'W') {
-                            $sheet->getStyle($cell)->applyFromArray([
-                                'font' => [
-                                    'color' => ['argb' => Color::COLOR_WHITE],  // White text color
-                                    'size' => 11,
-                                ]
-                            ]);
-                        } else {
-                            $sheet->getStyle($cell)->applyFromArray([
-                                'font' => [
-                                    'bold' => false,  // Normal text for other cases
-                                    'color' => ['argb' => Color::COLOR_BLACK],
-                                    'size' => 11,
-                                ]
-                            ]);
-                        }
-
-                        // Increment row for the next officer
-                        $startRow++;
-                    }
-                }
+            if ($inclPmgiFlag == 'J') {
+                $sheet->getStyle($cell)->applyFromArray([
+                    'font' => [
+                        'bold' => true,  // Apply bold for resigned officers
+                        'color' => ['argb' => Color::COLOR_RED],
+                        'size' => 11,
+                    ]
+                ]);
+            } elseif ($inclPmgiFlag == 'G') {
+                $sheet->getStyle($cell)->applyFromArray([
+                    'font' => [
+                        'bold' => true,  // Apply bold for transferred officers
+                        'color' => ['argb' => Color::COLOR_RED],
+                        'size' => 11,
+                    ]
+                ]);
+            } elseif ($inclPmgiFlag == 'N') {
+                $sheet->getStyle($cell)->applyFromArray([
+                    'font' => [
+                        'color' => ['argb' => Color::COLOR_BLACK],  // Black text color
+                        'size' => 11,
+                    ]
+                ]);
+            } elseif ($inclPmgiFlag == 'S' || $inclPmgiFlag == 'W') {
+                $sheet->getStyle($cell)->applyFromArray([
+                    'font' => [
+                        'color' => ['argb' => Color::COLOR_WHITE],  // White text color
+                        'size' => 11,
+                    ]
+                ]);
+            } else {
+                $sheet->getStyle($cell)->applyFromArray([
+                    'font' => [
+                        'bold' => false,  // Normal text for other cases
+                        'color' => ['argb' => Color::COLOR_BLACK],
+                        'size' => 11,
+                    ]
+                ]);
             }
+
+            // Increment row for the next officer
+            $startRow++;
         }
 
         // Freeze columns A and B
@@ -294,23 +228,7 @@ class PrestasiBulananKeseluruhan implements FromView, WithStyles
     // Make sure calculateLastRow returns the correct last row number
     private function calculateLastRow(): int
     {
-        // Start at row 10 because we have headers up to row 9
-        $totalRows = 10;
-
-        // Ensure groupedData is not null or empty
-        if (empty($this->groupedData) || $this->groupedData->isEmpty()) {
-            return $totalRows; // Return just the header rows if there's no data
-        }
-
-        // Iterate through grouped data and count each officer's record
-        foreach ($this->groupedData as $stateData) {
-            foreach ($stateData as $branchData) {
-                foreach ($branchData as $officerData) {
-                    $totalRows++; // Increment row count for each officer data row
-                }
-            }
-        }
-
-        return $totalRows; // Return the actual total number of rows in the sheet
+        // Start at row 10 because we have headers up to row 9, then one row per record
+        return 10 + ($this->rows?->count() ?? 0);
     }
 }

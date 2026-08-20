@@ -2,10 +2,7 @@
 
 namespace App\Livewire\Module\Prestasi\Bulanan;
 
-use App\Models\SummMthOfficer;
-use Carbon\Carbon;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
+use App\Services\Prestasi\PrestasiBulananRingkasanService;
 use Livewire\Component;
 
 class Ringkasan extends Component
@@ -15,92 +12,20 @@ class Ringkasan extends Component
     public $branch;
     public $pydId;
     public $date;
-    public $reportDate;
-
-    public function mount()
-    {
-        $this->reportDate = Carbon::parse($this->date);
-    }
 
     public function render()
     {
+        $service = new PrestasiBulananRingkasanService();
+
         if ($this->role != 'pyd') {
-            $officerData = $this->getAdminData();
+            $data = $service->forAdmin($this->date, $this->state, $this->branch, $this->pydId);
         } else {
-            $officerData = $this->getBranchData();
+            $data = $service->forOfficer($this->date, auth()->user()->USERID);
         }
-
-        // Format the report_date field
-        $officerData->transform(function ($item) {
-            $item->report_date = Carbon::parse($item->report_date)->translatedFormat('F Y');
-            return $item;
-        });
-
-        // Get unique months (limited to 2)
-        $months = $officerData->pluck('report_date')->unique()->take(2)->values();
-
-        // Group data
-        $groupedData = $this->groupData($officerData);
 
         return view('livewire.module.prestasi.bulanan.ringkasan', [
-            'groupedData' => $groupedData,
-            'months' => $months,
+            'rows' => $data['rows'],
+            'months' => $data['months'],
         ]);
-    }
-
-    private function getAdminData(): Collection
-    {
-        $query = SummMthOfficer::with(['branch', 'officerBranch', 'fmsBankOfficers'])
-                                ->whereBetween('report_date', [$this->reportDate->copy()->subMonthNoOverflow()->startOfMonth(), $this->reportDate->copy()->endOfMonth()]);
-
-        if ($this->state != '%') {
-            $query->where('branch_state_code', $this->state);
-        }
-
-        if ($this->branch != '%%') {
-            $query->where('acct_branch_code', $this->branch);
-        }
-
-        // Filter by specific staff if pydId is provided, otherwise show all staff in the branch/state
-        if ($this->pydId) {
-            $query->where('officer_id', $this->pydId);
-        }
-
-        return $query->orderBy('report_date', 'asc')
-                    ->orderBy('branch_state_code', 'asc')
-                    ->orderBy('cawangan', 'asc')
-                    ->orderBy('incl_pmgi_flag', 'asc')  // Ensure branch totals (N) come after individual records
-                    ->get();
-    }
-
-    private function getBranchData(): Collection
-    {
-        $userData = SummMthOfficer::whereOfficerId(auth()->user()->USERID)
-            ->orderBy('report_date', 'desc')
-            ->first();
-
-        if ($userData) {
-            $branch_code = $userData->officer_branch_code;
-        } else {
-            return collect();
-        }
-
-        return SummMthOfficer::whereAcctBranchCode($branch_code)
-            ->whereOfficerId(auth()->user()->USERID) // PYD only sees their own data
-            ->whereBetween('report_date', [$this->reportDate->copy()->subMonthNoOverflow()->startOfMonth(), $this->reportDate->copy()->endOfMonth()])
-            ->orderBy('report_date', 'asc')
-            ->orderBy('incl_pmgi_flag', 'asc') // Ensure branch totals (N) come after individual records
-            ->get();
-    }
-
-    private function groupData(Collection $officerData): Collection
-    {
-        return $officerData->groupBy('branch_state_code')->map(function ($stateData) {
-            return $stateData->groupBy('acct_branch_code')->map(function ($branchData) {
-                return $branchData->groupBy('officer_id')->map(function ($officerRecords) {
-                    return $officerRecords->take(2);
-                });
-            });
-        });
     }
 }

@@ -2,10 +2,9 @@
 
 namespace App\Exports;
 
-use App\Models\SummMthOfficer;
+use App\Services\Prestasi\PrestasiBulananRingkasanService;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Style\Border;
@@ -20,7 +19,7 @@ class PrestasiBulananRingkasan implements FromView, WithStyles
     protected $state;
     protected $branch;
     protected $pydId;
-    protected $groupedData;
+    protected $rows;
 
     public function __construct($date, $state, $branch, $pydId = null)
     {
@@ -32,83 +31,35 @@ class PrestasiBulananRingkasan implements FromView, WithStyles
 
     public function view(): View
     {
-        $query = SummMthOfficer::with(['branch', 'officerBranch'])
-            ->whereBetween('report_date', [$this->reportDate->copy()->subMonthNoOverflow()->startOfMonth(), $this->reportDate->copy()->endOfMonth()]);
+        $service = new PrestasiBulananRingkasanService();
+        $date = $this->reportDate->format('Y-m-d');
 
-        if(!$this->state) {
-            $userData = SummMthOfficer::whereOfficerId(auth()->user()->USERID)
-                                        ->orderBy('report_date', 'desc')
-                                        ->first();
-
-            if ($userData) {
-                $branch_code = $userData->officer_branch_code;
-            } else {
-                return view('exports.prestasi-bulanan-ringkasan', [
-                    'groupedData' => collect(),
-                    'months' => collect(),
-                    'selectedState' => 'N/A',
-                    'selectedBranch' => 'N/A',
-                    'reportDate' => strtoupper($this->reportDate->format('F Y')),
-                ]);
-            }
-
-            $query->whereAcctBranchCode($branch_code)
-                  ->whereOfficerId(auth()->user()->USERID); // PYD only sees their own data
+        // No state means the download was triggered by a PYD, who only sees their own data.
+        if (!$this->state) {
+            $data = $service->forOfficer($date, auth()->user()->USERID);
         } else {
-            if ($this->state && $this->state != '%') {
-                $query->where('branch_state_code', $this->state);
-            }
-
-            if ($this->branch && $this->branch != '%%') {
-                $query->where('acct_branch_code', $this->branch);
-            }
-
-            // Filter by specific staff if pydId is provided, otherwise show all staff in the branch/state
-            if ($this->pydId) {
-                $query->where('officer_id', $this->pydId);
-            }
+            $data = $service->forAdmin($date, $this->state, $this->branch, $this->pydId);
         }
 
-        $data = $query->orderBy('report_date', 'asc')
-                        ->orderBy('branch_state_code', 'asc')
-                        ->orderBy('cawangan', 'asc')
-                        ->orderBy('incl_pmgi_flag', 'asc')
-                        ->get()
-                        ->map(function($item) {
-                            $item->report_date = Carbon::parse($item->report_date)->format('Y-m-d');
-                            return $item;
-                        });
+        $this->rows = $data['rows'];
+        $first = $this->rows->first()?->first();
 
-        $data->transform(function ($item) {
-            $item->report_date = strtoupper(Carbon::parse($item->report_date)->translatedFormat('F Y'));
-            return $item;
-        });
-
-        $months = $data->pluck('report_date')->unique()->take(2)->values();
-
-        $this->groupedData = $this->groupData($data);
-
-        // get negeri,branch title data
         if (!$this->state) {
-            $selectedState = $data->first()->negeri;
-            $selectedBranch = $data->first()->cawangan;
+            $selectedState = $first?->negeri ?? 'N/A';
+            $selectedBranch = $first?->cawangan ?? 'N/A';
         } else {
-            if ($this->state != '%') {
-                $selectedState = $data->first()->negeri;
-            } else {
-                $selectedState = 'SEMUA NEGERI';
-            }
+            $selectedState = $this->state == PrestasiBulananRingkasanService::ALL_STATES
+                ? 'SEMUA NEGERI'
+                : ($first?->negeri ?? 'N/A');
 
-            if ($this->branch != '%%') {
-                $selectedBranch = $data->first()->cawangan;
-            }  else {
-                $selectedBranch = 'SEMUA CAWANGAN';
-            }
+            $selectedBranch = $this->branch == PrestasiBulananRingkasanService::ALL_BRANCHES
+                ? 'SEMUA CAWANGAN'
+                : ($first?->cawangan ?? 'N/A');
         }
 
         return view('exports.prestasi-bulanan-ringkasan', [
-            'groupedData' => $this->groupedData,
-            'months' => $months,
+            'rows' => $this->rows,
+            'months' => $data['months'],
             'selectedState' => $selectedState,
             'selectedBranch' => $selectedBranch,
             'reportDate' => strtoupper($this->reportDate->format('F Y'))
@@ -192,11 +143,8 @@ class PrestasiBulananRingkasan implements FromView, WithStyles
         // Style rows based on flags
         $startRow = 10;
 
-        if (!empty($this->groupedData) && $this->groupedData->isNotEmpty()) {
-            foreach ($this->groupedData as $stateData) {
-                foreach ($stateData as $branchData) {
-                    foreach ($branchData as $officerData) {
-                        $inclPmgiFlag = $officerData->first()->incl_pmgi_flag;
+        foreach ($this->rows as $officerData) {
+            $inclPmgiFlag = $officerData->first()->incl_pmgi_flag;
 
                         $cell = "B$startRow"; // Adjust for the actual column
 
@@ -240,11 +188,8 @@ class PrestasiBulananRingkasan implements FromView, WithStyles
                             ]);
                         }
 
-                        // Increment row for the next officer
-                        $startRow++;
-                    }
-                }
-            }
+            // Increment row for the next officer
+            $startRow++;
         }
 
         return $sheet;
@@ -253,32 +198,7 @@ class PrestasiBulananRingkasan implements FromView, WithStyles
     // Make sure calculateLastRow returns the correct last row number
     private function calculateLastRow(): int
     {
-        $totalRows = 9; // Start at row 9
-
-        // Ensure groupedData is not null or empty
-        if (empty($this->groupedData) || $this->groupedData->isEmpty()) {
-            return $totalRows; // Return just the header rows if there's no data
-        }
-
-        foreach ($this->groupedData as $stateData) {
-            foreach ($stateData as $branchData) {
-                foreach ($branchData as $officerData) {
-                    $totalRows++; // Increment row count for each officer data row.
-                }
-            }
-        }
-
-        return $totalRows; // Return the total number of rows in the sheet
-    }
-
-    private function groupData(Collection $officerData): Collection
-    {
-        return $officerData->groupBy('branch_state_code')->map(function ($stateData) {
-            return $stateData->groupBy('acct_branch_code')->map(function ($branchData) {
-                return $branchData->groupBy('officer_id')->map(function ($officerRecords) {
-                    return $officerRecords->take(2);
-                });
-            });
-        });
+        // Start at row 9 because we have headers up to row 8, then one row per pegawai
+        return 9 + ($this->rows?->count() ?? 0);
     }
 }

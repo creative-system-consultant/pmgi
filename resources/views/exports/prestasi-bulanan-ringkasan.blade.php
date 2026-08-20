@@ -47,7 +47,7 @@
                         <tr>
                             <th></th>
                             @foreach ($months as $month)
-                            <th valign="middle" align="center" colspan="6">{{ $month }}</th>
+                            <th valign="middle" align="center" colspan="6">{{ strtoupper($month) }}</th>
                             @endforeach
                         </tr>
                         <tr>
@@ -63,9 +63,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($groupedData as $stateData)
-                            @foreach ($stateData as $branchData)
-                                @foreach ($branchData as $officerId => $records)
+                        {{-- One entry per pegawai, already ordered by PrestasiBulananRingkasanService. --}}
+                        @foreach ($rows as $records)
                                 <tr>
                                     <th valign="middle"
                                         @if ($records->first()->incl_pmgi_flag == 'W')
@@ -181,8 +180,6 @@
                                     </th>
                                     @endforeach
                                 </tr>
-                                @endforeach
-                            @endforeach
                         @endforeach
                     </tbody>
                 </table>

@@ -1,5 +1,5 @@
 <div class="h-full">
-    @if ($groupedData->count() > 0)
+    @if ($rows->count() > 0)
         <div class="table-container">
             <table>
                 <thead class="sticky top-0 z-10 bg-gray-50">
@@ -22,9 +22,9 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white">
-                    @foreach ($groupedData as $stateData)
-                        @foreach ($stateData as $branchData)
-                            @foreach ($branchData as $officerId => $records)
+                    {{-- One entry per pegawai, already ordered negeri > cawangan by
+                         PrestasiBulananRingkasanService. --}}
+                    @foreach ($rows as $records)
                                 <tr class="@if($records->first()->incl_pmgi_flag == 'W') bg-gray-800 @elseif($records->first()->incl_pmgi_flag == 'S') bg-gray-500 @elseif($records->first()->incl_pmgi_flag == 'N') bg-gray-200 @endif">
                                     <th scope="col" class="p-2 text-sm font-normal tracking-tight text-left text-gray-800 @if($records->first()->incl_pmgi_flag == 'W') bg-gray-800 @elseif($records->first()->incl_pmgi_flag == 'S') bg-gray-500 @elseif($records->first()->incl_pmgi_flag == 'N') bg-gray-200 @else bg-white @endif headcol whitespace-nowrap">
                                         @if ($records->first()->incl_pmgi_flag == 'W')
@@ -74,8 +74,6 @@
                                         </th>
                                     @endforeach
                                 </tr>
-                            @endforeach
-                        @endforeach
                     @endforeach
                 </tbody>
             </table>
