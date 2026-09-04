@@ -56,6 +56,8 @@ use App\Livewire\Admin\Maintenance\SoalanLazim;
 use App\Livewire\Admin\Report\JKPiCompletedOfficerByLevel;
 use App\Livewire\Admin\Report\PmgiFMSBankOfficers;
 use App\Livewire\Admin\Report\PmgiHrdOfficer;
+use App\Http\Controllers\Report\PmgiRawMasterDownloadController;
+use App\Livewire\Admin\Report\PmgiRawMaster;
 use App\Livewire\Admin\Report\PmgiSysMsgLog;
 use App\Livewire\Module\Lantikan\Evaluator\Index as EvaluatorIndex;
 use App\Livewire\Module\Tetapan\OfficerInfo\Index as OfficerInfoIndex;
@@ -195,7 +197,11 @@ Route::middleware(['check.sysAvailable'])->group(function () {
             Route::prefix('admin-report')->name('report.admin.')->middleware('check.access:admin-laporan')->group(function () {                  
                 Route::get('/fms-bank-officer', PmgiFMSBankOfficers::class)->name('fms_bank_officer');         
                 Route::get('/fms-hrd-officer', PmgiHrdOfficer::class)->name('fms_hrd_officer');         
-                Route::get('/senarai-pengawai-JKPi', JKPiCompletedOfficerByLevel::class)->name('senarai_pengawai_JKPi');         
+                Route::get('/senarai-pengawai-JKPi', JKPiCompletedOfficerByLevel::class)->name('senarai_pengawai_JKPi');
+                Route::get('/raw-master', PmgiRawMaster::class)->name('raw_master');
+                Route::get('/raw-master/download/{token}', PmgiRawMasterDownloadController::class)
+                    ->whereUuid('token')
+                    ->name('raw_master.download');
             });        
         });
 

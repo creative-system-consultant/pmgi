@@ -14,6 +14,7 @@
         "league/flysystem-ftp": "^3.29",
         "livewire/livewire": "^3.4",
         "maatwebsite/excel": "^3.1",
+        "openspout/openspout": "^5.11",
         "wireui/wireui": "^1.19"
     },
     "require-dev": {

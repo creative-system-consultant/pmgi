@@ -15,6 +15,10 @@
             <a href="{{ route('report.admin.senarai_pengawai_JKPi') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
                 Senarai Pegawai Selesai JKPi Mengikut Peringkat
             </a>              
+
+            <a href="{{ route('report.admin.raw_master') }}" class="block px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+                Laporan PMGi
+            </a>
         </nav>
     </aside>
 </div>
