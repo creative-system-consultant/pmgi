@@ -40,6 +40,7 @@ class RekodPmgi extends Component
     public $jt2Session;
     public $sessionId;
     public $isAdmin = true;
+    public $sameState = false;
 
     public function __construct()
     {
@@ -68,6 +69,8 @@ class RekodPmgi extends Component
             $this->pydId = auth()->user()->USERID;
             $this->isAdmin = false;
             $this->getData();
+        } elseif (in_array('URUSETIA NEGERI', $role)) {
+            $this->sameState = true;
         }
 
         if($this->pmgiSession) {
@@ -81,12 +84,18 @@ class RekodPmgi extends Component
     {
         $this->pydId = BankOfficer::join('pmgi_fms_users', 'pmgi_fms_bank_officers.officer_id', '=', 'pmgi_fms_users.USERID')
             ->where('pmgi_fms_users.USERSTATUS', 1)
-            ->where(function($q) {
-                $q->where('pmgi_fms_bank_officers.officer_name', 'LIKE', '%' . $this->searchTerm . '%')
-                    ->orWhere('pmgi_fms_bank_officers.staffno', 'LIKE', '%' . $this->searchTerm . '%');
-            })
+            ->whereAny([
+                'pmgi_fms_bank_officers.officer_name',
+                'pmgi_fms_bank_officers.staffno',
+                'pmgi_fms_bank_officers.officer_id',
+            ], 'LIKE', '%' . $this->searchTerm . '%')
+            // Urusetia Negeri may only search officers in their own state.
+            // Checked from the user's roles, not $sameState, because public properties can be changed by the client.
+            ->when(auth()->user()->roles()->where('name', 'URUSETIA NEGERI')->exists(), fn ($query) =>
+                $query->where('pmgi_fms_bank_officers.fms_branch_state_code', auth()->user()->stateCode())
+            )
             ->value('officer_id');
-        
+
         $this->getData();
     }
 

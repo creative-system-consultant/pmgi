@@ -19,7 +19,7 @@
                                             label="Nama Pegawai"
                                             wire:model="searchTerm"
                                             placeholder="Sila Taip Nama dan Klik Butang Cari"
-                                            :async-data="route('staff-name-search')"
+                                            :async-data="$sameState ? route('staff-name-search-by-state', ['state_code' => auth()->user()->stateCode()]) : route('staff-name-search')"
                                             option-label="officer_name"
                                             option-value="officer_name"
                                         />

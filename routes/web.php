@@ -154,6 +154,7 @@ Route::middleware(['check.sysAvailable'])->group(function () {
             // search purpose
             Route::get('/staff-search', [SearchController::class, 'staffName'])->name('staff-name-search');
             Route::get('/staff-search-by-branch', [SearchController::class, 'staffNameByBranch'])->name('staff-name-search-by-branch');
+            Route::get('/staff-search-by-state', [SearchController::class, 'staffNameByState'])->name('staff-name-search-by-state');
 
             // Penyelenggaraan (Admin only)
             Route::prefix('admin-maintenance')->name('maintenance.admin.')->middleware('check.access:admin-penyelenggaraan')->group(function () {

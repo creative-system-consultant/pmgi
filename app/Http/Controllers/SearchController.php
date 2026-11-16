@@ -6,6 +6,7 @@ use App\Models\BankOfficer;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class SearchController extends Controller
 {
@@ -46,5 +47,25 @@ class SearchController extends Controller
                 $query->whereIn('PMGI_FMS_BANK_OFFICERS.officer_id', $request->input('selected', []))
             )
             ->get();
+    }
+
+    public function staffNameByState(Request $request)
+    {
+        return BankOfficer::query()
+            ->join('pmgi_fms_users', 'PMGI_FMS_BANK_OFFICERS.officer_id', '=', 'pmgi_fms_users.USERID')
+            ->where('pmgi_fms_users.USERSTATUS', 1)
+            ->where('PMGI_FMS_BANK_OFFICERS.fms_branch_state_code', $request->state_code)
+            ->when($request->search, fn(Builder $query) =>
+                $query->whereAny([
+                    DB::raw('UPPER(PMGI_FMS_BANK_OFFICERS.officer_name)'),
+                    DB::raw('UPPER(PMGI_FMS_BANK_OFFICERS.officer_id)'),
+                ], 'LIKE', '%' . strtoupper($request->search) . '%')
+            )
+            ->when($request->exists('selected'), fn(Builder $query) =>
+                $query->whereIn('PMGI_FMS_BANK_OFFICERS.officer_id', $request->input('selected', []))
+            )
+            ->get();
+
+        // return $request->state_code;
     }
 }
