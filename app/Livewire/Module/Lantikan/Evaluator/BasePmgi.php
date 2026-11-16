@@ -225,7 +225,7 @@ abstract class BasePmgi extends Component
 
         $pymRoleId = SettUalRole::where('name', 'PYM')->value('id');
         if ($pymRoleId) {
-            $userPym->roles()->attach($pymRoleId);
+            $userPym->roles()->syncWithoutDetaching([$pymRoleId]);
             $userPym->load('roles');
         }
 
@@ -234,7 +234,7 @@ abstract class BasePmgi extends Component
 
             $pmcRoleId = SettUalRole::where('name', 'PMC')->value('id');
             if ($pmcRoleId) {
-                $userPmc->roles()->attach($pmcRoleId);
+                $userPmc->roles()->syncWithoutDetaching([$pmcRoleId]);
                 $userPmc->load('roles');
             }
         }

@@ -37,7 +37,8 @@ class UserAccess extends Component
                             ->where('USERSTATUS', 1)
                             ->first();
         $this->name = $this->user->USERNAME;
-        $this->role = $this->user->roles->pluck('id')->toArray();
+        // A role can be attached multiple times (e.g. PYM for several sessions), so keep each role once
+        $this->role = $this->user->roles->pluck('id')->unique()->values()->toArray();
         $this->userAccessModal = true;
     }
 

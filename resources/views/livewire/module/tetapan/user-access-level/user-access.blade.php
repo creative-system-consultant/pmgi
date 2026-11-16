@@ -33,11 +33,14 @@
                             <tbody class="bg-white ">
                                 @forelse ($results as $user)
                                 <tr class="even:bg-gray-50"">
-                                            <td class="p-2 text-sm font-normal tracking-tight text-left text-gray-800  whitespace-nowrap">{{ $user->USERNAME }}</td>
+                                    <td class="p-2 text-sm font-normal tracking-tight text-left text-gray-800  whitespace-nowrap">{{ $user->USERNAME }}</td>
                                     <td class="p-2 text-sm font-normal tracking-tight text-left text-gray-800 whitespace-nowrap">{{ $user->position() }}</td>
                                     <td class="p-2 text-sm font-normal tracking-tight text-center text-gray-800 whitespace-nowrap">
-                                        @foreach ($user->roles as $data)
-                                        <x-badge flat info label="{{ $data->name }}" />
+                                        @php
+                                            $userRoles = $user->roles()->pluck('name', 'role_id')->toArray();
+                                        @endphp
+                                        @foreach ($userRoles as $roleName)
+                                        <x-badge flat info label="{{ $roleName }}" />
                                         @endforeach
                                     </td>
                                     <td class="p-2 text-sm font-normal tracking-tight text-center text-gray-800 whitespace-nowrap">
